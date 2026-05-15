@@ -1,0 +1,78 @@
+services:
+
+  # ── Postgres ──────────────────────────────────────────────────────────────
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-branching}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-branching}
+      POSTGRES_DB: ${POSTGRES_DB:-branching_scenarios}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-branching} -d ${POSTGRES_DB:-branching_scenarios}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Adminer (DB GUI) ──────────────────────────────────────────────────────
+  adminer:
+    image: adminer:4
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ── FastAPI backend ───────────────────────────────────────────────────────
+  api:
+    build:
+      # Context is the repo root so the Dockerfile can COPY packages/engine
+      # and packages/expr (local Python packages not published to PyPI).
+      context: ..
+      dockerfile: services/api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-branching}:${POSTGRES_PASSWORD:-branching}@db:5432/${POSTGRES_DB:-branching_scenarios}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-changeme}
+      MEDIA_BASE_URL: ${MEDIA_BASE_URL:-http://localhost:8000/media}
+    volumes:
+      - ../services/api/media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+    # Run migrations then start the server
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── Next.js frontend ──────────────────────────────────────────────────────
+  web:
+    build:
+      context: ../apps/web
+      args:
+        # Baked into the JS bundle at build time; must match where browsers
+        # can reach the API (host machine's port 8000 via Docker port mapping).
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

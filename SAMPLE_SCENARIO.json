@@ -1,0 +1,61 @@
+{
+  "_comment": "Minimal 3-scene scenario showing the JSON contract. Import via POST /api/v1/admin/scenarios/import.",
+
+  "slug": "my-scenario",
+  "title": "My Scenario",
+  "description": "A short description shown on the landing page.",
+
+  "scenario_json": {
+    "metadata": {
+      "title": "My Scenario",
+      "description": "A short description shown on the landing page.",
+      "completion_tracking": true,
+      "page_icon": "🎯",
+      "page_title": "My Scenario",
+      "author": "Your Name",
+      "version": "1.0"
+    },
+
+    "reflection_questions": [
+      "What would you do differently next time?",
+      "What surprised you most about this scenario?"
+    ],
+    "reflection_prompts": [
+      "Think about the factors that influenced your choice.",
+      "Consider perspectives other than your own."
+    ],
+
+    "variables": {
+      "score": 0
+    },
+
+    "start_scene_id": "scene-start",
+    "scenes": {
+      "scene-start": {
+        "type": "choice",
+        "title": "The Decision",
+        "description": "You are faced with an important choice.",
+        "narration": "What will you do?",
+        "choices": [
+          { "text": "Take the cautious path", "next": "scene-middle", "effects": { "score": 1 } },
+          { "text": "Take the bold path",    "next": "scene-middle", "effects": { "score": 2 } }
+        ]
+      },
+
+      "scene-middle": {
+        "type": "auto_advance",
+        "title": "The Consequences Unfold",
+        "description": "Your decision sets events in motion.",
+        "narration": "Watch what happens next.",
+        "next": "scene-end"
+      },
+
+      "scene-end": {
+        "type": "end",
+        "title": "Outcome",
+        "outcome": "Complete",
+        "outcome_message": "You have reached the end of this scenario."
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+# Root-level .dockerignore used when docker-compose builds the api service
+# with context: .. (repo root).
+
+.git/
+.gitignore
+
+# Node / frontend — not needed in the Python api image
+apps/web/node_modules/
+apps/web/.next/
+apps/web/playwright-report/
+apps/web/test-results/
+
+# Python byte-compiled files
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+
+# Test artefacts
+services/api/tests/
+packages/engine/tests/
+packages/expr/tests/
+**/.pytest_cache/
+**/.mypy_cache/
+**/htmlcov/
+**/.coverage
+
+# Local secrets and editor files
+**/.env
+**/.env.*
+**/*.md
+docs/

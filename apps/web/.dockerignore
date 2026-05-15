@@ -1,0 +1,12 @@
+node_modules/
+.next/
+.env
+.env.*
+*.md
+.git/
+.gitignore
+Dockerfile
+.dockerignore
+playwright-report/
+test-results/
+e2e/

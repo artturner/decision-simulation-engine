@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "title": "E2E Test Scenario",
+    "description": "Automated testing scenario — do not delete.",
+    "completion_tracking": true,
+    "page_icon": "🧪",
+    "page_title": "E2E Test"
+  },
+  "reflection_questions": [
+    "What did you learn from this scenario?"
+  ],
+  "reflection_prompts": [
+    "Consider the choices you made and why."
+  ],
+  "variables": {},
+  "start_scene_id": "scene-start",
+  "scenes": {
+    "scene-start": {
+      "type": "choice",
+      "title": "The Starting Point",
+      "description": "You arrive at a crossroads. Which path will you take?",
+      "narration": "Choose your path wisely.",
+      "choices": [
+        { "text": "Take the high road", "next": "scene-middle" },
+        { "text": "Take the low road",  "next": "scene-end"    }
+      ]
+    },
+    "scene-middle": {
+      "type": "auto_advance",
+      "title": "The Middle Path",
+      "description": "You walk the high road and see the landscape open before you.",
+      "next": "scene-end"
+    },
+    "scene-end": {
+      "type": "end",
+      "title": "Journey Complete",
+      "outcome": "Success",
+      "outcome_message": "You have completed your journey."
+    }
+  }
+}

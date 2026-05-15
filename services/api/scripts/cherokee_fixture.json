@@ -1,0 +1,61 @@
+{
+  "slug": "cherokee-crossroads",
+  "title": "Cherokee Crossroads",
+  "description": "Walk in the shoes of a Cherokee Nation leader in 1830 as your community faces an impossible choice.",
+  "scenario_json": {
+    "metadata": {
+      "title": "Cherokee Crossroads",
+      "description": "Walk in the shoes of a Cherokee Nation leader in 1830 as your community faces an impossible choice.",
+      "completion_tracking": true,
+      "page_icon": "🌿",
+      "page_title": "Cherokee Crossroads — A History Lesson",
+      "author": "Branching Scenarios Team",
+      "version": "1.0"
+    },
+    "reflection_questions": [
+      "What factors most influenced your decision as a leader?",
+      "How did this scenario change your perspective on historical forced displacement?"
+    ],
+    "reflection_prompts": [
+      "Consider the economic, cultural, and human costs of each option.",
+      "Think about what decision-makers knew — and did not know — in 1830."
+    ],
+    "variables": {
+      "community_trust": 5
+    },
+    "start_scene_id": "scene-council",
+    "scenes": {
+      "scene-council": {
+        "type": "choice",
+        "title": "The Council Fire",
+        "description": "It is 1830. President Andrew Jackson has signed the Indian Removal Act. As a council leader of the Cherokee Nation you must advise your people. Two factions press for opposite paths.",
+        "narration": "The fire crackles as elders and young warriors await your counsel. Every choice carries consequences you cannot fully foresee.",
+        "choices": [
+          {
+            "text": "Support legal resistance — challenge the Act in U.S. courts",
+            "next": "scene-aftermath",
+            "effects": { "community_trust": 1 }
+          },
+          {
+            "text": "Begin negotiating terms of relocation to protect lives now",
+            "next": "scene-aftermath",
+            "effects": { "community_trust": -1 }
+          }
+        ]
+      },
+      "scene-aftermath": {
+        "type": "auto_advance",
+        "title": "History Decides",
+        "description": "The Cherokee Nation wins Worcester v. Georgia (1832) in the Supreme Court — removal is ruled unconstitutional. But President Jackson refuses to enforce the ruling. A minority faction signs the Treaty of New Echota in 1835 without full council authority; the Senate ratifies it by a single vote. Both paths converge: regardless of your choice, U.S. troops begin the forced march in 1838.",
+        "narration": "Sometimes structural injustice constrains even the most courageous leadership. What matters is how you care for your people along the way.",
+        "next": "scene-trail"
+      },
+      "scene-trail": {
+        "type": "end",
+        "title": "The Long Road West",
+        "outcome": "The Trail of Tears",
+        "outcome_message": "In 1838–39, over 16,000 Cherokee men, women, and children are forced to march 1,000 miles to Indian Territory in present-day Oklahoma. Approximately 4,000 die from disease, exposure, and exhaustion. The path you chose shaped the quality of leadership your community experienced — but not the destination imposed upon them."
+      }
+    }
+  }
+}
