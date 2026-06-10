@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.api.v1.admin import router as admin_router
+from app.api.v1.admin import teacher_router
 from app.api.v1.public import router as public_router
 from app.core.config import settings
 
@@ -43,15 +44,17 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 
 app.include_router(admin_router, prefix="/api/v1")
+app.include_router(teacher_router, prefix="/api/v1")
 app.include_router(public_router, prefix="/api/v1")
 
 # ---------------------------------------------------------------------------
-# Media static files
+# Media static files (dev only — skipped when R2 is configured)
 # ---------------------------------------------------------------------------
 
-_media_dir = "media"  # relative to the CWD (project root when run with uvicorn)
-os.makedirs(_media_dir, exist_ok=True)
-app.mount("/media", StaticFiles(directory=_media_dir), name="media")
+if not settings.R2_BUCKET_NAME:
+    _media_dir = "media"
+    os.makedirs(_media_dir, exist_ok=True)
+    app.mount("/media", StaticFiles(directory=_media_dir), name="media")
 
 # ---------------------------------------------------------------------------
 # Health

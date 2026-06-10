@@ -32,14 +32,26 @@ from __future__ import annotations
 
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Response, UploadFile, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_db, verify_admin_key
+from app.api.deps import get_current_user, get_db, verify_admin_key
 from app.models.scenario import VersionStatus
+from app.models.user import User
+from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
 from app.schemas.admin import (
+    AssignmentCreate,
+    AssignmentOut,
+    AssignmentUpdate,
+    ClassRollCreate,
+    ClassRollOut,
+    ClassRollUpdate,
+    GradebookOut,
+    GradebookAttempt,
+    GradebookReflection,
+    GradebookStudent,
     PublishResponse,
     ScenarioImportRequest,
     ScenarioImportResponse,
@@ -55,6 +67,12 @@ router = APIRouter(
     prefix="/admin",
     tags=["admin"],
     dependencies=[Depends(verify_admin_key)],
+)
+
+# Teacher-authenticated router — uses JWT instead of the legacy API key.
+teacher_router = APIRouter(
+    prefix="/teacher",
+    tags=["teacher"],
 )
 
 
@@ -338,4 +356,344 @@ def scenario_export_csv(
         content=content,
         media_type="text/csv",
         headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
+# ---------------------------------------------------------------------------
+# POST /admin/media  — upload a media file to R2 (or local disk in dev)
+# ---------------------------------------------------------------------------
+
+
+@router.post(
+    "/media",
+    summary="Upload a media file (image or video)",
+)
+async def upload_media(
+    key: str = Form(
+        ...,
+        description="Relative path in the media store, e.g. cherokee-choice/1/scene_1.png",
+    ),
+    file: UploadFile = File(...),
+) -> dict:
+    """Upload *file* and store it at *key*.
+
+    In production (R2 configured), the file is written to the R2 bucket and
+    the R2 public URL is returned.  In development, the file is saved to the
+    local ``media/`` directory.
+
+    Returns ``{"url": "<public URL>", "key": "<key>"}``
+    """
+    from app.services.storage import upload_media as _upload
+
+    content = await file.read()
+    content_type = file.content_type or "application/octet-stream"
+    url = _upload(content, key, content_type)
+    return {"url": url, "key": key}
+
+
+# ===========================================================================
+# Teacher endpoints — JWT auth via get_current_user
+# ===========================================================================
+
+
+# ---------------------------------------------------------------------------
+# POST /teacher/rolls
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.post(
+    "/rolls",
+    response_model=ClassRollOut,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a class roll",
+)
+def create_roll(
+    body: ClassRollCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> ClassRollOut:
+    repo = RollRepository(db)
+    roll = repo.create(current_user.id, body.name, body.student_names)
+    db.commit()
+    db.refresh(roll)
+    return ClassRollOut.model_validate(roll)
+
+
+# ---------------------------------------------------------------------------
+# GET /teacher/rolls
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.get(
+    "/rolls",
+    response_model=list[ClassRollOut],
+    summary="List class rolls owned by the current teacher",
+)
+def list_rolls(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> list[ClassRollOut]:
+    repo = RollRepository(db)
+    rolls = repo.list_for_owner(current_user.id)
+    return [ClassRollOut.model_validate(r) for r in rolls]
+
+
+# ---------------------------------------------------------------------------
+# GET /teacher/rolls/{roll_id}
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.get(
+    "/rolls/{roll_id}",
+    response_model=ClassRollOut,
+    summary="Get a class roll",
+)
+def get_roll(
+    roll_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> ClassRollOut:
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+    return ClassRollOut.model_validate(roll)
+
+
+# ---------------------------------------------------------------------------
+# PATCH /teacher/rolls/{roll_id}
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.patch(
+    "/rolls/{roll_id}",
+    response_model=ClassRollOut,
+    summary="Update a class roll's name or student list",
+)
+def update_roll(
+    roll_id: uuid.UUID,
+    body: ClassRollUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> ClassRollOut:
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+    roll = repo.update(roll, name=body.name, student_names=body.student_names)
+    db.commit()
+    db.refresh(roll)
+    return ClassRollOut.model_validate(roll)
+
+
+# ---------------------------------------------------------------------------
+# DELETE /teacher/rolls/{roll_id}
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.delete(
+    "/rolls/{roll_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a class roll",
+)
+def delete_roll(
+    roll_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> Response:
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+    repo.delete(roll)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# ---------------------------------------------------------------------------
+# POST /teacher/rolls/{roll_id}/scenarios  — assign a scenario to a roll
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.post(
+    "/rolls/{roll_id}/scenarios",
+    response_model=AssignmentOut,
+    status_code=status.HTTP_201_CREATED,
+    summary="Assign a scenario to a class roll",
+)
+def assign_scenario(
+    roll_id: uuid.UUID,
+    body: AssignmentCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> AssignmentOut:
+    from sqlalchemy.exc import IntegrityError
+
+    from app.models.scenario import Scenario
+
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+
+    scenario = db.get(Scenario, body.scenario_id)
+    if scenario is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
+
+    try:
+        assignment = repo.assign_scenario(
+            body.scenario_id, roll_id, visible=body.visible, sort_order=body.sort_order
+        )
+        db.commit()
+        db.refresh(assignment)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Scenario is already assigned to this roll.",
+        )
+
+    return AssignmentOut.model_validate(assignment)
+
+
+# ---------------------------------------------------------------------------
+# PATCH /teacher/rolls/{roll_id}/scenarios/{scenario_id}
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.patch(
+    "/rolls/{roll_id}/scenarios/{scenario_id}",
+    response_model=AssignmentOut,
+    summary="Update visibility or sort order of a scenario in a roll",
+)
+def update_assignment(
+    roll_id: uuid.UUID,
+    scenario_id: uuid.UUID,
+    body: AssignmentUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> AssignmentOut:
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+
+    assignment = repo.get_assignment(scenario_id, roll_id)
+    if assignment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Assignment not found.")
+
+    assignment = repo.update_assignment(assignment, visible=body.visible, sort_order=body.sort_order)
+    db.commit()
+    db.refresh(assignment)
+    return AssignmentOut.model_validate(assignment)
+
+
+# ---------------------------------------------------------------------------
+# DELETE /teacher/rolls/{roll_id}/scenarios/{scenario_id}
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.delete(
+    "/rolls/{roll_id}/scenarios/{scenario_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Remove a scenario from a class roll",
+)
+def remove_assignment(
+    roll_id: uuid.UUID,
+    scenario_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> Response:
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+
+    assignment = repo.get_assignment(scenario_id, roll_id)
+    if assignment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Assignment not found.")
+
+    repo.remove_assignment(assignment)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# ---------------------------------------------------------------------------
+# GET /teacher/scenarios/{scenario_id}/gradebook
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.get(
+    "/scenarios/{scenario_id}/gradebook",
+    response_model=GradebookOut,
+    summary="Get all student plays for a scenario, grouped by student name",
+)
+def gradebook(
+    scenario_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> GradebookOut:
+    """Return every recorded play for a scenario, expanded by student.
+
+    Only returns plays that were started via a class picker (plays.class_roll_id
+    is not null) so the teacher sees roll-validated names, not free-text entries.
+
+    Plays are grouped by learner_label; within each group they are ordered
+    oldest-first so attempts read chronologically.
+    """
+    from collections import defaultdict
+
+    from sqlalchemy import select
+    from sqlalchemy.orm import selectinload
+
+    from app.models.play import Play, Reflection
+    from app.models.scenario import Scenario
+
+    scenario = db.get(Scenario, scenario_id)
+    if scenario is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
+    if scenario.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not your scenario.")
+
+    stmt = (
+        select(Play)
+        .join(Play.scenario_version)
+        .where(
+            Play.scenario_version.has(scenario_id=scenario_id),
+            Play.class_roll_id.isnot(None),
+        )
+        .options(selectinload(Play.reflection))
+        .order_by(Play.learner_label, Play.started_at)
+    )
+    plays = list(db.scalars(stmt))
+
+    groups: dict[str | None, list[GradebookAttempt]] = defaultdict(list)
+    for play in plays:
+        ref = play.reflection
+        reflection_out = None
+        if ref is not None:
+            reflection_out = GradebookReflection(
+                student_name=ref.student_name,
+                submitted_at=ref.submitted_at,
+                responses=ref.responses_json,
+            )
+        groups[play.learner_label].append(
+            GradebookAttempt(
+                play_id=play.id,
+                started_at=play.started_at,
+                completed=play.completed,
+                outcome=play.outcome,
+                reflection=reflection_out,
+            )
+        )
+
+    students = [
+        GradebookStudent(learner_label=label, attempts=attempts)
+        for label, attempts in sorted(groups.items(), key=lambda x: (x[0] or ""))
+    ]
+
+    return GradebookOut(
+        scenario_id=scenario_id,
+        scenario_title=scenario.title,
+        students=students,
     )

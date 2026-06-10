@@ -51,6 +51,7 @@ class PlayRepository:
         self,
         scenario_version_id: uuid.UUID,
         learner_label: str | None = None,
+        class_roll_id: uuid.UUID | None = None,
     ) -> Play:
         """Create a new play session and record the initial ``start`` event.
 
@@ -62,6 +63,7 @@ class PlayRepository:
         play = Play(
             scenario_version_id=scenario_version_id,
             learner_label=learner_label,
+            class_roll_id=class_roll_id,
         )
         self.db.add(play)
         self.db.flush()  # populate play.id

@@ -83,7 +83,14 @@ class Play(Base):
     learner_label: Mapped[str | None] = mapped_column(
         String(500),
         nullable=True,
-        comment="Optional free-text label supplied by the learner",
+        comment="Student name — free-text for direct links, validated against roll for class picker",
+    )
+    class_roll_id: Mapped[uuid.UUID | None] = mapped_column(
+        PG_UUID(as_uuid=True),
+        ForeignKey("class_rolls.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+        comment="Set when the play was started via /public/class/{roll_id}; NULL for direct links",
     )
     started_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -124,6 +131,9 @@ class Play(Base):
     )
     scenario_version: Mapped["ScenarioVersion"] = relationship(  # type: ignore[name-defined]  # noqa: F821
         "ScenarioVersion",
+    )
+    class_roll: Mapped["ClassRoll | None"] = relationship(  # type: ignore[name-defined]  # noqa: F821
+        "ClassRoll",
     )
 
     def __repr__(self) -> str:

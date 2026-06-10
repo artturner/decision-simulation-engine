@@ -102,3 +102,84 @@ class PublishResponse(BaseModel):
     version_id: uuid.UUID
     version_number: int
     status: str
+
+
+# ---------------------------------------------------------------------------
+# Teacher rolls schemas
+# ---------------------------------------------------------------------------
+
+
+class ClassRollCreate(BaseModel):
+    name: str = Field(..., min_length=1, max_length=500)
+    student_names: list[str] = Field(default_factory=list)
+
+
+class ClassRollUpdate(BaseModel):
+    name: str | None = Field(None, min_length=1, max_length=500)
+    student_names: list[str] | None = None
+
+
+class ClassRollOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    name: str
+    student_names: list
+    created_at: datetime
+
+
+# ---------------------------------------------------------------------------
+# Teacher scenario-roll assignment schemas
+# ---------------------------------------------------------------------------
+
+
+class AssignmentCreate(BaseModel):
+    scenario_id: uuid.UUID
+    visible: bool = False
+    sort_order: int | None = None
+
+
+class AssignmentUpdate(BaseModel):
+    visible: bool | None = None
+    sort_order: int | None = None
+
+
+class AssignmentOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    scenario_id: uuid.UUID
+    class_roll_id: uuid.UUID
+    visible: bool
+    sort_order: int | None
+    created_at: datetime
+
+
+# ---------------------------------------------------------------------------
+# Gradebook schemas
+# ---------------------------------------------------------------------------
+
+
+class GradebookReflection(BaseModel):
+    student_name: str | None
+    submitted_at: datetime
+    responses: dict
+
+
+class GradebookAttempt(BaseModel):
+    play_id: uuid.UUID
+    started_at: datetime
+    completed: bool
+    outcome: str | None
+    reflection: GradebookReflection | None
+
+
+class GradebookStudent(BaseModel):
+    learner_label: str | None
+    attempts: list[GradebookAttempt]
+
+
+class GradebookOut(BaseModel):
+    scenario_id: uuid.UUID
+    scenario_title: str
+    students: list[GradebookStudent]

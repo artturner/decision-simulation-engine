@@ -37,9 +37,20 @@ class Settings(BaseSettings):
     # Media
     # ------------------------------------------------------------------
     # Base URL used to construct absolute image URLs.  In production,
-    # point this at your CDN or static file server.  Locally, the API
-    # serves media from /media so http://localhost:8000/media works.
+    # set this to R2_PUBLIC_URL so image URLs resolve against R2.
+    # Locally, the API serves media from /media so http://localhost:8000/media works.
     MEDIA_BASE_URL: str = "http://localhost:8000/media"
+
+    # ------------------------------------------------------------------
+    # Cloudflare R2 (optional — leave blank to use local disk in dev)
+    # ------------------------------------------------------------------
+    R2_ACCOUNT_ID: str = ""
+    R2_ACCESS_KEY_ID: str = ""
+    R2_SECRET_ACCESS_KEY: str = ""
+    R2_BUCKET_NAME: str = ""
+    # Public URL for the bucket, e.g. https://pub-abc123.r2.dev
+    # or a custom domain like https://media.yourapp.com
+    R2_PUBLIC_URL: str = ""
 
     # ------------------------------------------------------------------
     # Security
@@ -47,6 +58,13 @@ class Settings(BaseSettings):
     # Shared secret for admin endpoints.  In production this must be set
     # via the ADMIN_API_KEY environment variable.
     ADMIN_API_KEY: str = "changeme"
+
+    # JWT secret from Supabase project settings → API → JWT Secret.
+    # Used to verify tokens issued by Supabase Auth for teacher accounts.
+    JWT_SECRET: str = "changeme-jwt-secret"
+
+    # JWT algorithm — Supabase uses HS256 by default.
+    JWT_ALGORITHM: str = "HS256"
 
     # ------------------------------------------------------------------
     # CORS

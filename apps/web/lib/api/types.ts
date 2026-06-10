@@ -34,6 +34,25 @@ export interface Progress {
 }
 
 // ---------------------------------------------------------------------------
+// GET /public/class/{rollId}
+// ---------------------------------------------------------------------------
+
+export interface ClassPickerScenario {
+  scenario_version_id: string;
+  slug: string;
+  title: string;
+  description: string;
+  sort_order: number | null;
+}
+
+export interface ClassPickerResponse {
+  roll_id: string;
+  roll_name: string;
+  student_names: string[];
+  scenarios: ClassPickerScenario[];
+}
+
+// ---------------------------------------------------------------------------
 // GET /public/scenarios/{slug}
 // ---------------------------------------------------------------------------
 
@@ -65,6 +84,7 @@ export interface ScenarioPublicResponse {
 export interface PlayStartRequest {
   scenario_version_id: string;
   learner_label?: string;
+  class_roll_id?: string;
 }
 
 export interface PlayStartResponse {

@@ -89,11 +89,24 @@ class Scenario(Base):
         onupdate=func.now(),
     )
 
-    # Relationship — ordered so newest version is last
+    owner_id: Mapped[uuid.UUID | None] = mapped_column(
+        PG_UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+        comment="Teacher who owns this scenario; NULL for legacy/imported scenarios",
+    )
+
+    # Relationships
     versions: Mapped[list[ScenarioVersion]] = relationship(
         "ScenarioVersion",
         back_populates="scenario",
         order_by="ScenarioVersion.version_number",
+        cascade="all, delete-orphan",
+    )
+    roll_assignments: Mapped[list[ScenarioRollAssignment]] = relationship(  # type: ignore[name-defined]  # noqa: F821
+        "ScenarioRollAssignment",
+        back_populates="scenario",
         cascade="all, delete-orphan",
     )
 

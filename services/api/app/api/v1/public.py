@@ -37,10 +37,13 @@ from app.core.config import settings
 from app.models.play import Event, EventType
 from app.models.scenario import Scenario, ScenarioVersion, VersionStatus
 from app.repositories.play_repo import PlayRepository
+from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
 from app.schemas.public import (
     BackResponse,
     ChoiceOut,
+    ClassPickerResponse,
+    ClassPickerScenarioOut,
     PlayStartRequest,
     PlayStartResponse,
     PlayViewResponse,
@@ -262,6 +265,65 @@ def get_scenario(
 
 
 # ---------------------------------------------------------------------------
+# GET /public/class/{roll_id}  — class picker
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/class/{roll_id}",
+    response_model=ClassPickerResponse,
+    summary="Get the class picker for a roll",
+)
+def get_class_picker(
+    roll_id: uuid.UUID,
+    db: Session = Depends(get_db),
+) -> ClassPickerResponse:
+    """Return the roll's student list and its visible scenarios.
+
+    Students navigate to ``/class/{roll_id}``, pick their name from the
+    returned ``student_names`` list, then choose a scenario from
+    ``scenarios``.  Both pieces of data are returned in a single request.
+
+    Returns:
+        ``HTTP 200`` with ``ClassPickerResponse``.
+        ``HTTP 404`` if *roll_id* does not exist.
+    """
+    roll_repo = RollRepository(db)
+    roll = roll_repo.get(roll_id)
+    if roll is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Class roll not found.")
+
+    assignments = roll_repo.visible_assignments_for_roll(roll_id)
+
+    scenarios_out: list[ClassPickerScenarioOut] = []
+    for assignment in assignments:
+        scenario_orm: Scenario | None = db.get(Scenario, assignment.scenario_id)
+        if scenario_orm is None:
+            continue
+        repo = ScenarioRepository(db)
+        version = repo.get_published_version(scenario_orm.slug)
+        if version is None:
+            continue
+        engine_scenario = EngineScenario.model_validate(version.scenario_json)
+        scenarios_out.append(
+            ClassPickerScenarioOut(
+                scenario_version_id=version.id,
+                slug=scenario_orm.slug,
+                title=engine_scenario.metadata.title or scenario_orm.title,
+                description=engine_scenario.metadata.description or scenario_orm.description,
+                sort_order=assignment.sort_order,
+            )
+        )
+
+    return ClassPickerResponse(
+        roll_id=roll_id,
+        roll_name=roll.name,
+        student_names=list(roll.student_names),
+        scenarios=scenarios_out,
+    )
+
+
+# ---------------------------------------------------------------------------
 # POST /public/plays/start
 # ---------------------------------------------------------------------------
 
@@ -299,9 +361,28 @@ def start_play(
             detail=f"Published scenario version {body.scenario_version_id} not found.",
         )
 
+    # 1b. Validate roll membership when started via class picker
+    if body.class_roll_id is not None:
+        roll_repo = RollRepository(db)
+        roll = roll_repo.get(body.class_roll_id)
+        if roll is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Class roll not found.",
+            )
+        if not body.learner_label or body.learner_label not in roll.student_names:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="learner_label must match a name on the class roll.",
+            )
+
     # 2. Create play (start event at seq=0 is implicit)
     play_repo = PlayRepository(db)
-    play = play_repo.create_play(version.id, learner_label=body.learner_label)
+    play = play_repo.create_play(
+        version.id,
+        learner_label=body.learner_label,
+        class_roll_id=body.class_roll_id,
+    )
 
     # 3. Engine: initialise state and get start scene
     engine = ScenarioEngine(version.scenario_json)

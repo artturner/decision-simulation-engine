@@ -51,6 +51,34 @@ class ProgressOut(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# GET /public/class/{roll_id}  — class picker
+# ---------------------------------------------------------------------------
+
+
+class ClassPickerScenarioOut(BaseModel):
+    """One scenario entry in the class picker list."""
+
+    scenario_version_id: uuid.UUID
+    slug: str
+    title: str
+    description: str
+    sort_order: int | None
+
+
+class ClassPickerResponse(BaseModel):
+    """Response for GET /public/class/{roll_id}.
+
+    Returns the roll's student list and the visible scenarios so the
+    frontend can render a name picker and scenario chooser in one request.
+    """
+
+    roll_id: uuid.UUID
+    roll_name: str
+    student_names: list[str]
+    scenarios: list[ClassPickerScenarioOut]
+
+
+# ---------------------------------------------------------------------------
 # GET /public/scenarios/{slug}
 # ---------------------------------------------------------------------------
 
@@ -90,10 +118,16 @@ class ScenarioPublicResponse(BaseModel):
 
 
 class PlayStartRequest(BaseModel):
-    """Body for starting a new play session."""
+    """Body for starting a new play session.
+
+    When started via the class picker, supply ``class_roll_id`` and a
+    ``learner_label`` that exactly matches one of the roll's student names.
+    The API validates membership server-side and returns ``422`` on mismatch.
+    """
 
     scenario_version_id: uuid.UUID
     learner_label: str | None = None
+    class_roll_id: uuid.UUID | None = None
 
 
 class PlayStartResponse(BaseModel):

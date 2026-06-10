@@ -8,6 +8,7 @@
 
 import type {
   BackResponse,
+  ClassPickerResponse,
   PlayStartRequest,
   PlayStartResponse,
   PlayViewResponse,
@@ -76,6 +77,16 @@ async function apiFetch<T>(
 // ---------------------------------------------------------------------------
 // Public API functions
 // ---------------------------------------------------------------------------
+
+/**
+ * GET /public/class/{rollId}
+ *
+ * Returns the class roll's student name list and its visible scenarios.
+ * Used to render the class picker page at /class/[rollId].
+ */
+export function getClassPicker(rollId: string): Promise<ClassPickerResponse> {
+  return apiFetch<ClassPickerResponse>(`/class/${rollId}`);
+}
 
 /**
  * GET /public/scenarios/{slug}

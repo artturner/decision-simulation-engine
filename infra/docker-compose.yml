@@ -42,7 +42,13 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-branching}:${POSTGRES_PASSWORD:-branching}@db:5432/${POSTGRES_DB:-branching_scenarios}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
       ADMIN_API_KEY: ${ADMIN_API_KEY:-changeme}
+      JWT_SECRET: ${JWT_SECRET:-changeme-jwt-secret}
       MEDIA_BASE_URL: ${MEDIA_BASE_URL:-http://localhost:8000/media}
+      R2_ACCOUNT_ID: ${R2_ACCOUNT_ID:-}
+      R2_ACCESS_KEY_ID: ${R2_ACCESS_KEY_ID:-}
+      R2_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY:-}
+      R2_BUCKET_NAME: ${R2_BUCKET_NAME:-}
+      R2_PUBLIC_URL: ${R2_PUBLIC_URL:-}
     volumes:
       - ../services/api/media:/app/media
     depends_on:
