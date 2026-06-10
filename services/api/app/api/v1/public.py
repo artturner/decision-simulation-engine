@@ -111,11 +111,12 @@ def _build_scene_dto(
       fields the frontend doesn't need)
     """
     image: str | None = raw.get("image")
-    image_url: str | None = (
-        f"{settings.MEDIA_BASE_URL}/{slug}/{version_number}/{image}"
-        if image
-        else None
-    )
+    if not image:
+        image_url: str | None = None
+    elif image.startswith(("http://", "https://")):
+        image_url = image  # already absolute — pass through unchanged
+    else:
+        image_url = f"{settings.MEDIA_BASE_URL}/{slug}/{version_number}/{image}"
 
     choices: list[ChoiceOut] | None = None
     if raw.get("choices") is not None:
