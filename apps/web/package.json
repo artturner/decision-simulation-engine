@@ -13,6 +13,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.108.1",
     "@tanstack/react-query": "^5.90.21",
     "next": "^16.1.6",
     "react": "^18.3.1",

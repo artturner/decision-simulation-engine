@@ -156,6 +156,27 @@ class AssignmentOut(BaseModel):
     created_at: datetime
 
 
+class PublishedScenarioOut(BaseModel):
+    id: uuid.UUID
+    slug: str
+    title: str
+    description: str
+    published_version_id: uuid.UUID
+    version_number: int
+
+
+class RollScenarioOut(BaseModel):
+    id: uuid.UUID
+    scenario_id: uuid.UUID
+    class_roll_id: uuid.UUID
+    visible: bool
+    sort_order: int | None
+    created_at: datetime
+    slug: str
+    title: str
+    description: str
+
+
 # ---------------------------------------------------------------------------
 # Gradebook schemas
 # ---------------------------------------------------------------------------
@@ -184,3 +205,34 @@ class GradebookOut(BaseModel):
     scenario_id: uuid.UUID
     scenario_title: str
     students: list[GradebookStudent]
+
+
+class RollGradebookReflection(BaseModel):
+    student_name: str | None
+    submitted_at: datetime
+    responses: dict
+
+
+class RollGradebookAttempt(BaseModel):
+    play_id: uuid.UUID
+    started_at: datetime
+    ended_at: datetime | None
+    completed: bool
+    outcome: str | None
+    reflection: RollGradebookReflection | None
+
+
+class RollGradebookStudent(BaseModel):
+    student_name: str
+    status: str
+    in_progress_play_id: uuid.UUID | None
+    submitted_count: int
+    latest_submitted_at: datetime | None
+    attempts: list[RollGradebookAttempt]
+
+
+class RollGradebookOut(BaseModel):
+    roll_id: uuid.UUID
+    scenario_id: uuid.UUID
+    scenario_title: str
+    students: list[RollGradebookStudent]

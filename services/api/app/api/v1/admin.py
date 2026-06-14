@@ -52,7 +52,13 @@ from app.schemas.admin import (
     GradebookAttempt,
     GradebookReflection,
     GradebookStudent,
+    PublishedScenarioOut,
     PublishResponse,
+    RollGradebookAttempt,
+    RollGradebookOut,
+    RollGradebookReflection,
+    RollGradebookStudent,
+    RollScenarioOut,
     ScenarioImportRequest,
     ScenarioImportResponse,
     ScenarioOut,
@@ -511,13 +517,111 @@ def delete_roll(
 
 
 # ---------------------------------------------------------------------------
+# GET /teacher/scenarios/published
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.get(
+    "/scenarios/published",
+    response_model=list[PublishedScenarioOut],
+    summary="List published scenarios available for assignment",
+)
+def list_published_scenarios(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> list[PublishedScenarioOut]:
+    from sqlalchemy import select
+
+    from app.models.scenario import Scenario, ScenarioVersion
+
+    stmt = (
+        select(Scenario, ScenarioVersion)
+        .join(ScenarioVersion, ScenarioVersion.scenario_id == Scenario.id)
+        .where(
+            ScenarioVersion.status == VersionStatus.published,
+            (Scenario.owner_id.is_(None)) | (Scenario.owner_id == current_user.id),
+        )
+        .order_by(Scenario.title, ScenarioVersion.version_number.desc())
+    )
+
+    seen: set[uuid.UUID] = set()
+    scenarios: list[PublishedScenarioOut] = []
+    for scenario, version in db.execute(stmt):
+        if scenario.id in seen:
+            continue
+        seen.add(scenario.id)
+        scenarios.append(
+            PublishedScenarioOut(
+                id=scenario.id,
+                slug=scenario.slug,
+                title=scenario.title,
+                description=scenario.description,
+                published_version_id=version.id,
+                version_number=version.version_number,
+            )
+        )
+    return scenarios
+
+
+# ---------------------------------------------------------------------------
+# GET /teacher/rolls/{roll_id}/scenarios
+# ---------------------------------------------------------------------------
+
+
+def _roll_scenario_out(assignment: object, db: Session) -> RollScenarioOut | None:
+    from app.models.assignment import ScenarioRollAssignment
+    from app.models.scenario import Scenario
+
+    typed = assignment
+    if not isinstance(typed, ScenarioRollAssignment):
+        return None
+    scenario = db.get(Scenario, typed.scenario_id)
+    if scenario is None:
+        return None
+    return RollScenarioOut(
+        id=typed.id,
+        scenario_id=typed.scenario_id,
+        class_roll_id=typed.class_roll_id,
+        visible=typed.visible,
+        sort_order=typed.sort_order,
+        created_at=typed.created_at,
+        slug=scenario.slug,
+        title=scenario.title,
+        description=scenario.description,
+    )
+
+
+@teacher_router.get(
+    "/rolls/{roll_id}/scenarios",
+    response_model=list[RollScenarioOut],
+    summary="List scenarios assigned to a class roll",
+)
+def list_roll_scenarios(
+    roll_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> list[RollScenarioOut]:
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+
+    rows: list[RollScenarioOut] = []
+    for assignment in repo.list_assignments_for_roll(roll_id):
+        row = _roll_scenario_out(assignment, db)
+        if row is not None:
+            rows.append(row)
+    return rows
+
+
+# ---------------------------------------------------------------------------
 # POST /teacher/rolls/{roll_id}/scenarios  — assign a scenario to a roll
 # ---------------------------------------------------------------------------
 
 
 @teacher_router.post(
     "/rolls/{roll_id}/scenarios",
-    response_model=AssignmentOut,
+    response_model=RollScenarioOut,
     status_code=status.HTTP_201_CREATED,
     summary="Assign a scenario to a class roll",
 )
@@ -526,7 +630,7 @@ def assign_scenario(
     body: AssignmentCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
-) -> AssignmentOut:
+) -> RollScenarioOut:
     from sqlalchemy.exc import IntegrityError
 
     from app.models.scenario import Scenario
@@ -553,7 +657,10 @@ def assign_scenario(
             detail="Scenario is already assigned to this roll.",
         )
 
-    return AssignmentOut.model_validate(assignment)
+    row = _roll_scenario_out(assignment, db)
+    if row is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
+    return row
 
 
 # ---------------------------------------------------------------------------
@@ -563,7 +670,7 @@ def assign_scenario(
 
 @teacher_router.patch(
     "/rolls/{roll_id}/scenarios/{scenario_id}",
-    response_model=AssignmentOut,
+    response_model=RollScenarioOut,
     summary="Update visibility or sort order of a scenario in a roll",
 )
 def update_assignment(
@@ -572,7 +679,7 @@ def update_assignment(
     body: AssignmentUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
-) -> AssignmentOut:
+) -> RollScenarioOut:
     repo = RollRepository(db)
     roll = repo.get(roll_id)
     if roll is None or roll.owner_id != current_user.id:
@@ -585,7 +692,10 @@ def update_assignment(
     assignment = repo.update_assignment(assignment, visible=body.visible, sort_order=body.sort_order)
     db.commit()
     db.refresh(assignment)
-    return AssignmentOut.model_validate(assignment)
+    row = _roll_scenario_out(assignment, db)
+    if row is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
+    return row
 
 
 # ---------------------------------------------------------------------------
@@ -616,6 +726,121 @@ def remove_assignment(
     repo.remove_assignment(assignment)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# ---------------------------------------------------------------------------
+# GET /teacher/rolls/{roll_id}/scenarios/{scenario_id}/gradebook
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.get(
+    "/rolls/{roll_id}/scenarios/{scenario_id}/gradebook",
+    response_model=RollGradebookOut,
+    summary="Get roll-scoped student results for an assigned scenario",
+)
+def roll_gradebook(
+    roll_id: uuid.UUID,
+    scenario_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> RollGradebookOut:
+    from collections import defaultdict
+
+    from sqlalchemy import select
+    from sqlalchemy.orm import selectinload
+
+    from app.models.play import Play
+    from app.models.scenario import Scenario
+
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+
+    assignment = repo.get_assignment(scenario_id, roll_id)
+    if assignment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Assignment not found.")
+
+    scenario = db.get(Scenario, scenario_id)
+    if scenario is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
+
+    stmt = (
+        select(Play)
+        .join(Play.scenario_version)
+        .where(
+            Play.class_roll_id == roll_id,
+            Play.scenario_version.has(scenario_id=scenario_id),
+        )
+        .options(selectinload(Play.reflection))
+        .order_by(Play.learner_label, Play.started_at)
+    )
+    plays = list(db.scalars(stmt))
+    plays_by_student: dict[str, list[Play]] = defaultdict(list)
+    for play in plays:
+        if play.learner_label:
+            plays_by_student[play.learner_label].append(play)
+
+    students: list[RollGradebookStudent] = []
+    for student_name in roll.student_names:
+        student_plays = plays_by_student.get(student_name, [])
+        attempts: list[RollGradebookAttempt] = []
+        in_progress_play_id: uuid.UUID | None = None
+        latest_submitted_at = None
+        submitted_count = 0
+
+        for play in student_plays:
+            if play.completed:
+                submitted_count += 1
+                if play.ended_at and (
+                    latest_submitted_at is None or play.ended_at > latest_submitted_at
+                ):
+                    latest_submitted_at = play.ended_at
+            elif in_progress_play_id is None:
+                in_progress_play_id = play.id
+
+            reflection = None
+            if play.reflection is not None:
+                reflection = RollGradebookReflection(
+                    student_name=play.reflection.student_name,
+                    submitted_at=play.reflection.submitted_at,
+                    responses=play.reflection.responses_json,
+                )
+            attempts.append(
+                RollGradebookAttempt(
+                    play_id=play.id,
+                    started_at=play.started_at,
+                    ended_at=play.ended_at,
+                    completed=play.completed,
+                    outcome=play.outcome,
+                    reflection=reflection,
+                )
+            )
+
+        if submitted_count > 0:
+            status_label = "completed"
+        elif in_progress_play_id is not None:
+            status_label = "in_progress"
+        else:
+            status_label = "not_started"
+
+        students.append(
+            RollGradebookStudent(
+                student_name=student_name,
+                status=status_label,
+                in_progress_play_id=in_progress_play_id,
+                submitted_count=submitted_count,
+                latest_submitted_at=latest_submitted_at,
+                attempts=attempts,
+            )
+        )
+
+    return RollGradebookOut(
+        roll_id=roll_id,
+        scenario_id=scenario_id,
+        scenario_title=scenario.title,
+        students=students,
+    )
 
 
 # ---------------------------------------------------------------------------
