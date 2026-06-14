@@ -1,0 +1,7526 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "e68a33121bb69be8f277bf185a65c5a57dba00ce",
+  "generatedAt": "2026-06-05T14:36:35.171Z",
+  "files": {
+    ".dockerignore": {
+      "filePath": ".dockerignore",
+      "contentHash": "508c753cf1671fea1ce5bfa2dd023dca108412abf97111cb527920311330467c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": false
+    },
+    "apps/web/.dockerignore": {
+      "filePath": "apps/web/.dockerignore",
+      "contentHash": "0b150fa038ca5cdef96d4393c97f1775971ccbf929b665e26482b9bac94fd2a9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "apps/web/.env.local.example": {
+      "filePath": "apps/web/.env.local.example",
+      "contentHash": "468a1e57de164dd36f3a015df639eb77cf3c7d5d892bb3c02b18b41a454bbf37",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "apps/web/.gitkeep": {
+      "filePath": "apps/web/.gitkeep",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "apps/web/app/[slug]/complete/[playId]/page.test.tsx": {
+      "filePath": "apps/web/app/[slug]/complete/[playId]/page.test.tsx",
+      "contentHash": "0e9cb0fccc90fc72c9d4b6a30ed10a40c739bc2ac667c22c6cf624e96a706fa0",
+      "functions": [
+        {
+          "name": "renderWithClient",
+          "params": [
+            "ui"
+          ],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "React"
+          ]
+        },
+        {
+          "source": "@testing-library/react",
+          "specifiers": [
+            "render",
+            "screen",
+            "waitFor",
+            "fireEvent",
+            "within"
+          ]
+        },
+        {
+          "source": "@tanstack/react-query",
+          "specifiers": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "source": "./page",
+          "specifiers": [
+            "CompletePage"
+          ]
+        },
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "PlayViewResponse"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 290,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/[slug]/complete/[playId]/page.tsx": {
+      "filePath": "apps/web/app/[slug]/complete/[playId]/page.tsx",
+      "contentHash": "821904783ca177b8c7756aa7bb16c5468c4081ca673c1b3c2e5807d84ab43312",
+      "functions": [
+        {
+          "name": "CompletePage",
+          "params": [],
+          "exported": true,
+          "lineCount": 127
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@tanstack/react-query",
+          "specifiers": [
+            "useQuery"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useParams",
+            "useRouter"
+          ]
+        },
+        {
+          "source": "@/lib/api/client",
+          "specifiers": [
+            "ApiClientError",
+            "getPlay"
+          ]
+        },
+        {
+          "source": "@/components/ReflectionForm",
+          "specifiers": [
+            "ReflectionForm"
+          ]
+        }
+      ],
+      "exports": [
+        "CompletePage"
+      ],
+      "totalLines": 135,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/[slug]/page.tsx": {
+      "filePath": "apps/web/app/[slug]/page.tsx",
+      "contentHash": "fe18b8b590b644531bc99e35156efa31bd86a6d934997a07a83d03c508325b4a",
+      "functions": [
+        {
+          "name": "ScenarioPage",
+          "params": [],
+          "exported": true,
+          "lineCount": 119
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@tanstack/react-query",
+          "specifiers": [
+            "useMutation",
+            "useQuery"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useParams",
+            "useRouter"
+          ]
+        },
+        {
+          "source": "@/lib/api/client",
+          "specifiers": [
+            "ApiClientError",
+            "getScenario",
+            "startPlay"
+          ]
+        }
+      ],
+      "exports": [
+        "ScenarioPage"
+      ],
+      "totalLines": 126,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/[slug]/play/[playId]/page.test.tsx": {
+      "filePath": "apps/web/app/[slug]/play/[playId]/page.test.tsx",
+      "contentHash": "08ebf99e4dfc8fd9fdbb18b6712397d7317b2dd33b6e7c9bbb3b3980d07736d5",
+      "functions": [
+        {
+          "name": "renderWithClient",
+          "params": [
+            "ui"
+          ],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "React"
+          ]
+        },
+        {
+          "source": "@testing-library/react",
+          "specifiers": [
+            "render",
+            "screen",
+            "waitFor",
+            "fireEvent"
+          ]
+        },
+        {
+          "source": "@tanstack/react-query",
+          "specifiers": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "source": "./page",
+          "specifiers": [
+            "PlayPage"
+          ]
+        },
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "PlayViewResponse"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 122,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/[slug]/play/[playId]/page.tsx": {
+      "filePath": "apps/web/app/[slug]/play/[playId]/page.tsx",
+      "contentHash": "7ffcbcb96187d1fbe0e43b4687a13c1013961d6bd3274a8cae062aa6a38377a7",
+      "functions": [
+        {
+          "name": "PlayPage",
+          "params": [],
+          "exported": true,
+          "lineCount": 154
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@tanstack/react-query",
+          "specifiers": [
+            "useMutation",
+            "useQuery",
+            "useQueryClient"
+          ]
+        },
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "useParams",
+            "useRouter"
+          ]
+        },
+        {
+          "source": "@/lib/api/client",
+          "specifiers": [
+            "backPlay",
+            "getPlay",
+            "stepPlay"
+          ]
+        },
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "PlayViewResponse"
+          ]
+        },
+        {
+          "source": "@/components/SceneRenderer",
+          "specifiers": [
+            "SceneRenderer"
+          ]
+        }
+      ],
+      "exports": [
+        "PlayPage"
+      ],
+      "totalLines": 163,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/globals.css": {
+      "filePath": "apps/web/app/globals.css",
+      "contentHash": "cc1a7ad0d019ddb1d32d0ecb588ba0ac26ce41d8625dd6c366348b25f83a28ec",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "apps/web/app/layout.tsx": {
+      "filePath": "apps/web/app/layout.tsx",
+      "contentHash": "0fc3e294b13f56008df18dfe2f5c9dc6783cdce7a765705fc90116d2f46f9d65",
+      "functions": [
+        {
+          "name": "RootLayout",
+          "params": [
+            "{\n  children,\n}"
+          ],
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next",
+          "specifiers": [
+            "Metadata"
+          ]
+        },
+        {
+          "source": "./providers",
+          "specifiers": [
+            "Providers"
+          ]
+        },
+        {
+          "source": "./globals.css",
+          "specifiers": []
+        }
+      ],
+      "exports": [
+        "metadata",
+        "RootLayout"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/page.tsx": {
+      "filePath": "apps/web/app/page.tsx",
+      "contentHash": "521b16d2aadb68e9bc2208a525a6064e4d101e634ca6bde82639506dce570fcf",
+      "functions": [
+        {
+          "name": "HomePage",
+          "params": [],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "HomePage"
+      ],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/providers.tsx": {
+      "filePath": "apps/web/app/providers.tsx",
+      "contentHash": "61b10bb46b3d7fb5259599892dd6c6d3d2e4f21356248763e93ca5a0e212cb0b",
+      "functions": [
+        {
+          "name": "Providers",
+          "params": [
+            "{ children }"
+          ],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@tanstack/react-query",
+          "specifiers": [
+            "QueryClient",
+            "QueryClientProvider"
+          ]
+        },
+        {
+          "source": "react",
+          "specifiers": [
+            "useState"
+          ]
+        }
+      ],
+      "exports": [
+        "Providers"
+      ],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/components/ReflectionForm.tsx": {
+      "filePath": "apps/web/components/ReflectionForm.tsx",
+      "contentHash": "15e87dda991939faaf6dd8cb487ba44a7d9eaad30d505d117617d7decef2d336",
+      "functions": [
+        {
+          "name": "ReflectionForm",
+          "params": [
+            "{\n  playId,\n  questions,\n  prompts,\n  choicesMade,\n}"
+          ],
+          "exported": true,
+          "lineCount": 196
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "useState"
+          ]
+        },
+        {
+          "source": "@tanstack/react-query",
+          "specifiers": [
+            "useMutation"
+          ]
+        },
+        {
+          "source": "@/lib/api/client",
+          "specifiers": [
+            "ApiClientError",
+            "submitReflection"
+          ]
+        }
+      ],
+      "exports": [
+        "ReflectionForm"
+      ],
+      "totalLines": 212,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/components/SceneRenderer.test.tsx": {
+      "filePath": "apps/web/components/SceneRenderer.test.tsx",
+      "contentHash": "31e4d68e31777549460564854e8371ec07ff3206ec09f2469bd79a75fb3ef5bb",
+      "functions": [
+        {
+          "name": "noop",
+          "params": [],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "renderScene",
+          "params": [
+            "scene",
+            "overrides"
+          ],
+          "exported": false,
+          "lineCount": 17
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "react",
+          "specifiers": [
+            "React"
+          ]
+        },
+        {
+          "source": "@testing-library/react",
+          "specifiers": [
+            "render",
+            "screen",
+            "fireEvent"
+          ]
+        },
+        {
+          "source": "@/components/SceneRenderer",
+          "specifiers": [
+            "SceneRenderer"
+          ]
+        },
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "SceneDTO"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 210,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/components/SceneRenderer.tsx": {
+      "filePath": "apps/web/components/SceneRenderer.tsx",
+      "contentHash": "bc89fb94ec60589c23d75986e5799d92469fcfb0d9cdc3b1c0b62bbd41e62303",
+      "functions": [
+        {
+          "name": "SceneRenderer",
+          "params": [
+            "{\n  scene,\n  onChoose,\n  onContinue,\n  isLoading,\n}"
+          ],
+          "exported": true,
+          "lineCount": 26
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "SceneDTO"
+          ]
+        },
+        {
+          "source": "@/components/scenes/ChoiceScene",
+          "specifiers": [
+            "ChoiceScene"
+          ]
+        },
+        {
+          "source": "@/components/scenes/ContinueScene",
+          "specifiers": [
+            "ContinueScene"
+          ]
+        },
+        {
+          "source": "@/components/scenes/EndScene",
+          "specifiers": [
+            "EndScene"
+          ]
+        }
+      ],
+      "exports": [
+        "SceneRenderer"
+      ],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/components/scenes/ChoiceScene.tsx": {
+      "filePath": "apps/web/components/scenes/ChoiceScene.tsx",
+      "contentHash": "4a0ff84425865e0769e09953272c1d1d4c4fab82659c4d7924752603a1253882",
+      "functions": [
+        {
+          "name": "ChoiceScene",
+          "params": [
+            "{ scene, onChoose, isLoading }"
+          ],
+          "exported": true,
+          "lineCount": 41
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "SceneDTO"
+          ]
+        }
+      ],
+      "exports": [
+        "ChoiceScene"
+      ],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/components/scenes/ContinueScene.tsx": {
+      "filePath": "apps/web/components/scenes/ContinueScene.tsx",
+      "contentHash": "1fcfb73819582be9a8452dd52fb5538d2bb3c4dfbe4d77439d6080c9abd8d95f",
+      "functions": [
+        {
+          "name": "ContinueScene",
+          "params": [
+            "{\n  scene,\n  onContinue,\n  isLoading,\n}"
+          ],
+          "exported": true,
+          "lineCount": 35
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "SceneDTO"
+          ]
+        }
+      ],
+      "exports": [
+        "ContinueScene"
+      ],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/components/scenes/EndScene.tsx": {
+      "filePath": "apps/web/components/scenes/EndScene.tsx",
+      "contentHash": "31f49cc03ebd8a85e6c1bee388090f8f5d561dd08bddb0cb5b4dfcb4fdf42f0e",
+      "functions": [
+        {
+          "name": "EndScene",
+          "params": [
+            "{ scene, onContinue }"
+          ],
+          "exported": true,
+          "lineCount": 40
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@/lib/api/types",
+          "specifiers": [
+            "SceneDTO"
+          ]
+        }
+      ],
+      "exports": [
+        "EndScene"
+      ],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/Dockerfile": {
+      "filePath": "apps/web/Dockerfile",
+      "contentHash": "b973996aca45e151873f6d11a4f20643168e640e8cfc54e99bd62656f40855b6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/e2e/fixtures/test-scenario.json": {
+      "filePath": "apps/web/e2e/fixtures/test-scenario.json",
+      "contentHash": "788f23f7c9a21c2a67ccca1f8b265f443f5d259d9095e754382a0bab20c24e8e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/e2e/smoke.spec.ts": {
+      "filePath": "apps/web/e2e/smoke.spec.ts",
+      "contentHash": "e0717dd40c2ee56d57c62e3a3ed3978976d3e6a1bb49f4d8c7b82c14a0f3bbe0",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@playwright/test",
+          "specifiers": [
+            "test",
+            "expect"
+          ]
+        },
+        {
+          "source": "./fixtures/test-scenario.json",
+          "specifiers": [
+            "scenarioJson"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 248,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/jest.config.js": {
+      "filePath": "apps/web/jest.config.js",
+      "contentHash": "03b5cbc83dfe017cbc73cad135233417b80865410feba5c319752b29168791de",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/jest.setup.ts": {
+      "filePath": "apps/web/jest.setup.ts",
+      "contentHash": "90ec9100c29e008c3d9194acd818e2cfa6dc6e177154bc8e10c5959aa35619ed",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@testing-library/jest-dom",
+          "specifiers": []
+        }
+      ],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/lib/api/client.ts": {
+      "filePath": "apps/web/lib/api/client.ts",
+      "contentHash": "9e5a1a780e67b49e9fad9ad5cf961e385c6b260e4ff7c478743983e8e19ae1d2",
+      "functions": [
+        {
+          "name": "apiFetch",
+          "params": [
+            "path",
+            "init"
+          ],
+          "returnType": "Promise<T>",
+          "exported": false,
+          "lineCount": 37
+        },
+        {
+          "name": "getScenario",
+          "params": [
+            "slug"
+          ],
+          "returnType": "Promise<ScenarioPublicResponse>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "startPlay",
+          "params": [
+            "body"
+          ],
+          "returnType": "Promise<PlayStartResponse>",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "getPlay",
+          "params": [
+            "playId"
+          ],
+          "returnType": "Promise<PlayViewResponse>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "stepPlay",
+          "params": [
+            "playId",
+            "body"
+          ],
+          "returnType": "Promise<StepResponse>",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "backPlay",
+          "params": [
+            "playId"
+          ],
+          "returnType": "Promise<BackResponse>",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "submitReflection",
+          "params": [
+            "playId",
+            "body"
+          ],
+          "returnType": "Promise<ReflectionResponse>",
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "ApiClientError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "./types",
+          "specifiers": [
+            "BackResponse",
+            "PlayStartRequest",
+            "PlayStartResponse",
+            "PlayViewResponse",
+            "ReflectionRequest",
+            "ReflectionResponse",
+            "ScenarioPublicResponse",
+            "StepRequest",
+            "StepResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "ApiClientError",
+        "getScenario",
+        "startPlay",
+        "getPlay",
+        "stepPlay",
+        "backPlay",
+        "submitReflection"
+      ],
+      "totalLines": 158,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/lib/api/types.ts": {
+      "filePath": "apps/web/lib/api/types.ts",
+      "contentHash": "1355621fbd2296c57a73029d1dbd4e69c6aea240b5e22f4ca42628dd16909002",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 142,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/next.config.js": {
+      "filePath": "apps/web/next.config.js",
+      "contentHash": "4518949094b3ad5f31b17c186443cb6b7340b83268e79b708ff03cc1bbea5f18",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/package.json": {
+      "filePath": "apps/web/package.json",
+      "contentHash": "054c043150922e26a31fbe3f5faf156df52b08c9cad8306a23af296a4beab715",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/playwright.config.ts": {
+      "filePath": "apps/web/playwright.config.ts",
+      "contentHash": "833974738543245ed62af942f8f57b32310a39504dcd01ad95457e7bb468488b",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@playwright/test",
+          "specifiers": [
+            "defineConfig",
+            "devices"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/postcss.config.js": {
+      "filePath": "apps/web/postcss.config.js",
+      "contentHash": "fa650b380adfabb151a0b352f7135e107e6352345f899060f1c5c231228f94bf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/tailwind.config.ts": {
+      "filePath": "apps/web/tailwind.config.ts",
+      "contentHash": "26e92be16ccc7141efb2f316ef2670253adc426b7c9464dd9124a3dc46d5e652",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "tailwindcss",
+          "specifiers": [
+            "Config"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/tsconfig.json": {
+      "filePath": "apps/web/tsconfig.json",
+      "contentHash": "86c57aa7eec3e819fc7f5f7075219d9383d4ce824b751816636e581170b7cc97",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "docs/api.md": {
+      "filePath": "docs/api.md",
+      "contentHash": "9bc833655029690f3dde25d4a170118e3de3f8f27128c4ff6ed2368e1ad69881",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "docs/decisions/ADR-001-stack.md": {
+      "filePath": "docs/decisions/ADR-001-stack.md",
+      "contentHash": "26c64619dbcf3641fd4c31c8246dac8deecd33f6bcda745ca89c207d82f2daf3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "docs/decisions/ADR-002-event-sourcing-go-back.md": {
+      "filePath": "docs/decisions/ADR-002-event-sourcing-go-back.md",
+      "contentHash": "9976253c64410008c4f61aff8bef3c5ddaa7da116d436809fcf48e98af13b8d9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "docs/decisions/ADR-003-versioning.md": {
+      "filePath": "docs/decisions/ADR-003-versioning.md",
+      "contentHash": "bb89f07f1f42b260c834b2d8ae172892aced7f9524f326709f45db582b31a43f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "docs/decisions/ADR-004-safe-expressions.md": {
+      "filePath": "docs/decisions/ADR-004-safe-expressions.md",
+      "contentHash": "dd40c2d9cf87b190e7ae2cdc5e53daed5fd6c5bdf406ac26671d63799c07a63f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "docs/schema.md": {
+      "filePath": "docs/schema.md",
+      "contentHash": "b0ae537611207c676d852f3c13238d248129e6a90c4ba122ac921b1762b4d6a3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "infra/.gitkeep": {
+      "filePath": "infra/.gitkeep",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "infra/docker-compose.yml": {
+      "filePath": "infra/docker-compose.yml",
+      "contentHash": "e7aaa7daada5434ab18d54fb500ca0c087b67c2edbdd536eb6bf5ce6e791bdc4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 79,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/.gitkeep": {
+      "filePath": "packages/engine/.gitkeep",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "packages/engine/pyproject.toml": {
+      "filePath": "packages/engine/pyproject.toml",
+      "contentHash": "fb74284f696dbc1ea286000a786f29ee8785911e48ee9ce1e8ace72bf5f86cf9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/src/engine/__init__.py": {
+      "filePath": "packages/engine/src/engine/__init__.py",
+      "contentHash": "f5e7d00585832a990553bc2a1599ef0a295fc3c06a527048d8416fd2e13058d5",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "engine.engine",
+          "specifiers": [
+            "ScenarioEngine"
+          ]
+        },
+        {
+          "source": "engine.validator",
+          "specifiers": [
+            "validate_scenario"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/src/engine/engine.py": {
+      "filePath": "packages/engine/src/engine/engine.py",
+      "contentHash": "e0ba79d7da4232b0e413dd0d9b5cbc198434a9a8f031f2b7bd90d9cf48802a55",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ScenarioEngine",
+          "methods": [
+            "__init__",
+            "start",
+            "step",
+            "rewind",
+            "_scene_to_dto"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 177
+        }
+      ],
+      "imports": [
+        {
+          "source": "engine.executors",
+          "specifiers": [
+            "execute_auto_advance",
+            "execute_choice",
+            "execute_conditional",
+            "execute_end"
+          ]
+        },
+        {
+          "source": "engine.models",
+          "specifiers": [
+            "AutoAdvanceScene",
+            "ChoiceScene",
+            "ConditionalScene",
+            "EndScene",
+            "Scenario"
+          ]
+        },
+        {
+          "source": "engine.state",
+          "specifiers": [
+            "EngineState",
+            "HistoryEntry"
+          ]
+        },
+        {
+          "source": "engine.validator",
+          "specifiers": [
+            "validate_scenario"
+          ]
+        }
+      ],
+      "exports": [
+        "ScenarioEngine"
+      ],
+      "totalLines": 228,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/src/engine/executors.py": {
+      "filePath": "packages/engine/src/engine/executors.py",
+      "contentHash": "5bda2a6b03f61a7be12dfc2311b1e14eab42fa8f6c5e6751f5b26a942e2c64e3",
+      "functions": [
+        {
+          "name": "_copy_state",
+          "params": [
+            "state"
+          ],
+          "returnType": "EngineState",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "execute_choice",
+          "params": [
+            "scene",
+            "state",
+            "choice_index"
+          ],
+          "returnType": "ExecutorResult",
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "execute_auto_advance",
+          "params": [
+            "scene",
+            "state"
+          ],
+          "returnType": "ExecutorResult",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "execute_conditional",
+          "params": [
+            "scene",
+            "state",
+            "evaluate_fn"
+          ],
+          "returnType": "ExecutorResult",
+          "exported": true,
+          "lineCount": 49
+        },
+        {
+          "name": "execute_end",
+          "params": [
+            "scene",
+            "state"
+          ],
+          "returnType": "ExecutorResult",
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "classes": [
+        {
+          "name": "ExecutorResult",
+          "methods": [],
+          "properties": [
+            "state",
+            "done",
+            "outcome",
+            "outcome_message"
+          ],
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "imports": [
+        {
+          "source": "typing",
+          "specifiers": [
+            "Callable",
+            "NamedTuple"
+          ]
+        },
+        {
+          "source": "engine.models",
+          "specifiers": [
+            "AutoAdvanceScene",
+            "ChoiceScene",
+            "ConditionalScene",
+            "EndScene"
+          ]
+        },
+        {
+          "source": "engine.state",
+          "specifiers": [
+            "EngineState",
+            "HistoryEntry"
+          ]
+        }
+      ],
+      "exports": [
+        "ExecutorResult",
+        "_copy_state",
+        "execute_choice",
+        "execute_auto_advance",
+        "execute_conditional",
+        "execute_end"
+      ],
+      "totalLines": 195,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/src/engine/models.py": {
+      "filePath": "packages/engine/src/engine/models.py",
+      "contentHash": "3b23066cbd9e94a7788ffc128ebfca06fd93706979137329a66ea604e0647c21",
+      "functions": [],
+      "classes": [
+        {
+          "name": "_Base",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "Choice",
+          "methods": [],
+          "properties": [
+            "text",
+            "next",
+            "effects"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "Condition",
+          "methods": [],
+          "properties": [
+            "condition",
+            "next"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "SceneBase",
+          "methods": [],
+          "properties": [
+            "title",
+            "image",
+            "description",
+            "narration"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "ChoiceScene",
+          "methods": [],
+          "properties": [
+            "type",
+            "choices"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "AutoAdvanceScene",
+          "methods": [],
+          "properties": [
+            "type",
+            "next"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "ConditionalScene",
+          "methods": [],
+          "properties": [
+            "type",
+            "conditions",
+            "default"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "EndScene",
+          "methods": [],
+          "properties": [
+            "type",
+            "outcome",
+            "outcome_message"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "ScenarioMetadata",
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "page_title",
+            "page_icon",
+            "author",
+            "version",
+            "completion_tracking",
+            "cover_image"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "Scenario",
+          "methods": [],
+          "properties": [
+            "metadata",
+            "reflection_questions",
+            "reflection_prompts",
+            "variables",
+            "start_scene_id",
+            "scenes"
+          ],
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "imports": [
+        {
+          "source": "typing",
+          "specifiers": [
+            "Annotated",
+            "Literal",
+            "Union"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "BaseModel",
+            "ConfigDict",
+            "Field"
+          ]
+        }
+      ],
+      "exports": [
+        "_Base",
+        "Choice",
+        "Condition",
+        "SceneBase",
+        "ChoiceScene",
+        "AutoAdvanceScene",
+        "ConditionalScene",
+        "EndScene",
+        "ScenarioMetadata",
+        "Scenario"
+      ],
+      "totalLines": 135,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/src/engine/state.py": {
+      "filePath": "packages/engine/src/engine/state.py",
+      "contentHash": "00ec5fd46ed054604a47f98bde11dfb27d845cc5c927c64ebdae65f3e1aeea1b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "HistoryEntry",
+          "methods": [
+            "to_dict"
+          ],
+          "properties": [
+            "scene_id",
+            "next_scene_id",
+            "choice_index",
+            "choice_text",
+            "variables_snapshot"
+          ],
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "EngineState",
+          "methods": [
+            "apply_effects",
+            "to_dict",
+            "from_dict"
+          ],
+          "properties": [
+            "current_scene_id",
+            "variables",
+            "history"
+          ],
+          "exported": true,
+          "lineCount": 64
+        }
+      ],
+      "imports": [
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass",
+            "field"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any"
+          ]
+        }
+      ],
+      "exports": [
+        "HistoryEntry",
+        "EngineState"
+      ],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/src/engine/validator.py": {
+      "filePath": "packages/engine/src/engine/validator.py",
+      "contentHash": "faa43392be8c6cd7335e69f33a7346dcba3e0b84885db40bda9a78e6ce0adfbb",
+      "functions": [
+        {
+          "name": "validate_scenario",
+          "params": [
+            "scenario_json"
+          ],
+          "returnType": "list[str]",
+          "exported": true,
+          "lineCount": 78
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "ValidationError"
+          ]
+        },
+        {
+          "source": "engine.models",
+          "specifiers": [
+            "AutoAdvanceScene",
+            "ChoiceScene",
+            "ConditionalScene",
+            "Scenario"
+          ]
+        },
+        {
+          "source": "expr.lexer",
+          "specifiers": [
+            "LexError"
+          ]
+        },
+        {
+          "source": "expr.parser",
+          "specifiers": [
+            "ParseError",
+            "parse"
+          ]
+        }
+      ],
+      "exports": [
+        "validate_scenario"
+      ],
+      "totalLines": 113,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/tests/__init__.py": {
+      "filePath": "packages/engine/tests/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/tests/conftest.py": {
+      "filePath": "packages/engine/tests/conftest.py",
+      "contentHash": "7e515becba19f806b77cf44302a02946e4531fc50d6d847d5993e04eb9a12527",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "pathlib"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/tests/test_engine.py": {
+      "filePath": "packages/engine/tests/test_engine.py",
+      "contentHash": "8368eaa3f4e7e66cf315816b42d86ed7c6376ac2bae6c5a418e7cdf2271b2ba8",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TestConstruction",
+          "methods": [
+            "test_valid_scenario_constructs",
+            "test_invalid_scenario_raises_value_error",
+            "test_error_message_lists_problems"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "TestStart",
+          "methods": [
+            "test_returns_initial_state",
+            "test_variables_copied_from_scenario",
+            "test_history_empty_at_start",
+            "test_scene_dto_has_scene_id",
+            "test_scene_dto_has_type",
+            "test_scene_dto_has_title",
+            "test_two_starts_are_independent"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 37
+        },
+        {
+          "name": "TestStepChoice",
+          "methods": [
+            "setup_method",
+            "test_transitions_to_next_scene",
+            "test_applies_effects",
+            "test_no_effects_on_second_choice",
+            "test_done_is_false_after_choice",
+            "test_outcome_info_none_after_choice",
+            "test_scene_dto_is_next_scene",
+            "test_missing_choice_index_raises",
+            "test_history_appended"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 39
+        },
+        {
+          "name": "TestStepEnd",
+          "methods": [
+            "setup_method",
+            "test_done_is_true",
+            "test_outcome_info_populated",
+            "test_scene_dto_is_end_scene",
+            "test_current_scene_unchanged_on_end"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "TestStepAutoAdvance",
+          "methods": [
+            "setup_method",
+            "test_transitions_without_choice_index",
+            "test_done_is_false",
+            "test_scene_dto_is_next"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "TestStepConditional",
+          "methods": [
+            "setup_method",
+            "_reach_branch",
+            "test_condition_true_takes_matching_branch",
+            "test_condition_false_takes_default",
+            "test_done_is_false_after_conditional"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "TestFullWalkthrough",
+          "methods": [
+            "test_bold_path_leads_to_success",
+            "test_safe_path_leads_to_failure",
+            "test_state_history_length_matches_steps",
+            "test_variable_effects_accumulate"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 56
+        },
+        {
+          "name": "TestRewind",
+          "methods": [
+            "setup_method",
+            "_play_two_steps",
+            "test_rewind_one_step_returns_to_previous_scene",
+            "test_rewind_restores_variable_state",
+            "test_rewind_restores_history_length",
+            "test_rewind_to_start_with_empty_events",
+            "test_rewind_scene_dto_correct",
+            "test_rewind_two_steps_returns_to_start",
+            "test_rewind_is_deterministic",
+            "test_rewind_does_not_mutate_original_state",
+            "test_rewind_skips_unknown_scene_ids"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 74
+        },
+        {
+          "name": "TestStepEdgeCases",
+          "methods": [
+            "test_unknown_scene_id_raises",
+            "test_choice_index_out_of_range_raises",
+            "test_scene_dto_includes_scene_id_key",
+            "test_step_does_not_mutate_input_state"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "engine.engine",
+          "specifiers": [
+            "ScenarioEngine"
+          ]
+        },
+        {
+          "source": "engine.state",
+          "specifiers": [
+            "EngineState"
+          ]
+        }
+      ],
+      "exports": [
+        "TestConstruction",
+        "TestStart",
+        "TestStepChoice",
+        "TestStepEnd",
+        "TestStepAutoAdvance",
+        "TestStepConditional",
+        "TestFullWalkthrough",
+        "TestRewind",
+        "TestStepEdgeCases"
+      ],
+      "totalLines": 498,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/tests/test_executors.py": {
+      "filePath": "packages/engine/tests/test_executors.py",
+      "contentHash": "d5eb63dee6e9bac263971b936cf682e8b7552e143bfe192f9fa6e92e85a60e76",
+      "functions": [
+        {
+          "name": "make_choice_scene",
+          "params": [
+            "choices"
+          ],
+          "returnType": "ChoiceScene",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "make_auto_scene",
+          "params": [
+            "next_id"
+          ],
+          "returnType": "AutoAdvanceScene",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "make_conditional_scene",
+          "params": [
+            "conditions",
+            "default"
+          ],
+          "returnType": "ConditionalScene",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "make_end_scene",
+          "params": [
+            "outcome",
+            "outcome_message"
+          ],
+          "returnType": "EndScene",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "base_state",
+          "params": [
+            "scene_id",
+            "variables"
+          ],
+          "returnType": "EngineState",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "always_true",
+          "params": [
+            "expr",
+            "variables"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "always_false",
+          "params": [
+            "expr",
+            "variables"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "first_only",
+          "params": [
+            "expr",
+            "variables"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestExecutorResult",
+          "methods": [
+            "test_is_named_tuple",
+            "test_defaults",
+            "test_unpacking"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "TestExecuteChoice",
+          "methods": [
+            "test_transitions_to_correct_scene",
+            "test_transitions_to_second_choice",
+            "test_done_is_false",
+            "test_outcome_is_none",
+            "test_applies_choice_effects",
+            "test_applies_second_choice_effects",
+            "test_effects_initialise_missing_variable",
+            "test_no_effects_variables_unchanged",
+            "test_appends_one_history_entry",
+            "test_history_entry_scene_id",
+            "test_history_entry_next_scene_id",
+            "test_history_entry_choice_index",
+            "test_history_entry_choice_text",
+            "test_history_entry_variables_snapshot_post_effects",
+            "test_history_accumulates",
+            "test_does_not_mutate_input_variables",
+            "test_does_not_mutate_input_current_scene_id",
+            "test_does_not_mutate_input_history",
+            "test_negative_index_raises",
+            "test_index_too_large_raises"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 112
+        },
+        {
+          "name": "TestExecuteAutoAdvance",
+          "methods": [
+            "test_transitions_to_next",
+            "test_done_is_false",
+            "test_outcome_is_none",
+            "test_appends_history_entry",
+            "test_history_entry_has_no_choice_fields",
+            "test_variables_unchanged",
+            "test_does_not_mutate_input_state"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 36
+        },
+        {
+          "name": "TestExecuteConditional",
+          "methods": [
+            "test_first_true_condition_wins",
+            "test_second_condition_when_first_false",
+            "test_default_when_no_match",
+            "test_no_match_no_default_raises",
+            "test_done_is_false",
+            "test_appends_history_entry",
+            "test_history_entry_has_no_choice_fields",
+            "test_variables_passed_to_evaluate_fn",
+            "test_uses_safe_evaluate_by_default",
+            "test_evaluation_order_matters",
+            "test_does_not_mutate_input_state"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 106
+        },
+        {
+          "name": "TestExecuteEnd",
+          "methods": [
+            "test_done_is_true",
+            "test_outcome_returned",
+            "test_outcome_message_returned",
+            "test_none_outcome",
+            "test_current_scene_id_unchanged",
+            "test_no_history_entry_appended",
+            "test_existing_history_preserved",
+            "test_variables_unchanged",
+            "test_does_not_mutate_input_state"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 45
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "engine.executors",
+          "specifiers": [
+            "ExecutorResult",
+            "execute_auto_advance",
+            "execute_choice",
+            "execute_conditional",
+            "execute_end"
+          ]
+        },
+        {
+          "source": "engine.models",
+          "specifiers": [
+            "AutoAdvanceScene",
+            "Choice",
+            "ChoiceScene",
+            "Condition",
+            "ConditionalScene",
+            "EndScene"
+          ]
+        },
+        {
+          "source": "engine.state",
+          "specifiers": [
+            "EngineState",
+            "HistoryEntry"
+          ]
+        }
+      ],
+      "exports": [
+        "make_choice_scene",
+        "make_auto_scene",
+        "make_conditional_scene",
+        "make_end_scene",
+        "base_state",
+        "always_true",
+        "always_false",
+        "first_only",
+        "TestExecutorResult",
+        "TestExecuteChoice",
+        "TestExecuteAutoAdvance",
+        "TestExecuteConditional",
+        "TestExecuteEnd"
+      ],
+      "totalLines": 440,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/tests/test_models.py": {
+      "filePath": "packages/engine/tests/test_models.py",
+      "contentHash": "27ce776d45bcbbc38747707225166242e649a035b1cdc5993ca7383bbfba5222",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TestScenarioLoading",
+          "methods": [
+            "test_minimal_scenario_loads",
+            "test_full_scenario_loads",
+            "test_start_scene_id_default_is_one",
+            "test_start_scene_id_explicit",
+            "test_reflection_questions_default_empty",
+            "test_reflection_questions_loaded",
+            "test_reflection_prompts_loaded",
+            "test_variables_default_empty",
+            "test_variables_int_coerced_to_float",
+            "test_extra_top_level_fields_ignored",
+            "test_missing_scenes_raises",
+            "test_missing_metadata_raises"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 54
+        },
+        {
+          "name": "TestDiscriminatedUnion",
+          "methods": [
+            "setup_method",
+            "test_choice_scene_type",
+            "test_auto_advance_scene_type",
+            "test_conditional_scene_type",
+            "test_end_scene_type",
+            "test_invalid_type_raises"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "TestChoiceScene",
+          "methods": [
+            "setup_method",
+            "test_title",
+            "test_description",
+            "test_narration",
+            "test_image",
+            "test_choice_count",
+            "test_choice_text",
+            "test_choice_next",
+            "test_choice_effects_present",
+            "test_choice_effects_coerced_to_float",
+            "test_choice_effects_default_empty",
+            "test_image_default_none"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 46
+        },
+        {
+          "name": "TestAutoAdvanceScene",
+          "methods": [
+            "setup_method",
+            "test_next",
+            "test_title"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "TestConditionalScene",
+          "methods": [
+            "setup_method",
+            "test_condition_count",
+            "test_condition_expr",
+            "test_condition_next",
+            "test_default_present",
+            "test_default_is_none_when_absent"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "TestEndScene",
+          "methods": [
+            "setup_method",
+            "test_outcome",
+            "test_outcome_message",
+            "test_outcome_defaults_none"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "TestScenarioMetadata",
+          "methods": [
+            "setup_method",
+            "test_title",
+            "test_description",
+            "test_page_title",
+            "test_page_icon",
+            "test_author",
+            "test_version",
+            "test_completion_tracking",
+            "test_all_fields_default_when_missing",
+            "test_extra_fields_ignored"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 39
+        },
+        {
+          "name": "TestSceneBaseDefaults",
+          "methods": [
+            "test_title_defaults_empty",
+            "test_description_defaults_empty",
+            "test_narration_defaults_empty",
+            "test_image_defaults_none",
+            "test_extra_scene_fields_ignored"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "ValidationError"
+          ]
+        },
+        {
+          "source": "engine.models",
+          "specifiers": [
+            "AutoAdvanceScene",
+            "Choice",
+            "ChoiceScene",
+            "Condition",
+            "ConditionalScene",
+            "EndScene",
+            "Scenario",
+            "ScenarioMetadata"
+          ]
+        }
+      ],
+      "exports": [
+        "TestScenarioLoading",
+        "TestDiscriminatedUnion",
+        "TestChoiceScene",
+        "TestAutoAdvanceScene",
+        "TestConditionalScene",
+        "TestEndScene",
+        "TestScenarioMetadata",
+        "TestSceneBaseDefaults"
+      ],
+      "totalLines": 379,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/tests/test_state.py": {
+      "filePath": "packages/engine/tests/test_state.py",
+      "contentHash": "7be133d8703a612b4a7c483452383779566970cac183b231f0b20f9ed5d74c30",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TestHistoryEntry",
+          "methods": [
+            "test_required_fields",
+            "test_optional_fields_default_none",
+            "test_all_fields_stored",
+            "test_scene_id_immutable",
+            "test_next_scene_id_immutable",
+            "test_choice_index_immutable",
+            "test_to_dict_minimal",
+            "test_to_dict_omits_none_choice_index",
+            "test_to_dict_omits_none_choice_text",
+            "test_to_dict_includes_choice_fields_when_set",
+            "test_to_dict_omits_variables_snapshot",
+            "test_equality",
+            "test_inequality_different_choice"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 81
+        },
+        {
+          "name": "TestEngineStateInit",
+          "methods": [
+            "test_current_scene_id",
+            "test_variables_default_empty",
+            "test_history_default_empty",
+            "test_variables_provided",
+            "test_history_provided",
+            "test_two_states_independent_variables",
+            "test_two_states_independent_history"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 31
+        },
+        {
+          "name": "TestApplyEffects",
+          "methods": [
+            "test_adds_to_existing_variable",
+            "test_initialises_missing_variable_at_zero",
+            "test_negative_delta",
+            "test_delta_drives_below_zero",
+            "test_multiple_keys_in_one_call",
+            "test_cumulative_across_calls",
+            "test_empty_effects_no_change",
+            "test_other_variables_untouched",
+            "test_integer_delta_accepted"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 53
+        },
+        {
+          "name": "TestToDict",
+          "methods": [
+            "test_basic_shape",
+            "test_history_serialised",
+            "test_variables_is_copy",
+            "test_multiple_history_entries_ordered"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 36
+        },
+        {
+          "name": "TestFromDict",
+          "methods": [
+            "test_basic",
+            "test_missing_variables_defaults_empty",
+            "test_missing_history_defaults_empty",
+            "test_history_reconstructed",
+            "test_history_entries_are_frozen"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "TestRoundTrip",
+          "methods": [
+            "test_empty_state",
+            "test_state_with_variables",
+            "test_state_with_history",
+            "test_after_apply_effects",
+            "test_snapshot_not_preserved_across_roundtrip"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 53
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "engine.state",
+          "specifiers": [
+            "EngineState",
+            "HistoryEntry"
+          ]
+        }
+      ],
+      "exports": [
+        "TestHistoryEntry",
+        "TestEngineStateInit",
+        "TestApplyEffects",
+        "TestToDict",
+        "TestFromDict",
+        "TestRoundTrip"
+      ],
+      "totalLines": 353,
+      "hasStructuralAnalysis": true
+    },
+    "packages/engine/tests/test_validator.py": {
+      "filePath": "packages/engine/tests/test_validator.py",
+      "contentHash": "8cbc5c0598f4eb720b9fd8e5ba365386364003fbe7135b447b8e17b1e750f080",
+      "functions": [
+        {
+          "name": "minimal_valid",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "conditional_scenario",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "full_valid",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestValidScenarios",
+          "methods": [
+            "test_minimal_returns_empty",
+            "test_full_returns_empty",
+            "test_conditional_returns_empty",
+            "test_explicit_start_scene_id_valid",
+            "test_choice_with_effects_valid",
+            "test_readme_expression_valid",
+            "test_end_scene_only_no_refs_valid"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "TestStructuralErrors",
+          "methods": [
+            "test_missing_scenes_field",
+            "test_missing_metadata_field",
+            "test_unknown_scene_type",
+            "test_choice_missing_choices_field",
+            "test_auto_advance_missing_next_field"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "TestStartSceneId",
+          "methods": [
+            "test_explicit_missing_target",
+            "test_default_one_not_in_scenes"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "TestChoiceValidation",
+          "methods": [
+            "test_unknown_next",
+            "test_correct_choice_index_in_message",
+            "test_multiple_bad_choices_each_reported",
+            "test_valid_choice_no_error"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "TestAutoAdvanceValidation",
+          "methods": [
+            "test_unknown_next",
+            "test_valid_next_no_error"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "TestConditionalValidation",
+          "methods": [
+            "test_no_conditions_error",
+            "test_condition_unknown_next",
+            "test_correct_condition_index_in_message",
+            "test_invalid_expression_lex_error",
+            "test_invalid_expression_parse_error",
+            "test_valid_expression_no_error",
+            "test_unknown_variable_in_expression_is_ok",
+            "test_default_unknown_scene",
+            "test_no_default_no_error",
+            "test_multiple_condition_errors_collected"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 74
+        },
+        {
+          "name": "TestMultipleErrors",
+          "methods": [
+            "test_all_errors_returned_not_just_first",
+            "test_end_scenes_never_produce_errors"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "engine.validator",
+          "specifiers": [
+            "validate_scenario"
+          ]
+        }
+      ],
+      "exports": [
+        "minimal_valid",
+        "conditional_scenario",
+        "full_valid",
+        "TestValidScenarios",
+        "TestStructuralErrors",
+        "TestStartSceneId",
+        "TestChoiceValidation",
+        "TestAutoAdvanceValidation",
+        "TestConditionalValidation",
+        "TestMultipleErrors"
+      ],
+      "totalLines": 345,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/pyproject.toml": {
+      "filePath": "packages/expr/pyproject.toml",
+      "contentHash": "668e2597468b979bc435f0e622e059ebe96585bea7d884099ad08227dbf0d420",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/src/expr/__init__.py": {
+      "filePath": "packages/expr/src/expr/__init__.py",
+      "contentHash": "46fe94edf48cd286ce09b7d45e29ca6f43784f411cd675b418b2073fa567b0d8",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "expr.parser",
+          "specifiers": [
+            "parse"
+          ]
+        },
+        {
+          "source": "expr.evaluator",
+          "specifiers": [
+            "safe_evaluate"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/src/expr/ast_nodes.py": {
+      "filePath": "packages/expr/src/expr/ast_nodes.py",
+      "contentHash": "6e74027f7696163d5e995ca1f3cadf5c5639fc6789e8066fc92563660572c5fa",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Literal",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "value"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "Variable",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "name"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "UnaryOp",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "operator",
+            "operand"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "BinaryOp",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "left",
+            "operator",
+            "right"
+          ],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Union"
+          ]
+        },
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "Literal",
+        "Variable",
+        "UnaryOp",
+        "BinaryOp"
+      ],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/src/expr/evaluator.py": {
+      "filePath": "packages/expr/src/expr/evaluator.py",
+      "contentHash": "82b5b06682c8d33d25ebb2c009782764c585f4aabb1c7412a7d8246884fecddb",
+      "functions": [
+        {
+          "name": "evaluate",
+          "params": [
+            "node",
+            "variables"
+          ],
+          "returnType": "_Value",
+          "exported": true,
+          "lineCount": 69
+        },
+        {
+          "name": "safe_evaluate",
+          "params": [
+            "expression_str",
+            "variables"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "EvaluationError",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "imports": [
+        {
+          "source": "expr.ast_nodes",
+          "specifiers": [
+            "BinaryOp",
+            "ExprNode",
+            "Literal",
+            "UnaryOp",
+            "Variable"
+          ]
+        },
+        {
+          "source": "expr.parser",
+          "specifiers": [
+            "parse"
+          ]
+        },
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "EvaluationError",
+        "evaluate",
+        "safe_evaluate"
+      ],
+      "totalLines": 112,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/src/expr/lexer.py": {
+      "filePath": "packages/expr/src/expr/lexer.py",
+      "contentHash": "66a425e70ca68d1b14ba37324aab00d3063da7392fd1a2b721d6d467c71dc8a1",
+      "functions": [],
+      "classes": [
+        {
+          "name": "LexError",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "Lexer",
+          "methods": [
+            "__init__",
+            "_current",
+            "_peek",
+            "_advance",
+            "_skip_whitespace",
+            "_read_identifier_or_boolean",
+            "_read_number",
+            "next_token",
+            "tokenize"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 148
+        }
+      ],
+      "imports": [
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "Token",
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "LexError",
+        "Lexer"
+      ],
+      "totalLines": 156,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/src/expr/parser.py": {
+      "filePath": "packages/expr/src/expr/parser.py",
+      "contentHash": "6b2b3e889dd4c836ecdd8eb3fd552dd568b184828550cb04b299c26ceaa2512f",
+      "functions": [
+        {
+          "name": "parse",
+          "params": [
+            "expression"
+          ],
+          "returnType": "ExprNode",
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "ParseError",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "Parser",
+          "methods": [
+            "__init__",
+            "_current",
+            "_match",
+            "_consume",
+            "parse",
+            "_or_expr",
+            "_and_expr",
+            "_equality",
+            "_comparison",
+            "_unary",
+            "_primary"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 104
+        }
+      ],
+      "imports": [
+        {
+          "source": "expr.ast_nodes",
+          "specifiers": [
+            "BinaryOp",
+            "ExprNode",
+            "Literal",
+            "UnaryOp",
+            "Variable"
+          ]
+        },
+        {
+          "source": "expr.lexer",
+          "specifiers": [
+            "Lexer"
+          ]
+        },
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "Token",
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "ParseError",
+        "Parser",
+        "parse"
+      ],
+      "totalLines": 144,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/src/expr/tokens.py": {
+      "filePath": "packages/expr/src/expr/tokens.py",
+      "contentHash": "14c6a72f33d5444c0810fc7e8af16b9c7434377e2451550dcd1a3d77b80644a7",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TokenType",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "Token",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "type",
+            "value"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "enum",
+          "specifiers": [
+            "Enum",
+            "auto"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        }
+      ],
+      "exports": [
+        "TokenType",
+        "Token"
+      ],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/tests/__init__.py": {
+      "filePath": "packages/expr/tests/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/tests/conftest.py": {
+      "filePath": "packages/expr/tests/conftest.py",
+      "contentHash": "632ed1da99c5d5202b5ecd8aa39e50381b98fde1faf6f86fa04650d41d9f01bc",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "pathlib"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/tests/test_ast.py": {
+      "filePath": "packages/expr/tests/test_ast.py",
+      "contentHash": "e618c38bb1e8bac0f51846c3e0eb43614f3413461c12e03b2648d6335bfca82f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TestLiteral",
+          "methods": [
+            "test_integer_value",
+            "test_float_value",
+            "test_negative_integer",
+            "test_bool_true",
+            "test_bool_false",
+            "test_repr_integer",
+            "test_repr_float",
+            "test_repr_bool",
+            "test_repr_negative",
+            "test_equality",
+            "test_immutable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 36
+        },
+        {
+          "name": "TestVariable",
+          "methods": [
+            "test_name",
+            "test_repr",
+            "test_repr_contains_name",
+            "test_equality",
+            "test_immutable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "TestUnaryOp",
+          "methods": [
+            "test_operator",
+            "test_operand_variable",
+            "test_operand_literal",
+            "test_repr_contains_not",
+            "test_repr_contains_operand",
+            "test_repr_format",
+            "test_nested_unary",
+            "test_equality",
+            "test_immutable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 41
+        },
+        {
+          "name": "TestBinaryOp",
+          "methods": [
+            "test_left",
+            "test_operator",
+            "test_right",
+            "test_repr_contains_operator_name",
+            "test_repr_contains_children",
+            "test_repr_format",
+            "test_nested_left",
+            "test_nested_right",
+            "test_all_comparison_operators",
+            "test_equality",
+            "test_inequality_different_operator",
+            "test_immutable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 70
+        },
+        {
+          "name": "TestExprNodeAlias",
+          "methods": [
+            "test_all_types_are_expr_nodes",
+            "test_deeply_nested_repr_is_readable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "expr.ast_nodes",
+          "specifiers": [
+            "BinaryOp",
+            "ExprNode",
+            "Literal",
+            "UnaryOp",
+            "Variable"
+          ]
+        },
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "TestLiteral",
+        "TestVariable",
+        "TestUnaryOp",
+        "TestBinaryOp",
+        "TestExprNodeAlias"
+      ],
+      "totalLines": 233,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/tests/test_evaluator.py": {
+      "filePath": "packages/expr/tests/test_evaluator.py",
+      "contentHash": "73ee344c412dc20d4dc9dad1972c561eca7e8a5cda3f749c8b09bf828f6cdfb7",
+      "functions": [
+        {
+          "name": "T",
+          "params": [
+            "name"
+          ],
+          "returnType": "TokenType",
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestEvaluateLiteral",
+          "methods": [
+            "test_integer",
+            "test_negative_integer",
+            "test_float",
+            "test_bool_true",
+            "test_bool_false"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "TestEvaluateVariable",
+          "methods": [
+            "test_known_variable",
+            "test_float_variable",
+            "test_bool_variable",
+            "test_unknown_variable_raises",
+            "test_empty_variables_raises"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "TestEvaluateUnaryOp",
+          "methods": [
+            "test_not_true",
+            "test_not_false",
+            "test_not_nonzero_is_false",
+            "test_not_zero_is_true",
+            "test_double_not",
+            "test_not_variable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "TestEvaluateComparisons",
+          "methods": [
+            "test_lt_true",
+            "test_lt_false",
+            "test_lte_equal",
+            "test_lte_less",
+            "test_lte_greater",
+            "test_gt_true",
+            "test_gt_false",
+            "test_gte_equal",
+            "test_gte_less",
+            "test_eq_equal",
+            "test_eq_unequal",
+            "test_neq_unequal",
+            "test_neq_equal",
+            "test_eq_bool",
+            "test_comparison_with_variable",
+            "test_comparison_with_negative_literal",
+            "test_float_comparison"
+          ],
+          "properties": [
+            "VARS"
+          ],
+          "exported": true,
+          "lineCount": 56
+        },
+        {
+          "name": "TestEvaluateLogical",
+          "methods": [
+            "test_and_both_true",
+            "test_and_left_false",
+            "test_and_right_false",
+            "test_and_both_false",
+            "test_or_both_true",
+            "test_or_left_true",
+            "test_or_right_true",
+            "test_or_both_false",
+            "test_and_both_sides_evaluated"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 43
+        },
+        {
+          "name": "TestSafeEvaluateReadmeExamples",
+          "methods": [
+            "test_gte_negative_true",
+            "test_gte_negative_boundary_true",
+            "test_gte_negative_false",
+            "test_or_extremes_false",
+            "test_or_extremes_true_high",
+            "test_or_extremes_true_low",
+            "test_four_variable_and_chain_true",
+            "test_four_variable_and_chain_false_on_first",
+            "test_four_variable_and_chain_false_on_last"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 69
+        },
+        {
+          "name": "TestSafeEvaluateFailClosed",
+          "methods": [
+            "test_unknown_variable_returns_false",
+            "test_unknown_variable_in_and_returns_false",
+            "test_malformed_expression_returns_false",
+            "test_empty_expression_returns_false",
+            "test_whitespace_only_returns_false",
+            "test_parse_error_returns_false",
+            "test_unclosed_paren_returns_false",
+            "test_invalid_character_returns_false",
+            "test_never_raises",
+            "test_returns_bool_not_truthy_value",
+            "test_returns_false_not_zero"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "TestSafeEvaluateBooleanOps",
+          "methods": [
+            "test_not_true",
+            "test_not_false",
+            "test_eq_boolean_literal",
+            "test_neq_boolean_literal",
+            "test_boolean_literal_standalone_true",
+            "test_boolean_literal_standalone_false"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "TestPublicImports",
+          "methods": [
+            "test_safe_evaluate_importable_from_expr",
+            "test_parse_importable_from_expr"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "expr.ast_nodes",
+          "specifiers": [
+            "BinaryOp",
+            "Literal",
+            "UnaryOp",
+            "Variable"
+          ]
+        },
+        {
+          "source": "expr.evaluator",
+          "specifiers": [
+            "EvaluationError",
+            "evaluate",
+            "safe_evaluate"
+          ]
+        },
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "T",
+        "TestEvaluateLiteral",
+        "TestEvaluateVariable",
+        "TestEvaluateUnaryOp",
+        "TestEvaluateComparisons",
+        "TestEvaluateLogical",
+        "TestSafeEvaluateReadmeExamples",
+        "TestSafeEvaluateFailClosed",
+        "TestSafeEvaluateBooleanOps",
+        "TestPublicImports"
+      ],
+      "totalLines": 383,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/tests/test_lexer.py": {
+      "filePath": "packages/expr/tests/test_lexer.py",
+      "contentHash": "2cd32052eb9595239aa2c48e85c5a9c2c7f344ca3fc95476ef5f7c46f5465060",
+      "functions": [
+        {
+          "name": "tokenize",
+          "params": [
+            "text"
+          ],
+          "returnType": "list[Token]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "types",
+          "params": [
+            "text"
+          ],
+          "returnType": "list[TokenType]",
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestOperators",
+          "methods": [
+            "test_and",
+            "test_or",
+            "test_not",
+            "test_eq",
+            "test_neq",
+            "test_lt",
+            "test_lte",
+            "test_gt",
+            "test_gte",
+            "test_lparen",
+            "test_rparen"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "TestNumbers",
+          "methods": [
+            "test_positive_integer",
+            "test_zero",
+            "test_negative_integer",
+            "test_positive_float",
+            "test_negative_float",
+            "test_number_value_is_int_not_float",
+            "test_number_value_is_float_when_decimal"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "TestBooleans",
+          "methods": [
+            "test_true",
+            "test_false",
+            "test_true_value_is_bool",
+            "test_false_value_is_bool"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "TestIdentifiers",
+          "methods": [
+            "test_simple",
+            "test_camel_case",
+            "test_underscore",
+            "test_alphanumeric",
+            "test_leading_underscore",
+            "test_not_confused_with_true_prefix",
+            "test_not_confused_with_false_prefix"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "TestEOF",
+          "methods": [
+            "test_empty_string",
+            "test_whitespace_only",
+            "test_eof_always_last"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "TestExpressions",
+          "methods": [
+            "test_large_state_favor_gte_negative",
+            "test_compound_with_and",
+            "test_full_readme_expression",
+            "test_or_expression",
+            "test_not_identifier",
+            "test_parenthesized_expression",
+            "test_equality",
+            "test_inequality",
+            "test_boolean_in_expression",
+            "test_whitespace_variants"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 78
+        },
+        {
+          "name": "TestErrors",
+          "methods": [
+            "test_invalid_character",
+            "test_single_ampersand",
+            "test_single_pipe",
+            "test_single_equals",
+            "test_stray_minus",
+            "test_hash",
+            "test_dollar"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 29
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "expr.lexer",
+          "specifiers": [
+            "Lexer",
+            "LexError"
+          ]
+        },
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "Token",
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "tokenize",
+        "types",
+        "TestOperators",
+        "TestNumbers",
+        "TestBooleans",
+        "TestIdentifiers",
+        "TestEOF",
+        "TestExpressions",
+        "TestErrors"
+      ],
+      "totalLines": 274,
+      "hasStructuralAnalysis": true
+    },
+    "packages/expr/tests/test_parser.py": {
+      "filePath": "packages/expr/tests/test_parser.py",
+      "contentHash": "4d59ffc8acc713f736ae2c658f59eca3628372c22234f35d4b6fcd879e9ca232",
+      "functions": [
+        {
+          "name": "T",
+          "params": [
+            "name"
+          ],
+          "returnType": "TokenType",
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestPrimary",
+          "methods": [
+            "test_integer_literal",
+            "test_negative_integer",
+            "test_float_literal",
+            "test_boolean_true",
+            "test_boolean_false",
+            "test_variable",
+            "test_underscore_variable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "TestUnary",
+          "methods": [
+            "test_not_variable",
+            "test_not_literal",
+            "test_double_not",
+            "test_not_paren_group"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "TestComparison",
+          "methods": [
+            "test_lt",
+            "test_lte",
+            "test_gt",
+            "test_gte",
+            "test_comparison_left_associative"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "TestEquality",
+          "methods": [
+            "test_eq",
+            "test_neq",
+            "test_eq_boolean"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "TestAnd",
+          "methods": [
+            "test_simple",
+            "test_left_associative",
+            "test_with_comparisons"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "TestOr",
+          "methods": [
+            "test_simple",
+            "test_left_associative"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "TestPrecedence",
+          "methods": [
+            "test_and_binds_tighter_than_or",
+            "test_comparison_binds_tighter_than_and",
+            "test_equality_binds_tighter_than_and",
+            "test_not_binds_tighter_than_comparison",
+            "test_full_precedence_chain"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 37
+        },
+        {
+          "name": "TestParentheses",
+          "methods": [
+            "test_parens_override_precedence",
+            "test_parens_around_single_value",
+            "test_nested_parens",
+            "test_parens_both_sides_of_or",
+            "test_not_of_parens"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "TestReadmeExamples",
+          "methods": [
+            "test_four_variable_and_chain",
+            "test_or_extremes_expression"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 31
+        },
+        {
+          "name": "TestErrors",
+          "methods": [
+            "test_empty_expression",
+            "test_whitespace_only",
+            "test_unclosed_paren",
+            "test_empty_parens",
+            "test_missing_right_operand_and",
+            "test_missing_right_operand_or",
+            "test_missing_right_operand_comparison",
+            "test_extra_token_after_expr",
+            "test_extra_close_paren",
+            "test_operator_at_start",
+            "test_bare_operator",
+            "test_double_operator"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 48
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "expr.ast_nodes",
+          "specifiers": [
+            "BinaryOp",
+            "Literal",
+            "UnaryOp",
+            "Variable"
+          ]
+        },
+        {
+          "source": "expr.parser",
+          "specifiers": [
+            "ParseError",
+            "parse"
+          ]
+        },
+        {
+          "source": "expr.tokens",
+          "specifiers": [
+            "TokenType"
+          ]
+        }
+      ],
+      "exports": [
+        "T",
+        "TestPrimary",
+        "TestUnary",
+        "TestComparison",
+        "TestEquality",
+        "TestAnd",
+        "TestOr",
+        "TestPrecedence",
+        "TestParentheses",
+        "TestReadmeExamples",
+        "TestErrors"
+      ],
+      "totalLines": 333,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "e2e1c4588bdaa49eab69109e6ef3b50efe48e5720e5896b5bc96b639be5d7c06",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 279,
+      "hasStructuralAnalysis": true
+    },
+    "SAMPLE_SCENARIO.json": {
+      "filePath": "SAMPLE_SCENARIO.json",
+      "contentHash": "d8e2874bf05ab41af12f19536294a626242faf674fe3156663bf56a04eac98b2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/.dockerignore": {
+      "filePath": "services/api/.dockerignore",
+      "contentHash": "a97a640bd0fff0cbfe25a5f64e8a001708e06b1c82ca0611affe9dbcd57b9e75",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "services/api/.gitkeep": {
+      "filePath": "services/api/.gitkeep",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "services/api/alembic.ini": {
+      "filePath": "services/api/alembic.ini",
+      "contentHash": "36d9339c4a277bd300ce631ff7804e652300626a0fc11d2c786105ac919c766f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": false
+    },
+    "services/api/alembic/env.py": {
+      "filePath": "services/api/alembic/env.py",
+      "contentHash": "2d8effb8cc507456bcad8ef774a83b80e387177f48e4861e647b896f93cf81eb",
+      "functions": [
+        {
+          "name": "run_migrations_offline",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "run_migrations_online",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "logging.config",
+          "specifiers": [
+            "fileConfig"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "engine_from_config",
+            "pool"
+          ]
+        },
+        {
+          "source": "alembic",
+          "specifiers": [
+            "context"
+          ]
+        },
+        {
+          "source": "app.models",
+          "specifiers": [
+            "app.models"
+          ]
+        },
+        {
+          "source": "app.db.base",
+          "specifiers": [
+            "Base"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        }
+      ],
+      "exports": [
+        "run_migrations_offline",
+        "run_migrations_online"
+      ],
+      "totalLines": 104,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/alembic/README": {
+      "filePath": "services/api/alembic/README",
+      "contentHash": "5bb2e92b6e0fbea17dcc2040fd7421221a88483fe02d314cb0ba66126acb6a92",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "services/api/alembic/script.py.mako": {
+      "filePath": "services/api/alembic/script.py.mako",
+      "contentHash": "3759c6b682c3c4b1bed7b81e7d21e9547bf6139c618c8b141599b8bfefb0c95a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": false
+    },
+    "services/api/alembic/versions/20260219_0001_initial_schema.py": {
+      "filePath": "services/api/alembic/versions/20260219_0001_initial_schema.py",
+      "contentHash": "843ed8fb978a46f6b53aa5ae4190d230112c133f521bf88698954d5dd0e84e18",
+      "functions": [
+        {
+          "name": "upgrade",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 188
+        },
+        {
+          "name": "downgrade",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "sa"
+          ]
+        },
+        {
+          "source": "alembic",
+          "specifiers": [
+            "op"
+          ]
+        },
+        {
+          "source": "sqlalchemy.dialects",
+          "specifiers": [
+            "postgresql"
+          ]
+        }
+      ],
+      "exports": [
+        "upgrade",
+        "downgrade"
+      ],
+      "totalLines": 228,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/__init__.py": {
+      "filePath": "services/api/app/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/api/__init__.py": {
+      "filePath": "services/api/app/api/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/api/deps.py": {
+      "filePath": "services/api/app/api/deps.py",
+      "contentHash": "d04996a998d3d413c167fdf0356c236bc071a78dca1b7d06699a1b09ba54a06a",
+      "functions": [
+        {
+          "name": "verify_admin_key",
+          "params": [
+            "request"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "hmac",
+          "specifiers": [
+            "hmac"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "Depends",
+            "HTTPException",
+            "Request",
+            "status"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        }
+      ],
+      "exports": [
+        "verify_admin_key"
+      ],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/api/v1/__init__.py": {
+      "filePath": "services/api/app/api/v1/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/api/v1/admin.py": {
+      "filePath": "services/api/app/api/v1/admin.py",
+      "contentHash": "be33be0e6464a01d32ae1eb6343683ebb5be035c40924b9cd4c140941fa6c942",
+      "functions": [
+        {
+          "name": "_parse_status",
+          "params": [
+            "raw"
+          ],
+          "returnType": "VersionStatus",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "_validate_or_400",
+          "params": [
+            "scenario_json"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "import_scenario",
+          "params": [
+            "body",
+            "db"
+          ],
+          "returnType": "ScenarioImportResponse",
+          "exported": true,
+          "lineCount": 32
+        },
+        {
+          "name": "get_scenario",
+          "params": [
+            "scenario_id",
+            "db"
+          ],
+          "returnType": "ScenarioOut",
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "create_version",
+          "params": [
+            "scenario_id",
+            "body",
+            "db"
+          ],
+          "returnType": "VersionCreateResponse",
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "publish_version",
+          "params": [
+            "scenario_id",
+            "version_number",
+            "db"
+          ],
+          "returnType": "PublishResponse",
+          "exported": true,
+          "lineCount": 39
+        },
+        {
+          "name": "scenario_analytics",
+          "params": [
+            "scenario_id",
+            "version_number",
+            "db"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "scenario_export_csv",
+          "params": [
+            "scenario_id",
+            "version_number",
+            "db"
+          ],
+          "returnType": "Response",
+          "exported": true,
+          "lineCount": 34
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "APIRouter",
+            "Depends",
+            "HTTPException",
+            "Query",
+            "Response",
+            "status"
+          ]
+        },
+        {
+          "source": "sqlalchemy.exc",
+          "specifiers": [
+            "IntegrityError"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.api.deps",
+          "specifiers": [
+            "get_db",
+            "verify_admin_key"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        },
+        {
+          "source": "app.schemas.admin",
+          "specifiers": [
+            "PublishResponse",
+            "ScenarioImportRequest",
+            "ScenarioImportResponse",
+            "ScenarioOut",
+            "VersionCreateRequest",
+            "VersionCreateResponse"
+          ]
+        },
+        {
+          "source": "app.services.analytics",
+          "specifiers": [
+            "get_analytics"
+          ]
+        },
+        {
+          "source": "app.services.export",
+          "specifiers": [
+            "export_csv"
+          ]
+        },
+        {
+          "source": "engine.validator",
+          "specifiers": [
+            "validate_scenario"
+          ]
+        }
+      ],
+      "exports": [
+        "_parse_status",
+        "_validate_or_400",
+        "import_scenario",
+        "get_scenario",
+        "create_version",
+        "publish_version",
+        "scenario_analytics",
+        "scenario_export_csv"
+      ],
+      "totalLines": 342,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/api/v1/public.py": {
+      "filePath": "services/api/app/api/v1/public.py",
+      "contentHash": "885b52ded695ec807093c776363b6856a5a50ee82ba0dc860adff2936ff3c09f",
+      "functions": [
+        {
+          "name": "_compute_progress",
+          "params": [
+            "events"
+          ],
+          "returnType": "ProgressOut",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "_build_scene_dto",
+          "params": [
+            "raw",
+            "slug",
+            "version_number"
+          ],
+          "returnType": "SceneDTO",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "compute_play_view",
+          "params": [
+            "play_id",
+            "db"
+          ],
+          "returnType": "PlayViewResponse",
+          "exported": true,
+          "lineCount": 70
+        },
+        {
+          "name": "get_scenario",
+          "params": [
+            "slug",
+            "db"
+          ],
+          "returnType": "ScenarioPublicResponse",
+          "exported": true,
+          "lineCount": 41
+        },
+        {
+          "name": "start_play",
+          "params": [
+            "body",
+            "db"
+          ],
+          "returnType": "PlayStartResponse",
+          "exported": true,
+          "lineCount": 54
+        },
+        {
+          "name": "get_play",
+          "params": [
+            "play_id",
+            "db"
+          ],
+          "returnType": "PlayViewResponse",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "step_play",
+          "params": [
+            "play_id",
+            "body",
+            "db"
+          ],
+          "returnType": "StepResponse",
+          "exported": true,
+          "lineCount": 123
+        },
+        {
+          "name": "back_play",
+          "params": [
+            "play_id",
+            "db"
+          ],
+          "returnType": "BackResponse",
+          "exported": true,
+          "lineCount": 82
+        },
+        {
+          "name": "submit_reflection",
+          "params": [
+            "play_id",
+            "body",
+            "db"
+          ],
+          "returnType": "ReflectionResponse",
+          "exported": true,
+          "lineCount": 54
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "APIRouter",
+            "Depends",
+            "HTTPException",
+            "status"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.api.deps",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Event",
+            "EventType"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "Scenario",
+            "ScenarioVersion",
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.play_repo",
+          "specifiers": [
+            "PlayRepository"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        },
+        {
+          "source": "app.schemas.public",
+          "specifiers": [
+            "BackResponse",
+            "ChoiceOut",
+            "PlayStartRequest",
+            "PlayStartResponse",
+            "PlayViewResponse",
+            "ProgressOut",
+            "ReflectionRequest",
+            "ReflectionResponse",
+            "SceneDTO",
+            "ScenarioMetadataOut",
+            "ScenarioPublicResponse",
+            "StepRequest",
+            "StepResponse"
+          ]
+        },
+        {
+          "source": "engine.engine",
+          "specifiers": [
+            "ScenarioEngine"
+          ]
+        },
+        {
+          "source": "engine.models",
+          "specifiers": [
+            "AutoAdvanceScene",
+            "ChoiceScene",
+            "ConditionalScene",
+            "EngineScenario"
+          ]
+        }
+      ],
+      "exports": [
+        "_compute_progress",
+        "_build_scene_dto",
+        "compute_play_view",
+        "get_scenario",
+        "start_play",
+        "get_play",
+        "step_play",
+        "back_play",
+        "submit_reflection"
+      ],
+      "totalLines": 651,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/core/__init__.py": {
+      "filePath": "services/api/app/core/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/core/config.py": {
+      "filePath": "services/api/app/core/config.py",
+      "contentHash": "88ae75dbdd118c55cbd76151d6a2edded2a5c826950cfb15ce176f7610fc2491",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Settings",
+          "methods": [
+            "_parse_cors",
+            "cors_origins_list"
+          ],
+          "properties": [
+            "DATABASE_URL",
+            "MEDIA_BASE_URL",
+            "ADMIN_API_KEY",
+            "CORS_ORIGINS"
+          ],
+          "exported": true,
+          "lineCount": 47
+        }
+      ],
+      "imports": [
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "field_validator"
+          ]
+        },
+        {
+          "source": "pydantic_settings",
+          "specifiers": [
+            "BaseSettings",
+            "SettingsConfigDict"
+          ]
+        }
+      ],
+      "exports": [
+        "Settings"
+      ],
+      "totalLines": 71,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/db/__init__.py": {
+      "filePath": "services/api/app/db/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/db/base.py": {
+      "filePath": "services/api/app/db/base.py",
+      "contentHash": "e6ac3451fb35a788da39089ea74a2595f48f0ce8d8962648068730adab80220b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Base",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "imports": [
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "DeclarativeBase"
+          ]
+        }
+      ],
+      "exports": [
+        "Base"
+      ],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/db/session.py": {
+      "filePath": "services/api/app/db/session.py",
+      "contentHash": "f4fac6348a1d8cdc49881f89c2fd4960ace94c757b90be5031714ee2c70bedfb",
+      "functions": [
+        {
+          "name": "get_db",
+          "params": [],
+          "returnType": "Generator[Session, None, None]",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "collections.abc",
+          "specifiers": [
+            "Generator"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "create_engine"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session",
+            "sessionmaker"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        }
+      ],
+      "exports": [
+        "get_db"
+      ],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/main.py": {
+      "filePath": "services/api/app/main.py",
+      "contentHash": "e375ed072bbb0ee8453babc13a5f253518572481a9d021c1cd718be2b5a13d58",
+      "functions": [
+        {
+          "name": "health",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "FastAPI"
+          ]
+        },
+        {
+          "source": "fastapi.middleware.cors",
+          "specifiers": [
+            "CORSMiddleware"
+          ]
+        },
+        {
+          "source": "fastapi.staticfiles",
+          "specifiers": [
+            "StaticFiles"
+          ]
+        },
+        {
+          "source": "app.api.v1.admin",
+          "specifiers": [
+            "admin_router"
+          ]
+        },
+        {
+          "source": "app.api.v1.public",
+          "specifiers": [
+            "public_router"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        }
+      ],
+      "exports": [
+        "health"
+      ],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/models/__init__.py": {
+      "filePath": "services/api/app/models/__init__.py",
+      "contentHash": "e861114b40393d1e802127612e4535e3d9c217db8895206e08e8176f5eeaf22f",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "Scenario",
+            "ScenarioVersion",
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Play",
+            "Event",
+            "Reflection",
+            "EventType"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/models/play.py": {
+      "filePath": "services/api/app/models/play.py",
+      "contentHash": "320bcb87f1ae2511283ca87476a3262bdd3025634daddf086ba850f7a3782e44",
+      "functions": [],
+      "classes": [
+        {
+          "name": "EventType",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "Play",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "id",
+            "scenario_version_id",
+            "learner_label",
+            "started_at",
+            "ended_at",
+            "completed",
+            "outcome",
+            "outcome_message",
+            "events",
+            "reflection",
+            "scenario_version"
+          ],
+          "exported": true,
+          "lineCount": 69
+        },
+        {
+          "name": "Event",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "id",
+            "play_id",
+            "seq",
+            "ts",
+            "event_type",
+            "scene_id",
+            "choice_index",
+            "choice_text",
+            "next_scene_id",
+            "delta_json",
+            "play"
+          ],
+          "exported": true,
+          "lineCount": 74
+        },
+        {
+          "name": "Reflection",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "id",
+            "play_id",
+            "submitted_at",
+            "student_name",
+            "responses_json",
+            "play"
+          ],
+          "exported": true,
+          "lineCount": 42
+        }
+      ],
+      "imports": [
+        {
+          "source": "enum",
+          "specifiers": [
+            "enum"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "Boolean",
+            "DateTime",
+            "ForeignKey",
+            "Index",
+            "Integer",
+            "String",
+            "Text",
+            "UniqueConstraint",
+            "func",
+            "SAEnum"
+          ]
+        },
+        {
+          "source": "sqlalchemy.dialects.postgresql",
+          "specifiers": [
+            "JSONB"
+          ]
+        },
+        {
+          "source": "sqlalchemy.dialects.postgresql",
+          "specifiers": [
+            "PG_UUID"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Mapped",
+            "mapped_column",
+            "relationship"
+          ]
+        },
+        {
+          "source": "app.db.base",
+          "specifiers": [
+            "Base"
+          ]
+        }
+      ],
+      "exports": [
+        "EventType",
+        "Play",
+        "Event",
+        "Reflection"
+      ],
+      "totalLines": 255,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/models/scenario.py": {
+      "filePath": "services/api/app/models/scenario.py",
+      "contentHash": "a104683cc6c68cd24bdfec1b5212b5fe537371f53572373479b7ecc5d23dd560",
+      "functions": [],
+      "classes": [
+        {
+          "name": "VersionStatus",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "Scenario",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "id",
+            "slug",
+            "title",
+            "description",
+            "created_at",
+            "updated_at",
+            "versions"
+          ],
+          "exported": true,
+          "lineCount": 42
+        },
+        {
+          "name": "ScenarioVersion",
+          "methods": [
+            "__repr__"
+          ],
+          "properties": [
+            "id",
+            "scenario_id",
+            "version_number",
+            "status",
+            "scenario_json",
+            "created_at",
+            "scenario"
+          ],
+          "exported": true,
+          "lineCount": 64
+        }
+      ],
+      "imports": [
+        {
+          "source": "enum",
+          "specifiers": [
+            "enum"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "DateTime",
+            "ForeignKey",
+            "Index",
+            "Integer",
+            "String",
+            "Text",
+            "UniqueConstraint",
+            "func",
+            "SAEnum"
+          ]
+        },
+        {
+          "source": "sqlalchemy.dialects.postgresql",
+          "specifiers": [
+            "JSONB"
+          ]
+        },
+        {
+          "source": "sqlalchemy.dialects.postgresql",
+          "specifiers": [
+            "PG_UUID"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Mapped",
+            "mapped_column",
+            "relationship"
+          ]
+        },
+        {
+          "source": "app.db.base",
+          "specifiers": [
+            "Base"
+          ]
+        }
+      ],
+      "exports": [
+        "VersionStatus",
+        "Scenario",
+        "ScenarioVersion"
+      ],
+      "totalLines": 168,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/repositories/__init__.py": {
+      "filePath": "services/api/app/repositories/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/repositories/play_repo.py": {
+      "filePath": "services/api/app/repositories/play_repo.py",
+      "contentHash": "24b310df5713f67b3d946da1f9e69e7b745669be3d831490ac30276dc88d61fa",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PlayRepository",
+          "methods": [
+            "__init__",
+            "create_play",
+            "get_play",
+            "get_play_with_events",
+            "complete_play",
+            "append_event",
+            "get_events",
+            "truncate_events_after",
+            "events_for_engine",
+            "add_reflection",
+            "get_reflection"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 196
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime",
+            "timezone"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "delete",
+            "func",
+            "select"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session",
+            "selectinload"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Event",
+            "EventType",
+            "Play",
+            "Reflection"
+          ]
+        }
+      ],
+      "exports": [
+        "PlayRepository"
+      ],
+      "totalLines": 238,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/repositories/scenario_repo.py": {
+      "filePath": "services/api/app/repositories/scenario_repo.py",
+      "contentHash": "39d464bb95aa31986e7476bd286ab185ed50c0bd09de7b0ea478a3f6b85f8715",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ScenarioRepository",
+          "methods": [
+            "__init__",
+            "create_scenario",
+            "get_by_slug",
+            "get_by_id",
+            "create_version",
+            "get_version_by_id",
+            "get_published_version",
+            "publish_version",
+            "archive_version"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 130
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "func",
+            "select"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session",
+            "selectinload"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "Scenario",
+            "ScenarioVersion",
+            "VersionStatus"
+          ]
+        }
+      ],
+      "exports": [
+        "ScenarioRepository"
+      ],
+      "totalLines": 166,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/schemas/__init__.py": {
+      "filePath": "services/api/app/schemas/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/schemas/admin.py": {
+      "filePath": "services/api/app/schemas/admin.py",
+      "contentHash": "ab613cda3bae0b54bf86e4cc2adaa191b51db0cf2a4f6c4929ca8f39d4a2e5b4",
+      "functions": [],
+      "classes": [
+        {
+          "name": "VersionOut",
+          "methods": [],
+          "properties": [
+            "id",
+            "scenario_id",
+            "version_number",
+            "status",
+            "created_at"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "ScenarioOut",
+          "methods": [],
+          "properties": [
+            "id",
+            "slug",
+            "title",
+            "description",
+            "created_at",
+            "updated_at",
+            "versions"
+          ],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "ScenarioImportRequest",
+          "methods": [],
+          "properties": [
+            "slug",
+            "title",
+            "description",
+            "status",
+            "scenario_json"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "ScenarioImportResponse",
+          "methods": [],
+          "properties": [
+            "scenario_id",
+            "version_id",
+            "version_number",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "VersionCreateRequest",
+          "methods": [],
+          "properties": [
+            "status",
+            "scenario_json"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "VersionCreateResponse",
+          "methods": [],
+          "properties": [
+            "version_id",
+            "version_number",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "PublishResponse",
+          "methods": [],
+          "properties": [
+            "version_id",
+            "version_number",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "datetime"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "BaseModel",
+            "ConfigDict",
+            "Field"
+          ]
+        }
+      ],
+      "exports": [
+        "VersionOut",
+        "ScenarioOut",
+        "ScenarioImportRequest",
+        "ScenarioImportResponse",
+        "VersionCreateRequest",
+        "VersionCreateResponse",
+        "PublishResponse"
+      ],
+      "totalLines": 105,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/schemas/public.py": {
+      "filePath": "services/api/app/schemas/public.py",
+      "contentHash": "df5964f0e6391e51099c7878820d0385e329565b863160b9311c86864cbe5bc0",
+      "functions": [],
+      "classes": [
+        {
+          "name": "ChoiceOut",
+          "methods": [],
+          "properties": [
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "SceneDTO",
+          "methods": [],
+          "properties": [
+            "scene_id",
+            "type",
+            "title",
+            "narration",
+            "description",
+            "image_url",
+            "choices",
+            "outcome",
+            "outcome_message"
+          ],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "ProgressOut",
+          "methods": [],
+          "properties": [
+            "step_count",
+            "choices_made"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "ScenarioMetadataOut",
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "page_title",
+            "page_icon",
+            "author",
+            "version",
+            "completion_tracking",
+            "cover_image_url"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "ScenarioPublicResponse",
+          "methods": [],
+          "properties": [
+            "slug",
+            "scenario_version_id",
+            "version_number",
+            "metadata",
+            "start_scene_id",
+            "reflection_questions",
+            "reflection_prompts"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "PlayStartRequest",
+          "methods": [],
+          "properties": [
+            "scenario_version_id",
+            "learner_label"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "PlayStartResponse",
+          "methods": [],
+          "properties": [
+            "play_id",
+            "scenario_version_id",
+            "scene",
+            "progress"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "StepRequest",
+          "methods": [],
+          "properties": [
+            "choice_index"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "StepResponse",
+          "methods": [],
+          "properties": [
+            "play_id",
+            "scene",
+            "progress",
+            "done",
+            "outcome",
+            "outcome_message"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "BackResponse",
+          "methods": [],
+          "properties": [
+            "play_id",
+            "scene",
+            "progress",
+            "done"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "ReflectionRequest",
+          "methods": [],
+          "properties": [
+            "responses",
+            "student_name"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "ReflectionResponse",
+          "methods": [],
+          "properties": [
+            "ok"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "PlayViewResponse",
+          "methods": [],
+          "properties": [
+            "play_id",
+            "scene",
+            "progress",
+            "done",
+            "outcome",
+            "outcome_message",
+            "reflection_required",
+            "reflection_questions",
+            "reflection_prompts"
+          ],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "BaseModel",
+            "Field"
+          ]
+        }
+      ],
+      "exports": [
+        "ChoiceOut",
+        "SceneDTO",
+        "ProgressOut",
+        "ScenarioMetadataOut",
+        "ScenarioPublicResponse",
+        "PlayStartRequest",
+        "PlayStartResponse",
+        "StepRequest",
+        "StepResponse",
+        "BackResponse",
+        "ReflectionRequest",
+        "ReflectionResponse",
+        "PlayViewResponse"
+      ],
+      "totalLines": 207,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/services/__init__.py": {
+      "filePath": "services/api/app/services/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/services/analytics.py": {
+      "filePath": "services/api/app/services/analytics.py",
+      "contentHash": "d32e5acfc455bc249c18c1582c073e230ec25499d3f396dcc2b4390b9ab78424",
+      "functions": [
+        {
+          "name": "_resolve_version_ids",
+          "params": [
+            "db",
+            "scenario_id",
+            "version_number"
+          ],
+          "returnType": "list[uuid.UUID]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "get_analytics",
+          "params": [
+            "db",
+            "scenario_id",
+            "version_number"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 140
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "func",
+            "select"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Event",
+            "EventType",
+            "Play",
+            "Reflection"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "ScenarioVersion"
+          ]
+        }
+      ],
+      "exports": [
+        "_resolve_version_ids",
+        "get_analytics"
+      ],
+      "totalLines": 191,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/app/services/export.py": {
+      "filePath": "services/api/app/services/export.py",
+      "contentHash": "44d05c9e6f4503cd67cc11e69aef2d49db16d74f81eaa7c8572cb78656a59e4e",
+      "functions": [
+        {
+          "name": "export_csv",
+          "params": [
+            "db",
+            "scenario_id",
+            "version_number"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 105
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "csv",
+          "specifiers": [
+            "csv"
+          ]
+        },
+        {
+          "source": "io",
+          "specifiers": [
+            "io"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "select"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Event",
+            "EventType",
+            "Play",
+            "Reflection"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "ScenarioVersion"
+          ]
+        },
+        {
+          "source": "app.services.analytics",
+          "specifiers": [
+            "_resolve_version_ids"
+          ]
+        }
+      ],
+      "exports": [
+        "export_csv"
+      ],
+      "totalLines": 141,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/Dockerfile": {
+      "filePath": "services/api/Dockerfile",
+      "contentHash": "1f4b12f8b0aeaf9a8c46a05a973d8a6a3e1df802ed5bea4a4e05d4deda9f7a01",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/pytest.ini": {
+      "filePath": "services/api/pytest.ini",
+      "contentHash": "5a9acc8ef001f52206582c3927f8e8ec0c75f707397815652e3953f801973709",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "services/api/requirements.txt": {
+      "filePath": "services/api/requirements.txt",
+      "contentHash": "00b531aa8989dd962e77bc32b526d3b2fd4c44fab82ebcc78ef4914f86350d23",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "services/api/scripts/__init__.py": {
+      "filePath": "services/api/scripts/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/scripts/cherokee_fixture.json": {
+      "filePath": "services/api/scripts/cherokee_fixture.json",
+      "contentHash": "6a05a6fd500752c01afdbfe6a011c232557dd59d8d3d861602cae420cb3c57ed",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/scripts/new-lib-park.json": {
+      "filePath": "services/api/scripts/new-lib-park.json",
+      "contentHash": "c5a133f8437092570168bcbb247f372eac90e2ce13d59337a5a76ad5710b3633",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 158,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/scripts/seed.py": {
+      "filePath": "services/api/scripts/seed.py",
+      "contentHash": "a896febf73b5e3f49d3c51ca80ed3060fe7d6fd5f1d5cbc48a3c3bddca19e171",
+      "functions": [
+        {
+          "name": "_post",
+          "params": [
+            "url",
+            "payload",
+            "admin_key"
+          ],
+          "returnType": "tuple[int, dict | str]",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 77
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "argparse",
+          "specifiers": [
+            "argparse"
+          ]
+        },
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "pathlib"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "urllib.error",
+          "specifiers": [
+            "urllib.error"
+          ]
+        },
+        {
+          "source": "urllib.request",
+          "specifiers": [
+            "urllib.request"
+          ]
+        }
+      ],
+      "exports": [
+        "_post",
+        "main"
+      ],
+      "totalLines": 157,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/__init__.py": {
+      "filePath": "services/api/tests/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/conftest.py": {
+      "filePath": "services/api/tests/conftest.py",
+      "contentHash": "801c10e5db812e1924cbcb5ce1c83f552423fbaf43655fc3d08f59c7ed178a4a",
+      "functions": [
+        {
+          "name": "db_engine",
+          "params": [],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "db",
+          "params": [
+            "db_engine"
+          ],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "sqlalchemy",
+          "specifiers": [
+            "create_engine"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.models",
+          "specifiers": [
+            "app.models"
+          ]
+        },
+        {
+          "source": "app.db.base",
+          "specifiers": [
+            "Base"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        }
+      ],
+      "exports": [
+        "db_engine",
+        "db"
+      ],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_admin_analytics.py": {
+      "filePath": "services/api/tests/test_admin_analytics.py",
+      "contentHash": "35e957d7d0540eb6b9825c90d623e717614be4b1aec33a7fb9e6003e0bb82267",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_import_scenario",
+          "params": [
+            "client",
+            "slug",
+            "json_body"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "_start_play",
+          "params": [
+            "client",
+            "version_id",
+            "learner_label"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_step",
+          "params": [
+            "client",
+            "play_id",
+            "choice_index"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "_reflect",
+          "params": [
+            "client",
+            "play_id",
+            "responses",
+            "student_name"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "scenario",
+          "params": [
+            "client",
+            "db"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "populated_scenario",
+          "params": [
+            "client",
+            "scenario"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestAnalytics404",
+          "methods": [
+            "test_unknown_scenario",
+            "test_requires_admin_key"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "TestAnalyticsEmpty",
+          "methods": [
+            "test_returns_200",
+            "test_zeroed_counts"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "TestAnalyticsData",
+          "methods": [
+            "test_total_plays",
+            "test_completed_plays",
+            "test_completion_rate",
+            "test_drop_off_by_scene",
+            "test_choice_distribution",
+            "test_reflection_count",
+            "test_reflection_rate"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 55
+        },
+        {
+          "name": "TestAnalyticsVersionFilter",
+          "methods": [
+            "two_version_scenario",
+            "test_filter_to_v1",
+            "test_filter_to_v2",
+            "test_no_filter_aggregates_all",
+            "test_nonexistent_version_returns_zeros"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 57
+        },
+        {
+          "name": "TestExportBasic",
+          "methods": [
+            "test_unknown_scenario_404",
+            "test_requires_admin_key",
+            "test_content_type_csv",
+            "test_content_disposition",
+            "test_empty_scenario_has_header_only"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "TestExportColumns",
+          "methods": [
+            "test_standard_headers_present",
+            "test_reflection_columns_present",
+            "test_row_count"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 32
+        },
+        {
+          "name": "TestExportContent",
+          "methods": [
+            "_get_csv_rows",
+            "test_completed_flag",
+            "test_outcome_populated_for_completed",
+            "test_path_contains_scenes",
+            "test_path_arrow_separator",
+            "test_learner_label",
+            "test_reflection_answers_in_csv",
+            "test_no_reflection_empty_columns",
+            "test_comma_in_reflection_escaped"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 65
+        },
+        {
+          "name": "TestExportVersionFilter",
+          "methods": [
+            "two_version_data",
+            "test_filter_to_v1_row_count",
+            "test_filter_to_v1_content",
+            "test_no_filter_returns_all"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 44
+        }
+      ],
+      "imports": [
+        {
+          "source": "csv",
+          "specifiers": [
+            "csv"
+          ]
+        },
+        {
+          "source": "io",
+          "specifiers": [
+            "io"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "_import_scenario",
+        "_start_play",
+        "_step",
+        "_reflect",
+        "scenario",
+        "populated_scenario",
+        "TestAnalytics404",
+        "TestAnalyticsEmpty",
+        "TestAnalyticsData",
+        "TestAnalyticsVersionFilter",
+        "TestExportBasic",
+        "TestExportColumns",
+        "TestExportContent",
+        "TestExportVersionFilter"
+      ],
+      "totalLines": 545,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_admin_auth.py": {
+      "filePath": "services/api/tests/test_admin_auth.py",
+      "contentHash": "8681500e8210cbaeb3b4d1ec73e7ef62133da7d4c9b4d8da17fa2b142af781d2",
+      "functions": [
+        {
+          "name": "probe",
+          "params": [],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestVerifyAdminKey",
+          "methods": [
+            "test_valid_key_returns_200",
+            "test_missing_key_returns_403",
+            "test_wrong_key_returns_403",
+            "test_empty_key_returns_403",
+            "test_403_detail_message",
+            "test_case_sensitive_key"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "TestAdminRouterAuth",
+          "methods": [
+            "test_admin_router_tag"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "FastAPI"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "app.api.deps",
+          "specifiers": [
+            "verify_admin_key"
+          ]
+        },
+        {
+          "source": "app.api.v1.admin",
+          "specifiers": [
+            "admin_router"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        }
+      ],
+      "exports": [
+        "probe",
+        "TestVerifyAdminKey",
+        "TestAdminRouterAuth"
+      ],
+      "totalLines": 98,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_admin_endpoints.py": {
+      "filePath": "services/api/tests/test_admin_endpoints.py",
+      "contentHash": "129863ed3785164f083df87430b5846333ba1875c36f59ddbfeb4cdb87e8ea96",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "import_scenario",
+          "params": [
+            "client",
+            "slug",
+            "json_body",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestImportScenario",
+          "methods": [
+            "test_returns_201",
+            "test_response_has_ids",
+            "test_version_number_is_one",
+            "test_status_stored",
+            "test_invalid_json_returns_400",
+            "test_invalid_json_returns_errors_list",
+            "test_duplicate_slug_returns_409",
+            "test_missing_key_returns_403",
+            "test_invalid_status_returns_422"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "TestGetScenario",
+          "methods": [
+            "test_returns_200",
+            "test_response_has_versions",
+            "test_unknown_id_returns_404",
+            "test_missing_key_returns_403"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "TestCreateVersion",
+          "methods": [
+            "test_returns_201",
+            "test_version_number_increments",
+            "test_invalid_json_returns_400",
+            "test_unknown_scenario_returns_404"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "TestPublishVersion",
+          "methods": [
+            "test_returns_200",
+            "test_status_is_published",
+            "test_previous_published_archived",
+            "test_unknown_version_returns_404",
+            "test_unknown_scenario_returns_404"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 54
+        },
+        {
+          "name": "TestHealth",
+          "methods": [
+            "test_health_returns_ok"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "import_scenario",
+        "TestImportScenario",
+        "TestGetScenario",
+        "TestCreateVersion",
+        "TestPublishVersion",
+        "TestHealth"
+      ],
+      "totalLines": 306,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_models_play.py": {
+      "filePath": "services/api/tests/test_models_play.py",
+      "contentHash": "5a0cddbec752902e69b73d1af57192025443bc05bf48949dda634d1690c719fe",
+      "functions": [
+        {
+          "name": "make_version",
+          "params": [
+            "db"
+          ],
+          "returnType": "ScenarioVersion",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "make_play",
+          "params": [
+            "db",
+            "version",
+            "**kwargs"
+          ],
+          "returnType": "Play",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "make_event",
+          "params": [
+            "db",
+            "play",
+            "seq",
+            "event_type",
+            "scene_id",
+            "**kwargs"
+          ],
+          "returnType": "Event",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "make_reflection",
+          "params": [
+            "db",
+            "play",
+            "responses"
+          ],
+          "returnType": "Reflection",
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestPlayModel",
+          "methods": [
+            "test_create_play",
+            "test_completed_defaults_false",
+            "test_learner_label_stored",
+            "test_learner_label_nullable",
+            "test_started_at_set_by_db",
+            "test_ended_at_nullable",
+            "test_outcome_nullable",
+            "test_scenario_version_relationship",
+            "test_events_empty_initially",
+            "test_reflection_none_initially",
+            "test_repr"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 53
+        },
+        {
+          "name": "TestEventModel",
+          "methods": [
+            "test_create_event",
+            "test_event_type_stored",
+            "test_all_event_types_valid",
+            "test_choice_fields_stored",
+            "test_delta_json_stored",
+            "test_nullable_fields_default_to_none",
+            "test_ts_set_by_db",
+            "test_play_relationship",
+            "test_events_ordered_by_seq",
+            "test_unique_constraint_play_seq",
+            "test_cascade_delete_with_play",
+            "test_repr"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 92
+        },
+        {
+          "name": "TestReflectionModel",
+          "methods": [
+            "test_create_reflection",
+            "test_responses_json_round_trips",
+            "test_student_name_stored",
+            "test_student_name_nullable",
+            "test_submitted_at_set_by_db",
+            "test_play_relationship",
+            "test_play_reflection_back_relationship",
+            "test_unique_constraint_one_reflection_per_play",
+            "test_cascade_delete_with_play",
+            "test_repr"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 70
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "sqlalchemy.exc",
+          "specifiers": [
+            "IntegrityError"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "Scenario",
+            "ScenarioVersion",
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Event",
+            "EventType",
+            "Play",
+            "Reflection"
+          ]
+        }
+      ],
+      "exports": [
+        "make_version",
+        "make_play",
+        "make_event",
+        "make_reflection",
+        "TestPlayModel",
+        "TestEventModel",
+        "TestReflectionModel"
+      ],
+      "totalLines": 327,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_models_scenario.py": {
+      "filePath": "services/api/tests/test_models_scenario.py",
+      "contentHash": "b526bbd11c1bdce3193a6531aa3df956de37dfe783e7fa3add97bf7dd2b35d3c",
+      "functions": [
+        {
+          "name": "make_scenario",
+          "params": [
+            "db",
+            "slug",
+            "title"
+          ],
+          "returnType": "Scenario",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "make_version",
+          "params": [
+            "db",
+            "scenario",
+            "version_number",
+            "status",
+            "scenario_json"
+          ],
+          "returnType": "ScenarioVersion",
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestScenarioModel",
+          "methods": [
+            "test_create_scenario",
+            "test_slug_is_stored",
+            "test_title_is_stored",
+            "test_description_defaults_to_empty",
+            "test_created_at_set_by_db",
+            "test_slug_unique_constraint",
+            "test_versions_relationship_empty_initially",
+            "test_repr"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "TestScenarioVersionModel",
+          "methods": [
+            "test_create_version",
+            "test_default_status_is_draft",
+            "test_publish_status",
+            "test_scenario_json_round_trips",
+            "test_version_number_stored",
+            "test_created_at_set_by_db",
+            "test_scenario_relationship",
+            "test_scenario_versions_relationship",
+            "test_versions_ordered_by_version_number",
+            "test_repr",
+            "test_unique_constraint_scenario_version_number",
+            "test_same_version_number_different_scenarios_allowed",
+            "test_cascade_delete_removes_versions"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 99
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "sqlalchemy.exc",
+          "specifiers": [
+            "IntegrityError"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "Scenario",
+            "ScenarioVersion",
+            "VersionStatus"
+          ]
+        }
+      ],
+      "exports": [
+        "make_scenario",
+        "make_version",
+        "TestScenarioModel",
+        "TestScenarioVersionModel"
+      ],
+      "totalLines": 211,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_play_repo.py": {
+      "filePath": "services/api/tests/test_play_repo.py",
+      "contentHash": "b81f6af3d6ca7ca6ae080a910355f117401961c34eb986b59427d67b566227b1",
+      "functions": [
+        {
+          "name": "make_version",
+          "params": [
+            "db"
+          ],
+          "returnType": "ScenarioVersion",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "repo",
+          "params": [
+            "db"
+          ],
+          "returnType": "PlayRepository",
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestCreatePlay",
+          "methods": [
+            "test_returns_play",
+            "test_id_assigned",
+            "test_scenario_version_id_stored",
+            "test_learner_label_stored",
+            "test_learner_label_defaults_to_none",
+            "test_completed_defaults_false",
+            "test_start_event_created_at_seq_zero",
+            "test_invalid_version_id_raises"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 44
+        },
+        {
+          "name": "TestAppendEvent",
+          "methods": [
+            "test_returns_event",
+            "test_first_appended_event_is_seq_one",
+            "test_seq_increments",
+            "test_event_type_stored",
+            "test_choice_fields_stored",
+            "test_delta_json_stored",
+            "test_optional_fields_default_none"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 66
+        },
+        {
+          "name": "TestGetEvents",
+          "methods": [
+            "test_returns_list",
+            "test_start_event_included",
+            "test_ordered_by_seq",
+            "test_correct_count",
+            "test_empty_for_unknown_play"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "TestGetPlay",
+          "methods": [
+            "test_get_play_returns_play",
+            "test_get_play_returns_none_for_unknown",
+            "test_get_play_with_events_loads_events",
+            "test_get_play_with_events_none_for_unknown"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "TestCompletePlay",
+          "methods": [
+            "test_returns_play",
+            "test_completed_set_true",
+            "test_outcome_stored",
+            "test_outcome_message_stored",
+            "test_ended_at_set",
+            "test_complete_event_appended",
+            "test_returns_none_for_unknown_play"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 52
+        },
+        {
+          "name": "TestTruncateEventsAfter",
+          "methods": [
+            "test_removes_events_beyond_seq",
+            "test_returns_deleted_count",
+            "test_seq_kept_is_not_deleted",
+            "test_truncate_all_after_zero",
+            "test_no_op_when_no_events_beyond_seq"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 51
+        },
+        {
+          "name": "TestEventsForEngine",
+          "methods": [
+            "test_excludes_start_event",
+            "test_includes_choose_event",
+            "test_excludes_complete_event",
+            "test_dict_has_required_keys"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 45
+        },
+        {
+          "name": "TestReflection",
+          "methods": [
+            "test_add_reflection_returns_reflection",
+            "test_responses_stored",
+            "test_student_name_stored",
+            "test_get_reflection_returns_none_when_absent",
+            "test_duplicate_reflection_raises"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 37
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "sqlalchemy.exc",
+          "specifiers": [
+            "IntegrityError"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Event",
+            "EventType",
+            "Play",
+            "Reflection"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "Scenario",
+            "ScenarioVersion",
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.play_repo",
+          "specifiers": [
+            "PlayRepository"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "make_version",
+        "repo",
+        "TestCreatePlay",
+        "TestAppendEvent",
+        "TestGetEvents",
+        "TestGetPlay",
+        "TestCompletePlay",
+        "TestTruncateEventsAfter",
+        "TestEventsForEngine",
+        "TestReflection"
+      ],
+      "totalLines": 448,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_public_play_back.py": {
+      "filePath": "services/api/tests/test_public_play_back.py",
+      "contentHash": "85993fb0ca6b8f814abe53ed991e8c69c9291a13354f3c434189ad98abf42084",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_seed_and_start",
+          "params": [
+            "client",
+            "db",
+            "slug",
+            "scenario_json"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "play_id",
+          "params": [
+            "client",
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "step",
+          "params": [
+            "client",
+            "play_id",
+            "choice_index"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "back",
+          "params": [
+            "client",
+            "play_id"
+          ],
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestBackBasic",
+          "methods": [
+            "test_404_for_unknown_play",
+            "test_400_when_at_start",
+            "test_400_error_message",
+            "test_returns_200_after_step",
+            "test_play_id_in_response",
+            "test_done_always_false",
+            "test_no_auth_required"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "TestBackAfterChoice",
+          "methods": [
+            "test_scene_reverts_to_start",
+            "test_scene_type_reverts",
+            "test_step_count_reverts_to_zero",
+            "test_choices_made_cleared",
+            "test_choose_event_removed",
+            "test_only_start_events_remain"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "TestBackAfterAutoAdvance",
+          "methods": [
+            "at_auto",
+            "after_auto_step",
+            "test_back_from_auto_returns_200",
+            "test_back_from_auto_reverts_to_auto_scene",
+            "test_back_from_auto_step_count",
+            "test_back_from_auto_choices_preserved"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "TestBackFromCompleted",
+          "methods": [
+            "completed_play",
+            "test_back_from_done_returns_200",
+            "test_back_resets_done_to_false",
+            "test_play_completed_flag_reset",
+            "test_play_outcome_cleared",
+            "test_scene_reverts_before_end",
+            "test_can_step_after_back_from_done",
+            "test_complete_event_removed"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 44
+        },
+        {
+          "name": "TestBackMultipleTimes",
+          "methods": [
+            "test_two_backs_returns_to_start",
+            "test_third_back_returns_400",
+            "test_back_then_different_choice"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 27
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "EventType",
+            "Play"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.play_repo",
+          "specifiers": [
+            "PlayRepository"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "_seed_and_start",
+        "play_id",
+        "step",
+        "back",
+        "TestBackBasic",
+        "TestBackAfterChoice",
+        "TestBackAfterAutoAdvance",
+        "TestBackFromCompleted",
+        "TestBackMultipleTimes"
+      ],
+      "totalLines": 320,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_public_play_reflection.py": {
+      "filePath": "services/api/tests/test_public_play_reflection.py",
+      "contentHash": "1c8fd2d5846ef9335ea4eaf8fd09c7dccfbf515ad738116a3328caeff505212d",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_seed_and_start",
+          "params": [
+            "client",
+            "db",
+            "slug",
+            "scenario_json"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "_step",
+          "params": [
+            "client",
+            "play_id",
+            "choice_index"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_reflect",
+          "params": [
+            "client",
+            "play_id",
+            "responses",
+            "student_name"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "play_id",
+          "params": [
+            "client",
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "completed_play_id",
+          "params": [
+            "client",
+            "play_id"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestReflectionErrors",
+          "methods": [
+            "test_404_unknown_play",
+            "test_400_play_not_completed",
+            "test_400_play_not_completed_message",
+            "test_409_duplicate_submission",
+            "test_409_message",
+            "test_422_missing_responses",
+            "test_422_empty_responses_dict",
+            "test_no_auth_required"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "TestReflectionSuccess",
+          "methods": [
+            "test_returns_200",
+            "test_ok_true_in_response",
+            "test_responses_persisted_as_dict",
+            "test_student_name_persisted",
+            "test_student_name_optional",
+            "test_single_key_accepted"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 32
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.play_repo",
+          "specifiers": [
+            "PlayRepository"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "_seed_and_start",
+        "_step",
+        "_reflect",
+        "play_id",
+        "completed_play_id",
+        "TestReflectionErrors",
+        "TestReflectionSuccess"
+      ],
+      "totalLines": 202,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_public_play_start.py": {
+      "filePath": "services/api/tests/test_public_play_start.py",
+      "contentHash": "4c905abe28df62e7f9455f3f5b95ffa9ac477a40c765681a3404d3bc8995dd11",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "published_version_id",
+          "params": [
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "draft_version_id",
+          "params": [
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "image_version_id",
+          "params": [
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "start",
+          "params": [
+            "client",
+            "version_id",
+            "learner_label"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestStartPlayStatus",
+          "methods": [
+            "test_returns_201",
+            "test_response_has_play_id",
+            "test_response_has_scenario_version_id",
+            "test_404_for_unknown_version",
+            "test_404_for_draft_version"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "TestStartPlayScene",
+          "methods": [
+            "test_scene_id_is_start_scene",
+            "test_scene_type",
+            "test_scene_title",
+            "test_scene_narration",
+            "test_choices_count",
+            "test_choice_text",
+            "test_choices_do_not_expose_next_or_effects",
+            "test_no_image_url_when_none",
+            "test_image_url_constructed"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 44
+        },
+        {
+          "name": "TestStartPlayProgress",
+          "methods": [
+            "test_step_count_is_zero",
+            "test_choices_made_is_empty"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "TestStartPlayLearnerLabel",
+          "methods": [
+            "test_learner_label_stored",
+            "test_learner_label_defaults_none"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "TestStartPlayEvents",
+          "methods": [
+            "test_start_event_at_seq_zero",
+            "test_view_scene_event_at_seq_one",
+            "test_view_scene_records_scene_id",
+            "test_two_events_total"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 27
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "Event",
+            "EventType"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.play_repo",
+          "specifiers": [
+            "PlayRepository"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "published_version_id",
+        "draft_version_id",
+        "image_version_id",
+        "start",
+        "TestStartPlayStatus",
+        "TestStartPlayScene",
+        "TestStartPlayProgress",
+        "TestStartPlayLearnerLabel",
+        "TestStartPlayEvents"
+      ],
+      "totalLines": 273,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_public_play_step.py": {
+      "filePath": "services/api/tests/test_public_play_step.py",
+      "contentHash": "c933bbab16584295c2fc8b7361d132d894ca361371a0979656cadee0bd85777e",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "play_id",
+          "params": [
+            "client",
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "step",
+          "params": [
+            "client",
+            "play_id",
+            "choice_index"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestStepChoice",
+          "methods": [
+            "test_returns_200",
+            "test_advances_to_next_scene",
+            "test_next_scene_type",
+            "test_done_is_false",
+            "test_step_count_increments",
+            "test_choices_made_updated",
+            "test_choose_event_logged",
+            "test_choose_event_has_choice_text",
+            "test_choose_event_has_delta_json",
+            "test_view_scene_logged_for_next",
+            "test_choice_index_required",
+            "test_invalid_choice_index_returns_400",
+            "test_second_choice_raises_step_count",
+            "test_direct_end_via_choice"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 69
+        },
+        {
+          "name": "TestStepAutoAdvance",
+          "methods": [
+            "after_choice",
+            "test_returns_200",
+            "test_advances_to_next_scene",
+            "test_done_is_false",
+            "test_step_count_two",
+            "test_auto_advance_event_logged",
+            "test_choice_index_not_required"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 32
+        },
+        {
+          "name": "TestStepConditional",
+          "methods": [
+            "after_auto",
+            "test_returns_200",
+            "test_reaches_end_scene",
+            "test_done_true_at_end",
+            "test_conditional_advance_event_logged"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "TestStepCompletion",
+          "methods": [
+            "complete_play_id",
+            "test_done_true",
+            "test_outcome_returned",
+            "test_outcome_message_returned",
+            "test_play_completed_flag_set",
+            "test_complete_event_logged",
+            "test_step_after_complete_returns_400",
+            "test_step_count_at_completion"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 47
+        },
+        {
+          "name": "TestStepErrors",
+          "methods": [
+            "test_404_unknown_play",
+            "test_scene_dto_has_no_internal_fields"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.models.play",
+          "specifiers": [
+            "EventType",
+            "Play"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.play_repo",
+          "specifiers": [
+            "PlayRepository"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "play_id",
+        "step",
+        "TestStepChoice",
+        "TestStepAutoAdvance",
+        "TestStepConditional",
+        "TestStepCompletion",
+        "TestStepErrors"
+      ],
+      "totalLines": 327,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_public_play_view.py": {
+      "filePath": "services/api/tests/test_public_play_view.py",
+      "contentHash": "9289d70a6f6b3248d68288faf8b654d4539b4a84abe2a1464ad193ec267f0361",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_seed_and_start",
+          "params": [
+            "client",
+            "db",
+            "slug",
+            "scenario_json"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "play_id",
+          "params": [
+            "client",
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "reflect_play_id",
+          "params": [
+            "client",
+            "db"
+          ],
+          "returnType": "uuid.UUID",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "get_play",
+          "params": [
+            "client",
+            "play_id"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "step",
+          "params": [
+            "client",
+            "play_id",
+            "choice_index"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestGetPlayBasic",
+          "methods": [
+            "test_returns_200",
+            "test_play_id_in_response",
+            "test_404_for_unknown_play",
+            "test_no_auth_required"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "TestGetPlayAfterStart",
+          "methods": [
+            "test_scene_is_start_scene",
+            "test_scene_type_is_choice",
+            "test_step_count_zero",
+            "test_choices_made_empty",
+            "test_done_false",
+            "test_outcome_none",
+            "test_reflection_required_false"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "TestGetPlayAfterStep",
+          "methods": [
+            "test_scene_advances",
+            "test_step_count_increments",
+            "test_choices_made_populated",
+            "test_done_still_false"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "TestGetPlayAfterTruncate",
+          "methods": [
+            "test_scene_reverts",
+            "test_progress_reverts",
+            "test_done_reverts_to_false"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "TestGetPlayWhenDone",
+          "methods": [
+            "done_play_id",
+            "test_done_true",
+            "test_end_scene_returned",
+            "test_outcome_populated",
+            "test_outcome_message_populated",
+            "test_reflection_required_false_without_tracking",
+            "test_reflection_lists_empty_without_tracking"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "TestGetPlayReflectionFields",
+          "methods": [
+            "done_reflect_id",
+            "test_reflection_required_true",
+            "test_reflection_questions_populated",
+            "test_reflection_prompts_populated",
+            "test_reflection_not_populated_before_done"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 30
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.play_repo",
+          "specifiers": [
+            "PlayRepository"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "_seed_and_start",
+        "play_id",
+        "reflect_play_id",
+        "get_play",
+        "step",
+        "TestGetPlayBasic",
+        "TestGetPlayAfterStart",
+        "TestGetPlayAfterStep",
+        "TestGetPlayAfterTruncate",
+        "TestGetPlayWhenDone",
+        "TestGetPlayReflectionFields"
+      ],
+      "totalLines": 348,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_public_scenario.py": {
+      "filePath": "services/api/tests/test_public_scenario.py",
+      "contentHash": "9664908fc22997e3443a9d61bdbd5f48ea72f66431bfc970f8853cc860aaa438",
+      "functions": [
+        {
+          "name": "client",
+          "params": [
+            "db"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "published_slug",
+          "params": [
+            "db"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "draft_only_slug",
+          "params": [
+            "db"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestGetPublicScenario",
+          "methods": [
+            "test_returns_200_for_published",
+            "test_slug_in_response",
+            "test_version_id_is_uuid",
+            "test_version_number_returned",
+            "test_start_scene_id",
+            "test_metadata_title",
+            "test_metadata_description",
+            "test_metadata_completion_tracking",
+            "test_reflection_questions",
+            "test_reflection_prompts",
+            "test_404_for_unknown_slug",
+            "test_404_for_draft_only_scenario",
+            "test_returns_highest_published_version",
+            "test_no_auth_required",
+            "test_missing_reflection_fields_default_to_empty"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 82
+        }
+      ],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "sqlalchemy.orm",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "app.core.config",
+          "specifiers": [
+            "settings"
+          ]
+        },
+        {
+          "source": "app.db.session",
+          "specifiers": [
+            "get_db"
+          ]
+        },
+        {
+          "source": "app.main",
+          "specifiers": [
+            "app"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "VersionStatus"
+          ]
+        }
+      ],
+      "exports": [
+        "client",
+        "published_slug",
+        "draft_only_slug",
+        "TestGetPublicScenario"
+      ],
+      "totalLines": 187,
+      "hasStructuralAnalysis": true
+    },
+    "services/api/tests/test_scenario_repo.py": {
+      "filePath": "services/api/tests/test_scenario_repo.py",
+      "contentHash": "c914de94c1fce0971a3c7ffc0231cc604ca6ed3317549c4143511185d2ade432",
+      "functions": [
+        {
+          "name": "repo",
+          "params": [
+            "db"
+          ],
+          "returnType": "ScenarioRepository",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "unique_slug",
+          "params": [
+            "prefix"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TestCreateScenario",
+          "methods": [
+            "test_returns_scenario_instance",
+            "test_id_is_assigned",
+            "test_slug_stored",
+            "test_title_stored",
+            "test_description_defaults_to_empty",
+            "test_description_stored",
+            "test_duplicate_slug_raises"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "TestGetBySlug",
+          "methods": [
+            "test_returns_scenario",
+            "test_returns_none_for_unknown_slug",
+            "test_versions_eagerly_loaded",
+            "test_versions_ordered_by_version_number"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "TestCreateVersion",
+          "methods": [
+            "test_returns_scenario_version",
+            "test_first_version_number_is_one",
+            "test_second_version_number_is_two",
+            "test_version_numbers_increment_monotonically",
+            "test_version_numbers_independent_per_scenario",
+            "test_default_status_is_draft",
+            "test_explicit_status_stored",
+            "test_scenario_json_stored",
+            "test_scenario_id_linked"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 62
+        },
+        {
+          "name": "TestGetPublishedVersion",
+          "methods": [
+            "test_returns_none_when_no_published",
+            "test_returns_published_version",
+            "test_returns_none_for_unknown_slug",
+            "test_ignores_draft_versions",
+            "test_returns_highest_version_number_when_multiple_published"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "TestPublishVersion",
+          "methods": [
+            "test_returns_version",
+            "test_status_becomes_published",
+            "test_returns_none_for_unknown_id",
+            "test_previous_published_version_archived",
+            "test_only_one_published_after_publish"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "TestArchiveVersion",
+          "methods": [
+            "test_status_becomes_archived",
+            "test_returns_none_for_unknown_id"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "imports": [
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "sqlalchemy.exc",
+          "specifiers": [
+            "IntegrityError"
+          ]
+        },
+        {
+          "source": "app.models.scenario",
+          "specifiers": [
+            "Scenario",
+            "ScenarioVersion",
+            "VersionStatus"
+          ]
+        },
+        {
+          "source": "app.repositories.scenario_repo",
+          "specifiers": [
+            "ScenarioRepository"
+          ]
+        }
+      ],
+      "exports": [
+        "repo",
+        "unique_slug",
+        "TestCreateScenario",
+        "TestGetBySlug",
+        "TestCreateVersion",
+        "TestGetPublishedVersion",
+        "TestPublishVersion",
+        "TestArchiveVersion"
+      ],
+      "totalLines": 298,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

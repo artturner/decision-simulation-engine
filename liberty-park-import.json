@@ -1,0 +1,168 @@
+{
+  "slug": "liberty-park",
+  "title": "Liberty Park Under Threat",
+  "description": "A civic engagement scenario about saving a community park from development",
+  "status": "published",
+  "scenario_json": {
+    "metadata": {
+      "title": "Liberty Park Under Threat",
+      "description": "A civic engagement scenario about saving a community park from development",
+      "page_title": "Liberty Park Scenario",
+      "page_icon": "🌳",
+      "author": "Civic Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "reflection_questions": [
+      "Why do you think your chosen strategy led to this outcome?",
+      "Compare the effectiveness of individual actions (like your first choice) versus coordinated group actions (your second choice).",
+      "In a real-world situation, what is one thing you would do differently after this experience?"
+    ],
+    "reflection_prompts": [
+      "Think about the specific actions you took and their consequences",
+      "Consider the impact and reach of different engagement strategies",
+      "What did you learn that would change your approach?"
+    ],
+    "variables": {},
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "Liberty Park Under Threat",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_1.png",
+        "description": "A sunny, vibrant image of \"Liberty Park.\" Kids are playing, people are walking dogs, and someone is reading on a bench. In the corner of the screen, a smartphone notification pops up.",
+        "narration": "Liberty Park has been the heart of your neighborhood for generations. But a new proposal could change everything.\n\nEmail Notification Preview: From: City Council\nSubject: Public Hearing on Liberty Park Rezoning...",
+        "type": "auto_advance",
+        "next": "1.1"
+      },
+      "1.1": {
+        "title": "The Council Email",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_1.1.png",
+        "description": "The screen shows a formal email from the city council. Key phrases are highlighted: \"Proposal from LuxCondo Inc.,\" \"rezone for commercial-residential use,\" and \"much-needed city revenue.\"",
+        "narration": "You read the email. The city is seriously considering selling the park to a developer to build luxury condos. The public hearing is in four weeks. You feel you have to do something, but what's the first step?",
+        "type": "choice",
+        "choices": [
+          {"text": "Voice your opinion on social media", "next": "2.1"},
+          {"text": "Start an online petition", "next": "2.2"},
+          {"text": "Email your City Council representative directly", "next": "2.3"}
+        ]
+      },
+      "2.1": {
+        "title": "Social Media Response",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_2.1.png",
+        "description": "A mock social media feed. The learner's post (\"The city wants to sell our park! #SaveLibertyPark\") is visible. It gets a few dozen likes and some angry-face emojis. A single comment reads, \"That's terrible! Someone should do something.\"",
+        "narration": "Your post gets some attention from friends, but the conversation dies out by the next day. You've raised a little awareness, but it's not clear if anyone with influence has noticed.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2.2": {
+        "title": "Online Petition",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_2.2.png",
+        "description": "An online petition webpage. The signature count slowly ticks up to a few hundred over several days. A progress bar shows \"25% of goal.\"",
+        "narration": "Your petition gains some traction online, with a few hundred signatures from around the city. You've created a list of concerned citizens, but the petition has no legal authority.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2.3": {
+        "title": "Council Email Response",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_2.3.png",
+        "description": "A polite, but generic, email response from the office of Councilmember Davis. It includes phrases like \"Thank you for your input,\" \"balancing the budget is a difficult task,\" and \"all perspectives will be considered.\"",
+        "narration": "You receive a form letter response from your council member's office. Your concern has been noted, but you get the feeling your email is just one of hundreds they receive each week.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "3": {
+        "title": "Mid-Scenario Reflection",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_3.png",
+        "description": "Mid-Scenario Reflection Point. The screen shows a local news website with a headline: \"LuxCondo Proposal for Liberty Park Moves to Final Vote.\" The article mentions the proposal is expected to pass easily.",
+        "narration": "Your initial efforts made a small splash, but it wasn't enough to change the momentum. The final City Council vote is now just two weeks away. It's clear that a bigger, more organized effort is needed.",
+        "type": "choice",
+        "choices": [
+          {"text": "Organize a protest for the day of the vote", "next": "4.1"},
+          {"text": "Form a community action group to build a coalition and present an alternative plan", "next": "4.2"},
+          {"text": "It's hopeless. Give up.", "next": "5.3"}
+        ]
+      },
+      "4.1": {
+        "title": "Protest Organization",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_4.1.png",
+        "description": "(Protest Path) A montage of images: designing posters, making calls, and a small but energetic crowd gathering outside City Hall on the day of the vote. A local TV news van is present. A reporter approaches you.",
+        "narration": "Reporter: \"Can you tell us in 30 seconds why the council should reject this proposal?\"",
+        "type": "choice",
+        "choices": [
+          {"text": "\"This is about greedy developers destroying our community!\"", "next": "5.1A"},
+          {"text": "\"This park is a vital public good. We urge the council to explore other revenue options that don't sacrifice our green space.\"", "next": "5.1B"}
+        ]
+      },
+      "4.2": {
+        "title": "Community Action Group",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_4.2.png",
+        "description": "(Community Action Path) A graphic showing a network of connections being built. Icons representing a local historical society, a youth sports league, and a neighborhood business association are linked to your \"Save Liberty Park Action Group.\"",
+        "narration": "You spend the next week making calls and building a coalition of stakeholders. You discover the youth sports league relies on the park's fields, and the local business association fears the construction will hurt their sales. You have allies, but you need a concrete plan.",
+        "type": "choice",
+        "choices": [
+          {"text": "Focus on highlighting the negative impacts of the LuxCondo plan", "next": "5.2A"},
+          {"text": "Develop a counter-proposal to revitalize the park with a mix of community-funded programs and small business vendors to generate revenue", "next": "5.2B"}
+        ]
+      },
+      "5.1A": {
+        "title": "Fiery Protest Coverage",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_5.1A.png",
+        "description": "The 6 o'clock news plays. The news anchor describes the protest as \"fiery but divisive.\" Councilmember Davis is interviewed and says, \"We can't be swayed by angry rhetoric; we have to make tough financial choices.\"",
+        "narration": "Your passionate message made the news, but it may have backfired by alienating potential allies on the council. The vote is about to happen.",
+        "type": "auto_advance",
+        "next": "5.4"
+      },
+      "5.1B": {
+        "title": "Professional Protest Coverage",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_5.1B.png",
+        "description": "The 6 o'clock news plays. Your thoughtful soundbite is featured. The news anchor says, \"Protestors urged the council to find a balanced solution.\" Councilmember Davis looks thoughtful in a brief clip.",
+        "narration": "Your professional message earned respect and put public pressure on the council to reconsider. The vote is about to happen, and the outcome is uncertain.",
+        "type": "auto_advance",
+        "next": "5.4"
+      },
+      "5.2A": {
+        "title": "Opposition Presentation",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_5.2A.png",
+        "description": "At the council meeting, your group presents data on the negative impacts. The developer counters, stating your group has offered \"no viable solutions\" to the city's budget crisis. Some council members look torn.",
+        "narration": "Your presentation was compelling, and you successfully highlighted the downsides of the developer's plan. However, you haven't solved the council's underlying financial problem. The vote is next.",
+        "type": "auto_advance",
+        "next": "5.4"
+      },
+      "5.2B": {
+        "title": "Counter-Proposal Presentation",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_5.2B.png",
+        "description": "At the council meeting, your group presents your counter-proposal. You show a budget for a \"Liberty Park Revitalization Fund\" and letters of support from your coalition partners. Councilmember Davis looks impressed.",
+        "narration": "Your counter-proposal has changed the entire debate. You've given the council a politically viable alternative to simply selling the park. They are impressed. The vote is next.",
+        "type": "auto_advance",
+        "next": "5.5"
+      },
+      "5.3": {
+        "title": "End State: Failure",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_5.3.png",
+        "description": "(End State: Failure) The screen shows an image of the park, which fades to a picture of a construction site with a \"Future Home of LuxCondo\" sign.",
+        "narration": "Without organized opposition, the developer's proposal passed unanimously. Construction on the new condos will begin next month. Liberty Park is gone forever.",
+        "type": "end",
+        "outcome": "failure",
+        "outcome_message": "Scenario Complete - Park Lost"
+      },
+      "5.4": {
+        "title": "End State: Compromise",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_5.4.png",
+        "description": "(End State: Compromise) The screen shows a news headline: \"Council Reaches Compromise on Liberty Park: Smaller Development, Public Green Space Preserved.\"",
+        "narration": "Your public pressure campaign worked. The council was unwilling to ignore the protest and sent the developer back to the drawing board. It's not a total victory, but you saved half of the park.",
+        "type": "end",
+        "outcome": "compromise",
+        "outcome_message": "Scenario Complete - Partial Success"
+      },
+      "5.5": {
+        "title": "End State: Optimal Outcome",
+        "image": "https://pub-624be4b4b20f4a2b93ad6eab81196278.r2.dev/liberty-park/scene_5.5.png",
+        "description": "(End State: Optimal Outcome) The screen shows a news headline: \"City Council Rejects LuxCondo, Approves Community-Led Revitalization Plan for Liberty Park.\" The image shows a celebration in the park.",
+        "narration": "Your well-researched and coalition-backed plan was too good to ignore. The council voted to support your community proposal. Liberty Park is not only saved—it's going to be better than ever.",
+        "type": "end",
+        "outcome": "success",
+        "outcome_message": "Scenario Complete - Full Victory!"
+      }
+    }
+  }
+}

@@ -1,0 +1,1082 @@
+{
+  "name": "decision-simulation-engine",
+  "description": "A production-ready MVP for interactive branching scenarios (decision-based simulations) powered by a JSON-defined state machine, pairing a Next.js learner UI with a FastAPI execution API, a pure Python engine and safe expression parser, and a Postgres event/reflection store with analytics and CSV export. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
+  "languages": [
+    "css",
+    "dockerfile",
+    "javascript",
+    "json",
+    "markdown",
+    "mako",
+    "python",
+    "toml",
+    "typescript",
+    "yaml"
+  ],
+  "frameworks": [
+    "Next.js",
+    "React",
+    "React Query",
+    "Tailwind CSS",
+    "Jest",
+    "Playwright",
+    "FastAPI",
+    "SQLAlchemy",
+    "Alembic",
+    "Pydantic",
+    "Pytest",
+    "Postgres",
+    "Docker",
+    "Docker Compose"
+  ],
+  "files": [
+    {
+      "path": ".dockerignore",
+      "language": "unknown",
+      "sizeLines": 31,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "apps/web/.dockerignore",
+      "language": "unknown",
+      "sizeLines": 12,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "apps/web/.env.local.example",
+      "language": "config",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": "apps/web/.gitkeep",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/[slug]/complete/[playId]/page.test.tsx",
+      "language": "typescript",
+      "sizeLines": 289,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/[slug]/complete/[playId]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 134,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/[slug]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 125,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/[slug]/play/[playId]/page.test.tsx",
+      "language": "typescript",
+      "sizeLines": 121,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/[slug]/play/[playId]/page.tsx",
+      "language": "typescript",
+      "sizeLines": 162,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/globals.css",
+      "language": "css",
+      "sizeLines": 3,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "apps/web/app/layout.tsx",
+      "language": "typescript",
+      "sizeLines": 22,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/page.tsx",
+      "language": "typescript",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/app/providers.tsx",
+      "language": "typescript",
+      "sizeLines": 26,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/components/ReflectionForm.tsx",
+      "language": "typescript",
+      "sizeLines": 211,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/components/SceneRenderer.test.tsx",
+      "language": "typescript",
+      "sizeLines": 209,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/components/SceneRenderer.tsx",
+      "language": "typescript",
+      "sizeLines": 40,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/components/scenes/ChoiceScene.tsx",
+      "language": "typescript",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/components/scenes/ContinueScene.tsx",
+      "language": "typescript",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/components/scenes/EndScene.tsx",
+      "language": "typescript",
+      "sizeLines": 49,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 45,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "apps/web/e2e/fixtures/test-scenario.json",
+      "language": "json",
+      "sizeLines": 41,
+      "fileCategory": "config"
+    },
+    {
+      "path": "apps/web/e2e/smoke.spec.ts",
+      "language": "typescript",
+      "sizeLines": 247,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/jest.config.js",
+      "language": "javascript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/jest.setup.ts",
+      "language": "typescript",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/lib/api/client.ts",
+      "language": "typescript",
+      "sizeLines": 157,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/lib/api/types.ts",
+      "language": "typescript",
+      "sizeLines": 141,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/next.config.js",
+      "language": "javascript",
+      "sizeLines": 6,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/package.json",
+      "language": "json",
+      "sizeLines": 39,
+      "fileCategory": "config"
+    },
+    {
+      "path": "apps/web/playwright.config.ts",
+      "language": "typescript",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/postcss.config.js",
+      "language": "javascript",
+      "sizeLines": 6,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/tailwind.config.ts",
+      "language": "typescript",
+      "sizeLines": 16,
+      "fileCategory": "code"
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "language": "json",
+      "sizeLines": 41,
+      "fileCategory": "config"
+    },
+    {
+      "path": "docs/api.md",
+      "language": "markdown",
+      "sizeLines": 18,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/decisions/ADR-001-stack.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/decisions/ADR-002-event-sourcing-go-back.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/decisions/ADR-003-versioning.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/decisions/ADR-004-safe-expressions.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/schema.md",
+      "language": "markdown",
+      "sizeLines": 47,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "infra/.gitkeep",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "infra/docker-compose.yml",
+      "language": "yaml",
+      "sizeLines": 78,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "packages/engine/.gitkeep",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/pyproject.toml",
+      "language": "toml",
+      "sizeLines": 21,
+      "fileCategory": "config"
+    },
+    {
+      "path": "packages/engine/src/engine/__init__.py",
+      "language": "python",
+      "sizeLines": 4,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/src/engine/engine.py",
+      "language": "python",
+      "sizeLines": 227,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/src/engine/executors.py",
+      "language": "python",
+      "sizeLines": 194,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/src/engine/models.py",
+      "language": "python",
+      "sizeLines": 134,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/src/engine/state.py",
+      "language": "python",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/src/engine/validator.py",
+      "language": "python",
+      "sizeLines": 112,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/tests/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/tests/conftest.py",
+      "language": "python",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/tests/test_engine.py",
+      "language": "python",
+      "sizeLines": 497,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/tests/test_executors.py",
+      "language": "python",
+      "sizeLines": 439,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/tests/test_models.py",
+      "language": "python",
+      "sizeLines": 378,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/tests/test_state.py",
+      "language": "python",
+      "sizeLines": 352,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/engine/tests/test_validator.py",
+      "language": "python",
+      "sizeLines": 344,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/pyproject.toml",
+      "language": "toml",
+      "sizeLines": 18,
+      "fileCategory": "config"
+    },
+    {
+      "path": "packages/expr/src/expr/__init__.py",
+      "language": "python",
+      "sizeLines": 4,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/src/expr/ast_nodes.py",
+      "language": "python",
+      "sizeLines": 68,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/src/expr/evaluator.py",
+      "language": "python",
+      "sizeLines": 111,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/src/expr/lexer.py",
+      "language": "python",
+      "sizeLines": 155,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/src/expr/parser.py",
+      "language": "python",
+      "sizeLines": 143,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/src/expr/tokens.py",
+      "language": "python",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/tests/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/tests/conftest.py",
+      "language": "python",
+      "sizeLines": 6,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/tests/test_ast.py",
+      "language": "python",
+      "sizeLines": 232,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/tests/test_evaluator.py",
+      "language": "python",
+      "sizeLines": 382,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/tests/test_lexer.py",
+      "language": "python",
+      "sizeLines": 273,
+      "fileCategory": "code"
+    },
+    {
+      "path": "packages/expr/tests/test_parser.py",
+      "language": "python",
+      "sizeLines": 332,
+      "fileCategory": "code"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 278,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "SAMPLE_SCENARIO.json",
+      "language": "json",
+      "sizeLines": 61,
+      "fileCategory": "config"
+    },
+    {
+      "path": "services/api/.dockerignore",
+      "language": "unknown",
+      "sizeLines": 17,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "services/api/.gitkeep",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/alembic.ini",
+      "language": "config",
+      "sizeLines": 61,
+      "fileCategory": "config"
+    },
+    {
+      "path": "services/api/alembic/env.py",
+      "language": "python",
+      "sizeLines": 103,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/alembic/README",
+      "language": "unknown",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/alembic/script.py.mako",
+      "language": "mako",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/alembic/versions/20260219_0001_initial_schema.py",
+      "language": "python",
+      "sizeLines": 227,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/api/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/api/deps.py",
+      "language": "python",
+      "sizeLines": 57,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/api/v1/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/api/v1/admin.py",
+      "language": "python",
+      "sizeLines": 341,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/api/v1/public.py",
+      "language": "python",
+      "sizeLines": 650,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/core/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/core/config.py",
+      "language": "python",
+      "sizeLines": 70,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/db/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/db/base.py",
+      "language": "python",
+      "sizeLines": 16,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/db/session.py",
+      "language": "python",
+      "sizeLines": 46,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/main.py",
+      "language": "python",
+      "sizeLines": 63,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/models/__init__.py",
+      "language": "python",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/models/play.py",
+      "language": "python",
+      "sizeLines": 254,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/models/scenario.py",
+      "language": "python",
+      "sizeLines": 167,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/repositories/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/repositories/play_repo.py",
+      "language": "python",
+      "sizeLines": 237,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/repositories/scenario_repo.py",
+      "language": "python",
+      "sizeLines": 165,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/schemas/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/schemas/admin.py",
+      "language": "python",
+      "sizeLines": 104,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/schemas/public.py",
+      "language": "python",
+      "sizeLines": 206,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/services/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/services/analytics.py",
+      "language": "python",
+      "sizeLines": 190,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/app/services/export.py",
+      "language": "python",
+      "sizeLines": 140,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 30,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "services/api/pytest.ini",
+      "language": "config",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": "services/api/requirements.txt",
+      "language": "txt",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "services/api/scripts/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/scripts/cherokee_fixture.json",
+      "language": "json",
+      "sizeLines": 61,
+      "fileCategory": "config"
+    },
+    {
+      "path": "services/api/scripts/new-lib-park.json",
+      "language": "json",
+      "sizeLines": 157,
+      "fileCategory": "config"
+    },
+    {
+      "path": "services/api/scripts/seed.py",
+      "language": "python",
+      "sizeLines": 156,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/conftest.py",
+      "language": "python",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_admin_analytics.py",
+      "language": "python",
+      "sizeLines": 544,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_admin_auth.py",
+      "language": "python",
+      "sizeLines": 97,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_admin_endpoints.py",
+      "language": "python",
+      "sizeLines": 305,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_models_play.py",
+      "language": "python",
+      "sizeLines": 326,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_models_scenario.py",
+      "language": "python",
+      "sizeLines": 210,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_play_repo.py",
+      "language": "python",
+      "sizeLines": 447,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_public_play_back.py",
+      "language": "python",
+      "sizeLines": 319,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_public_play_reflection.py",
+      "language": "python",
+      "sizeLines": 201,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_public_play_start.py",
+      "language": "python",
+      "sizeLines": 272,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_public_play_step.py",
+      "language": "python",
+      "sizeLines": 326,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_public_play_view.py",
+      "language": "python",
+      "sizeLines": 347,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_public_scenario.py",
+      "language": "python",
+      "sizeLines": 186,
+      "fileCategory": "code"
+    },
+    {
+      "path": "services/api/tests/test_scenario_repo.py",
+      "language": "python",
+      "sizeLines": 297,
+      "fileCategory": "code"
+    }
+  ],
+  "totalFiles": 123,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "moderate",
+  "importMap": {
+    ".dockerignore": [],
+    "apps/web/.dockerignore": [],
+    "apps/web/.env.local.example": [],
+    "apps/web/.gitkeep": [],
+    "apps/web/app/[slug]/complete/[playId]/page.test.tsx": [
+      "apps/web/app/[slug]/complete/[playId]/page.tsx",
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/app/[slug]/complete/[playId]/page.tsx": [
+      "apps/web/components/ReflectionForm.tsx",
+      "apps/web/lib/api/client.ts"
+    ],
+    "apps/web/app/[slug]/page.tsx": [
+      "apps/web/lib/api/client.ts"
+    ],
+    "apps/web/app/[slug]/play/[playId]/page.test.tsx": [
+      "apps/web/app/[slug]/play/[playId]/page.tsx",
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/app/[slug]/play/[playId]/page.tsx": [
+      "apps/web/components/SceneRenderer.tsx",
+      "apps/web/lib/api/client.ts",
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/app/globals.css": [],
+    "apps/web/app/layout.tsx": [
+      "apps/web/app/globals.css",
+      "apps/web/app/providers.tsx"
+    ],
+    "apps/web/app/page.tsx": [],
+    "apps/web/app/providers.tsx": [],
+    "apps/web/components/ReflectionForm.tsx": [
+      "apps/web/lib/api/client.ts"
+    ],
+    "apps/web/components/SceneRenderer.test.tsx": [
+      "apps/web/components/SceneRenderer.tsx",
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/components/SceneRenderer.tsx": [
+      "apps/web/components/scenes/ChoiceScene.tsx",
+      "apps/web/components/scenes/ContinueScene.tsx",
+      "apps/web/components/scenes/EndScene.tsx",
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/components/scenes/ChoiceScene.tsx": [
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/components/scenes/ContinueScene.tsx": [
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/components/scenes/EndScene.tsx": [
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/Dockerfile": [],
+    "apps/web/e2e/fixtures/test-scenario.json": [],
+    "apps/web/e2e/smoke.spec.ts": [
+      "apps/web/e2e/fixtures/test-scenario.json"
+    ],
+    "apps/web/jest.config.js": [],
+    "apps/web/jest.setup.ts": [],
+    "apps/web/lib/api/client.ts": [
+      "apps/web/lib/api/types.ts"
+    ],
+    "apps/web/lib/api/types.ts": [],
+    "apps/web/next.config.js": [],
+    "apps/web/package.json": [],
+    "apps/web/playwright.config.ts": [],
+    "apps/web/postcss.config.js": [],
+    "apps/web/tailwind.config.ts": [],
+    "apps/web/tsconfig.json": [],
+    "docs/api.md": [],
+    "docs/decisions/ADR-001-stack.md": [],
+    "docs/decisions/ADR-002-event-sourcing-go-back.md": [],
+    "docs/decisions/ADR-003-versioning.md": [],
+    "docs/decisions/ADR-004-safe-expressions.md": [],
+    "docs/schema.md": [],
+    "infra/.gitkeep": [],
+    "infra/docker-compose.yml": [],
+    "packages/engine/.gitkeep": [],
+    "packages/engine/pyproject.toml": [],
+    "packages/engine/src/engine/__init__.py": [
+      "packages/engine/src/engine/engine.py",
+      "packages/engine/src/engine/validator.py"
+    ],
+    "packages/engine/src/engine/engine.py": [
+      "packages/engine/src/engine/executors.py",
+      "packages/engine/src/engine/models.py",
+      "packages/engine/src/engine/state.py",
+      "packages/engine/src/engine/validator.py"
+    ],
+    "packages/engine/src/engine/executors.py": [
+      "packages/engine/src/engine/models.py",
+      "packages/engine/src/engine/state.py"
+    ],
+    "packages/engine/src/engine/models.py": [],
+    "packages/engine/src/engine/state.py": [],
+    "packages/engine/src/engine/validator.py": [
+      "packages/engine/src/engine/models.py"
+    ],
+    "packages/engine/tests/__init__.py": [],
+    "packages/engine/tests/conftest.py": [],
+    "packages/engine/tests/test_engine.py": [],
+    "packages/engine/tests/test_executors.py": [],
+    "packages/engine/tests/test_models.py": [],
+    "packages/engine/tests/test_state.py": [],
+    "packages/engine/tests/test_validator.py": [],
+    "packages/expr/pyproject.toml": [],
+    "packages/expr/src/expr/__init__.py": [
+      "packages/expr/src/expr/evaluator.py",
+      "packages/expr/src/expr/parser.py"
+    ],
+    "packages/expr/src/expr/ast_nodes.py": [
+      "packages/expr/src/expr/tokens.py"
+    ],
+    "packages/expr/src/expr/evaluator.py": [
+      "packages/expr/src/expr/ast_nodes.py",
+      "packages/expr/src/expr/parser.py",
+      "packages/expr/src/expr/tokens.py"
+    ],
+    "packages/expr/src/expr/lexer.py": [
+      "packages/expr/src/expr/tokens.py"
+    ],
+    "packages/expr/src/expr/parser.py": [
+      "packages/expr/src/expr/ast_nodes.py",
+      "packages/expr/src/expr/lexer.py",
+      "packages/expr/src/expr/tokens.py"
+    ],
+    "packages/expr/src/expr/tokens.py": [],
+    "packages/expr/tests/__init__.py": [],
+    "packages/expr/tests/conftest.py": [],
+    "packages/expr/tests/test_ast.py": [],
+    "packages/expr/tests/test_evaluator.py": [],
+    "packages/expr/tests/test_lexer.py": [],
+    "packages/expr/tests/test_parser.py": [],
+    "README.md": [],
+    "SAMPLE_SCENARIO.json": [],
+    "services/api/.dockerignore": [],
+    "services/api/.gitkeep": [],
+    "services/api/alembic.ini": [],
+    "services/api/alembic/env.py": [
+      "services/api/app/core/config.py",
+      "services/api/app/db/base.py",
+      "services/api/app/models/__init__.py"
+    ],
+    "services/api/alembic/README": [],
+    "services/api/alembic/script.py.mako": [],
+    "services/api/alembic/versions/20260219_0001_initial_schema.py": [],
+    "services/api/app/__init__.py": [],
+    "services/api/app/api/__init__.py": [],
+    "services/api/app/api/deps.py": [
+      "services/api/app/core/config.py",
+      "services/api/app/db/session.py"
+    ],
+    "services/api/app/api/v1/__init__.py": [],
+    "services/api/app/api/v1/admin.py": [
+      "services/api/app/api/deps.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/scenario_repo.py",
+      "services/api/app/schemas/admin.py",
+      "services/api/app/services/analytics.py",
+      "services/api/app/services/export.py"
+    ],
+    "services/api/app/api/v1/public.py": [
+      "services/api/app/api/deps.py",
+      "services/api/app/core/config.py",
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/play_repo.py",
+      "services/api/app/repositories/scenario_repo.py",
+      "services/api/app/schemas/public.py"
+    ],
+    "services/api/app/core/__init__.py": [],
+    "services/api/app/core/config.py": [],
+    "services/api/app/db/__init__.py": [],
+    "services/api/app/db/base.py": [],
+    "services/api/app/db/session.py": [
+      "services/api/app/core/config.py"
+    ],
+    "services/api/app/main.py": [
+      "services/api/app/api/v1/admin.py",
+      "services/api/app/api/v1/public.py",
+      "services/api/app/core/config.py"
+    ],
+    "services/api/app/models/__init__.py": [
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py"
+    ],
+    "services/api/app/models/play.py": [
+      "services/api/app/db/base.py"
+    ],
+    "services/api/app/models/scenario.py": [
+      "services/api/app/db/base.py"
+    ],
+    "services/api/app/repositories/__init__.py": [],
+    "services/api/app/repositories/play_repo.py": [
+      "services/api/app/models/play.py"
+    ],
+    "services/api/app/repositories/scenario_repo.py": [
+      "services/api/app/models/scenario.py"
+    ],
+    "services/api/app/schemas/__init__.py": [],
+    "services/api/app/schemas/admin.py": [],
+    "services/api/app/schemas/public.py": [],
+    "services/api/app/services/__init__.py": [],
+    "services/api/app/services/analytics.py": [
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py"
+    ],
+    "services/api/app/services/export.py": [
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/services/analytics.py"
+    ],
+    "services/api/Dockerfile": [],
+    "services/api/pytest.ini": [],
+    "services/api/requirements.txt": [],
+    "services/api/scripts/__init__.py": [],
+    "services/api/scripts/cherokee_fixture.json": [],
+    "services/api/scripts/new-lib-park.json": [],
+    "services/api/scripts/seed.py": [],
+    "services/api/tests/__init__.py": [],
+    "services/api/tests/conftest.py": [
+      "services/api/app/core/config.py",
+      "services/api/app/db/base.py",
+      "services/api/app/models/__init__.py"
+    ],
+    "services/api/tests/test_admin_analytics.py": [
+      "services/api/app/core/config.py",
+      "services/api/app/db/session.py",
+      "services/api/app/main.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_admin_auth.py": [
+      "services/api/app/api/deps.py",
+      "services/api/app/api/v1/admin.py",
+      "services/api/app/core/config.py"
+    ],
+    "services/api/tests/test_admin_endpoints.py": [
+      "services/api/app/core/config.py",
+      "services/api/app/db/session.py",
+      "services/api/app/main.py"
+    ],
+    "services/api/tests/test_models_play.py": [
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py"
+    ],
+    "services/api/tests/test_models_scenario.py": [
+      "services/api/app/models/scenario.py"
+    ],
+    "services/api/tests/test_play_repo.py": [
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/play_repo.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_public_play_back.py": [
+      "services/api/app/db/session.py",
+      "services/api/app/main.py",
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/play_repo.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_public_play_reflection.py": [
+      "services/api/app/db/session.py",
+      "services/api/app/main.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/play_repo.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_public_play_start.py": [
+      "services/api/app/db/session.py",
+      "services/api/app/main.py",
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/play_repo.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_public_play_step.py": [
+      "services/api/app/db/session.py",
+      "services/api/app/main.py",
+      "services/api/app/models/play.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/play_repo.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_public_play_view.py": [
+      "services/api/app/db/session.py",
+      "services/api/app/main.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/play_repo.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_public_scenario.py": [
+      "services/api/app/core/config.py",
+      "services/api/app/db/session.py",
+      "services/api/app/main.py",
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ],
+    "services/api/tests/test_scenario_repo.py": [
+      "services/api/app/models/scenario.py",
+      "services/api/app/repositories/scenario_repo.py"
+    ]
+  }
+}

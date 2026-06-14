@@ -53,6 +53,8 @@ from app.schemas.public import (
     SceneDTO,
     ScenarioMetadataOut,
     ScenarioPublicResponse,
+    StudentClassStatusResponse,
+    StudentScenarioStatus,
     StepRequest,
     StepResponse,
 )
@@ -132,6 +134,50 @@ def _build_scene_dto(
         choices=choices,
         outcome=raw.get("outcome"),
         outcome_message=raw.get("outcome_message"),
+    )
+
+
+def _visible_scenarios_for_roll(
+    roll_id: uuid.UUID,
+    db: Session,
+) -> list[ClassPickerScenarioOut]:
+    roll_repo = RollRepository(db)
+    scenario_repo = ScenarioRepository(db)
+    assignments = roll_repo.visible_assignments_for_roll(roll_id)
+
+    scenarios_out: list[ClassPickerScenarioOut] = []
+    for assignment in assignments:
+        scenario_orm: Scenario | None = db.get(Scenario, assignment.scenario_id)
+        if scenario_orm is None:
+            continue
+        version = scenario_repo.get_published_version(scenario_orm.slug)
+        if version is None:
+            continue
+        engine_scenario = EngineScenario.model_validate(version.scenario_json)
+        scenarios_out.append(
+            ClassPickerScenarioOut(
+                scenario_version_id=version.id,
+                slug=scenario_orm.slug,
+                title=engine_scenario.metadata.title or scenario_orm.title,
+                description=engine_scenario.metadata.description or scenario_orm.description,
+                sort_order=assignment.sort_order,
+            )
+        )
+    return scenarios_out
+
+
+def _class_picker_response(roll_id: uuid.UUID, db: Session) -> ClassPickerResponse:
+    roll_repo = RollRepository(db)
+    roll = roll_repo.get(roll_id)
+    if roll is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Class roll not found.")
+
+    return ClassPickerResponse(
+        roll_id=roll.id,
+        roll_name=roll.name,
+        join_code=roll.join_code,
+        student_names=list(roll.student_names),
+        scenarios=_visible_scenarios_for_roll(roll.id, db),
     )
 
 
@@ -289,38 +335,93 @@ def get_class_picker(
         ``HTTP 200`` with ``ClassPickerResponse``.
         ``HTTP 404`` if *roll_id* does not exist.
     """
+    return _class_picker_response(roll_id, db)
+
+
+# ---------------------------------------------------------------------------
+# GET /public/classes/code/{join_code}  — class-code picker
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/classes/code/{join_code}",
+    response_model=ClassPickerResponse,
+    summary="Get the class picker by join code",
+)
+def get_class_picker_by_code(
+    join_code: str,
+    db: Session = Depends(get_db),
+) -> ClassPickerResponse:
+    """Return a class picker using the student-facing join code."""
     roll_repo = RollRepository(db)
-    roll = roll_repo.get(roll_id)
+    roll = roll_repo.get_by_join_code(join_code)
     if roll is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Class roll not found.")
+    return _class_picker_response(roll.id, db)
 
-    assignments = roll_repo.visible_assignments_for_roll(roll_id)
 
-    scenarios_out: list[ClassPickerScenarioOut] = []
-    for assignment in assignments:
-        scenario_orm: Scenario | None = db.get(Scenario, assignment.scenario_id)
-        if scenario_orm is None:
-            continue
-        repo = ScenarioRepository(db)
-        version = repo.get_published_version(scenario_orm.slug)
-        if version is None:
-            continue
-        engine_scenario = EngineScenario.model_validate(version.scenario_json)
-        scenarios_out.append(
-            ClassPickerScenarioOut(
-                scenario_version_id=version.id,
-                slug=scenario_orm.slug,
-                title=engine_scenario.metadata.title or scenario_orm.title,
-                description=engine_scenario.metadata.description or scenario_orm.description,
-                sort_order=assignment.sort_order,
+# ---------------------------------------------------------------------------
+# GET /public/classes/code/{join_code}/students/{student_name}
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/classes/code/{join_code}/students/{student_name}",
+    response_model=StudentClassStatusResponse,
+    summary="Get visible assignments and attempt status for a student",
+)
+def get_student_class_status(
+    join_code: str,
+    student_name: str,
+    db: Session = Depends(get_db),
+) -> StudentClassStatusResponse:
+    """Return assigned scenarios with resume information for one roster name."""
+    roll_repo = RollRepository(db)
+    roll = roll_repo.get_by_join_code(join_code)
+    if roll is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Class roll not found.")
+    if student_name not in roll.student_names:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="student_name must match a name on the class roll.",
+        )
+
+    play_repo = PlayRepository(db)
+    scenarios: list[StudentScenarioStatus] = []
+    for scenario in _visible_scenarios_for_roll(roll.id, db):
+        in_progress = play_repo.find_in_progress(
+            class_roll_id=roll.id,
+            learner_label=student_name,
+            scenario_version_id=scenario.scenario_version_id,
+        )
+        latest_completed = play_repo.latest_completed_attempt(
+            class_roll_id=roll.id,
+            learner_label=student_name,
+            scenario_version_id=scenario.scenario_version_id,
+        )
+        scenarios.append(
+            StudentScenarioStatus(
+                scenario_version_id=scenario.scenario_version_id,
+                slug=scenario.slug,
+                title=scenario.title,
+                description=scenario.description,
+                sort_order=scenario.sort_order,
+                in_progress_play_id=in_progress.id if in_progress else None,
+                submitted_count=play_repo.count_completed_attempts(
+                    class_roll_id=roll.id,
+                    learner_label=student_name,
+                    scenario_version_id=scenario.scenario_version_id,
+                ),
+                latest_submitted_play_id=latest_completed.id if latest_completed else None,
             )
         )
 
-    return ClassPickerResponse(
-        roll_id=roll_id,
+    return StudentClassStatusResponse(
+        roll_id=roll.id,
         roll_name=roll.name,
-        student_names=list(roll.student_names),
-        scenarios=scenarios_out,
+        join_code=roll.join_code,
+        student_name=student_name,
+        scenarios=scenarios,
     )
 
 

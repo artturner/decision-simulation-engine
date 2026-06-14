@@ -74,8 +74,32 @@ class ClassPickerResponse(BaseModel):
 
     roll_id: uuid.UUID
     roll_name: str
+    join_code: str
     student_names: list[str]
     scenarios: list[ClassPickerScenarioOut]
+
+
+class StudentScenarioStatus(BaseModel):
+    """Scenario plus this student's attempt summary for the class picker."""
+
+    scenario_version_id: uuid.UUID
+    slug: str
+    title: str
+    description: str
+    sort_order: int | None
+    in_progress_play_id: uuid.UUID | None
+    submitted_count: int
+    latest_submitted_play_id: uuid.UUID | None
+
+
+class StudentClassStatusResponse(BaseModel):
+    """Visible class assignments with attempt state for one student name."""
+
+    roll_id: uuid.UUID
+    roll_name: str
+    join_code: str
+    student_name: str
+    scenarios: list[StudentScenarioStatus]
 
 
 # ---------------------------------------------------------------------------

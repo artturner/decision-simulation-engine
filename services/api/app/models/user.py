@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import enum
+import secrets
+import string
 import uuid
 from datetime import datetime
 
@@ -10,6 +12,14 @@ from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+
+
+JOIN_CODE_ALPHABET = string.ascii_uppercase + string.digits
+
+
+def generate_join_code() -> str:
+    """Return a short, human-readable class code."""
+    return "".join(secrets.choice(JOIN_CODE_ALPHABET) for _ in range(6))
 
 
 class UserRole(str, enum.Enum):
@@ -84,6 +94,14 @@ class ClassRoll(Base):
         String(500),
         nullable=False,
         comment='Display name, e.g. "Period 3, Spring 2026"',
+    )
+    join_code: Mapped[str] = mapped_column(
+        String(16),
+        unique=True,
+        nullable=False,
+        index=True,
+        default=generate_join_code,
+        comment="Student-facing class code used on /join",
     )
     student_names: Mapped[list] = mapped_column(
         JSONB,

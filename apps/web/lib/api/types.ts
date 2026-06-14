@@ -48,8 +48,28 @@ export interface ClassPickerScenario {
 export interface ClassPickerResponse {
   roll_id: string;
   roll_name: string;
+  join_code: string;
   student_names: string[];
   scenarios: ClassPickerScenario[];
+}
+
+export interface StudentScenarioStatus {
+  scenario_version_id: string;
+  slug: string;
+  title: string;
+  description: string;
+  sort_order: number | null;
+  in_progress_play_id: string | null;
+  submitted_count: number;
+  latest_submitted_play_id: string | null;
+}
+
+export interface StudentClassStatusResponse {
+  roll_id: string;
+  roll_name: string;
+  join_code: string;
+  student_name: string;
+  scenarios: StudentScenarioStatus[];
 }
 
 // ---------------------------------------------------------------------------

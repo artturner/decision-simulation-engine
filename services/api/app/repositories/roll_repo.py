@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import uuid
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.assignment import ScenarioRollAssignment
-from app.models.user import ClassRoll
+from app.models.user import ClassRoll, generate_join_code
 
 
 class RollRepository:
@@ -20,13 +20,28 @@ class RollRepository:
     # ------------------------------------------------------------------
 
     def create(self, owner_id: uuid.UUID, name: str, student_names: list[str]) -> ClassRoll:
-        roll = ClassRoll(owner_id=owner_id, name=name, student_names=student_names)
-        self._db.add(roll)
-        self._db.flush()
-        return roll
+        for _ in range(10):
+            join_code = generate_join_code()
+            if self.get_by_join_code(join_code) is not None:
+                continue
+            roll = ClassRoll(
+                owner_id=owner_id,
+                name=name,
+                student_names=student_names,
+                join_code=join_code,
+            )
+            self._db.add(roll)
+            self._db.flush()
+            return roll
+        raise RuntimeError("Could not generate a unique join code")
 
     def get(self, roll_id: uuid.UUID) -> ClassRoll | None:
         return self._db.get(ClassRoll, roll_id)
+
+    def get_by_join_code(self, code: str) -> ClassRoll | None:
+        normalized = code.strip().upper()
+        stmt = select(ClassRoll).where(func.upper(ClassRoll.join_code) == normalized)
+        return self._db.scalars(stmt).first()
 
     def list_for_owner(self, owner_id: uuid.UUID) -> list[ClassRoll]:
         stmt = select(ClassRoll).where(ClassRoll.owner_id == owner_id).order_by(ClassRoll.name)

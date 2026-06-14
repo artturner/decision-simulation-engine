@@ -124,6 +124,7 @@ class ClassRollOut(BaseModel):
 
     id: uuid.UUID
     name: str
+    join_code: str
     student_names: list
     created_at: datetime
 

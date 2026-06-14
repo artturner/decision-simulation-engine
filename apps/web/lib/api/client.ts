@@ -15,6 +15,7 @@ import type {
   ReflectionRequest,
   ReflectionResponse,
   ScenarioPublicResponse,
+  StudentClassStatusResponse,
   StepRequest,
   StepResponse,
 } from "./types";
@@ -86,6 +87,34 @@ async function apiFetch<T>(
  */
 export function getClassPicker(rollId: string): Promise<ClassPickerResponse> {
   return apiFetch<ClassPickerResponse>(`/class/${rollId}`);
+}
+
+/**
+ * GET /public/classes/code/{joinCode}
+ *
+ * Returns the class roll's student name list and visible scenarios by
+ * student-facing join code.
+ */
+export function getClassPickerByCode(
+  joinCode: string,
+): Promise<ClassPickerResponse> {
+  return apiFetch<ClassPickerResponse>(
+    `/classes/code/${encodeURIComponent(joinCode)}`,
+  );
+}
+
+/**
+ * GET /public/classes/code/{joinCode}/students/{studentName}
+ *
+ * Returns visible scenarios plus attempt status for the selected student.
+ */
+export function getStudentClassStatus(
+  joinCode: string,
+  studentName: string,
+): Promise<StudentClassStatusResponse> {
+  return apiFetch<StudentClassStatusResponse>(
+    `/classes/code/${encodeURIComponent(joinCode)}/students/${encodeURIComponent(studentName)}`,
+  );
 }
 
 /**

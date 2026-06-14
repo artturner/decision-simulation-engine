@@ -3,8 +3,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { ApiClientError, getClassPicker, startPlay } from "@/lib/api/client";
-import type { ClassPickerScenario } from "@/lib/api/types";
+import {
+  ApiClientError,
+  getClassPicker,
+  getStudentClassStatus,
+  startPlay,
+} from "@/lib/api/client";
+import type { StudentScenarioStatus } from "@/lib/api/types";
 
 export default function ClassPickerPage() {
   const params = useParams();
@@ -12,8 +17,6 @@ export default function ClassPickerPage() {
   const router = useRouter();
 
   const [selectedName, setSelectedName] = useState<string>("");
-  const [selectedScenario, setSelectedScenario] =
-    useState<ClassPickerScenario | null>(null);
 
   // ------------------------------------------------------------------
   // Fetch roll + visible scenarios
@@ -28,22 +31,38 @@ export default function ClassPickerPage() {
     enabled: Boolean(rollId),
   });
 
+  const {
+    data: status,
+    isLoading: statusLoading,
+    error: statusError,
+  } = useQuery({
+    queryKey: ["student-class-status", roll?.join_code, selectedName],
+    queryFn: () => getStudentClassStatus(roll!.join_code, selectedName),
+    enabled: Boolean(roll?.join_code && selectedName),
+  });
+
   // ------------------------------------------------------------------
   // Start play mutation — passes name + roll context to the API
   // ------------------------------------------------------------------
   const startMutation = useMutation({
-    mutationFn: () =>
+    mutationFn: (scenario: StudentScenarioStatus) =>
       startPlay({
-        scenario_version_id: selectedScenario!.scenario_version_id,
+        scenario_version_id: scenario.scenario_version_id,
         learner_label: selectedName,
         class_roll_id: rollId,
       }),
-    onSuccess: (data) => {
-      router.push(`/${selectedScenario!.slug}/play/${data.play_id}`);
+    onSuccess: (data, scenario) => {
+      router.push(`/${scenario.slug}/play/${data.play_id}`);
     },
   });
 
-  const canStart = selectedName !== "" && selectedScenario !== null;
+  function openScenario(scenario: StudentScenarioStatus) {
+    if (scenario.in_progress_play_id) {
+      router.push(`/${scenario.slug}/play/${scenario.in_progress_play_id}`);
+      return;
+    }
+    startMutation.mutate(scenario);
+  }
 
   // ------------------------------------------------------------------
   // Loading
@@ -114,41 +133,62 @@ export default function ClassPickerPage() {
         </section>
 
         {/* Scenario list */}
-        {roll.scenarios.length === 0 ? (
+        {statusLoading && selectedName ? (
+          <p className="text-center text-sm text-gray-400">
+            Loading assignments...
+          </p>
+        ) : statusError ? (
+          <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+            {(statusError as Error).message}
+          </p>
+        ) : status && status.scenarios.length === 0 ? (
           <p className="text-center text-sm text-gray-400">
             No scenarios are available yet. Check back later.
           </p>
-        ) : (
+        ) : status ? (
           <section className="space-y-3">
             <h2 className="text-sm font-semibold text-gray-700">
               Choose a scenario
             </h2>
-            {roll.scenarios.map((scenario) => {
-              const isSelected =
-                selectedScenario?.scenario_version_id ===
-                scenario.scenario_version_id;
+            {status.scenarios.map((scenario) => {
+              const isStarting =
+                startMutation.isPending &&
+                startMutation.variables?.scenario_version_id ===
+                  scenario.scenario_version_id;
+              const label = scenario.in_progress_play_id
+                ? "Resume"
+                : scenario.submitted_count > 0
+                  ? "Start another attempt"
+                  : "Start";
               return (
                 <button
                   key={scenario.scenario_version_id}
-                  onClick={() =>
-                    setSelectedScenario(isSelected ? null : scenario)
-                  }
-                  className={`w-full rounded-xl border-2 p-4 text-left transition ${
-                    isSelected
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200 bg-white hover:border-blue-300"
-                  }`}
+                  onClick={() => openScenario(scenario)}
+                  disabled={isStarting}
+                  className="w-full rounded-xl border-2 border-gray-200 bg-white p-4 text-left transition hover:border-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <p className="font-semibold text-gray-900">{scenario.title}</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-semibold text-gray-900">{scenario.title}</p>
+                    <span className="shrink-0 text-sm font-semibold text-blue-700">
+                      {isStarting ? "Starting" : label}
+                    </span>
+                  </div>
                   {scenario.description && (
                     <p className="mt-1 text-sm text-gray-500 line-clamp-2">
                       {scenario.description}
                     </p>
                   )}
+                  <p className="mt-2 text-xs text-gray-500">
+                    Submitted attempts: {scenario.submitted_count}
+                  </p>
                 </button>
               );
             })}
           </section>
+        ) : selectedName ? null : (
+          <p className="text-center text-sm text-gray-400">
+            Choose your name to see assigned scenarios.
+          </p>
         )}
 
         {/* Error from start */}
@@ -157,15 +197,6 @@ export default function ClassPickerPage() {
             {(startMutation.error as Error).message}
           </p>
         )}
-
-        {/* Start button */}
-        <button
-          onClick={() => startMutation.mutate()}
-          disabled={!canStart || startMutation.isPending}
-          className="w-full rounded-lg bg-blue-600 px-6 py-3 text-base font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {startMutation.isPending ? "Starting…" : "Begin Scenario"}
-        </button>
 
       </div>
     </main>

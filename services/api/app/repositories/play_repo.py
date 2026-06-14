@@ -90,6 +90,62 @@ class PlayRepository:
             .where(Play.id == play_id)
         )
 
+    def find_in_progress(
+        self,
+        *,
+        class_roll_id: uuid.UUID,
+        learner_label: str,
+        scenario_version_id: uuid.UUID,
+    ) -> Play | None:
+        """Return the most recent unfinished play for a roll student/version."""
+        stmt = (
+            select(Play)
+            .where(
+                Play.class_roll_id == class_roll_id,
+                Play.learner_label == learner_label,
+                Play.scenario_version_id == scenario_version_id,
+                Play.completed.is_(False),
+            )
+            .order_by(Play.started_at.desc())
+        )
+        return self.db.scalars(stmt).first()
+
+    def count_completed_attempts(
+        self,
+        *,
+        class_roll_id: uuid.UUID,
+        learner_label: str,
+        scenario_version_id: uuid.UUID,
+    ) -> int:
+        """Count completed plays for a roll student/version."""
+        stmt = select(func.count()).select_from(Play).where(
+            Play.class_roll_id == class_roll_id,
+            Play.learner_label == learner_label,
+            Play.scenario_version_id == scenario_version_id,
+            Play.completed.is_(True),
+        )
+        return int(self.db.scalar(stmt) or 0)
+
+    def latest_completed_attempt(
+        self,
+        *,
+        class_roll_id: uuid.UUID,
+        learner_label: str,
+        scenario_version_id: uuid.UUID,
+    ) -> Play | None:
+        """Return the most recently completed play for a roll student/version."""
+        stmt = (
+            select(Play)
+            .where(
+                Play.class_roll_id == class_roll_id,
+                Play.learner_label == learner_label,
+                Play.scenario_version_id == scenario_version_id,
+                Play.completed.is_(True),
+            )
+            .order_by(Play.ended_at.desc().nulls_last(), Play.started_at.desc())
+        )
+        return self.db.scalars(stmt).first()
+
     def complete_play(
         self,
         play_id: uuid.UUID,
