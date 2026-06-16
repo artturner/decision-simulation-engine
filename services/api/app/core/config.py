@@ -59,12 +59,29 @@ class Settings(BaseSettings):
     # via the ADMIN_API_KEY environment variable.
     ADMIN_API_KEY: str = "changeme"
 
-    # JWT secret from Supabase project settings → API → JWT Secret.
-    # Used to verify tokens issued by Supabase Auth for teacher accounts.
+    # Supabase project URL.  When set, teacher access tokens are verified using
+    # the project's JWKS endpoint, which supports Supabase's current asymmetric
+    # signing keys.
+    SUPABASE_URL: str = ""
+
+    # Optional explicit JWKS endpoint.  If blank, it is derived from SUPABASE_URL.
+    SUPABASE_JWKS_URL: str = ""
+
+    # Legacy JWT secret fallback from Supabase project settings -> API.
+    # Used only when JWKS verification is not configured or does not match.
     JWT_SECRET: str = "changeme-jwt-secret"
 
-    # JWT algorithm — Supabase uses HS256 by default.
+    # Legacy JWT algorithm.
     JWT_ALGORITHM: str = "HS256"
+
+    @property
+    def supabase_jwks_url(self) -> str:
+        """Return the configured Supabase JWKS discovery URL, if available."""
+        if self.SUPABASE_JWKS_URL:
+            return self.SUPABASE_JWKS_URL
+        if self.SUPABASE_URL:
+            return f"{self.SUPABASE_URL.rstrip('/')}/auth/v1/.well-known/jwks.json"
+        return ""
 
     # ------------------------------------------------------------------
     # CORS
