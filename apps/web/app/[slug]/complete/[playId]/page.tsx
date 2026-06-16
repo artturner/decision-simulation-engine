@@ -127,6 +127,7 @@ export default function CompletePage() {
           questions={play.reflection_questions}
           prompts={play.reflection_prompts}
           choicesMade={play.progress.choices_made}
+          initialStudentName={play.learner_label}
         />
       </div>
     </main>

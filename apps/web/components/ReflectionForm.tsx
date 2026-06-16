@@ -9,6 +9,7 @@ interface ReflectionFormProps {
   questions: string[];
   prompts: string[];
   choicesMade: string[];
+  initialStudentName?: string | null;
 }
 
 type Errors = Record<string, string>;
@@ -18,8 +19,9 @@ export default function ReflectionForm({
   questions,
   prompts,
   choicesMade,
+  initialStudentName,
 }: ReflectionFormProps) {
-  const [studentName, setStudentName] = useState("");
+  const [studentName, setStudentName] = useState(initialStudentName ?? "");
   const [responses, setResponses] = useState<Record<string, string>>(() =>
     Object.fromEntries(questions.map((_, i) => [`reflection_${i + 1}`, ""])),
   );

@@ -57,6 +57,7 @@ const baseProgress = {
 
 const completedPlay: PlayViewResponse = {
   play_id: "play-abc",
+  learner_label: null,
   scene: endScene,
   progress: baseProgress,
   done: true,
@@ -170,6 +171,33 @@ describe("successful submission", () => {
     expect(
       await screen.findByText(/Reflection submitted successfully/i),
     ).toBeInTheDocument();
+  });
+
+  test("prefills selected roster name and submits it", async () => {
+    mockApi.getPlay.mockResolvedValue({
+      ...completedPlay,
+      learner_label: "Leo Dagleish",
+    });
+    renderWithClient(<CompletePage />);
+
+    const nameInput = await screen.findByLabelText("Your Name");
+    expect(nameInput).toHaveValue("Leo Dagleish");
+    fireEvent.change(screen.getByLabelText(/1\. What did you learn/), {
+      target: { value: "I learned empathy." },
+    });
+    fireEvent.change(screen.getByLabelText(/2\. What would you do differently/), {
+      target: { value: "I would listen more." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Submit Reflection" }));
+
+    await waitFor(() => expect(mockApi.submitReflection).toHaveBeenCalledTimes(1));
+    expect(mockApi.submitReflection).toHaveBeenCalledWith("play-abc", {
+      student_name: "Leo Dagleish",
+      responses: {
+        reflection_1: "I learned empathy.",
+        reflection_2: "I would listen more.",
+      },
+    });
   });
 
   test("disables submit button after success", async () => {

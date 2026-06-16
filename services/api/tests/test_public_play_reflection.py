@@ -73,7 +73,13 @@ def client(db: Session):
     app.dependency_overrides.clear()
 
 
-def _seed_and_start(client, db: Session, slug: str, scenario_json: dict) -> uuid.UUID:
+def _seed_and_start(
+    client,
+    db: Session,
+    slug: str,
+    scenario_json: dict,
+    learner_label: str | None = None,
+) -> uuid.UUID:
     repo = ScenarioRepository(db)
     s = repo.create_scenario(slug, "Test")
     v = repo.create_version(s.id, scenario_json, status=VersionStatus.published)
@@ -81,7 +87,10 @@ def _seed_and_start(client, db: Session, slug: str, scenario_json: dict) -> uuid
 
     resp = client.post(
         "/api/v1/public/plays/start",
-        json={"scenario_version_id": str(v.id)},
+        json={
+            "scenario_version_id": str(v.id),
+            **({"learner_label": learner_label} if learner_label else {}),
+        },
     )
     assert resp.status_code == 201
     return uuid.UUID(resp.json()["play_id"])
@@ -191,6 +200,19 @@ class TestReflectionSuccess:
         _reflect(client, completed_play_id)
         reflection = PlayRepository(db).get_reflection(completed_play_id)
         assert reflection.student_name is None
+
+    def test_defaults_student_name_to_learner_label(self, client, db: Session):
+        play_id = _seed_and_start(
+            client,
+            db,
+            "reflect-learner-label",
+            SCENARIO_JSON,
+            learner_label="Leo Dagleish",
+        )
+        _step(client, play_id, choice_index=0)
+        _reflect(client, play_id)
+        reflection = PlayRepository(db).get_reflection(play_id)
+        assert reflection.student_name == "Leo Dagleish"
 
     def test_single_key_accepted(self, client, completed_play_id):
         """A dict with one key is valid (min_length=1)."""

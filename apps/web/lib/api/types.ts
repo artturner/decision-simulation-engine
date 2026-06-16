@@ -120,6 +120,7 @@ export interface PlayStartResponse {
 
 export interface PlayViewResponse {
   play_id: string;
+  learner_label: string | null;
   scene: SceneDTO;
   progress: Progress;
   done: boolean;

@@ -44,6 +44,7 @@ const choiceScene = {
 
 const basePlay: PlayViewResponse = {
   play_id: "play-123",
+  learner_label: null,
   scene: choiceScene,
   progress: { step_count: 0, choices_made: [] },
   done: false,

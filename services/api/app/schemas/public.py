@@ -254,6 +254,7 @@ class PlayViewResponse(BaseModel):
     """
 
     play_id: uuid.UUID
+    learner_label: str | None = None
     scene: SceneDTO
     progress: ProgressOut
     done: bool

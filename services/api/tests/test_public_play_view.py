@@ -108,7 +108,13 @@ def client(db: Session):
     app.dependency_overrides.clear()
 
 
-def _seed_and_start(client, db: Session, slug: str, scenario_json: dict) -> uuid.UUID:
+def _seed_and_start(
+    client,
+    db: Session,
+    slug: str,
+    scenario_json: dict,
+    learner_label: str | None = None,
+) -> uuid.UUID:
     """Seed a published scenario and start a play. Return the play_id."""
     repo = ScenarioRepository(db)
     s = repo.create_scenario(slug, "Test")
@@ -117,7 +123,10 @@ def _seed_and_start(client, db: Session, slug: str, scenario_json: dict) -> uuid
 
     resp = client.post(
         "/api/v1/public/plays/start",
-        json={"scenario_version_id": str(v.id)},
+        json={
+            "scenario_version_id": str(v.id),
+            **({"learner_label": learner_label} if learner_label else {}),
+        },
     )
     assert resp.status_code == 201
     return uuid.UUID(resp.json()["play_id"])
@@ -154,6 +163,17 @@ class TestGetPlayBasic:
     def test_play_id_in_response(self, client, play_id):
         body = get_play(client, play_id).json()
         assert uuid.UUID(body["play_id"]) == play_id
+
+    def test_learner_label_in_response(self, client, db: Session):
+        play_id = _seed_and_start(
+            client,
+            db,
+            "view-learner-label",
+            STANDARD_JSON,
+            learner_label="Leo Dagleish",
+        )
+        body = get_play(client, play_id).json()
+        assert body["learner_label"] == "Leo Dagleish"
 
     def test_404_for_unknown_play(self, client):
         assert get_play(client, uuid.uuid4()).status_code == 404

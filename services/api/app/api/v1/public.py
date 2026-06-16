@@ -247,6 +247,7 @@ def compute_play_view(play_id: uuid.UUID, db: Session) -> PlayViewResponse:
 
     return PlayViewResponse(
         play_id=play_id,
+        learner_label=play.learner_label,
         scene=_build_scene_dto(current_scene_raw, scenario_orm.slug, version.version_number),
         progress=progress,
         done=done,
@@ -825,7 +826,7 @@ def submit_reflection(
     play_repo.add_reflection(
         play_id=play_id,
         responses_json=body.responses,
-        student_name=body.student_name,
+        student_name=body.student_name or play.learner_label,
     )
 
     db.commit()
