@@ -28,7 +28,13 @@ export default function TeacherLoginPage() {
     const auth =
       mode === "sign-in"
         ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password });
+        : await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: `${window.location.origin}/teacher/login`,
+            },
+          });
     setBusy(false);
 
     if (auth.error) {
