@@ -191,9 +191,75 @@ class TestRollGradebook:
         assert students["Alice Adams"]["in_progress_play_id"] == str(in_progress.id)
         assert students["Ben Brown"]["status"] == "completed"
         assert students["Ben Brown"]["submitted_count"] == 1
+        assert students["Ben Brown"]["best_attempt"]["play_id"] == str(completed.id)
         assert students["Ben Brown"]["attempts"][0]["reflection"]["responses"] == {
             "reflection_1": "I learned."
         }
+
+    def test_best_attempt_is_latest_completed_attempt(self, client, db: Session, roll):
+        scenario, version = _scenario(db, "gradebook-best", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
+        repo = PlayRepository(db)
+
+        first = repo.create_play(
+            version.id,
+            learner_label="Ben Brown",
+            class_roll_id=roll.id,
+        )
+        repo.complete_play(first.id, outcome="first")
+        second = repo.create_play(
+            version.id,
+            learner_label="Ben Brown",
+            class_roll_id=roll.id,
+        )
+        repo.complete_play(second.id, outcome="second")
+        repo.add_reflection(
+            second.id,
+            responses_json={"reflection_1": "Latest answer."},
+            student_name="Ben Brown",
+        )
+        db.flush()
+
+        resp = client.get(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}/gradebook"
+        )
+
+        assert resp.status_code == 200
+        students = {student["student_name"]: student for student in resp.json()["students"]}
+        assert students["Ben Brown"]["submitted_count"] == 2
+        assert students["Ben Brown"]["best_attempt"]["play_id"] == str(second.id)
+        assert students["Ben Brown"]["best_attempt"]["outcome"] == "second"
+        assert students["Ben Brown"]["best_attempt"]["reflection"]["responses"] == {
+            "reflection_1": "Latest answer."
+        }
+
+    def test_exports_roll_gradebook_csv(self, client, db: Session, roll):
+        scenario, version = _scenario(db, "gradebook-export", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
+        repo = PlayRepository(db)
+        play = repo.create_play(
+            version.id,
+            learner_label="Ben Brown",
+            class_roll_id=roll.id,
+        )
+        repo.complete_play(play.id, outcome="ok")
+        repo.add_reflection(
+            play.id,
+            responses_json={"reflection_1": "I learned."},
+            student_name="Ben Brown",
+        )
+        db.flush()
+
+        resp = client.get(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}/gradebook.csv"
+        )
+
+        assert resp.status_code == 200
+        assert resp.headers["content-type"].startswith("text/csv")
+        assert "student_name,status,submitted_count" in resp.text
+        assert "Alice Adams,not_started,0" in resp.text
+        assert "Ben Brown,completed,1" in resp.text
+        assert "I learned." in resp.text
 
     def test_requires_scenario_assigned_to_roll(self, client, db: Session, roll):
         scenario, _version = _scenario(db, "not-assigned", VersionStatus.published)

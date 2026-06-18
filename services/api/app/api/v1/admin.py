@@ -31,6 +31,9 @@ GET    /scenarios/{scenario_id}/export.csv?version_number=
 from __future__ import annotations
 
 import uuid
+from collections import defaultdict
+from csv import DictWriter
+from io import StringIO
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Response, UploadFile, status
 from sqlalchemy.exc import IntegrityError
@@ -591,6 +594,149 @@ def _roll_scenario_out(assignment: object, db: Session) -> RollScenarioOut | Non
     )
 
 
+def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
+    from app.models.play import Play
+
+    typed = play
+    if not isinstance(typed, Play):
+        raise TypeError("Expected Play")
+
+    reflection = None
+    if typed.reflection is not None:
+        reflection = RollGradebookReflection(
+            student_name=typed.reflection.student_name,
+            submitted_at=typed.reflection.submitted_at,
+            responses=typed.reflection.responses_json,
+        )
+    return RollGradebookAttempt(
+        play_id=typed.id,
+        started_at=typed.started_at,
+        ended_at=typed.ended_at,
+        completed=typed.completed,
+        outcome=typed.outcome,
+        reflection=reflection,
+    )
+
+
+def _get_owned_roll_assignment(
+    roll_id: uuid.UUID,
+    scenario_id: uuid.UUID,
+    current_user: User,
+    db: Session,
+):
+    from app.models.scenario import Scenario
+
+    repo = RollRepository(db)
+    roll = repo.get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+
+    assignment = repo.get_assignment(scenario_id, roll_id)
+    if assignment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Assignment not found.")
+
+    scenario = db.get(Scenario, scenario_id)
+    if scenario is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
+
+    return roll, assignment, scenario
+
+
+def _build_roll_gradebook(
+    roll_id: uuid.UUID,
+    scenario_id: uuid.UUID,
+    current_user: User,
+    db: Session,
+) -> RollGradebookOut:
+    from app.models.play import Play
+
+    roll, _assignment, scenario = _get_owned_roll_assignment(
+        roll_id,
+        scenario_id,
+        current_user,
+        db,
+    )
+
+    from sqlalchemy import select
+    from sqlalchemy.orm import selectinload
+
+    stmt = (
+        select(Play)
+        .join(Play.scenario_version)
+        .where(
+            Play.class_roll_id == roll_id,
+            Play.scenario_version.has(scenario_id=scenario_id),
+        )
+        .options(selectinload(Play.reflection))
+        .order_by(Play.learner_label, Play.started_at)
+    )
+    plays = list(db.scalars(stmt))
+    plays_by_student: dict[str, list[Play]] = defaultdict(list)
+    for play in plays:
+        if play.learner_label:
+            plays_by_student[play.learner_label].append(play)
+
+    students: list[RollGradebookStudent] = []
+    for student_name in roll.student_names:
+        student_plays = plays_by_student.get(student_name, [])
+        attempts: list[RollGradebookAttempt] = []
+        in_progress_play_id: uuid.UUID | None = None
+        latest_submitted_at = None
+        latest_completed_play = None
+        submitted_count = 0
+
+        for play in student_plays:
+            if play.completed:
+                submitted_count += 1
+                if play.ended_at and (
+                    latest_submitted_at is None or play.ended_at > latest_submitted_at
+                ):
+                    latest_submitted_at = play.ended_at
+                latest_sort_at = None
+                if latest_completed_play is not None:
+                    latest_sort_at = (
+                        latest_completed_play.ended_at
+                        or latest_completed_play.started_at
+                    )
+                play_sort_at = play.ended_at or play.started_at
+                if latest_sort_at is None or play_sort_at >= latest_sort_at:
+                    latest_completed_play = play
+            elif in_progress_play_id is None:
+                in_progress_play_id = play.id
+
+            attempts.append(_roll_gradebook_attempt(play))
+
+        if submitted_count > 0:
+            status_label = "completed"
+        elif in_progress_play_id is not None:
+            status_label = "in_progress"
+        else:
+            status_label = "not_started"
+
+        students.append(
+            RollGradebookStudent(
+                student_name=student_name,
+                status=status_label,
+                in_progress_play_id=in_progress_play_id,
+                submitted_count=submitted_count,
+                latest_submitted_at=latest_submitted_at,
+                best_attempt=(
+                    _roll_gradebook_attempt(latest_completed_play)
+                    if latest_completed_play is not None
+                    else None
+                ),
+                attempts=attempts,
+            )
+        )
+
+    return RollGradebookOut(
+        roll_id=roll_id,
+        scenario_id=scenario_id,
+        scenario_title=scenario.title,
+        students=students,
+    )
+
+
 @teacher_router.get(
     "/rolls/{roll_id}/scenarios",
     response_model=list[RollScenarioOut],
@@ -744,102 +890,82 @@ def roll_gradebook(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> RollGradebookOut:
-    from collections import defaultdict
+    return _build_roll_gradebook(roll_id, scenario_id, current_user, db)
 
-    from sqlalchemy import select
-    from sqlalchemy.orm import selectinload
 
-    from app.models.play import Play
-    from app.models.scenario import Scenario
+@teacher_router.get(
+    "/rolls/{roll_id}/scenarios/{scenario_id}/gradebook.csv",
+    summary="Export roll-scoped best-attempt results as CSV",
+)
+def roll_gradebook_csv(
+    roll_id: uuid.UUID,
+    scenario_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> Response:
+    """Download one CSV row per roster student for the selected scenario.
 
-    repo = RollRepository(db)
-    roll = repo.get(roll_id)
-    if roll is None or roll.owner_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+    Until scoring exists, ``best_attempt`` means the latest completed attempt.
+    In-progress and not-started students are included with blank best-attempt
+    fields so the roster remains complete.
+    """
+    gradebook = _build_roll_gradebook(roll_id, scenario_id, current_user, db)
+    reflection_keys: list[str] = []
+    seen_reflection_keys: set[str] = set()
+    for student in gradebook.students:
+        if student.best_attempt and student.best_attempt.reflection:
+            for key in student.best_attempt.reflection.responses:
+                if key not in seen_reflection_keys:
+                    seen_reflection_keys.add(key)
+                    reflection_keys.append(key)
 
-    assignment = repo.get_assignment(scenario_id, roll_id)
-    if assignment is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Assignment not found.")
+    fieldnames = [
+        "student_name",
+        "status",
+        "submitted_count",
+        "latest_submitted_at",
+        "best_attempt_play_id",
+        "best_attempt_started_at",
+        "best_attempt_submitted_at",
+        "best_attempt_outcome",
+        "reflection_submitted_at",
+        *reflection_keys,
+    ]
+    output = StringIO()
+    writer = DictWriter(output, fieldnames=fieldnames)
+    writer.writeheader()
 
-    scenario = db.get(Scenario, scenario_id)
-    if scenario is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
+    for student in gradebook.students:
+        attempt = student.best_attempt
+        reflection = attempt.reflection if attempt else None
+        row = {
+            "student_name": student.student_name,
+            "status": student.status,
+            "submitted_count": student.submitted_count,
+            "latest_submitted_at": student.latest_submitted_at.isoformat()
+            if student.latest_submitted_at
+            else "",
+            "best_attempt_play_id": str(attempt.play_id) if attempt else "",
+            "best_attempt_started_at": attempt.started_at.isoformat()
+            if attempt
+            else "",
+            "best_attempt_submitted_at": attempt.ended_at.isoformat()
+            if attempt and attempt.ended_at
+            else "",
+            "best_attempt_outcome": attempt.outcome if attempt and attempt.outcome else "",
+            "reflection_submitted_at": reflection.submitted_at.isoformat()
+            if reflection
+            else "",
+        }
+        for key in reflection_keys:
+            row[key] = reflection.responses.get(key, "") if reflection else ""
+        writer.writerow(row)
 
-    stmt = (
-        select(Play)
-        .join(Play.scenario_version)
-        .where(
-            Play.class_roll_id == roll_id,
-            Play.scenario_version.has(scenario_id=scenario_id),
-        )
-        .options(selectinload(Play.reflection))
-        .order_by(Play.learner_label, Play.started_at)
-    )
-    plays = list(db.scalars(stmt))
-    plays_by_student: dict[str, list[Play]] = defaultdict(list)
-    for play in plays:
-        if play.learner_label:
-            plays_by_student[play.learner_label].append(play)
-
-    students: list[RollGradebookStudent] = []
-    for student_name in roll.student_names:
-        student_plays = plays_by_student.get(student_name, [])
-        attempts: list[RollGradebookAttempt] = []
-        in_progress_play_id: uuid.UUID | None = None
-        latest_submitted_at = None
-        submitted_count = 0
-
-        for play in student_plays:
-            if play.completed:
-                submitted_count += 1
-                if play.ended_at and (
-                    latest_submitted_at is None or play.ended_at > latest_submitted_at
-                ):
-                    latest_submitted_at = play.ended_at
-            elif in_progress_play_id is None:
-                in_progress_play_id = play.id
-
-            reflection = None
-            if play.reflection is not None:
-                reflection = RollGradebookReflection(
-                    student_name=play.reflection.student_name,
-                    submitted_at=play.reflection.submitted_at,
-                    responses=play.reflection.responses_json,
-                )
-            attempts.append(
-                RollGradebookAttempt(
-                    play_id=play.id,
-                    started_at=play.started_at,
-                    ended_at=play.ended_at,
-                    completed=play.completed,
-                    outcome=play.outcome,
-                    reflection=reflection,
-                )
-            )
-
-        if submitted_count > 0:
-            status_label = "completed"
-        elif in_progress_play_id is not None:
-            status_label = "in_progress"
-        else:
-            status_label = "not_started"
-
-        students.append(
-            RollGradebookStudent(
-                student_name=student_name,
-                status=status_label,
-                in_progress_play_id=in_progress_play_id,
-                submitted_count=submitted_count,
-                latest_submitted_at=latest_submitted_at,
-                attempts=attempts,
-            )
-        )
-
-    return RollGradebookOut(
-        roll_id=roll_id,
-        scenario_id=scenario_id,
-        scenario_title=scenario.title,
-        students=students,
+    filename = f"roll-{roll_id}-scenario-{scenario_id}-gradebook.csv"
+    return Response(
+        content=output.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
     )
 
 

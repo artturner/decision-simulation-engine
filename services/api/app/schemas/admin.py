@@ -228,6 +228,7 @@ class RollGradebookStudent(BaseModel):
     in_progress_play_id: uuid.UUID | None
     submitted_count: int
     latest_submitted_at: datetime | None
+    best_attempt: RollGradebookAttempt | None
     attempts: list[RollGradebookAttempt]
 
 

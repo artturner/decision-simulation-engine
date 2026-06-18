@@ -7,6 +7,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   assignScenario,
   createRoll,
+  downloadRollGradebookCsv,
   getRollGradebook,
   listPublishedScenarios,
   listRolls,
@@ -180,6 +181,22 @@ export default function TeacherDashboardPage() {
     },
   });
 
+  const exportMutation = useMutation({
+    mutationFn: () =>
+      downloadRollGradebookCsv(token, selectedRollId, selectedScenarioId),
+    onSuccess: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `gradebook-${selectedRoll?.join_code ?? selectedRollId}-${selectedScenarioId}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setNotice("Gradebook CSV downloaded.");
+    },
+  });
+
   const shareText = selectedRoll
     ? `Go to ${typeof window === "undefined" ? "" : window.location.origin}/join\nEnter class code: ${selectedRoll.join_code}\nSelect your name.`
     : "";
@@ -344,7 +361,13 @@ export default function TeacherDashboardPage() {
                 <ResultsPanel
                   gradebook={gradebookQuery.data ?? null}
                   loading={gradebookQuery.isLoading}
-                  error={(gradebookQuery.error as Error | null)?.message ?? null}
+                  error={
+                    (gradebookQuery.error as Error | null)?.message ??
+                    (exportMutation.error as Error | null)?.message ??
+                    null
+                  }
+                  exporting={exportMutation.isPending}
+                  onExport={() => exportMutation.mutate()}
                 />
               </>
             )}
@@ -559,10 +582,14 @@ function ResultsPanel({
   gradebook,
   loading,
   error,
+  exporting,
+  onExport,
 }: {
   gradebook: RollGradebook | null;
   loading: boolean;
   error: string | null;
+  exporting: boolean;
+  onExport: () => void;
 }) {
   if (loading) {
     return (
@@ -594,7 +621,24 @@ function ResultsPanel({
 
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <h2 className="text-lg font-semibold">Results: {gradebook.scenario_title}</h2>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold">
+            Results: {gradebook.scenario_title}
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            Best attempt is the latest completed attempt.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onExport}
+          disabled={exporting}
+          className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {exporting ? "Exporting" : "Export CSV"}
+        </button>
+      </div>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full min-w-[720px] border-collapse text-sm">
           <thead>
@@ -602,29 +646,32 @@ function ResultsPanel({
               <th className="py-2 pr-3 font-semibold">Student</th>
               <th className="py-2 pr-3 font-semibold">Status</th>
               <th className="py-2 pr-3 font-semibold">Attempts</th>
-              <th className="py-2 pr-3 font-semibold">Latest submitted</th>
+              <th className="py-2 pr-3 font-semibold">Best submitted</th>
+              <th className="py-2 pr-3 font-semibold">Best outcome</th>
               <th className="py-2 pr-3 font-semibold">Reflection</th>
             </tr>
           </thead>
           <tbody>
             {gradebook.students.map((student) => {
-              const latestReflection = [...student.attempts]
-                .reverse()
-                .find((attempt) => attempt.reflection)?.reflection;
+              const bestAttempt = student.best_attempt;
+              const bestReflection = bestAttempt?.reflection;
               return (
                 <tr key={student.student_name} className="border-b border-gray-100">
                   <td className="py-3 pr-3 font-medium">{student.student_name}</td>
                   <td className="py-3 pr-3">{statusLabel(student.status)}</td>
                   <td className="py-3 pr-3">{student.submitted_count}</td>
                   <td className="py-3 pr-3">
-                    {student.latest_submitted_at
-                      ? new Date(student.latest_submitted_at).toLocaleString()
+                    {bestAttempt?.ended_at
+                      ? new Date(bestAttempt.ended_at).toLocaleString()
                       : ""}
                   </td>
                   <td className="py-3 pr-3">
-                    {latestReflection ? (
+                    {bestAttempt?.outcome ?? ""}
+                  </td>
+                  <td className="py-3 pr-3">
+                    {bestReflection ? (
                       <div className="space-y-1">
-                        {Object.entries(latestReflection.responses).map(
+                        {Object.entries(bestReflection.responses).map(
                           ([key, value]) => (
                             <p key={key}>
                               <span className="font-semibold">{key}: </span>

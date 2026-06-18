@@ -69,6 +69,7 @@ export interface RollGradebookStudent {
   in_progress_play_id: string | null;
   submitted_count: number;
   latest_submitted_at: string | null;
+  best_attempt: RollGradebookAttempt | null;
   attempts: RollGradebookAttempt[];
 }
 

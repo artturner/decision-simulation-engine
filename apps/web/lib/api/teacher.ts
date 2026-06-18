@@ -130,3 +130,33 @@ export function getRollGradebook(
     `/rolls/${rollId}/scenarios/${scenarioId}/gradebook`,
   );
 }
+
+export async function downloadRollGradebookCsv(
+  token: string,
+  rollId: string,
+  scenarioId: string,
+): Promise<Blob> {
+  const res = await fetch(
+    `${API_BASE}/api/v1/teacher/rolls/${rollId}/scenarios/${scenarioId}/gradebook.csv`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!res.ok) {
+    let message = `HTTP ${res.status}`;
+    try {
+      const body = await res.json();
+      if (typeof body.detail === "string") {
+        message = body.detail;
+      }
+    } catch {
+      // Keep generic message.
+    }
+    throw new ApiClientError(res.status, message);
+  }
+
+  return res.blob();
+}
