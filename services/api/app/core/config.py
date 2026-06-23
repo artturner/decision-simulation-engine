@@ -93,6 +93,18 @@ class Settings(BaseSettings):
         """Return True when an Anthropic API key is configured."""
         return bool(self.ANTHROPIC_API_KEY)
 
+    # ------------------------------------------------------------------
+    # Scenario generator CLI (services/api/scripts/scenario_gen)
+    # ------------------------------------------------------------------
+    # OpenAI API key for image generation (gpt-image-1). Only the scenario
+    # generator CLI uses this; the API server itself does not.
+    OPENAI_API_KEY: str = ""
+
+    # Models used by the scenario generator pipeline.
+    SCENARIO_GEN_MODEL: str = "claude-opus-4-8"
+    SCENARIO_SCOUT_MODEL: str = "claude-sonnet-4-6"
+    SCENARIO_IMAGE_MODEL: str = "gpt-image-1"
+
     @property
     def supabase_jwks_url(self) -> str:
         """Return the configured Supabase JWKS discovery URL, if available."""
