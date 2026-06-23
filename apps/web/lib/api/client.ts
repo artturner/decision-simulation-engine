@@ -9,6 +9,7 @@
 import type {
   BackResponse,
   ClassPickerResponse,
+  GradeResult,
   PlayStartRequest,
   PlayStartResponse,
   PlayViewResponse,
@@ -193,5 +194,35 @@ export function submitReflection(
   return apiFetch<ReflectionResponse>(`/plays/${playId}/reflection`, {
     method: "POST",
     body: JSON.stringify(body),
+  });
+}
+
+/**
+ * POST /public/plays/{playId}/reflection/grade
+ *
+ * Grade (or re-grade) a reflection and return the score plus coaching feedback.
+ * Throws ApiClientError(503) if AI grading is not configured — callers should
+ * fall back to submitReflection. Throws 409 if the reflection is already
+ * accepted, 502 if the grading API fails.
+ */
+export function gradeReflection(
+  playId: string,
+  body: ReflectionRequest,
+): Promise<GradeResult> {
+  return apiFetch<GradeResult>(`/plays/${playId}/reflection/grade`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+/**
+ * POST /public/plays/{playId}/reflection/accept
+ *
+ * Accept the current grade, locking the reflection. Idempotent.
+ */
+export function acceptReflection(playId: string): Promise<GradeResult> {
+  return apiFetch<GradeResult>(`/plays/${playId}/reflection/accept`, {
+    method: "POST",
+    body: JSON.stringify({}),
   });
 }

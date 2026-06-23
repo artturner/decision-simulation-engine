@@ -293,3 +293,57 @@ class PlayRepository:
         return self.db.scalar(
             select(Reflection).where(Reflection.play_id == play_id)
         )
+
+    def upsert_reflection(
+        self,
+        play_id: uuid.UUID,
+        responses_json: dict,
+        student_name: str | None = None,
+    ) -> Reflection:
+        """Create or update the (unaccepted) reflection for *play_id*.
+
+        Used by the grade endpoint, where the learner may revise and re-grade
+        their answers until they accept the score.  Callers must check
+        ``accepted`` before mutating — an accepted reflection is locked.
+        """
+        reflection = self.get_reflection(play_id)
+        if reflection is None:
+            reflection = Reflection(
+                play_id=play_id,
+                responses_json=responses_json,
+                student_name=student_name,
+            )
+            self.db.add(reflection)
+        else:
+            reflection.responses_json = responses_json
+            if student_name is not None:
+                reflection.student_name = student_name
+        self.db.flush()
+        return reflection
+
+    def save_grade(
+        self,
+        reflection: Reflection,
+        *,
+        grade_total: int,
+        grade_breakdown: dict,
+        feedback: str,
+        grader_model: str,
+        graded_at,
+    ) -> Reflection:
+        """Persist grade fields and increment the attempt counter."""
+        reflection.grade_total = grade_total
+        reflection.grade_breakdown = grade_breakdown
+        reflection.feedback = feedback
+        reflection.grader_model = grader_model
+        reflection.graded_at = graded_at
+        reflection.grade_attempts = (reflection.grade_attempts or 0) + 1
+        self.db.flush()
+        return reflection
+
+    def accept_reflection(self, reflection: Reflection, accepted_at) -> Reflection:
+        """Mark a reflection as accepted (locks further edits/grading)."""
+        reflection.accepted = True
+        reflection.accepted_at = accepted_at
+        self.db.flush()
+        return reflection

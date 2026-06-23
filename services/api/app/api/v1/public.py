@@ -39,11 +39,14 @@ from app.models.scenario import Scenario, ScenarioVersion, VersionStatus
 from app.repositories.play_repo import PlayRepository
 from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
+from app.services import ai_grader
 from app.schemas.public import (
     BackResponse,
     ChoiceOut,
     ClassPickerResponse,
     ClassPickerScenarioOut,
+    GradeDimensionOut,
+    GradeResultOut,
     PlayStartRequest,
     PlayStartResponse,
     PlayViewResponse,
@@ -832,3 +835,190 @@ def submit_reflection(
     db.commit()
 
     return ReflectionResponse(ok=True)
+
+
+# ---------------------------------------------------------------------------
+# AI grading helpers
+# ---------------------------------------------------------------------------
+
+
+def _choice_path(play_repo: PlayRepository, play_id: uuid.UUID) -> list[str]:
+    """Return the learner's choice texts in order, for grading context."""
+    return [
+        e.choice_text
+        for e in play_repo.get_events(play_id)
+        if e.choice_text
+    ]
+
+
+def _reflection_questions(db: Session, scenario_version_id: uuid.UUID) -> list[str]:
+    version = db.get(ScenarioVersion, scenario_version_id)
+    if version is None:
+        return []
+    questions = version.scenario_json.get("reflection_questions", [])
+    return [str(q) for q in questions] if isinstance(questions, list) else []
+
+
+def _grade_result_out(reflection) -> GradeResultOut:
+    """Build the API response from a graded reflection row."""
+    breakdown = reflection.grade_breakdown or {}
+    dimensions = {
+        name: GradeDimensionOut(
+            level=d.get("level", "low_effort"),
+            points=int(d.get("points", 0)),
+            max_points=int(d.get("max_points", 0)),
+            evidence=str(d.get("evidence", "")),
+        )
+        for name, d in (breakdown.get("dimensions") or {}).items()
+    }
+    attempts_used = reflection.grade_attempts or 0
+    attempts_remaining = max(0, settings.AI_GRADER_MAX_ATTEMPTS - attempts_used)
+    return GradeResultOut(
+        grade_total=reflection.grade_total or 0,
+        completion_points=int(breakdown.get("completion_points", 0)),
+        dimensions=dimensions,
+        feedback=reflection.feedback or "",
+        needs_human_review=bool(breakdown.get("needs_human_review", False)),
+        low_effort_flags=list(breakdown.get("low_effort_flags", [])),
+        accepted=bool(reflection.accepted),
+        attempts_used=attempts_used,
+        attempts_remaining=attempts_remaining,
+        can_redo=(not reflection.accepted) and attempts_remaining > 0,
+    )
+
+
+# ---------------------------------------------------------------------------
+# POST /public/plays/{play_id}/reflection/grade
+# ---------------------------------------------------------------------------
+
+
+@router.post(
+    "/plays/{play_id}/reflection/grade",
+    response_model=GradeResultOut,
+    summary="Grade (or re-grade) a learner reflection with AI coaching feedback",
+)
+def grade_reflection_endpoint(
+    play_id: uuid.UUID,
+    body: ReflectionRequest,
+    db: Session = Depends(get_db),
+) -> GradeResultOut:
+    """Grade a reflection against the rubric and return score + coaching.
+
+    The learner may revise and re-grade until they accept, capped at
+    ``AI_GRADER_MAX_ATTEMPTS`` calls per play.
+
+    Returns:
+        ``HTTP 200`` with the grade. When attempts are exhausted, returns the
+        last grade with ``can_redo=false`` (no new grading call is made).
+        ``HTTP 400`` if the play is not completed.
+        ``HTTP 404`` if *play_id* does not exist.
+        ``HTTP 409`` if the reflection has already been accepted (locked).
+        ``HTTP 502`` if the grading API call fails.
+        ``HTTP 503`` if AI grading is not configured (client should fall back
+        to plain submission).
+    """
+    play_repo = PlayRepository(db)
+
+    play = play_repo.get_play(play_id)
+    if play is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Play not found.")
+    if not play.completed:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Reflection can only be graded for a completed play.",
+        )
+
+    existing = play_repo.get_reflection(play_id)
+    if existing is not None and existing.accepted:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This reflection has already been accepted and is locked.",
+        )
+
+    if not settings.ai_grading_enabled:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI grading is not available.",
+        )
+
+    # Attempt cap: return the last grade instead of grading again.
+    if existing is not None and (existing.grade_attempts or 0) >= settings.AI_GRADER_MAX_ATTEMPTS:
+        return _grade_result_out(existing)
+
+    reflection = play_repo.upsert_reflection(
+        play_id=play_id,
+        responses_json=body.responses,
+        student_name=body.student_name or play.learner_label,
+    )
+
+    try:
+        result = ai_grader.grade_reflection(
+            reflection_questions=_reflection_questions(db, play.scenario_version_id),
+            responses=body.responses,
+            choice_path=_choice_path(play_repo, play_id),
+            completed=play.completed,
+        )
+    except ai_grader.GradingUnavailable:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI grading is not available.",
+        )
+    except ai_grader.GradingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Grading failed: {exc}",
+        )
+
+    play_repo.save_grade(
+        reflection,
+        grade_total=result.grade_total,
+        grade_breakdown=result.breakdown_dict(),
+        feedback=result.feedback,
+        grader_model=result.model,
+        graded_at=result.graded_at,
+    )
+    db.commit()
+
+    return _grade_result_out(reflection)
+
+
+# ---------------------------------------------------------------------------
+# POST /public/plays/{play_id}/reflection/accept
+# ---------------------------------------------------------------------------
+
+
+@router.post(
+    "/plays/{play_id}/reflection/accept",
+    response_model=GradeResultOut,
+    summary="Accept the current AI grade, locking the reflection",
+)
+def accept_reflection_endpoint(
+    play_id: uuid.UUID,
+    db: Session = Depends(get_db),
+) -> GradeResultOut:
+    """Finalize the learner's grade. Idempotent once accepted.
+
+    Returns:
+        ``HTTP 200`` with the final grade.
+        ``HTTP 404`` if the play or its reflection does not exist.
+    """
+    play_repo = PlayRepository(db)
+
+    play = play_repo.get_play(play_id)
+    if play is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Play not found.")
+
+    reflection = play_repo.get_reflection(play_id)
+    if reflection is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No reflection to accept for this play.",
+        )
+
+    if not reflection.accepted:
+        from datetime import datetime, timezone
+
+        play_repo.accept_reflection(reflection, datetime.now(timezone.utc))
+        db.commit()
+
+    return _grade_result_out(reflection)

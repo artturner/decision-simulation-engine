@@ -49,6 +49,9 @@ services:
       R2_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY:-}
       R2_BUCKET_NAME: ${R2_BUCKET_NAME:-}
       R2_PUBLIC_URL: ${R2_PUBLIC_URL:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      AI_GRADER_MODEL: ${AI_GRADER_MODEL:-claude-sonnet-4-6}
+      AI_GRADER_MAX_ATTEMPTS: ${AI_GRADER_MAX_ATTEMPTS:-3}
     volumes:
       - ../services/api/media:/app/media
     depends_on:

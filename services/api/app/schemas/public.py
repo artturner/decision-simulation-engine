@@ -237,6 +237,35 @@ class ReflectionResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# POST /public/plays/{play_id}/reflection/grade  and  .../accept
+# ---------------------------------------------------------------------------
+
+
+class GradeDimensionOut(BaseModel):
+    """A single rubric dimension's score."""
+
+    level: str
+    points: int
+    max_points: int
+    evidence: str
+
+
+class GradeResultOut(BaseModel):
+    """AI grade plus redo-loop state, returned by grade and accept endpoints."""
+
+    grade_total: int
+    completion_points: int
+    dimensions: dict[str, GradeDimensionOut]
+    feedback: str
+    needs_human_review: bool
+    low_effort_flags: list[str]
+    accepted: bool
+    attempts_used: int
+    attempts_remaining: int
+    can_redo: bool
+
+
+# ---------------------------------------------------------------------------
 # GET /public/plays/{play_id}
 # ---------------------------------------------------------------------------
 

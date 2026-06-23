@@ -52,6 +52,11 @@ export interface RollGradebookReflection {
   student_name: string | null;
   submitted_at: string;
   responses: Record<string, string>;
+  grade_total: number | null;
+  feedback: string | null;
+  accepted: boolean;
+  needs_human_review: boolean;
+  graded_at: string | null;
 }
 
 export interface RollGradebookAttempt {

@@ -594,6 +594,17 @@ def _roll_scenario_out(assignment: object, db: Session) -> RollScenarioOut | Non
     )
 
 
+def _attempt_grade(play: object) -> int:
+    """Return a play's graded score for best-attempt ranking.
+
+    Ungraded completed plays sort below any graded attempt (-1).
+    """
+    reflection = getattr(play, "reflection", None)
+    if reflection is not None and reflection.grade_total is not None:
+        return reflection.grade_total
+    return -1
+
+
 def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
     from app.models.play import Play
 
@@ -603,10 +614,17 @@ def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
 
     reflection = None
     if typed.reflection is not None:
+        r = typed.reflection
+        needs_review = bool((r.grade_breakdown or {}).get("needs_human_review", False))
         reflection = RollGradebookReflection(
-            student_name=typed.reflection.student_name,
-            submitted_at=typed.reflection.submitted_at,
-            responses=typed.reflection.responses_json,
+            student_name=r.student_name,
+            submitted_at=r.submitted_at,
+            responses=r.responses_json,
+            grade_total=r.grade_total,
+            feedback=r.feedback,
+            accepted=bool(r.accepted),
+            needs_human_review=needs_review,
+            graded_at=r.graded_at,
         )
     return RollGradebookAttempt(
         play_id=typed.id,
@@ -692,15 +710,21 @@ def _build_roll_gradebook(
                     latest_submitted_at is None or play.ended_at > latest_submitted_at
                 ):
                     latest_submitted_at = play.ended_at
-                latest_sort_at = None
-                if latest_completed_play is not None:
-                    latest_sort_at = (
-                        latest_completed_play.ended_at
-                        or latest_completed_play.started_at
-                    )
-                play_sort_at = play.ended_at or play.started_at
-                if latest_sort_at is None or play_sort_at >= latest_sort_at:
+                # Best attempt = highest graded score among completed plays,
+                # ties broken by most recent. Exploring branches is never
+                # penalized. Ungraded completed plays rank below any graded one.
+                if latest_completed_play is None:
                     latest_completed_play = play
+                else:
+                    best_grade = _attempt_grade(latest_completed_play)
+                    play_grade = _attempt_grade(play)
+                    best_at = latest_completed_play.ended_at or latest_completed_play.started_at
+                    play_at = play.ended_at or play.started_at
+                    if play_grade > best_grade or (
+                        play_grade == best_grade
+                        and (best_at is None or (play_at is not None and play_at >= best_at))
+                    ):
+                        latest_completed_play = play
             elif in_progress_play_id is None:
                 in_progress_play_id = play.id
 
@@ -905,9 +929,10 @@ def roll_gradebook_csv(
 ) -> Response:
     """Download one CSV row per roster student for the selected scenario.
 
-    Until scoring exists, ``best_attempt`` means the latest completed attempt.
-    In-progress and not-started students are included with blank best-attempt
-    fields so the roster remains complete.
+    ``best_attempt`` is the highest-scoring completed attempt (ties broken by
+    most recent), and includes the AI grade, accepted flag, review flag, and
+    coaching feedback when present.  In-progress and not-started students are
+    included with blank best-attempt fields so the roster remains complete.
     """
     gradebook = _build_roll_gradebook(roll_id, scenario_id, current_user, db)
     reflection_keys: list[str] = []
@@ -928,6 +953,10 @@ def roll_gradebook_csv(
         "best_attempt_started_at",
         "best_attempt_submitted_at",
         "best_attempt_outcome",
+        "grade_total",
+        "grade_accepted",
+        "needs_human_review",
+        "feedback",
         "reflection_submitted_at",
         *reflection_keys,
     ]
@@ -953,6 +982,14 @@ def roll_gradebook_csv(
             if attempt and attempt.ended_at
             else "",
             "best_attempt_outcome": attempt.outcome if attempt and attempt.outcome else "",
+            "grade_total": reflection.grade_total
+            if reflection and reflection.grade_total is not None
+            else "",
+            "grade_accepted": "yes" if reflection and reflection.accepted else "",
+            "needs_human_review": "yes"
+            if reflection and reflection.needs_human_review
+            else "",
+            "feedback": reflection.feedback if reflection and reflection.feedback else "",
             "reflection_submitted_at": reflection.submitted_at.isoformat()
             if reflection
             else "",

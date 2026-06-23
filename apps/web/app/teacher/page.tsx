@@ -627,7 +627,7 @@ function ResultsPanel({
             Results: {gradebook.scenario_title}
           </h2>
           <p className="mt-1 text-sm text-gray-500">
-            Best attempt is the latest completed attempt.
+            Best attempt is the highest-scoring completed attempt.
           </p>
         </div>
         <button
@@ -640,12 +640,13 @@ function ResultsPanel({
         </button>
       </div>
       <div className="mt-4 overflow-x-auto">
-        <table className="w-full min-w-[720px] border-collapse text-sm">
+        <table className="w-full min-w-[860px] border-collapse text-sm">
           <thead>
             <tr className="border-b border-gray-200 text-left text-gray-600">
               <th className="py-2 pr-3 font-semibold">Student</th>
               <th className="py-2 pr-3 font-semibold">Status</th>
               <th className="py-2 pr-3 font-semibold">Attempts</th>
+              <th className="py-2 pr-3 font-semibold">Grade</th>
               <th className="py-2 pr-3 font-semibold">Best submitted</th>
               <th className="py-2 pr-3 font-semibold">Best outcome</th>
               <th className="py-2 pr-3 font-semibold">Reflection</th>
@@ -660,6 +661,33 @@ function ResultsPanel({
                   <td className="py-3 pr-3 font-medium">{student.student_name}</td>
                   <td className="py-3 pr-3">{statusLabel(student.status)}</td>
                   <td className="py-3 pr-3">{student.submitted_count}</td>
+                  <td className="py-3 pr-3 whitespace-nowrap">
+                    {bestReflection?.grade_total != null ? (
+                      <span className="flex items-center gap-1">
+                        <span className="font-semibold">
+                          {bestReflection.grade_total}/100
+                        </span>
+                        {bestReflection.accepted && (
+                          <span
+                            title="Accepted by student"
+                            className="text-green-600"
+                          >
+                            ✓
+                          </span>
+                        )}
+                        {bestReflection.needs_human_review && (
+                          <span
+                            title="Flagged for review"
+                            className="text-amber-600"
+                          >
+                            ⚑
+                          </span>
+                        )}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">—</span>
+                    )}
+                  </td>
                   <td className="py-3 pr-3">
                     {bestAttempt?.ended_at
                       ? new Date(bestAttempt.ended_at).toLocaleString()
@@ -678,6 +706,11 @@ function ResultsPanel({
                               {value}
                             </p>
                           ),
+                        )}
+                        {bestReflection.feedback && (
+                          <p className="mt-1 text-xs italic text-gray-500">
+                            Coaching: {bestReflection.feedback}
+                          </p>
                         )}
                       </div>
                     ) : (

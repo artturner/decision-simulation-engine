@@ -186,6 +186,11 @@ class GradebookReflection(BaseModel):
     student_name: str | None
     submitted_at: datetime
     responses: dict
+    grade_total: int | None = None
+    feedback: str | None = None
+    accepted: bool = False
+    needs_human_review: bool = False
+    graded_at: datetime | None = None
 
 
 class GradebookAttempt(BaseModel):
@@ -211,6 +216,11 @@ class RollGradebookReflection(BaseModel):
     student_name: str | None
     submitted_at: datetime
     responses: dict
+    grade_total: int | None = None
+    feedback: str | None = None
+    accepted: bool = False
+    needs_human_review: bool = False
+    graded_at: datetime | None = None
 
 
 class RollGradebookAttempt(BaseModel):

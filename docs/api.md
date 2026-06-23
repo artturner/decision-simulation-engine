@@ -9,6 +9,8 @@ GET /public/plays/{play_id}
 POST /public/plays/{play_id}/step
 POST /public/plays/{play_id}/back
 POST /public/plays/{play_id}/reflection
+POST /public/plays/{play_id}/reflection/grade    # AI grade + coaching (503 if grading disabled)
+POST /public/plays/{play_id}/reflection/accept   # lock in the grade
 
 ## Admin (X-Admin-Key)
 POST /admin/scenarios/import

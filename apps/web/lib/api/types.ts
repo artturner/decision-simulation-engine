@@ -174,6 +174,30 @@ export interface ReflectionResponse {
 }
 
 // ---------------------------------------------------------------------------
+// POST /public/plays/{play_id}/reflection/grade  and  .../accept
+// ---------------------------------------------------------------------------
+
+export interface GradeDimension {
+  level: "full" | "solid" | "minimal" | "low_effort";
+  points: number;
+  max_points: number;
+  evidence: string;
+}
+
+export interface GradeResult {
+  grade_total: number;
+  completion_points: number;
+  dimensions: Record<string, GradeDimension>;
+  feedback: string;
+  needs_human_review: boolean;
+  low_effort_flags: string[];
+  accepted: boolean;
+  attempts_used: number;
+  attempts_remaining: number;
+  can_redo: boolean;
+}
+
+// ---------------------------------------------------------------------------
 // Error shape returned by the API on 4xx / 5xx
 // ---------------------------------------------------------------------------
 

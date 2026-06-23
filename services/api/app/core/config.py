@@ -74,6 +74,25 @@ class Settings(BaseSettings):
     # Legacy JWT algorithm.
     JWT_ALGORITHM: str = "HS256"
 
+    # ------------------------------------------------------------------
+    # AI reflection grading (optional)
+    # ------------------------------------------------------------------
+    # Anthropic API key for the AI reflection grader.  Leave blank to
+    # disable grading — the reflection flow falls back to plain submission.
+    ANTHROPIC_API_KEY: str = ""
+
+    # Model used to grade reflections.  Configurable per deployment.
+    AI_GRADER_MODEL: str = "claude-sonnet-4-6"
+
+    # Maximum number of AI grading attempts per play before the learner
+    # must accept their last score.
+    AI_GRADER_MAX_ATTEMPTS: int = 3
+
+    @property
+    def ai_grading_enabled(self) -> bool:
+        """Return True when an Anthropic API key is configured."""
+        return bool(self.ANTHROPIC_API_KEY)
+
     @property
     def supabase_jwks_url(self) -> str:
         """Return the configured Supabase JWKS discovery URL, if available."""

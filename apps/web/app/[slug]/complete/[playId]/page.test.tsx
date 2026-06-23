@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CompletePage from "./page";
-import type { PlayViewResponse } from "@/lib/api/types";
+import type { GradeResult, PlayViewResponse } from "@/lib/api/types";
 
 // ---------------------------------------------------------------------------
 // Navigation mock
@@ -26,6 +26,8 @@ jest.mock("@/lib/api/client", () => ({
   ...jest.requireActual("@/lib/api/client"),
   getPlay: jest.fn(),
   submitReflection: jest.fn(),
+  gradeReflection: jest.fn(),
+  acceptReflection: jest.fn(),
 }));
 
 const mockApi = jest.requireMock("@/lib/api/client") as {
@@ -33,6 +35,27 @@ const mockApi = jest.requireMock("@/lib/api/client") as {
   submitReflection: jest.MockedFunction<
     (id: string, body: object) => Promise<{ ok: true }>
   >;
+  gradeReflection: jest.MockedFunction<
+    (id: string, body: object) => Promise<GradeResult>
+  >;
+  acceptReflection: jest.MockedFunction<(id: string) => Promise<GradeResult>>;
+};
+
+const gradeResult: GradeResult = {
+  grade_total: 85,
+  completion_points: 20,
+  dimensions: {
+    engagement: { level: "full", points: 25, max_points: 25, evidence: "e" },
+    reasoning: { level: "solid", points: 24, max_points: 30, evidence: "r" },
+    insight: { level: "minimal", points: 16, max_points: 25, evidence: "i" },
+  },
+  feedback: "Solid reflection — try citing a specific moment.",
+  needs_human_review: false,
+  low_effort_flags: [],
+  accepted: false,
+  attempts_used: 1,
+  attempts_remaining: 2,
+  can_redo: true,
 };
 
 // ---------------------------------------------------------------------------
@@ -127,37 +150,38 @@ describe("when play is not done", () => {
 });
 
 // ---------------------------------------------------------------------------
-// 2. Successful submit — correct payload shape
+// 2. AI grade → coach → accept flow
 // ---------------------------------------------------------------------------
-describe("successful submission", () => {
+describe("AI grading flow", () => {
   beforeEach(() => {
     mockApi.getPlay.mockResolvedValue(completedPlay);
-    mockApi.submitReflection.mockResolvedValue({ ok: true });
+    mockApi.gradeReflection.mockResolvedValue(gradeResult);
+    mockApi.acceptReflection.mockResolvedValue({
+      ...gradeResult,
+      accepted: true,
+      can_redo: false,
+    });
   });
 
   async function fillAndSubmit() {
     renderWithClient(<CompletePage />);
-    // Wait for form to appear
     await screen.findByLabelText("Your Name");
-    // Fill name
     fireEvent.change(screen.getByLabelText("Your Name"), {
       target: { value: "Doe, Jane" },
     });
-    // Fill questions
     fireEvent.change(screen.getByLabelText(/1\. What did you learn/), {
       target: { value: "I learned empathy." },
     });
     fireEvent.change(screen.getByLabelText(/2\. What would you do differently/), {
       target: { value: "I would listen more." },
     });
-    // Submit
     fireEvent.click(screen.getByRole("button", { name: "Submit Reflection" }));
   }
 
-  test("calls submitReflection with correct payload", async () => {
+  test("calls gradeReflection with correct payload", async () => {
     await fillAndSubmit();
-    await waitFor(() => expect(mockApi.submitReflection).toHaveBeenCalledTimes(1));
-    expect(mockApi.submitReflection).toHaveBeenCalledWith("play-abc", {
+    await waitFor(() => expect(mockApi.gradeReflection).toHaveBeenCalledTimes(1));
+    expect(mockApi.gradeReflection).toHaveBeenCalledWith("play-abc", {
       student_name: "Doe, Jane",
       responses: {
         reflection_1: "I learned empathy.",
@@ -166,53 +190,37 @@ describe("successful submission", () => {
     });
   });
 
-  test("shows success message after submission", async () => {
+  test("shows score and coaching feedback after grading", async () => {
     await fillAndSubmit();
+    expect(await screen.findByText("85 / 100")).toBeInTheDocument();
     expect(
-      await screen.findByText(/Reflection submitted successfully/i),
+      screen.getByText(/Solid reflection — try citing a specific moment/i),
     ).toBeInTheDocument();
   });
 
-  test("prefills selected roster name and submits it", async () => {
-    mockApi.getPlay.mockResolvedValue({
-      ...completedPlay,
-      learner_label: "Leo Dagleish",
-    });
-    renderWithClient(<CompletePage />);
-
-    const nameInput = await screen.findByLabelText("Your Name");
-    expect(nameInput).toHaveValue("Leo Dagleish");
-    fireEvent.change(screen.getByLabelText(/1\. What did you learn/), {
-      target: { value: "I learned empathy." },
-    });
-    fireEvent.change(screen.getByLabelText(/2\. What would you do differently/), {
-      target: { value: "I would listen more." },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Submit Reflection" }));
-
-    await waitFor(() => expect(mockApi.submitReflection).toHaveBeenCalledTimes(1));
-    expect(mockApi.submitReflection).toHaveBeenCalledWith("play-abc", {
-      student_name: "Leo Dagleish",
-      responses: {
-        reflection_1: "I learned empathy.",
-        reflection_2: "I would listen more.",
-      },
-    });
+  test("revise returns to the form for a re-grade", async () => {
+    await fillAndSubmit();
+    await screen.findByText("85 / 100");
+    fireEvent.click(screen.getByRole("button", { name: /Revise & resubmit/i }));
+    // Form is back; answers retained
+    expect(await screen.findByLabelText("Your Name")).toHaveValue("Doe, Jane");
   });
 
-  test("disables submit button after success", async () => {
+  test("accept locks in the score", async () => {
     await fillAndSubmit();
-    await screen.findByText(/Reflection submitted successfully/i);
+    await screen.findByText("85 / 100");
+    fireEvent.click(screen.getByRole("button", { name: "Accept score" }));
+    await waitFor(() => expect(mockApi.acceptReflection).toHaveBeenCalledTimes(1));
     expect(
-      screen.getByRole("button", { name: "Submit Reflection" }),
-    ).toBeDisabled();
+      await screen.findByText(/Your score has been recorded/i),
+    ).toBeInTheDocument();
   });
 });
 
 // ---------------------------------------------------------------------------
-// 3. 409 duplicate submission
+// 3. Fallback when AI grading is unavailable (503)
 // ---------------------------------------------------------------------------
-describe("409 duplicate submission", () => {
+describe("grading unavailable fallback", () => {
   beforeEach(() => {
     mockApi.getPlay.mockResolvedValue(completedPlay);
     const { ApiClientError } = jest.requireMock("@/lib/api/client") as {
@@ -220,8 +228,49 @@ describe("409 duplicate submission", () => {
         status: number;
       };
     };
-    mockApi.submitReflection.mockRejectedValue(
-      new ApiClientError(409, "Reflection already submitted."),
+    mockApi.gradeReflection.mockRejectedValue(
+      new ApiClientError(503, "AI grading is not available."),
+    );
+    mockApi.submitReflection.mockResolvedValue({ ok: true });
+  });
+
+  async function fillAndSubmit() {
+    renderWithClient(<CompletePage />);
+    await screen.findByLabelText("Your Name");
+    fireEvent.change(screen.getByLabelText("Your Name"), {
+      target: { value: "Doe, Jane" },
+    });
+    fireEvent.change(screen.getByLabelText(/1\. What did you learn/), {
+      target: { value: "I learned empathy." },
+    });
+    fireEvent.change(screen.getByLabelText(/2\. What would you do differently/), {
+      target: { value: "I would listen more." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Submit Reflection" }));
+  }
+
+  test("falls back to plain submission and shows success", async () => {
+    await fillAndSubmit();
+    await waitFor(() => expect(mockApi.submitReflection).toHaveBeenCalledTimes(1));
+    expect(
+      await screen.findByText(/Reflection submitted successfully/i),
+    ).toBeInTheDocument();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 4. 409 — reflection already accepted (locked)
+// ---------------------------------------------------------------------------
+describe("409 locked reflection", () => {
+  beforeEach(() => {
+    mockApi.getPlay.mockResolvedValue(completedPlay);
+    const { ApiClientError } = jest.requireMock("@/lib/api/client") as {
+      ApiClientError: new (status: number, message: string) => Error & {
+        status: number;
+      };
+    };
+    mockApi.gradeReflection.mockRejectedValue(
+      new ApiClientError(409, "This reflection has already been accepted."),
     );
   });
 
@@ -242,23 +291,7 @@ describe("409 duplicate submission", () => {
 
   test("shows 'Already submitted' message", async () => {
     await fillAndSubmit();
-    expect(
-      await screen.findByText(/Already submitted/i),
-    ).toBeInTheDocument();
-  });
-
-  test("disables submit button after 409", async () => {
-    await fillAndSubmit();
-    await screen.findByText(/Already submitted/i);
-    expect(
-      screen.getByRole("button", { name: "Submit Reflection" }),
-    ).toBeDisabled();
-  });
-
-  test("disables all form inputs after 409", async () => {
-    await fillAndSubmit();
-    await screen.findByText(/Already submitted/i);
-    expect(screen.getByLabelText("Your Name")).toBeDisabled();
+    expect(await screen.findByText(/Already submitted/i)).toBeInTheDocument();
   });
 });
 
@@ -285,11 +318,12 @@ describe("validation errors", () => {
     expect(errors).toHaveLength(2);
   });
 
-  test("does NOT call submitReflection when validation fails", async () => {
+  test("does NOT call gradeReflection when validation fails", async () => {
     renderWithClient(<CompletePage />);
     await screen.findByLabelText("Your Name");
     fireEvent.click(screen.getByRole("button", { name: "Submit Reflection" }));
     await screen.findByText("Name is required.");
+    expect(mockApi.gradeReflection).not.toHaveBeenCalled();
     expect(mockApi.submitReflection).not.toHaveBeenCalled();
   });
 
@@ -309,9 +343,9 @@ describe("validation errors", () => {
     fireEvent.change(screen.getByLabelText(/2\. What would you do differently/), {
       target: { value: "More." },
     });
-    mockApi.submitReflection.mockResolvedValue({ ok: true });
+    mockApi.gradeReflection.mockResolvedValue(gradeResult);
     fireEvent.click(screen.getByRole("button", { name: "Submit Reflection" }));
-    await screen.findByText(/Reflection submitted successfully/i);
+    await screen.findByText("85 / 100");
     expect(screen.queryByText("Name is required.")).not.toBeInTheDocument();
   });
 });

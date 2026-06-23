@@ -33,6 +33,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
@@ -226,6 +227,10 @@ class Reflection(Base):
     One reflection per play (enforced by unique FK).  The ``responses_json``
     field stores answers keyed by question index or prompt text — the schema
     is intentionally flexible to accommodate different scenario formats.
+
+    A reflection is mutable while ``accepted`` is False: the learner may
+    revise their answers and re-grade (capped by ``AI_GRADER_MAX_ATTEMPTS``).
+    Once ``accepted`` is True the reflection is locked.
     """
 
     __tablename__ = "reflections"
@@ -255,6 +260,52 @@ class Reflection(Base):
         JSONB,
         nullable=False,
         comment="Free-form responses keyed by question index or prompt text",
+    )
+
+    # ------------------------------------------------------------------
+    # AI grading (populated by the reflection grade endpoint)
+    # ------------------------------------------------------------------
+    grade_total: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable=True,
+        comment="Total score 0-100 (20 completion + 80 AI-scored)",
+    )
+    grade_breakdown: Mapped[dict | None] = mapped_column(
+        JSONB,
+        nullable=True,
+        comment="Per-dimension scores, evidence, and flags from the AI judge",
+    )
+    feedback: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+        comment="Student-facing coaching feedback from the AI judge",
+    )
+    graded_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+    grade_attempts: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        server_default="0",
+        default=0,
+        comment="Number of AI grading calls used for this reflection",
+    )
+    accepted: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        server_default=text("false"),
+        default=False,
+        comment="Whether the learner has accepted the grade (locks the reflection)",
+    )
+    accepted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+    grader_model: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+        comment="Model that produced the grade (audit)",
     )
 
     # Relationship
