@@ -1,0 +1,90 @@
+{
+  "1": {
+    "filename": "scene_1.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Assignment\nA glass-walled K Street conference room overlooking a gray Washington morning in early 2009."
+  },
+  "2a": {
+    "filename": "scene_2a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Inside the Room\nA cramped Senate committee anteroom where staffers shuttle markup drafts in and out."
+  },
+  "2b": {
+    "filename": "scene_2b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Into the Streets\nA bustling campaign war room with phone banks, printed yard signs, and a wall of media clippings."
+  },
+  "2c": {
+    "filename": "scene_2c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Both Hands on the Wheel\nYour firm's strategy room, split between a policy team drafting language and a communications team plotting media hits."
+  },
+  "3": {
+    "filename": "scene_3.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Choosing Your Targets\nA wall-sized whiteboard mapping committee rosters, vote counts, and shifting alliances."
+  },
+  "4a": {
+    "filename": "scene_4a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Friendly Ground\nA committee member's district office, walls lined with photos of local hospitals and clinics."
+  },
+  "4b": {
+    "filename": "scene_4b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Fence-Sitters\nA Capitol hallway crowded with lobbyists waiting outside the office of an undecided senator."
+  },
+  "4c": {
+    "filename": "scene_4c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Playing the Long Game\nA quiet office where staff track both chambers' bill versions side by side, line by line."
+  },
+  "5": {
+    "filename": "scene_5.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Go It Alone or Join Forces?\nA downtown ballroom where rival healthcare interests gather to discuss a possible joint front."
+  },
+  "6a": {
+    "filename": "scene_6a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Strength in Numbers\nA packed press conference where logos of multiple healthcare groups share a single banner."
+  },
+  "6b": {
+    "filename": "scene_6b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: On Your Own Terms\nA focused one-on-one meeting between you and a key committee counsel."
+  },
+  "6c": {
+    "filename": "scene_6c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Two Tracks at Once\nA hotel suite where you slip out of a coalition strategy session to take a private call."
+  },
+  "7": {
+    "filename": "scene_7.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Counter-Mobilization\nTelevision screens in the office show Tea Party rallies on one channel and Supreme Court reporters on another."
+  },
+  "8a": {
+    "filename": "scene_8a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Into the Courtroom\nA law library where associates assemble exhibits for a Supreme Court amicus filing."
+  },
+  "8b": {
+    "filename": "scene_8b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Eyes on the Text\nA late-night session marking up the latest reconciliation language clause by clause."
+  },
+  "8c": {
+    "filename": "scene_8c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Behind the Curtain\nA discreet conference call coordinating talking points with allied counsel."
+  },
+  "9": {
+    "filename": "scene_9.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Following the Money\nA finance meeting with spreadsheets of PAC contribution limits and election-cycle calendars."
+  },
+  "10": {
+    "filename": "scene_10.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Bill Becomes Law\nA television in the firm lobby shows the President signing the Affordable Care Act into law."
+  },
+  "11.influential": {
+    "filename": "scene_11_influential.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Maximum Leverage\nYour client's executives gather to toast the outcome over a printout of the final bill text."
+  },
+  "11.respected": {
+    "filename": "scene_11_respected.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Credible Voice\nA panel discussion where you are invited to speak as a respected industry representative."
+  },
+  "11.sidelined": {
+    "filename": "scene_11_sidelined.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Outmaneuvered\nA subdued debrief meeting where the final bill text reveals few of your client's priorities."
+  },
+  "11.balanced": {
+    "filename": "scene_11_balanced.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: A Mixed Result\nYour team reviews the enacted law, marking wins in green and losses in red across its pages."
+  }
+}

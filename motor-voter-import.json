@@ -1,0 +1,238 @@
+{
+  "slug": "motor-voter",
+  "title": "The Motor Voter Decision",
+  "description": "As Oregon's governor, you must decide whether to sign automatic voter registration into law while balancing democratic participation, election integrity concerns, and political division",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "The Motor Voter Decision",
+      "description": "As Oregon's governor, you must decide whether to sign automatic voter registration into law while balancing democratic participation, election integrity concerns, and political division",
+      "page_title": "The Motor Voter Decision",
+      "page_icon": "🗳️",
+      "author": "Civic Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "variables": {
+      "DemocraticSupport": 0,
+      "BipartisanTrust": 0,
+      "VoterAccess": 0,
+      "PublicLegitimacy": 0
+    },
+    "reflection_questions": [
+      "How did you balance the goal of expanding voter access against concerns about coercion and election integrity? What principles guided your weighing of these competing values?",
+      "Consider the tension between acting decisively on a policy you believe in and building bipartisan consensus. When is each approach more appropriate for a governor?",
+      "What role did the opt-out provision play in your decisions? How do design details in a policy affect both its legitimacy and its practical impact?",
+      "Republican legislators argued that making registration easier 'coerces' citizens into voting. How would you evaluate this argument, and how did it influence your choices?",
+      "How does Oregon's individualistic-leaning political culture, as described by Elazar, shape the debate over who bears responsibility for voter registration—the citizen or the state?"
+    ],
+    "reflection_prompts": [
+      "Think about how your decisions reflected different views on the proper role of government in democratic participation",
+      "Consider the real-world consequences on unregistered voters, election officials, and the legislators you must work with",
+      "Reflect on how political culture and partisanship influence even procedural election reforms",
+      "Consider whether process (how a policy is enacted) matters as much as outcome (whether it passes)"
+    ],
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The Bill Arrives",
+        "description": "The governor's office, early March. A landmark bill sits on your desk awaiting your decision.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_1.png",
+        "narration": "The state legislature has passed House Bill 2177, which would make voter registration automatic for every Oregonian who obtains or renews a driver's license. Drawing on data from the Department of Motor Vehicles, the secretary of state's office would add eligible citizens to the voter rolls and mail them a ballot before each election. An estimated 300,000 unregistered but eligible voters could be affected.\n\nThe bill passed along party lines. Your fellow Democrats hail it as a historic expansion of the franchise. Republican legislators are furious, arguing the state should not register people who never asked to be registered.\n\nYour chief of staff lays out the political reality. 'Governor, this is your signature. Democracy advocates are watching, the national press is watching, and so is every Republican in the building. How do you want to proceed?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Sign the bill quickly and frame it as a clear win for democracy and access",
+            "next": "2a",
+            "effects": {
+              "DemocraticSupport": 3,
+              "VoterAccess": 3,
+              "BipartisanTrust": -2
+            }
+          },
+          {
+            "text": "Send the bill back and ask the legislature to strengthen its opt-out and privacy protections first",
+            "next": "2b",
+            "effects": {
+              "BipartisanTrust": 2,
+              "VoterAccess": 0,
+              "PublicLegitimacy": 2
+            }
+          },
+          {
+            "text": "Convene a meeting with Republican leaders to hear their objections before deciding",
+            "next": "2c",
+            "effects": {
+              "BipartisanTrust": 3,
+              "DemocraticSupport": -1,
+              "PublicLegitimacy": 1
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "A Decisive Signature",
+        "description": "A press conference at the State House. Cameras roll as you sign the bill into law.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_2a.png",
+        "narration": "You sign HB 2177 with little delay, declaring that 'voting is a right, not a privilege reserved for those who navigate the bureaucracy.' Democratic legislators and civil rights organizations celebrate. Oregon becomes the first state in the nation to adopt automatic voter registration.\n\nBut the swift action stings Republicans, who feel steamrolled. A Republican floor leader tells reporters, 'The governor didn't even pretend to listen to our concerns about coercing people into the voter rolls. This is exactly why people distrust government.'\n\nThe secretary of state now faces the practical task of implementation, and one technical question looms large: how exactly will citizens be allowed to decline?",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2b": {
+        "title": "Back to the Drawing Board",
+        "description": "Your office, a working session with legislative leaders from both parties.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_2b.png",
+        "narration": "Rather than signing immediately, you return the bill to the legislature with a message: you support the goal, but you want airtight protections for citizens who do not wish to be registered, along with clear rules safeguarding the privacy of DMV data.\n\nSome Democrats grumble that you are slowing down a historic reform for no good reason. But a few moderate Republicans take notice. 'At least she's treating this like a real conversation,' one says privately. Voting advocates worry the delay could let momentum slip away.\n\nWeeks later, an amended bill returns with a robust opt-out mechanism. Now you must decide how to present it to a still-divided legislature.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2c": {
+        "title": "Listening to the Opposition",
+        "description": "A closed-door meeting room. Republican leaders sit across the table, arms folded.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_2c.png",
+        "narration": "You invite Republican leadership to lay out their objections directly. Their argument is sharper than the headlines suggested. 'We aren't against people voting,' the senate minority leader says. 'We're against the state assuming everyone wants in. Registration should be an affirmative choice. And we have real questions about data security and accidentally registering non-citizens who hold licenses.'\n\nYou take notes. Some of their concerns are political theater, but the data-security and non-citizen-screening points are legitimate. Your Democratic allies, meanwhile, are anxious you are giving the opposition a veto over their priority.\n\nThe meeting ends without agreement, but you now understand the terrain. The central question remains: how will registration work, and how easily can someone opt out?",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "3": {
+        "title": "The Opt-Out Question",
+        "description": "A policy briefing with the secretary of state and your legal counsel.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_3.png",
+        "narration": "The most consequential design choice is how registration is triggered and declined. The secretary of state presents three models.\n\n'Option one: full opt-out. Everyone eligible is registered automatically and receives a notice; they can mail back a card to decline before being added. Option two: mandatory registration with no opt-out at all—everyone with a license is on the rolls, period. Option three: opt-in confirmation, where people are flagged but must affirmatively confirm before being registered.'\n\nYour counsel adds, 'The opt-out model maximizes the rolls but invites the coercion critique. Mandatory removes choice entirely and is legally risky. Opt-in confirmation is the gentlest but defeats much of the purpose, since the unregistered tend not to respond to mail.'\n\nWhich model do you direct the office to implement?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Adopt the opt-out model so the maximum number of eligible voters are registered by default",
+            "next": "4",
+            "effects": {
+              "VoterAccess": 3,
+              "DemocraticSupport": 2,
+              "PublicLegitimacy": -1,
+              "BipartisanTrust": -1
+            }
+          },
+          {
+            "text": "Make registration mandatory with no decline option to ensure complete rolls",
+            "next": "4",
+            "effects": {
+              "VoterAccess": 2,
+              "DemocraticSupport": -1,
+              "PublicLegitimacy": -3,
+              "BipartisanTrust": -3
+            }
+          },
+          {
+            "text": "Use the opt-in confirmation model to respect individual choice and blunt the coercion argument",
+            "next": "4",
+            "effects": {
+              "VoterAccess": -1,
+              "BipartisanTrust": 2,
+              "PublicLegitimacy": 2,
+              "DemocraticSupport": -1
+            }
+          }
+        ]
+      },
+      "4": {
+        "title": "Rollout or Pilot?",
+        "description": "A strategy session as implementation planning begins in earnest.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_4.png",
+        "narration": "With the registration model settled, your team debates the scope of rollout. The secretary of state warns that statewide implementation will strain DMV-elections data systems and that any high-profile error—a mistakenly registered non-citizen, a privacy breach—could discredit the whole program.\n\n'We could pilot this in a handful of counties first,' your policy director suggests. 'Work out the technical bugs, prove it's safe, then scale up. It buys credibility.'\n\nYour political adviser pushes back. 'A pilot signals you're not confident. Republicans will say you're admitting it's risky. Democracy advocates wanted this now, statewide. Half measures lose the energy.'\n\nUnregistered voters across the state, of course, have no seat at this table—but the choice will determine how quickly, and how reliably, they gain access to the ballot.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Launch statewide immediately to deliver the full promise of the reform without delay",
+            "next": "5",
+            "effects": {
+              "VoterAccess": 3,
+              "DemocraticSupport": 2,
+              "PublicLegitimacy": -1
+            }
+          },
+          {
+            "text": "Pilot in select counties first to demonstrate the system is secure and accurate before scaling",
+            "next": "5",
+            "effects": {
+              "PublicLegitimacy": 3,
+              "BipartisanTrust": 2,
+              "VoterAccess": -1,
+              "DemocraticSupport": -1
+            }
+          },
+          {
+            "text": "Launch statewide but commission an independent audit of accuracy and data security in the first year",
+            "next": "5",
+            "effects": {
+              "VoterAccess": 2,
+              "PublicLegitimacy": 2,
+              "BipartisanTrust": 1,
+              "DemocraticSupport": 1
+            }
+          }
+        ]
+      },
+      "5": {
+        "title": "The First Election",
+        "description": "Election night the following year. The results of your policy choices begin to come in.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_5.png",
+        "narration": "The first major election under your policy has arrived. The data tells a story shaped by every decision you made—how registration worked, whether citizens could decline, and how cautiously you scaled.\n\nReporters want a statement. Republican legislators are ready to pounce on any irregularity. Advocacy groups are watching turnout among the newly registered. And hundreds of thousands of Oregonians who had never registered before now hold a ballot in their hands—or chose to set one aside.\n\nThe outcome of your tenure on this issue now rests on the balance you struck.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "VoterAccess >= 4",
+            "next": "6.model"
+          },
+          {
+            "condition": "PublicLegitimacy <= -2",
+            "next": "6.backlash"
+          },
+          {
+            "condition": "BipartisanTrust <= -4",
+            "next": "6.backlash"
+          },
+          {
+            "condition": "VoterAccess <= 0",
+            "next": "6.cautious"
+          }
+        ],
+        "default": "6.mixed"
+      },
+      "6.model": {
+        "title": "A National Model",
+        "description": "The governor's office, surrounded by news coverage hailing Oregon's success.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_6_model.png",
+        "narration": "Roughly 225,000 new voters were added to the rolls, and tens of thousands of them cast ballots—many for the first time. The audit and careful design meant no major errors marred the launch, depriving critics of ammunition. Even some Republican officials concede the system worked as advertised.\n\nOther states begin calling your office to learn how 'Oregon Motor Voter' was built. You expanded access dramatically while preserving enough integrity and legitimacy that the reform endured. By respecting both the right to vote and citizens' ability to decline, you turned a partisan flashpoint into a durable institution.\n\nThe true test of an election reform is not whether it passes, but whether it survives the scrutiny of its first real election. Yours did.",
+        "type": "end",
+        "outcome": "model_success",
+        "outcome_message": "You expanded voter access dramatically while building enough legitimacy to make the reform durable and widely emulated."
+      },
+      "6.backlash": {
+        "title": "A Costly Backlash",
+        "description": "A tense press conference as critics seize on the program's troubles.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_6_backlash.png",
+        "narration": "Your aggressive approach delivered new registrations, but at a steep cost. Without strong safeguards or a cautious rollout, errors surfaced—a handful of ineligible registrations and confusion over the rolls became front-page news. Republicans, already alienated by how the policy was enacted, amplified every misstep into a referendum on 'government overreach.'\n\nPublic confidence in the program eroded, and a ballot measure to repeal or restrict it gains traction. The secretary of state spends more time defending the system than improving it.\n\nThe lesson is sobering: a reform that expands rights but loses public trust becomes politically fragile. Speed and ambition mattered less than the credibility you failed to protect. Voter access means little if the policy itself cannot survive.",
+        "type": "end",
+        "outcome": "backlash",
+        "outcome_message": "You expanded the rolls but neglected legitimacy and trust, leaving the reform vulnerable to repeal."
+      },
+      "6.cautious": {
+        "title": "Caution's Trade-Off",
+        "description": "A quiet evaluation meeting reviewing modest results.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_6_cautious.png",
+        "narration": "By prioritizing individual choice and caution, you avoided controversy—but also blunted the reform's impact. The opt-in model and limited rollout meant far fewer of the 300,000 eligible-but-unregistered Oregonians actually made it onto the rolls. Many never returned the confirmation cards, exactly as your secretary of state had warned.\n\nRepublicans are satisfied, and there is little backlash. But voting advocates are disappointed. 'You had the chance to fundamentally expand the franchise,' one tells you, 'and you settled for a gentle nudge that most people ignored.'\n\nYou preserved legitimacy and comity at the expense of the reform's central purpose. There is genuine value in proceeding carefully—but a policy designed to overcome the inertia of non-registration must be built to actually reach the people it intends to serve.",
+        "type": "end",
+        "outcome": "cautious",
+        "outcome_message": "You preserved trust and choice but achieved only modest gains in voter access, falling short of the reform's potential."
+      },
+      "6.mixed": {
+        "title": "A Mixed Verdict",
+        "description": "The governor's office, weighing uneven but real results.",
+        "image": "https://media.cruxlabs.academy/motor_voter/1/scene_6_mixed.png",
+        "narration": "The first election under your policy produced a mixed verdict. You added a meaningful number of new voters to the rolls, and the program functioned without catastrophe. Yet the balance you struck left no one fully satisfied: advocates wanted broader reach, Republicans remain skeptical, and the public's view of the program is still forming.\n\nThe reform survives, but its long-term durability is uncertain. Whether it becomes a national model or fades depends on choices yet to come—refining the safeguards, broadening access, and rebuilding the bipartisan trust that frayed along the way.\n\nGoverning is rarely a clean victory. You advanced a real expansion of democratic participation while learning, perhaps the hard way, that access, integrity, and legitimacy must all be tended together.",
+        "type": "end",
+        "outcome": "mixed",
+        "outcome_message": "You achieved real but uneven gains, advancing voter access while leaving questions of trust and reach unresolved."
+      }
+    }
+  }
+}

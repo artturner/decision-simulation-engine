@@ -1,0 +1,257 @@
+{
+  "slug": "the-marshall-gambit",
+  "title": "The Marshall Gambit",
+  "description": "As Chief Justice John Marshall, navigate the politically explosive Marbury v. Madison case and define the power of the Supreme Court",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "The Marshall Gambit",
+      "description": "As Chief Justice John Marshall, navigate the politically explosive Marbury v. Madison case and define the power of the Supreme Court",
+      "page_title": "Marbury v. Madison: The Marshall Gambit",
+      "page_icon": "⚖️",
+      "author": "Civics Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "variables": {
+      "JudicialLegitimacy": 0,
+      "JeffersonRelations": 0,
+      "ConstitutionalPrinciple": 0,
+      "CourtUnity": 0
+    },
+    "reflection_questions": [
+      "How did you balance the Court's fragile legitimacy against the demands of judicial principle? Which consideration ultimately weighed most heavily in your decisions, and why?",
+      "Marshall famously denied Marbury his commission while simultaneously expanding the Court's power. How does the tension between short-term loss and long-term institutional gain shape strategic decision-making in any branch of government?",
+      "Consider the rivalry between Marshall and Jefferson. How did the political context, including the threat of executive defiance, constrain or enable the choices available to the Court?",
+      "Judicial review is not mentioned explicitly in the Constitution. What does the way it was established suggest about how institutions acquire power and legitimacy over time?",
+      "If you had ruled differently, how might the role of the modern judiciary be different today? What real-world parallels do you see in how courts navigate politically charged cases?"
+    ],
+    "reflection_prompts": [
+      "Think about how your decisions reflected a trade-off between immediate political survival and lasting institutional authority",
+      "Consider the perspectives of Marbury, Madison, Jefferson, and Congress, and how each was affected by the ruling",
+      "Reflect on how a 'least dangerous branch' with neither sword nor purse could secure such enduring power",
+      "Consider how precedent, once established, frames the choices of every future court"
+    ],
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "A Dangerous Petition",
+        "description": "The Supreme Court chamber, sharing cramped space beneath the House chamber in the new capital, Washington, 1803.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_1.png",
+        "narration": "The young republic is fractured by partisan venom. Your fellow Federalist, outgoing President John Adams, appointed William Marbury as a justice of the peace, but the commission was never delivered before Adams left office. Now President Thomas Jefferson, your political rival, has instructed his Secretary of State, James Madison, to withhold it.\n\nMarbury has petitioned this Court for a writ of mandamus under the Judiciary Act of 1789 to compel delivery. The chamber is tense. You know that if you order Madison to act, he will almost certainly refuse, and there is no army to enforce your word. As Hamilton wrote, the judiciary holds 'neither force nor will, but merely judgment.'\n\nA clerk sets the briefs before you. The eyes of Congress, the President, and the nation await.\n\nMarbury's counsel: 'Mr. Chief Justice, the law is plain. My client is entitled to his office.'\n\nHow will you begin to approach this case?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Frame the case narrowly around Marbury's legal entitlement, signaling the Court intends to defend the rule of law",
+            "next": "2a",
+            "effects": {
+              "ConstitutionalPrinciple": 2,
+              "JeffersonRelations": -2
+            }
+          },
+          {
+            "text": "Seek a path that avoids direct confrontation with Jefferson while preserving the Court's dignity",
+            "next": "2b",
+            "effects": {
+              "JeffersonRelations": 2,
+              "JudicialLegitimacy": -1
+            }
+          },
+          {
+            "text": "Recognize this as an opportunity to address a larger question: the Court's authority to interpret the Constitution itself",
+            "next": "2c",
+            "effects": {
+              "ConstitutionalPrinciple": 2,
+              "JudicialLegitimacy": 1
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "The Weight of Entitlement",
+        "description": "Days of deliberation. The Federalist press watches eagerly for a rebuke of Jefferson.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_2a.png",
+        "narration": "You signal that the Court takes Marbury's claim seriously. Federalist newspapers celebrate, anticipating a stinging order against the Jefferson administration. But within the executive offices, the response is hardening.\n\nAn informant relays Madison's mood: he will not appear before the Court, and Jefferson has privately suggested he would simply ignore any writ. The danger becomes vivid. An order that is openly defied would expose the Court as powerless before the nation.\n\nYour fellow justices grow uneasy. Justice Chase mutters, 'If we command and are ignored, we are finished.'",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2b": {
+        "title": "The Cautious Road",
+        "description": "Quiet consultations in your chambers with the associate justices.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_2b.png",
+        "narration": "You let it be known the Court wishes to avoid a clash with the executive. Word reaches Jefferson's circle, and the immediate tension eases. Some allies are relieved.\n\nYet murmurs spread among Federalists that the Court is timid, that it will bend before Jefferson rather than uphold the law. A justice cautions you privately: 'If we are seen to retreat, what is left of our authority? We may keep the peace and lose our purpose.'\n\nThe question sharpens: is avoiding conflict worth the appearance of surrender?",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2c": {
+        "title": "A Larger Stage",
+        "description": "Late candlelight in your chambers as you study Article III and the Judiciary Act side by side.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_2c.png",
+        "narration": "Your mind moves past Marbury to the structure of the Republic itself. The Judiciary Act of 1789 granted this Court the power to issue writs of mandamus in cases of original jurisdiction. But Article III of the Constitution limits the Court's original jurisdiction to a narrow set of cases, disputes between states and those touching foreign ministers.\n\nA tension glints before you: did Congress, in the Judiciary Act, grant the Court a power the Constitution withholds? If so, which must prevail, the statute or the Constitution?\n\nYou sense a route that could turn an impossible case into a foundation. But it would require denying Marbury the very relief he seeks.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "3": {
+        "title": "The Three Questions",
+        "description": "The full Court assembles for argument. You must structure the opinion that will define the ruling.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_3.png",
+        "narration": "You decide to organize the Court's reasoning around three questions: Does Marbury have a right to the commission? If so, do the laws afford him a remedy? And if they do, is that remedy a writ of mandamus from this Court?\n\nThe first two questions invite you to scold the Jefferson administration for withholding a lawful appointment. The third question, about the writ, is where the true peril and opportunity lie.\n\nThe justices look to you to set the course. The choice of how forcefully to answer each question will shape the political firestorm to come.\n\nJustice Paterson: 'Mr. Chief Justice, how boldly shall we speak?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Declare boldly that Marbury has a right and a remedy, then order Madison to deliver the commission",
+            "next": "4a",
+            "effects": {
+              "ConstitutionalPrinciple": 3,
+              "JeffersonRelations": -3,
+              "JudicialLegitimacy": -2
+            }
+          },
+          {
+            "text": "Rule that the Court has no power in this matter and dismiss Marbury's petition entirely",
+            "next": "4b",
+            "effects": {
+              "JeffersonRelations": 2,
+              "ConstitutionalPrinciple": -2,
+              "JudicialLegitimacy": -1
+            }
+          },
+          {
+            "text": "Affirm Marbury's right and the existence of a remedy, but hold that the statute granting this Court the power to act is itself unconstitutional",
+            "next": "4c",
+            "effects": {
+              "ConstitutionalPrinciple": 3,
+              "JudicialLegitimacy": 3,
+              "CourtUnity": 1
+            }
+          }
+        ]
+      },
+      "4a": {
+        "title": "The Command Issued",
+        "description": "The opinion is read aloud. The order to Madison rings through the chamber.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_4a.png",
+        "narration": "The Court declares Marbury entitled to his office and orders Secretary Madison to deliver the commission. Federalists erupt in applause. For a moment, the judiciary seems to have asserted itself as a coequal force.\n\nThen comes the executive's silence, which curdles into open defiance. Madison ignores the order. Jefferson lets it be known that the President's branch will not be commanded by judges. Marbury never receives his commission.\n\nThe nation watches a court issue a command that vanishes into air. Editorials, even sympathetic ones, ask the dangerous question: what is a court whose orders mean nothing?",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "JudicialLegitimacy <= -2",
+            "next": "5.defiance"
+          }
+        ],
+        "default": "5.defiance"
+      },
+      "4b": {
+        "title": "The Quiet Surrender",
+        "description": "The dismissal is announced briefly, almost apologetically.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_4b.png",
+        "narration": "You rule that the Court cannot grant relief and dismiss Marbury's petition. There is no confrontation with Jefferson, and the immediate crisis dissolves. The administration is satisfied; the storm passes without a clap of thunder.\n\nBut the cost reveals itself slowly. Federalists feel betrayed, and even neutral observers note that the Court bowed to political pressure rather than answering the constitutional questions before it. The chance to establish where the judiciary stands among the branches slips away.\n\nMarbury, denied without explanation, walks away. And the Court remains what Hamilton feared: feeble, deferential, an institution that flinched.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "ConstitutionalPrinciple <= -2",
+            "next": "5.retreat"
+          }
+        ],
+        "default": "5.retreat"
+      },
+      "4c": {
+        "title": "The Masterstroke",
+        "description": "A hushed chamber as the unanimous opinion is delivered in your measured voice.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_4c.png",
+        "narration": "You read the unanimous opinion. Marbury, you declare, has a clear right to his commission, and the withholding of it is a violation of that right for which the law affords a remedy. The Jefferson administration is rebuked in plain terms.\n\nThen you turn the blade. The provision of the Judiciary Act of 1789 that purported to grant this Court the power to issue such a writ in original jurisdiction exceeds the limits Article III places on the Court. A law repugnant to the Constitution is void. 'It is emphatically the province and duty of the judicial department to say what the law is.'\n\nMarbury gets nothing. Jefferson can claim victory and has no order to defy. Yet in the same breath, the Court has claimed for itself the power to strike down acts of Congress: judicial review.\n\nA fellow justice whispers, 'They will not even see what we have won until it is too late to take it back.'",
+        "type": "auto_advance",
+        "next": "6"
+      },
+      "5.defiance": {
+        "title": "The Defied Court",
+        "description": "Months later. The Court's authority lies diminished.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_5_defiance.png",
+        "narration": "By ordering Madison and being ignored, the Court demonstrated the very weakness Hamilton warned of: judgment without force. Jefferson's branch proved that a court command could be brushed aside, and the precedent set was one of judicial impotence rather than judicial power.\n\nMarbury never took office. The Federalists' brief triumph soured into a cautionary tale. For years, the judiciary would struggle to be treated as a true equal, having shown the nation that its sword was made of paper.\n\nMarshall, you defended principle but spent the Court's fragile credibility in a single battle it could not win. Sometimes the boldest move on the board is the one that loses the game.",
+        "type": "end",
+        "outcome": "principled_defeat",
+        "outcome_message": "You upheld judicial principle but exposed the Court's powerlessness, weakening the judiciary for a generation."
+      },
+      "5.retreat": {
+        "title": "The Diminished Bench",
+        "description": "The case fades from headlines, and so does the Court's standing.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_5_retreat.png",
+        "narration": "You preserved peace with Jefferson and avoided the humiliation of a defied order. But by declining to answer the great questions, you forfeited the moment in which the Court might have defined its constitutional role.\n\nThe judiciary remains, as Jay had found it, in a state of 'natural feebleness,' deferential to the elected branches. Judicial review, the power that might have made the Court coequal, is left for some later, braver day, if it comes at all.\n\nMarshall, you chose political survival over institutional ambition. The Republic survives the moment, but the judiciary you lead is smaller for it.",
+        "type": "end",
+        "outcome": "cautious_retreat",
+        "outcome_message": "You avoided conflict but sacrificed the opportunity to establish the Court's authority and judicial principle."
+      },
+      "6": {
+        "title": "The Aftershock",
+        "description": "Weeks after the decision. The political world tries to make sense of what just happened.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_6.png",
+        "narration": "The decision lands strangely. Jefferson is irritated by the Court's rebuke of his administration, but he can hardly complain too loudly, for the practical result is exactly what he wanted: Marbury gets no commission, and no order has been issued for Madison to defy.\n\nFew yet grasp the magnitude of what the Court has claimed. By declaring an act of Congress void, you have asserted that the judiciary stands as the final interpreter of the Constitution. The implications will ripple for centuries, but for now, the genius of the move is that it gave away a small thing to seize a vast one.\n\nYet a decision is now before you about how to position the Court going forward.\n\nA Federalist senator visits your chambers: 'Some say you have insulted the President. Others say you have made the Court supreme. How shall the Court conduct itself now?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Exercise restraint going forward, using judicial review sparingly so the new power is not provoked away by an angry Congress",
+            "next": "7",
+            "effects": {
+              "JudicialLegitimacy": 2,
+              "JeffersonRelations": 1,
+              "CourtUnity": 1
+            }
+          },
+          {
+            "text": "Move quickly to assert the Court's authority over other federal and state actions while the precedent is fresh",
+            "next": "7",
+            "effects": {
+              "ConstitutionalPrinciple": 2,
+              "JeffersonRelations": -2,
+              "JudicialLegitimacy": -1
+            }
+          },
+          {
+            "text": "Strengthen the Court internally first, building unanimity and a tradition of single, authoritative opinions to project institutional strength",
+            "next": "7",
+            "effects": {
+              "CourtUnity": 3,
+              "JudicialLegitimacy": 2
+            }
+          }
+        ]
+      },
+      "7": {
+        "title": "The Verdict of History",
+        "description": "Years later, the meaning of the case crystallizes across the growing nation.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_7.png",
+        "narration": "The path you chose after the ruling shapes how the new power matures.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "JeffersonRelations <= -3",
+            "next": "5.overreach"
+          },
+          {
+            "condition": "JudicialLegitimacy >= 5",
+            "next": "5.foundation"
+          }
+        ],
+        "default": "5.foundation"
+      },
+      "5.foundation": {
+        "title": "The Foundation Laid",
+        "description": "Marbury v. Madison becomes the cornerstone of American constitutional law.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_5_foundation.png",
+        "narration": "By denying Marbury his commission while claiming the power of judicial review, you turned a political trap into the bedrock of the judiciary's authority. You gave Jefferson the outcome he wanted and left him nothing to defy, all while establishing that the Court alone may say what the Constitution means.\n\nIn the decades that follow, the power of judicial review expands to encompass acts of Congress, the President, and the states. The Court you found in 'natural feebleness' becomes a coequal branch, the chief interpreter of the Constitution, the guardian against the tyranny of the moment.\n\nMarshall, you understood that an institution with neither sword nor purse must win its power through judgment, legitimacy, and patience. You gave up a single commission and gained a permanent place in the architecture of the Republic. It would later be called the very essence of judicial duty.",
+        "type": "end",
+        "outcome": "judicial_review_established",
+        "outcome_message": "You established judicial review and secured the Court's enduring authority through strategic brilliance and institutional patience."
+      },
+      "5.overreach": {
+        "title": "Power Provoked",
+        "description": "The Court's aggressive posture invites a fierce political backlash.",
+        "image": "https://media.cruxlabs.academy/the_marshall_gambit/1/scene_5_overreach.png",
+        "narration": "You secured the principle of judicial review in Marbury, a genuine achievement. But by pressing the Court's new authority too hard against an already hostile Jefferson administration, you provoked the political branches.\n\nCongress, holding the power to alter the Court's jurisdiction and its funding, eyes the judiciary warily. Talk of impeaching justices and stripping the Court's powers grows louder. The precedent of judicial review survives, but its early years are precarious, its legitimacy contested at every turn.\n\nMarshall, you proved that establishing a power is only half the task. Wielding it without regard for the fragile trust that sustains an unelected branch can endanger the very authority you fought to create. The Court endures, but bruised, having learned that even the gravest constitutional powers depend on the consent and forbearance of the other branches.",
+        "type": "end",
+        "outcome": "contested_authority",
+        "outcome_message": "You established judicial review but overplayed the Court's hand, provoking a backlash that left its authority contested and fragile."
+      }
+    }
+  }
+}

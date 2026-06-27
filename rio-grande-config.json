@@ -1,0 +1,220 @@
+{
+  "metadata": {
+    "title": "The Rio Grande Dilemma",
+    "description": "Navigate the complexities of immigration policy as a Texas State Representative facing pressure from all sides",
+    "page_title": "Rio Grande Dilemma",
+    "page_icon": "🏛️",
+    "author": "Political Education Team",
+    "version": "1.0",
+    "completion_tracking": true
+  },
+  "variables": {
+    "HardlineSupport": 0,
+    "BusinessSupport": 0,
+    "ActivistSupport": 0
+  },
+  "reflection_questions": [
+    "How did you balance competing interests between business, security, and human rights concerns? What factors were most influential in your decisions?",
+    "Consider the tension between state and federal authority in immigration policy. How do constitutional principles like the Supremacy Clause affect state-level immigration laws?",
+    "What role did political pragmatism versus principled positions play in your choices? How do elected officials navigate between their personal beliefs and political survival?"
+  ],
+  "reflection_prompts": [
+    "Think about how your decisions reflected different approaches to federalism and constitutional law",
+    "Consider the real-world consequences of immigration policy on different stakeholders",
+    "Reflect on how political pressure and media coverage influence policy decisions"
+  ],
+  "scenes": {
+    "1": {
+      "title": "The Call from Leadership",
+      "description": "Your office in the Texas State Capitol. It's early morning. Maps of your district and photos are on the wall. A stack of files labeled 'Border Security' sits on your desk.",
+      "image": "scene_1.png",
+      "narration": "You are State Representative Alex Morales. The Governor has called a special session to pass a new, tough immigration bill, SB-42. Your constituents are divided. Ranchers demand action on property damage, while business owners worry about losing workers. The vote is in two weeks, and the party leadership wants to know your position.\n\nChief of Staff: 'Rep. Morales, the Speaker's office is on the line. They want to know if you'll co-sponsor SB-42. It's a strong bill—it would empower all state and local police to investigate and arrest anyone they suspect of being in the country illegally. What should I tell them?'",
+      "type": "choice",
+      "choices": [
+        {
+          "text": "Tell them I'm on board. It's time for Texas to lead on this.",
+          "next": "2a",
+          "effects": {
+            "HardlineSupport": 3
+          }
+        },
+        {
+          "text": "Tell them I have serious concerns. I need to see more data before committing.",
+          "next": "2b",
+          "effects": {
+            "HardlineSupport": 0
+          }
+        },
+        {
+          "text": "Tell them I cannot support it. This is federal overreach by the state and will lead to profiling.",
+          "next": "2c",
+          "effects": {
+            "HardlineSupport": -3,
+            "ActivistSupport": 3
+          }
+        }
+      ]
+    },
+    "2a": {
+      "title": "The Speaker's Blessing",
+      "description": "You're on a conference call. The Speaker of the House is on screen, looking pleased.",
+      "image": "scene_2a.png",
+      "narration": "Speaker: 'Glad to have you with us, Alex. With your support, we can send a clear message. We're securing the border, with or without Washington's help. We'll have a press conference tomorrow to announce the new co-sponsors.'\n\nYour support makes headlines. The next day, you get an urgent call from the Texas Business Council. They want a meeting. Immediately.",
+      "type": "auto_advance",
+      "next": "3a"
+    },
+    "2b": {
+      "title": "The Legal Briefing",
+      "description": "Your Chief of Staff hands you a legal memo. Key phrases are highlighted: 'Supremacy Clause,' 'Arizona v. U.S.,' 'Likely Injunction.'",
+      "image": "scene_2b.png",
+      "narration": "Chief of Staff: 'Here's the brief from Legislative Council. They're flagging major legal risks, especially with the provision empowering local police. They say the courts will almost certainly strike it down, just like they did with parts of Arizona's law. But polling in our district shows 60% of voters want some kind of action.'\n\nThe legal risks are clear, but so is the political pressure. You need to decide your next move.",
+      "type": "auto_advance",
+      "next": "3b"
+    },
+    "2c": {
+      "title": "The Activist Alliance",
+      "description": "You're meeting with a coalition of human rights activists and immigration lawyers in a community center. They look relieved.",
+      "image": "scene_2c.png",
+      "narration": "Lead Activist: 'Thank you, Representative. Standing against this bill is crucial. It will terrorize our communities and is unconstitutional. We need to organize opposition. Will you speak at our rally on the Capitol steps next week?'\n\nYou've drawn a line in the sand. Your opposition has energized one part of your base but has drawn sharp criticism from conservative media and some of your own constituents.",
+      "type": "auto_advance",
+      "next": "3c"
+    },
+    "3a": {
+      "title": "Business Backlash",
+      "description": "You are in a sterile boardroom. The CEO of a major agricultural firm is across the table, looking grim.",
+      "image": "scene_3a.png",
+      "narration": "CEO: 'Representative, we can't support this bill. We rely on migrant labor—full stop. If your bill creates a climate of fear, our workforce will vanish overnight. The Texas economy could lose billions. We need a stable, legal workforce, not a crackdown that hurts everyone. We need you to withdraw your support.'\n\nThe business community, usually a key ally, is turning up the heat. Their economic arguments are powerful.",
+      "type": "auto_advance",
+      "next": "4",
+      "effects": {
+        "BusinessSupport": -3
+      }
+    },
+    "3b": {
+      "title": "A Fork in the Road",
+      "description": "Back in your office. Your Chief of Staff has two proposals on your desk.",
+      "image": "scene_3b.png",
+      "narration": "Chief of Staff: 'Okay, since we didn't commit, we have options. We can introduce an amendment to soften the bill—remove the arrest power for local police and add funding for more courts to process asylum cases. Or, we can draft our own, separate bill that focuses purely on more funding for state border security technology—drones, sensors—without the controversial arrest provisions.'",
+      "type": "choice",
+      "choices": [
+        {
+          "text": "Let's introduce the amendment. We can fix the bill from the inside.",
+          "next": "4",
+          "effects": {
+            "HardlineSupport": 1,
+            "BusinessSupport": 1
+          }
+        },
+        {
+          "text": "Draft the alternative bill. Let's offer a real, legal alternative.",
+          "next": "4",
+          "effects": {
+            "BusinessSupport": 2,
+            "ActivistSupport": 1
+          }
+        }
+      ]
+    },
+    "3c": {
+      "title": "Political Isolation",
+      "description": "You're watching the news in your office. The screen shows the rally, but the headline reads: 'Morales Sides with Open Border Activists, Defies Governor.' Your phone buzzes with a text from the Speaker: 'You're off the Appropriations Committee.'",
+      "image": "scene_3c.png",
+      "narration": "Chief of Staff: 'Well, we knew this would happen. You've been removed from your committee as punishment. The bill is still headed for a vote, and leadership is whipping hard to get it passed. Our opposition might not be enough to stop it. What's our plan for the floor vote?'\n\nYou've taken a principled stand, but it has cost you political capital and influence.",
+      "type": "auto_advance",
+      "next": "4",
+      "effects": {
+        "HardlineSupport": -2,
+        "ActivistSupport": 2
+      }
+    },
+    "4": {
+      "title": "The Final Vote",
+      "description": "You are on the floor of the Texas House. The voting board is lit up. The final vote on SB-42 is about to happen. Your path has led you here, with a final choice to make.",
+      "image": "scene_4.png",
+      "narration": "Your amendment failed/alternative bill was stalled, but you've raised awareness of the bill's flaws. The original, tough version is up for a vote.\n\nThe Speaker calls for the vote on SB-42. How do you vote?",
+      "type": "choice",
+      "choices": [
+        {
+          "text": "Vote YEA. Accept the political reality.",
+          "next": "5.yea",
+          "effects": {
+            "HardlineSupport": 2,
+            "BusinessSupport": -1,
+            "ActivistSupport": -2
+          }
+        },
+        {
+          "text": "Vote NAY. Stand by your principles and concerns.",
+          "next": "5.nay",
+          "effects": {
+            "HardlineSupport": -2,
+            "BusinessSupport": 1,
+            "ActivistSupport": 2
+          }
+        },
+        {
+          "text": "Abstain. Refuse to endorse but avoid a direct 'nay' vote.",
+          "next": "5.abstain",
+          "effects": {
+            "HardlineSupport": -1,
+            "BusinessSupport": 0,
+            "ActivistSupport": 0
+          }
+        }
+      ]
+    },
+    "5.yea": {
+      "title": "The Law Passes",
+      "description": "A montage of news clips and documents summarizing the results of your choices.",
+      "image": "scene_5_yea.png",
+      "narration": "SB-42 passes. The Governor signs it into law. Within weeks, the federal government files a lawsuit, citing the Supremacy Clause. An injunction halts the law's key provisions. Major businesses announce they are freezing investments in Texas, costing the state thousands of jobs. You win your primary, but your relationship with the business community is fractured.",
+      "type": "auto_advance",
+      "outcome": "compromise",
+      "outcome_message": "Bill Passed - Legal Challenges Follow",
+      "next": "reflection"
+    },
+    "5.nay": {
+      "title": "Standing on Principle",
+      "description": "A montage of news clips and documents summarizing the results of your choices.",
+      "image": "scene_5_nay.png",
+      "narration": "SB-42 passes narrowly, without your vote. The law is immediately challenged in court and blocked. However, your opponent in the next election labels you as 'soft on border security.' You become a hero to human rights groups but face a tough re-election campaign.",
+      "type": "auto_advance",
+      "outcome": "principled",
+      "outcome_message": "Voted Against - Facing Political Consequences",
+      "next": "reflection"
+    },
+    "5.abstain": {
+      "title": "The Middle Path",
+      "description": "A montage of news clips and documents summarizing the results of your choices.",
+      "image": "scene_5_abstain.png",
+      "narration": "SB-42 passes, but your abstention is noted by all sides. You avoid the worst criticism from either extreme, but some question your leadership. The law faces the same legal challenges, and you must navigate the complex political fallout while maintaining relationships across the political spectrum.",
+      "type": "auto_advance",
+      "outcome": "neutral",
+      "outcome_message": "Abstained - Navigating Complex Politics",
+      "next": "reflection"
+    },
+    "reflection": {
+      "title": "Reflection",
+      "description": "Take a moment to reflect on your journey through this political dilemma.",
+      "image": "reflection.png",
+      "narration": "You've navigated the complex world of state politics and immigration policy. Now take some time to reflect on your decisions and their consequences.",
+      "type": "end",
+      "outcome": "success",
+      "outcome_message": "Rio Grande Dilemma Complete",
+      "reflection_prompts": [
+        {
+          "prompt": "What key factors—legal, economic, ethical, or political—guided your initial decision? How did your priorities shift as you encountered new information from different stakeholders?",
+          "placeholder": "Consider the different types of pressure and information you received..."
+        },
+        {
+          "prompt": "Which stakeholder group benefited most from your final decision, and which was most harmed? What steps could you have taken to lessen the negative impact on the affected group?",
+          "placeholder": "Think about the ranchers, businesses, activists, party leadership, and constituents..."
+        },
+        {
+          "prompt": "Reflecting on the paths not taken, what single different choice at the beginning do you think would have most significantly changed your final outcome?",
+          "placeholder": "Consider how your initial stance shaped the entire scenario..."
+        }
+      ]
+    }
+  }
+}

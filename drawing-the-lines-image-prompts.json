@@ -1,0 +1,46 @@
+{
+  "1": {
+    "filename": "scene_1.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Committee Room\nThe state capitol redistricting committee room, the morning after final census data is released."
+  },
+  "2a": {
+    "filename": "scene_2a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Concentrating the Vote\nThe demographer overlays population data, clustering minority neighborhoods into a handful of districts."
+  },
+  "2b": {
+    "filename": "scene_2b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Cartographer's Cartel\nParty strategists crowd around the map, eyeing precinct-level voting history."
+  },
+  "2c": {
+    "filename": "scene_2c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Clean Lines, Hard Choices\nA reform-minded staffer presents a map of tidy, geographically compact districts."
+  },
+  "3a": {
+    "filename": "scene_3a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Community Meeting\nA packed town hall with minority community leaders and civil rights advocates."
+  },
+  "3b": {
+    "filename": "scene_3b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Delegation Calls\nA tense conference call with your party's sitting members of Congress."
+  },
+  "3c": {
+    "filename": "scene_3c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Pressure From Within\nYour party leadership confronts you over the competitive map in a closed-door meeting."
+  },
+  "4": {
+    "filename": "scene_4.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: The Court Challenge\nThe opposing party and civil rights groups have filed suit. A panel of federal judges will scrutinize your map."
+  },
+  "5.upheld": {
+    "filename": "scene_5_upheld.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: A Map That Stands\nThe federal panel issues its ruling, and the map survives."
+  },
+  "5.struck": {
+    "filename": "scene_5_struck.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: Back to the Drawing Board\nThe court strikes down the map and orders a special master to redraw it."
+  },
+  "5.remand": {
+    "filename": "scene_5_remand.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\nScene: A Partial Victory\nThe court sends the map back with instructions, neither a clean win nor a total defeat."
+  }
+}

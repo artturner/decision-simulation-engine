@@ -1,0 +1,245 @@
+{
+  "slug": "fdr-korematsu",
+  "title": "Executive Order or Congressional Deal?",
+  "description": "As an advisor to President Roosevelt in early 1942, you must navigate the constitutional, military, and moral dimensions of a proposed mass removal of Japanese Americans from the West Coast",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "Executive Order or Congressional Deal?",
+      "description": "As an advisor to President Roosevelt in early 1942, you must navigate the constitutional, military, and moral dimensions of a proposed mass removal of Japanese Americans from the West Coast",
+      "page_title": "Executive Order or Congressional Deal?",
+      "page_icon": "⚖️",
+      "author": "Civics Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "variables": {
+      "CivilLiberties": 0,
+      "PresidentialPower": 0,
+      "MilitarySupport": 0,
+      "ConstitutionalLegitimacy": 0
+    },
+    "reflection_questions": [
+      "How did you weigh the immediate demands of military commanders against the constitutional rights of citizens? What factors most influenced where you drew that line?",
+      "The document notes that sustained executive orders usually rest on prior congressional authority while unilateral orders are more likely to be overturned. How did this tension between unilateral action and congressional cooperation shape your advice?",
+      "Consider the role of racial assumptions in the historical decision. How did the option to include Italian and German Americans, or to demand individualized evidence, affect your reasoning about fairness and targeting?",
+      "The Korematsu decision stood for decades before being repudiated. How did your awareness of long-term legal precedent and legacy influence the choices you made in a moment of crisis?",
+      "Effective presidents, the text argues, often work through persuasion and compromise rather than acting alone. When, if ever, did you conclude that unilateral action was justified, and what made the difference?"
+    ],
+    "reflection_prompts": [
+      "Think about how your decisions balanced national security claims against individual rights",
+      "Consider the real-world consequences for Japanese American families and for future Americans",
+      "Reflect on how wartime fear and time pressure shaped the choices available to decision-makers",
+      "Consider how the choice of mechanism—executive order versus congressional action—changed the durability and legitimacy of the policy"
+    ],
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The West Coast Request",
+        "description": "The White House, February 1942. Weeks after Pearl Harbor, fear grips the nation and military leaders press for action.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_1.png",
+        "narration": "You sit across from President Roosevelt in a cramped office filled with maps of the Pacific. A cable from General John DeWitt, head of the Western Defense Command, lies on the desk. DeWitt insists that Japanese Americans on the West Coast pose a fifth-column threat and requests sweeping authority to remove them from designated military zones.\n\nThe President leans back. 'The Army says it can't tell the loyal from the disloyal. The public is frightened. Congress is restless. But these are people, and many are citizens.' He turns to you.\n\nPresident Roosevelt: 'Before I decide on scope, I want your counsel. How broadly should any removal reach?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Advise removing all persons of Japanese ancestry from the West Coast, citizens included, to satisfy the military's demand for certainty",
+            "next": "2a",
+            "effects": {
+              "MilitarySupport": 3,
+              "CivilLiberties": -3,
+              "PresidentialPower": 1,
+              "ConstitutionalLegitimacy": -2
+            }
+          },
+          {
+            "text": "Advise limiting removal to non-citizen residents only, sparing American-born citizens",
+            "next": "2b",
+            "effects": {
+              "MilitarySupport": 0,
+              "CivilLiberties": 1,
+              "ConstitutionalLegitimacy": 1
+            }
+          },
+          {
+            "text": "Advise a targeted approach: detain only individuals against whom there is specific evidence of disloyalty",
+            "next": "2c",
+            "effects": {
+              "CivilLiberties": 2,
+              "MilitarySupport": -2,
+              "ConstitutionalLegitimacy": 2
+            }
+          },
+          {
+            "text": "Advise rejecting mass removal entirely as an unconstitutional violation of citizens' rights",
+            "next": "2d",
+            "effects": {
+              "CivilLiberties": 3,
+              "MilitarySupport": -3,
+              "ConstitutionalLegitimacy": 2,
+              "PresidentialPower": -1
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "The Broad Mandate",
+        "description": "The Oval Office grows tense as the implications of a sweeping policy take shape.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2a.png",
+        "narration": "The President listens gravely. 'The military will be pleased,' he says, 'but understand what we are doing. More than one hundred thousand people, two-thirds of them citizens, uprooted on suspicion of ancestry alone.'\n\nAttorney General Biddle objects sharply from the corner: 'Mr. President, there is no evidence of a single act of sabotage by these people. We risk staining the record of this administration for generations.'\n\nDeWitt's staff, however, send word that anything less than full removal would leave the coast exposed. The decision over scope is made, but the question of legal mechanism now looms.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2b": {
+        "title": "Citizens Spared",
+        "description": "A narrower line is drawn, but it satisfies few.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2b.png",
+        "narration": "The President nods slowly. 'A middle path. Remove the aliens, protect the citizens.' But the room is uneasy.\n\nGeneral DeWitt's liaison protests that the distinction is meaningless to the Army—'A Jap is a Jap,' he says bluntly, 'citizen or not.' Attorney General Biddle counters that even removing non-citizens without hearings strains the Constitution, since many are long-settled residents barred from citizenship only by discriminatory law.\n\nPresident Roosevelt: 'It is a compromise that angers both sides. Now, how do we make it legal?'",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2c": {
+        "title": "Evidence Over Ancestry",
+        "description": "You press for individualized justice in a climate of mass fear.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2c.png",
+        "narration": "Attorney General Biddle brightens. 'This is the lawful course—act against individuals where we have proof, as we do with any suspected agent.'\n\nBut DeWitt's representative is furious. 'You would have us investigate one hundred thousand people one by one while invasion threatens? We do not have the time or the men.' The military's confidence in the administration wavers.\n\nPresident Roosevelt rubs his temples. 'Justice and speed are pulling in opposite directions. We still must choose how to act—by my hand, or with the Congress.'",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2d": {
+        "title": "Standing on Principle",
+        "description": "You urge the President to refuse the military entirely.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2d.png",
+        "narration": "Silence falls. 'You would have me tell the Army no, in the middle of a war,' the President says quietly.\n\nAttorney General Biddle supports you: 'It is the constitutionally sound position, sir. There is no factual basis for the fifth-column claims.' But Secretary of War Stimson warns that the press and Congress will accuse the President of leaving the coast defenseless, and that DeWitt may act on his own authority regardless.\n\nThe political risk is enormous. Yet the constitutional ground is firm. The President must now decide whether to follow your advice or seek a way to act that the public will accept.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "3": {
+        "title": "Choosing the Mechanism",
+        "description": "Whatever the scope, the President must decide how to exercise the power—and through whose authority.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_3.png",
+        "narration": "The President spreads his hands. 'Now to the instrument. I can sign an executive order and act today on my authority as commander-in-chief. I can ask Congress to pass authorizing legislation, which takes time but gives us legal footing. Or I can route this through military tribunals and the chain of command.'\n\nHe recalls aloud a lesson of the office: 'An order I sign alone can be undone alone—by a court, or by the next man in this chair. An act of Congress is harder to overturn, but it binds me to their pace and their politics.'\n\nPresident Roosevelt: 'Which mechanism do you recommend?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Recommend a unilateral executive order invoking commander-in-chief war powers for immediate action",
+            "next": "4a",
+            "effects": {
+              "PresidentialPower": 3,
+              "MilitarySupport": 2,
+              "ConstitutionalLegitimacy": -2
+            }
+          },
+          {
+            "text": "Recommend seeking congressional authorization to give the policy durable legal footing",
+            "next": "4b",
+            "effects": {
+              "PresidentialPower": -1,
+              "ConstitutionalLegitimacy": 3,
+              "MilitarySupport": -1
+            }
+          },
+          {
+            "text": "Recommend issuing the order but expressly including German and Italian Americans to blunt charges of racial targeting",
+            "next": "4c",
+            "effects": {
+              "PresidentialPower": 2,
+              "CivilLiberties": -1,
+              "ConstitutionalLegitimacy": 1,
+              "MilitarySupport": -1
+            }
+          }
+        ]
+      },
+      "4a": {
+        "title": "Executive Order 9066",
+        "description": "The President reaches for his pen.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_4a.png",
+        "narration": "Roosevelt signs the order authorizing military commanders to designate exclusion zones. The action is swift and decisive; DeWitt moves within weeks. The military praises the President's resolve.\n\nBut Attorney General Biddle's warning echoes: 'This rests entirely on your war powers, Mr. President. With no act of Congress behind it, the courts may yet test it—and history surely will.'\n\nAs trains begin carrying families inland to relocation centers, news arrives that a young welder in California named Fred Korematsu has refused to comply and gone into hiding. His defiance will not stay quiet for long.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4b": {
+        "title": "Asking the Congress",
+        "description": "The President chooses the slower, surer road.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_4b.png",
+        "narration": "Roosevelt agrees to seek legislation. Congress, swept by wartime fear, passes a statute making violation of military exclusion orders a federal crime—giving the eventual program a foundation in law that a bare executive order would lack.\n\n'This is the difference,' the President observes, 'between an order that floats on my signature and one anchored in the legislature. Harder to challenge, harder to undo.'\n\nYet the delay means the military grows impatient, and civil liberties advocates note that congressional cover does not make an unjust policy just. When a young Californian named Fred Korematsu refuses to comply, the stage is set for a constitutional reckoning.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4c": {
+        "title": "Casting a Wider Net",
+        "description": "An attempt to escape the charge of racial targeting carries its own costs.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_4c.png",
+        "narration": "The President weighs your idea. 'Include the Germans and Italians, you say—to show this is about security, not race.'\n\nBut Stimson objects that there are millions of German and Italian Americans, including soldiers and members of Congress, and that mass removal of them is politically and logistically impossible. In practice, the order applies broadly on paper but falls almost entirely on Japanese Americans.\n\n'So the appearance of fairness,' the President murmurs, 'without the substance.' The contradiction will not be lost on the courts. Word soon arrives of a man named Fred Korematsu who has refused to leave his home.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "5": {
+        "title": "The Korematsu Challenge",
+        "description": "A single act of defiance becomes a constitutional test. The administration must decide how to meet it.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_5.png",
+        "narration": "Fred Korematsu has been arrested and is challenging his conviction. His case is climbing toward the Supreme Court. The Solicitor General will argue the government's position, and your office must shape it.\n\nTroubling intelligence surfaces: government reports show no evidence of Japanese American disloyalty, undercutting the military-necessity claim DeWitt advanced. Some staff urge suppressing these findings to protect the case; others insist the Court must see them.\n\nPresident Roosevelt: 'The Court will decide whether what we did was lawful. How should we present our case—and how honest should we be about what we know?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Direct the Solicitor General to defend the policy aggressively and withhold the exculpatory intelligence reports",
+            "next": "6.entrenched",
+            "effects": {
+              "PresidentialPower": 1,
+              "CivilLiberties": -3,
+              "ConstitutionalLegitimacy": -3,
+              "MilitarySupport": 2
+            }
+          },
+          {
+            "text": "Defend the policy but disclose the contradictory intelligence to the Court, letting it weigh the full record",
+            "next": "6.candid",
+            "effects": {
+              "ConstitutionalLegitimacy": 2,
+              "CivilLiberties": 1,
+              "PresidentialPower": -1,
+              "MilitarySupport": -1
+            }
+          },
+          {
+            "text": "Quietly signal a narrowing of the program and concede the weakness of the military-necessity argument",
+            "next": "6.retreat",
+            "effects": {
+              "CivilLiberties": 3,
+              "ConstitutionalLegitimacy": 3,
+              "MilitarySupport": -3,
+              "PresidentialPower": -2
+            }
+          }
+        ]
+      },
+      "6.entrenched": {
+        "title": "A Precedent for the Worst",
+        "description": "The government wins its case—and loses far more.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_entrenched.png",
+        "narration": "The Solicitor General argues forcefully, the exculpatory reports buried. In a 6–3 decision, the Supreme Court upholds the convictions, accepting the claim of military necessity. The administration prevails.\n\nBut the victory is hollow and corrosive. Korematsu becomes a precedent that, decades later, scholars and the Court itself will condemn. Forty-four years on, a President will issue a formal apology and compensation; the Justice Department will admit the Solicitor General argued in error. Yet a justice will warn that such a thing 'could happen again.'\n\nBy choosing certainty over candor and security over rights, you secured a courtroom win at the cost of the nation's constitutional conscience. The episode stands as a lasting warning about executive power unchecked in time of fear.",
+        "type": "end",
+        "outcome": "constitutional_failure",
+        "outcome_message": "The policy was upheld but became a notorious symbol of rights sacrificed to wartime fear, repudiated by history."
+      },
+      "6.candid": {
+        "title": "The Honest Record",
+        "description": "Truth before the Court reshapes the legacy, if not the immediate outcome.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_candid.png",
+        "narration": "The contradictory intelligence is disclosed. The Court still defers heavily to the military in wartime, and the convictions may stand—but the full record is preserved, and the dissents grow sharper and better grounded.\n\nThe President reflects: 'We may have done a hard thing, but we did not lie to the Court to do it. That distinction will matter when others look back.'\n\nWhen later generations reexamine the case, the honesty of the record accelerates the reckoning. Reform, apology, and acknowledgment of error come, and the precedent's authority erodes faster. You preserved a measure of constitutional legitimacy even within a flawed policy—an imperfect but defensible navigation of an impossible moment.",
+        "type": "end",
+        "outcome": "qualified_integrity",
+        "outcome_message": "Candor with the Court limited the long-term damage and strengthened the constitutional reckoning that followed."
+      },
+      "6.retreat": {
+        "title": "Conscience Over Crisis",
+        "description": "A costly stand against the tide of wartime fear.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_retreat.png",
+        "narration": "You counsel the President to concede the weakness of the military-necessity claim and begin narrowing the program. The military is incensed, and political opponents accuse the administration of vacillating in wartime.\n\nYet the human cost is curtailed sooner, and the constitutional principle that ancestry alone cannot justify detention is preserved rather than buried. Attorney General Biddle: 'We will take heat now. But we will not be remembered as the men who taught the courts that the Constitution sleeps in war.'\n\nThe political price is real and the path uncertain. But by choosing the rights of citizens and the integrity of the Constitution over the demands of the moment, you spared the nation its deepest self-inflicted wound—and modeled the restraint that effective leadership in a system of shared powers sometimes demands.",
+        "type": "end",
+        "outcome": "principled_restraint",
+        "outcome_message": "You bore heavy political costs to protect constitutional rights, avoiding one of history's gravest precedents."
+      }
+    }
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "slug": "probable-cause",
+  "title": "Probable Cause: Traffic Stop Investigation",
+  "description": "Navigate the complexities of Fourth Amendment protections during a routine traffic stop that escalates into a potential drug investigation",
+  "status": "published",
+  "scenario_json": {
+    "metadata": {
+      "title": "Probable Cause: Traffic Stop Investigation",
+      "description": "Navigate the complexities of Fourth Amendment protections during a routine traffic stop that escalates into a potential drug investigation",
+      "page_title": "Probable Cause Scenario",
+      "page_icon": "🚔",
+      "author": "Legal Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "reflection_questions": [
+      "At the critical decision point (Scene 4), what specific factors are most important in establishing probable cause versus a mere hunch? How does the Fourth Amendment force you to distinguish between the two?",
+      "Consider the path you didn't take. If you had asked for consent and been denied (Scene 6B), how would that have changed the legal and tactical calculus of the situation compared to not asking for consent at all?",
+      "This scenario illustrates the tension between effective law enforcement and the protection of civil liberties. How do you balance public safety concerns with constitutional protections in real-world policing situations?"
+    ],
+    "reflection_prompts": [
+      "Think about the specific observable facts versus your suspicions and how courts distinguish between them",
+      "Consider how different approaches to consent and probable cause affect both evidence admissibility and community trust",
+      "Reflect on the long-term consequences of constitutional violations in law enforcement"
+    ],
+    "variables": {},
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "Routine Patrol",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_1.png",
+        "description": "A two-lane road on the outskirts of town, just after dusk. POV from inside a patrol car. The dashboard is visible. You see a late-model sedan in front of you swerve over the center line.",
+        "narration": "It's 9:15 PM. You've been patrolling for a few hours. Up ahead, you see a sedan drift across the center line. It's a clear traffic violation.",
+        "type": "auto_advance",
+        "next": "2"
+      },
+      "2": {
+        "title": "Initial Contact",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_2.png",
+        "description": "Side of the road. The sedan is pulled over. You approach the driver's side window. The driver, a man in his late 20s, looks nervous. He avoids eye contact and fumbles for his license and registration.",
+        "narration": "You (Officer Miller): \"Good evening. Officer Miller. I pulled you over for failing to maintain your lane. License and registration, please.\"\n\nDriver: \"Oh, uh, sorry, officer. Here you go.\"\n\nHis hands are trembling. It could be nerves from the traffic stop, or it could be something more.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "3": {
+        "title": "Records Check",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_3.png",
+        "description": "Inside your patrol car. A close-up of the laptop screen. Audio: Radio dispatch chatter.",
+        "narration": "Dispatch confirms the driver's license is valid and he has no outstanding warrants. The vehicle is registered to him. Everything checks out. You could write a warning and send him on his way, but his extreme nervousness seems disproportionate for a simple traffic violation.",
+        "type": "auto_advance",
+        "next": "4"
+      },
+      "4": {
+        "title": "Critical Decision Point",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_4.png",
+        "description": "Back at the driver's window. The driver is still visibly anxious. As he rolls down the window, you detect a faint, unusual chemical odor. You also spot a half-open backpack on the passenger seat with rolls of cash visible inside.",
+        "narration": "You hand back his documents. The situation has changed. The odor isn't marijuana, but it is suspicious. Combined with the driver's anxiety and the visible cash, your instincts tell you something is wrong.\n\nWhat do you do next?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Ask for consent to search the vehicle",
+            "next": "5a"
+          },
+          {
+            "text": "Order the driver out of the car and search it based on what you've observed",
+            "next": "5b"
+          },
+          {
+            "text": "Write him a warning for the traffic violation and release him",
+            "next": "5c"
+          }
+        ]
+      },
+      "5a": {
+        "title": "Requesting Consent",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_5a.png",
+        "description": "Same as Scene 4. The driver looks conflicted.",
+        "narration": "You: \"Sir, are you transporting anything illegal in the car today? I'm detecting an unusual odor. Would you consent to a search of your vehicle?\"\n\nThe driver's response will determine your next course of action.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "He consents to the search",
+            "next": "6a"
+          },
+          {
+            "text": "He refuses consent",
+            "next": "6b"
+          }
+        ]
+      },
+      "5b": {
+        "title": "Asserting Probable Cause",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_5b.png",
+        "description": "Same as Scene 4. You adopt a more authoritative stance.",
+        "narration": "You: \"Sir, I have probable cause to search this vehicle. Please step out of the car.\"\n\nYou are asserting that your observations meet the legal standard for a warrantless search.",
+        "type": "auto_advance",
+        "next": "7"
+      },
+      "5c": {
+        "title": "Missed Opportunity",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_5c.png",
+        "description": "Same as Scene 4. You hand the driver a warning ticket. He quickly signs it and prepares to drive away, looking relieved.",
+        "narration": "You: \"This is a warning. Try to be more careful. You're free to go.\"\n\nYou decided you didn't have enough evidence to detain him further. Later that night, you hear a BOLO (Be On the Lookout) for a similar vehicle involved in a drug trafficking operation in the next county.",
+        "type": "end",
+        "outcome": "compromise",
+        "outcome_message": "Scenario Complete - Suspect Released"
+      },
+      "6a": {
+        "title": "Consensual Search Success",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_6a.png",
+        "description": "The car is being searched. You find a hidden compartment containing illegal narcotics and the cash from the backpack.",
+        "narration": "The driver consented. Your search is legal. You uncover a significant quantity of illegal narcotics and several thousand dollars in cash. You make the arrest.\n\nThe evidence is admissible because it was obtained through valid consent.",
+        "type": "end",
+        "outcome": "success",
+        "outcome_message": "Scenario Complete - Legal Search and Arrest"
+      },
+      "6b": {
+        "title": "Consent Refused",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_6b.png",
+        "description": "Same as Scene 4. The driver has refused consent.",
+        "narration": "Driver: \"No, officer. I do not consent to any searches.\"\n\nHe has refused consent. To search the car now, you must be certain your observations (nervousness, odor, cash) rise to the level of probable cause. A hunch is not enough.\n\nWhat do you do?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Search the car anyway, based on your observations as probable cause",
+            "next": "7"
+          },
+          {
+            "text": "Let him go, concluding you don't have enough evidence for probable cause",
+            "next": "5c"
+          }
+        ]
+      },
+      "7": {
+        "title": "Constitutional Violation",
+        "image": "https://media.cruxlabs.academy/probable_cause/1/scene_7.png",
+        "description": "A courtroom months later. The driver is at the defendant's table with his lawyer. The judge is on the bench.",
+        "narration": "Defense Attorney: \"...and since the officer lacked sufficient probable cause for a warrantless search, all the evidence found in the vehicle was obtained in violation of my client's Fourth Amendment rights. It is fruit of the poisonous tree.\"\n\nJudge: \"I agree. The evidence is suppressed.\"\n\nThe court ruled your search was unconstitutional. The evidence was thrown out, and the case was dismissed.",
+        "type": "end",
+        "outcome": "failure",
+        "outcome_message": "Scenario Complete - Evidence Suppressed Due to Constitutional Violation"
+      }
+    }
+  }
+}

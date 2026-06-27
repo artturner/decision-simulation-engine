@@ -1,0 +1,267 @@
+{
+  "slug": "drawing-the-lines",
+  "title": "Drawing the Lines",
+  "description": "A state legislator on the redistricting committee must redraw congressional districts after the census, balancing minority representation, partisan advantage, and legal exposure under the Voting Rights Act",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "Drawing the Lines",
+      "description": "A state legislator on the redistricting committee must redraw congressional districts after the census, balancing minority representation, partisan advantage, and legal exposure under the Voting Rights Act",
+      "page_title": "Redistricting After the Census",
+      "page_icon": "🗺️",
+      "author": "Civic Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "variables": {
+      "MinorityRepresentation": 0,
+      "PartyAdvantage": 0,
+      "LegalDefensibility": 0,
+      "PublicTrust": 0
+    },
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The Committee Room",
+        "description": "The state capitol redistricting committee room, the morning after final census data is released.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_1.png",
+        "narration": "The census numbers are official, and your state has lost one congressional seat. As a member of the redistricting committee from the majority party, you hold a marker over a map that will shape elections for the next decade.\n\nThe committee chair leans across the table. 'We have a once-in-ten-years opportunity here. The question is what we do with it.'\n\nA staff demographer has prepared three working approaches. Each carries consequences for who gets elected, how your party fares, and whether the map survives the inevitable court challenge under the Voting Rights Act.\n\nChair: 'African American and Latino leaders are already calling. So is our congressional delegation. And you can bet the other party has lawyers waiting. Where do we start?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Prioritize majority-minority districts to maximize descriptive representation of minority voters",
+            "next": "2a",
+            "effects": {
+              "MinorityRepresentation": 3,
+              "PartyAdvantage": 0,
+              "LegalDefensibility": 2,
+              "PublicTrust": 1
+            }
+          },
+          {
+            "text": "Draw partisan gerrymanders to lock in the maximum number of safe seats for our party",
+            "next": "2b",
+            "effects": {
+              "MinorityRepresentation": -1,
+              "PartyAdvantage": 3,
+              "LegalDefensibility": -2,
+              "PublicTrust": -2
+            }
+          },
+          {
+            "text": "Pursue compact, competitive districts even if it risks minority representation gains",
+            "next": "2c",
+            "effects": {
+              "MinorityRepresentation": -2,
+              "PartyAdvantage": -1,
+              "LegalDefensibility": 2,
+              "PublicTrust": 2
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "Concentrating the Vote",
+        "description": "The demographer overlays population data, clustering minority neighborhoods into a handful of districts.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_2a.png",
+        "narration": "Your direction is to draw districts where African American and Latino voters form clear majorities. The demographer begins linking neighborhoods, some of them miles apart, into snaking shapes designed to gather minority communities together.\n\n'This will almost certainly send more minority representatives to Congress,' she notes. 'These districts have been upheld before, since the Voting Rights Act specifically protects against diluting minority votes.'\n\nBut a quieter colleague raises a concern: 'By packing minority voters into a few districts, the surrounding districts become whiter and less diverse. Those representatives won't feel much pressure to consider minority issues. We've seen this paradox play out nationally.'\n\nThe trade-off is now on the table.",
+        "type": "auto_advance",
+        "next": "3a"
+      },
+      "2b": {
+        "title": "The Cartographer's Cartel",
+        "description": "Party strategists crowd around the map, eyeing precinct-level voting history.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_2b.png",
+        "narration": "Your direction is to maximize safe seats for the party. The strategists go to work, 'cracking' opposition strongholds across several districts to dilute their votes and 'packing' others into a single throwaway district.\n\n'This is legal,' a strategist reminds the room. 'Both parties do it. Maryland for the Democrats, Louisiana for the Republicans. Partisan gerrymandering isn't itself unconstitutional.'\n\nThe committee's general counsel, however, looks uneasy. 'Legal in the abstract, yes. But if these lines appear to dilute the votes of racial minorities, they can be challenged under the Voting Rights Act. And the public reaction to maps that look like this can be brutal.'\n\nThe map takes on strange, salamander-like shapes.",
+        "type": "auto_advance",
+        "next": "3b"
+      },
+      "2c": {
+        "title": "Clean Lines, Hard Choices",
+        "description": "A reform-minded staffer presents a map of tidy, geographically compact districts.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_2c.png",
+        "narration": "Your direction is to draw compact, contiguous districts that respect county and community boundaries and create genuinely competitive seats.\n\n'This is the map good-government groups dream of,' the staffer says. 'Voters can actually tell what district they're in. Candidates from both parties have a real shot.'\n\nBut a community liaison interjects: 'Compact districts in this state spread minority voters thin. Several of the majority-minority seats we created last decade would disappear. You might end up with a more competitive map overall, but fewer guaranteed minority representatives.'\n\nThe chair frowns. 'And our own delegation will scream that we just handed seats to the opposition. This is going to be a fight on multiple fronts.'",
+        "type": "auto_advance",
+        "next": "3c"
+      },
+      "3a": {
+        "title": "The Community Meeting",
+        "description": "A packed town hall with minority community leaders and civil rights advocates.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_3a.png",
+        "narration": "Word of your majority-minority approach has spread. A coalition of African American and Latino leaders fills the hall, alongside representatives from a national civil rights organization.\n\nA longtime community organizer stands first. 'For decades our voices were drawn out of power. These districts are how we finally elect people who look like us and understand our neighborhoods. Don't let anyone tell you that's not progress.'\n\nThen a younger policy advocate raises her hand. 'But I worry. When you put all of us in three districts, the other ten stop listening to us entirely. I want representatives who answer to me, yes, but I also want a Congress that cares about my community as a whole.'\n\nThe room is divided over the very strategy meant to help them. They're looking to you for an answer.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Commit fully to the majority-minority maps as the surest protection of minority electoral power",
+            "next": "4",
+            "effects": {
+              "MinorityRepresentation": 2,
+              "LegalDefensibility": 1,
+              "PublicTrust": 1
+            }
+          },
+          {
+            "text": "Soften the packing slightly, creating influence districts where minorities are a strong plurality across more seats",
+            "next": "4",
+            "effects": {
+              "MinorityRepresentation": 0,
+              "LegalDefensibility": 0,
+              "PublicTrust": 2,
+              "PartyAdvantage": 1
+            }
+          },
+          {
+            "text": "Promise the coalition a public commission seat to review the maps before they are finalized",
+            "next": "4",
+            "effects": {
+              "PublicTrust": 3,
+              "PartyAdvantage": -1,
+              "LegalDefensibility": 1
+            }
+          }
+        ]
+      },
+      "3b": {
+        "title": "The Delegation Calls",
+        "description": "A tense conference call with your party's sitting members of Congress.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_3b.png",
+        "narration": "Your party's congressional delegation is thrilled with the safe-seat map, but the call quickly grows complicated. The lines you drew to protect incumbents have pitted two of your own members against each other in a redrawn district.\n\n'You can't put me in the same district as her,' one representative snaps. 'I've held this seat for twenty years.'\n\nMeanwhile, the committee counsel forwards an email: a civil rights organization is already drafting a Voting Rights Act complaint, arguing the map cracks a cohesive minority community to weaken its influence.\n\nThe chair pulls you aside. 'We got greedy. Now we have an internal war AND a lawsuit on the horizon. We can hold the line and dare them to sue, or we can adjust before this blows up.'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Hold the aggressive map and prepare to defend it vigorously in court",
+            "next": "4",
+            "effects": {
+              "PartyAdvantage": 2,
+              "LegalDefensibility": -3,
+              "PublicTrust": -2
+            }
+          },
+          {
+            "text": "Redraw one district to restore the cohesive minority community and reduce legal exposure",
+            "next": "4",
+            "effects": {
+              "PartyAdvantage": -1,
+              "LegalDefensibility": 2,
+              "MinorityRepresentation": 2,
+              "PublicTrust": 1
+            }
+          },
+          {
+            "text": "Keep the partisan tilt but separate your two feuding incumbents to calm the delegation",
+            "next": "4",
+            "effects": {
+              "PartyAdvantage": 1,
+              "LegalDefensibility": -1,
+              "PublicTrust": -1
+            }
+          }
+        ]
+      },
+      "3c": {
+        "title": "Pressure From Within",
+        "description": "Your party leadership confronts you over the competitive map in a closed-door meeting.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_3c.png",
+        "narration": "Your compact-district map has provoked a revolt inside your own party. The majority leader is furious.\n\n'You had the marker and you drew US out of three safe seats? The whole point of controlling redistricting is to control redistricting.'\n\nAt the same time, a civil rights attorney requests a meeting. 'Your clean lines look fair on paper, but they erased two majority-minority districts. Under the Voting Rights Act, eliminating effective minority districts where the population supports them can be challenged just as much as cracking them. Compact doesn't automatically mean lawful.'\n\nYou are caught between your party's demand for advantage and a legal duty to preserve minority voting strength. The good-government praise you hoped for may not shield you.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Restore one or two majority-minority districts within the otherwise compact framework",
+            "next": "4",
+            "effects": {
+              "MinorityRepresentation": 2,
+              "LegalDefensibility": 2,
+              "PartyAdvantage": -1,
+              "PublicTrust": 1
+            }
+          },
+          {
+            "text": "Hold firm on the compact, competitive map and accept the political cost within your party",
+            "next": "4",
+            "effects": {
+              "PublicTrust": 2,
+              "PartyAdvantage": -2,
+              "MinorityRepresentation": -1,
+              "LegalDefensibility": 1
+            }
+          },
+          {
+            "text": "Quietly add a partisan tilt to two seats to appease leadership while keeping the rest clean",
+            "next": "4",
+            "effects": {
+              "PartyAdvantage": 2,
+              "PublicTrust": -2,
+              "LegalDefensibility": -1
+            }
+          }
+        ]
+      },
+      "4": {
+        "title": "The Court Challenge",
+        "description": "The opposing party and civil rights groups have filed suit. A panel of federal judges will scrutinize your map.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_4.png",
+        "narration": "As anticipated, the map is challenged in court. The opposing party argues partisan unfairness, while civil rights organizations examine whether the lines comply with the Voting Rights Act's protections against diluting minority votes.\n\nYour committee's counsel reviews the record you built. 'The judges will look at whether minority voting power was protected, whether the lines were drawn for legitimate reasons, and how the public and affected communities responded. Everything we did up to this point is now evidence.'\n\nThe outcome will depend on the balance you struck between representation, advantage, legality, and trust.\n\nCounsel: 'We'll know soon whether this map stands or gets thrown back to us to redraw.'",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "LegalDefensibility >= 3",
+            "next": "5.upheld"
+          },
+          {
+            "condition": "LegalDefensibility <= -2",
+            "next": "5.struck"
+          },
+          {
+            "condition": "PublicTrust <= -3",
+            "next": "5.struck"
+          },
+          {
+            "condition": "PartyAdvantage >= 4",
+            "next": "5.struck"
+          }
+        ],
+        "default": "5.remand"
+      },
+      "5.upheld": {
+        "title": "A Map That Stands",
+        "description": "The federal panel issues its ruling, and the map survives.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_5_upheld.png",
+        "narration": "The court upholds your map. The judges find that it protects minority voting strength as the Voting Rights Act requires, rests on defensible districting principles, and reflects genuine public input.\n\nMinority community leaders celebrate the preservation of districts where their votes matter, even as some acknowledge the lingering paradox that concentrated districts can reduce minority influence in surrounding seats. Your party did not win every advantage it wanted, but it gained a durable map that will not be tossed out mid-decade.\n\nThe committee chair shakes your hand. 'You resisted the temptation to grab everything. That restraint is exactly why this survived.'\n\nFor the next ten years, voters will cast ballots in districts you helped shape, balancing representation with legitimacy.",
+        "type": "end",
+        "outcome": "balanced_success",
+        "outcome_message": "Your map was upheld by protecting minority representation while remaining legally defensible and publicly credible."
+      },
+      "5.struck": {
+        "title": "Back to the Drawing Board",
+        "description": "The court strikes down the map and orders a special master to redraw it.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_5_struck.png",
+        "narration": "The court strikes down your map. The judges conclude that the lines either diluted minority votes in violation of the Voting Rights Act or pushed partisan advantage so far that the public lost faith in the process.\n\nControl of the redraw passes to a court-appointed special master, an outcome that strips your committee of the very power you sought to wield. Your party's anticipated safe seats evaporate, and editorials condemn the attempt to rig the map.\n\nThe chair is grim. 'We reached too far. We had the marker, and now a stranger appointed by the court is drawing our state's districts instead of us.'\n\nThe lesson lands hard: power over redistricting is only as durable as the map's legitimacy. Overreach handed the decision to someone else entirely.",
+        "type": "end",
+        "outcome": "overreach_failure",
+        "outcome_message": "Your map was struck down for overreach, surrendering the redraw to a court-appointed special master."
+      },
+      "5.remand": {
+        "title": "A Partial Victory",
+        "description": "The court sends the map back with instructions, neither a clean win nor a total defeat.",
+        "image": "https://media.cruxlabs.academy/drawing_the_lines/1/scene_5_remand.png",
+        "narration": "The court issues a mixed ruling. It accepts much of your map but orders specific districts redrawn, finding the balance you struck imperfect but not indefensible.\n\nSome minority communities gained representation while others remain uncertain. Your party kept some advantages but not all. Civil rights groups call the result progress with unfinished business; the opposition claims partial vindication.\n\nThe committee reconvenes to make the court-ordered adjustments. 'It's not the sweeping win some wanted,' the chair admits, 'and it's not the disaster others predicted. We threaded a difficult needle, and now we have a little more sewing to do.'\n\nThe compromises you made kept you at the table, but the tensions between representation, advantage, and fairness remain very much alive.",
+        "type": "end",
+        "outcome": "mixed_compromise",
+        "outcome_message": "Your map survived in part but was remanded for adjustments, reflecting the unresolved tensions in redistricting."
+      }
+    },
+    "reflection_questions": [
+      "How did you weigh the goal of maximizing minority representation against the paradox that concentrated majority-minority districts can leave surrounding districts less responsive to minority issues?",
+      "Partisan gerrymandering is legal, but pursuing it carries legal and reputational risks. How did you balance your party's desire for safe seats against the threat of a Voting Rights Act challenge?",
+      "What role did public trust and community input play in your decisions? How might transparency affect both the legitimacy and the durability of a redistricting map?",
+      "Consider the competing interests of your party's delegation, minority community leaders, civil rights organizations, and the opposing party. Which stakeholder did you feel most accountable to, and why?",
+      "How does the tension between compact, competitive districts and protected minority districts reflect deeper questions about what 'fair representation' actually means?"
+    ],
+    "reflection_prompts": [
+      "Think about how your choices reflected the delegate, trustee, or politico models of representation",
+      "Consider how the Voting Rights Act constrained and shaped what counted as a legitimate map",
+      "Reflect on the real-world consequences your map would have on voters in reconfigured districts over the next decade",
+      "Consider how short-term partisan gains can trade off against long-term institutional legitimacy"
+    ]
+  }
+}

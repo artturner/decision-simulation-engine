@@ -1,0 +1,141 @@
+{
+  "metadata": {
+    "title": "The Philadelphia Compromise",
+    "description": "Navigate the debates of the Constitutional Convention of 1787 as a delegate from Connecticut",
+    "page_title": "Constitutional Convention 1787",
+    "page_icon": "🏛️",
+    "author": "Historical Education Team",
+    "version": "1.0",
+    "completion_tracking": true
+  },
+  "variables": {
+    "LargeStateFavor": 0,
+    "SouthernStateFavor": 0
+  },
+  "reflection_questions": [
+    "The 'Three-Fifths Compromise' was necessary to form the Union but enshrined slavery in the Constitution. Was it the right decision? How did your choice reflect the balance between idealism and pragmatism?",
+    "How did representing your state's interests sometimes conflict with the goal of creating a strong national government? How does this tension continue in American politics today?",
+    "What role did compromise play in the creation of the Constitution? When is compromise necessary in democratic governance, and when might it be harmful?"
+  ],
+  "reflection_prompts": [
+    "Think about the specific choices you made and their long-term consequences for American democracy",
+    "Consider how the delegates balanced competing interests and values",
+    "Reflect on how the compromises made in 1787 continue to influence American politics today"
+  ],
+  "scenes": {
+    "1": {
+      "title": "The Virginia Plan",
+      "description": "A stuffy, crowded room in the summer of 1787. George Washington sits elevated, presiding over the convention. Edmund Randolph of Virginia stands to speak.",
+      "image": "scene_1.png",
+      "narration": "Liberty has brought you to Philadelphia, but will compromise keep you here?\n\nGeorge Washington: 'Gentlemen, the floor is recognized for the delegate from Virginia.'\n\nEdmund Randolph: 'Thank you, Mr. President. I propose a new government with a bicameral legislature. To ensure a government of the people, representation in both houses must be based on the population of each state. A small state cannot claim an equal voice with a large one; it is contrary to every principle of justice.'",
+      "type": "choice",
+      "choices": [
+        {
+          "text": "Support the Virginia Plan: 'I support the Virginia Plan. A government's legitimacy comes from the people it represents. More populous states deserve a greater voice.'",
+          "next": "2",
+          "effects": {
+            "LargeStateFavor": 3
+          }
+        },
+        {
+          "text": "Oppose in favor of small states: 'I must object. This plan will render the smaller states powerless. We are a confederation of sovereign states, and we must be represented as such—equally.'",
+          "next": "2",
+          "effects": {
+            "LargeStateFavor": -3
+          }
+        },
+        {
+          "text": "Seek compromise: 'Mr. Randolph's plan has merit in its call for a government of the people, but the concerns for state sovereignty are valid. Perhaps a compromise can be found that respects both principles.'",
+          "next": "2",
+          "effects": {
+            "LargeStateFavor": 0
+          }
+        }
+      ]
+    },
+    "2": {
+      "title": "The Small State Response",
+      "description": "An angry murmur fills the room. William Paterson of New Jersey stands, glaring at Randolph. James Madison of Virginia watches you intently.",
+      "image": "scene_2.png",
+      "narration": "William Paterson: 'Tyranny! This Virginia Plan smells of tyranny! It seeks to crush the small states under the boot of the large. I will remind the delegate from Virginia that we are states, not mere counties! We demand equal representation!'\n\nThe room erupts in heated discussion. Your position has been noted by both sides.",
+      "type": "auto_advance",
+      "next": "3"
+    },
+    "3": {
+      "title": "The Slavery Question",
+      "description": "The debate has shifted to a new, even more divisive issue. A delegate from South Carolina is speaking, gesturing passionately. A delegate from Massachusetts sits stone-faced.",
+      "image": "scene_3.png",
+      "narration": "South Carolina Delegate: 'It is simple logic. Our enslaved population contributes to the wealth and power of our states. They must be counted for the purposes of representation in this new government!'\n\nMassachusetts Delegate: 'Abhorrent. You wish to count men and women as population whom you treat as property? They have no vote, no voice. We shall not grant you representatives for them.'\n\nRoger Sherman leans over to you and whispers: 'This could shatter the convention. The southerners will walk if we deny them this. What should be our approach?'",
+      "type": "choice",
+      "choices": [
+        {
+          "text": "Stand on principle: 'We must stand on principle. Enslaved persons are property by southern law and cannot be counted for representation. The moral cost is too high.'",
+          "next": "4",
+          "effects": {
+            "SouthernStateFavor": -4
+          }
+        },
+        {
+          "text": "Prioritize union: 'The Union is paramount. If counting the enslaved population is the price for a new nation, then we must consider paying it.'",
+          "next": "4",
+          "effects": {
+            "SouthernStateFavor": 4,
+            "LargeStateFavor": -2
+          }
+        },
+        {
+          "text": "Propose fractional compromise: 'Neither side will yield fully. What if we propose a fraction? We could count three-fifths of the enslaved population for both representation and taxation. It is a distasteful calculus, but it may be the only path forward.'",
+          "next": "4",
+          "effects": {
+            "SouthernStateFavor": 1
+          }
+        }
+      ]
+    },
+    "4": {
+      "title": "The Convention's End",
+      "description": "A montage of images: delegates arguing, writing, and voting. The final scene depends on your choices throughout the convention.",
+      "image": "scene_4.png",
+      "narration": "The delegates continue their work through the summer heat...",
+      "type": "conditional",
+      "conditions": [
+        {
+          "condition": "LargeStateFavor >= -2 && LargeStateFavor <= 2 && SouthernStateFavor >= -2 && SouthernStateFavor <= 2",
+          "next": "5.success"
+        },
+        {
+          "condition": "LargeStateFavor > 3 || LargeStateFavor < -3 || SouthernStateFavor < -3",
+          "next": "5.failure"
+        }
+      ],
+      "default": "5.fragile"
+    },
+    "5.success": {
+      "title": "The Great Compromise",
+      "description": "The Pennsylvania State House, with delegates signing documents. Roger Sherman approaches you with satisfaction.",
+      "image": "scene_5_success.png",
+      "narration": "Roger Sherman: 'Your counsel was invaluable. You balanced the needs of all states and ensured this union could be formed. We have created a government that can endure.'\n\nThrough careful compromise, you helped forge a Constitution that could unite the states. The document is imperfect, but it provides a foundation for the new nation.",
+      "type": "end",
+      "outcome": "success",
+      "outcome_message": "Convention Complete - Constitution Adopted"
+    },
+    "5.failure": {
+      "title": "Convention Deadlock",
+      "description": "The Pennsylvania State House, with many empty chairs. Benjamin Franklin sits alone, looking worried.",
+      "image": "scene_5_failure.png",
+      "narration": "Benjamin Franklin: 'We are at an impasse. I fear we have failed. Without compromise, this nation, conceived in liberty, may perish in its cradle.'\n\nYour unwillingness to compromise has contributed to the convention's failure. The states return home without a new Constitution, and the future of the nation remains uncertain.",
+      "type": "end",
+      "outcome": "failure",
+      "outcome_message": "Convention Complete - No Constitution Formed"
+    },
+    "5.fragile": {
+      "title": "A Fragile Union",
+      "description": "The Pennsylvania State House, with delegates looking uncertain as they sign. The atmosphere is tense.",
+      "image": "scene_5_fragile.png",
+      "narration": "The Constitution is signed, but the compromises you supported have created deep divisions. Some delegates sign reluctantly, others refuse entirely.\n\nYou have helped create a new government, but its foundation may be more fragile than anyone realizes.",
+      "type": "end",
+      "outcome": "compromise",
+      "outcome_message": "Convention Complete - Fragile Constitution Adopted"
+    }
+  }
+}

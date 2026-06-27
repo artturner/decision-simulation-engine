@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "title": "A Nation Divided: The Cherokee Choice",
+    "description": "Experience the impossible choices faced by the Cherokee Nation in 1830 as Georgia claims sovereignty and President Jackson enforces the Indian Removal Act",
+    "page_title": "Cherokee Nation Scenario",
+    "page_icon": "🏛️",
+    "author": "Legal Education Team",
+    "version": "1.0",
+    "completion_tracking": true
+  },
+  "reflection_questions": [
+    "Which factors most influenced your decision for the Cherokee Nation? What assumptions did you make about the U.S. government's likely response to your chosen path?",
+    "If you chose the legal path, your experience showed that a Supreme Court victory did not guarantee justice. What does this outcome reveal about the limitations of the judicial branch and the importance of enforcement in the American system of government?",
+    "This scenario presented you with options that all led to tragic outcomes. How does confronting a 'no-win' situation change your perspective on the historical challenges faced by minority groups seeking to protect their civil rights in the United States?"
+  ],
+  "reflection_prompts": [
+    "Consider how the separation of powers both protected and failed the Cherokee Nation",
+    "Think about the difference between legal rights and their enforcement in practice",
+    "Reflect on the impossible choices faced by marginalized communities throughout American history"
+  ],
+  "scenes": {
+    "1": {
+      "title": "The Council Gathers",
+      "image": "scene_1.png",
+      "description": "A panoramic view of the Cherokee capital, New Echota (1830), showing a settled, advanced society with buildings, farms, and roads. The image conveys a thriving, organized nation.",
+      "narration": "It is 1830. For decades, our Cherokee Nation has adopted the ways of our white neighbors—a written constitution, a newspaper, schools, and a settled agricultural life. But it has not been enough. Gold has been discovered on our land, and Georgia now claims sovereignty over us.\n\nPresident Andrew Jackson has just signed the Indian Removal Act, which gives him the power to force us from our ancestral homes.",
+      "type": "auto_advance",
+      "next": "1.1"
+    },
+    "1.1": {
+      "title": "Your Role",
+      "image": "scene_1.1.png",
+      "description": "Interior of the council house. You are seated among other Cherokee leaders at a large table. Faces are tense and worried. Principal Chief John Ross is visible at the head of the table.",
+      "narration": "You are a respected member of the National Council. The future of our people rests on the decision this council makes today.\n\nThe question before us is not whether we will face pressure to leave, but how we will respond to it.",
+      "type": "auto_advance",
+      "next": "2"
+    },
+    "2": {
+      "title": "The Decision",
+      "image": "scene_2.png",
+      "description": "A close-up view of the council table with Principal Chief John Ross and other leaders looking directly at you, awaiting your counsel. Maps of Cherokee territory are spread on the table.",
+      "narration": "John Ross: \"Our people are divided and afraid. Georgia militia burn our farms, and our rights are ignored by their courts. We must choose our path forward. Some say we should sue in federal court. Others call for armed resistance. Still others believe negotiation is our only hope.\"\n\nHe looks to you. \"What is your counsel?\"\n\nWhat path will you advocate for the Cherokee Nation?",
+      "type": "choice",
+      "choices": [
+        {"text": "Use their own laws against them. Sue Georgia in the U.S. Supreme Court.", "next": "3a"},
+        {"text": "Defend our homes. Take up arms against the Georgia militia and the U.S. Army.", "next": "3b"},
+        {"text": "Preserve our people through negotiation. Seek the best possible treaty for removal.", "next": "3c"}
+      ]
+    },
+    "3a": {
+      "title": "The Path of Law",
+      "image": "scene_3a.png",
+      "description": "A courtroom scene preparation. Cherokee leaders meet with their attorney. Legal documents and law books are spread out. The atmosphere is one of careful planning and hope.",
+      "narration": "You have chosen the path of law. The council agrees to challenge Georgia's actions in the federal courts.\n\nYour attorneys argue that the Cherokee Nation is a sovereign entity, and Georgia has no authority over Cherokee territory. It is a bold legal strategy that will take years to resolve.",
+      "type": "auto_advance",
+      "next": "4a"
+    },
+    "4a": {
+      "title": "A Victory in Court",
+      "image": "scene_4a.png",
+      "description": "The U.S. Supreme Court chamber in 1832. The Chief Justice's bench is prominent. Text from the Worcester v. Georgia decision appears as an overlay, highlighting key phrases affirming Cherokee sovereignty.",
+      "narration": "In a stunning decision in Worcester v. Georgia (1832), Chief Justice John Marshall rules in your favor:\n\n\"The Cherokee Nation is a distinct community, occupying its own territory... in which the laws of Georgia can have no force.\"\n\nA wave of hope spreads through the Nation. You have won.",
+      "type": "auto_advance",
+      "next": "5a"
+    },
+    "5a": {
+      "title": "The President's Betrayal",
+      "image": "scene_5a.png",
+      "description": "President Andrew Jackson in the White House, looking defiant and unmoved. Through a window behind him, you can see Georgia militia preparing to march. The contrast between the legal victory and political reality is stark.",
+      "narration": "But the victory is hollow.\n\nPresident Jackson refuses to enforce the Court's decision. According to legend, he says: \"John Marshall has made his decision; now let him enforce it.\"\n\nWith the executive branch against you, the Supreme Court's ruling is just words on paper. The Georgia militia, now emboldened, increases its attacks on Cherokee communities.",
+      "type": "auto_advance",
+      "next": "6a"
+    },
+    "6a": {
+      "title": "The Trail of Tears",
+      "image": "scene_6a.png",
+      "description": "A somber, haunting montage: Cherokee families forced from their homes at bayonet point, a long line of people marching through snow and harsh weather, and a simple wooden grave marker in the foreground.",
+      "narration": "Your faith in the law has failed.\n\nIn 1838, the U.S. Army arrives with orders to remove all Cherokee people from their homeland. You and your people are forced from your homes and marched west to Indian Territory.\n\nThe journey is brutal. Over 4,000 of our people—a quarter of our Nation—perish from cold, disease, and starvation.\n\nThis path is now remembered as the Trail of Tears.",
+      "type": "end",
+      "outcome": "failure",
+      "outcome_message": "The Legal Path - Trail of Tears"
+    },
+    "3b": {
+      "title": "A Call to Arms",
+      "image": "scene_3b.png",
+      "description": "Cherokee warriors gathering with rifles and traditional weapons. Faces are determined and painted for war. Smoke rises from distant farmhouses where militia have attacked. The atmosphere is tense and defiant.",
+      "narration": "You have chosen the path of war.\n\nInspired by your call, Cherokee warriors organize to defend their homes. You are not without military experience—many Cherokee fought alongside Andrew Jackson himself against the Creek Nation.\n\nInitial skirmishes with the Georgia militia are successful, driving them back and providing a brief moment of triumph.",
+      "type": "auto_advance",
+      "next": "4b"
+    },
+    "4b": {
+      "title": "The Federal Response",
+      "image": "scene_4b.png",
+      "description": "A massive formation of uniformed U.S. Army soldiers marching into Cherokee territory. Artillery cannons are being positioned. The overwhelming force is evident—hundreds of soldiers with modern weapons and supplies.",
+      "narration": "Your success is short-lived.\n\nPresident Jackson declares your resistance an act of rebellion against the United States. He deploys the full force of the U.S. Army to crush your Nation.\n\nYou are vastly outnumbered and outgunned. For every warrior you can field, the United States can send ten soldiers with superior weapons and unlimited supplies.",
+      "type": "auto_advance",
+      "next": "5b"
+    },
+    "5b": {
+      "title": "A Nation Broken",
+      "image": "scene_5b.png",
+      "description": "The aftermath of battle: destroyed Cherokee settlements, wounded warriors being treated, and survivors being rounded up by soldiers and led away in chains. The devastation is complete.",
+      "narration": "Your warriors fought bravely, but the cost was unimaginable.\n\nThe resistance is broken. Your leaders are imprisoned or killed. Your people are shattered and demoralized.\n\nThe survivors are rounded up and force-marched west under the harshest conditions. Because of the military conflict, the Army shows no mercy.\n\nThis path ends in total military defeat and a Trail of Tears born from violence.",
+      "type": "end",
+      "outcome": "failure",
+      "outcome_message": "The Path of Resistance - Nation Destroyed"
+    },
+    "3c": {
+      "title": "The Path of Negotiation",
+      "image": "scene_3c.png",
+      "description": "A tense meeting between Cherokee representatives and U.S. government officials. Documents are being drafted. The Cherokee delegation looks wary and conflicted, knowing they are negotiating from a position of weakness.",
+      "narration": "You have chosen the path of negotiation.\n\nThe council decides to seek the best possible terms for removal, hoping to preserve the Cherokee people even if the homeland is lost.\n\nHowever, this choice deeply divides the Nation. Many Cherokee refuse to accept any treaty that surrenders their ancestral land.",
+      "type": "auto_advance",
+      "next": "4c"
+    },
+    "4c": {
+      "title": "The Divisive Treaty",
+      "image": "scene_4c.png",
+      "description": "A controversial signing ceremony. A small, unauthorized Cherokee faction signs the Treaty of New Echota with U.S. officials. The signers look conflicted. In the background, other Cherokee watch with expressions of anger and betrayal.",
+      "narration": "A small faction, led by Major Ridge and others, signs the Treaty of New Echota in 1835 without the consent of Principal Chief John Ross or the Cherokee government.\n\nThe treaty accepts $5 million and land in Indian Territory in exchange for all Cherokee lands in the Southeast.\n\nThe vast majority of Cherokee—including you and Chief Ross—denounce the treaty as illegitimate.",
+      "type": "auto_advance",
+      "next": "5c"
+    },
+    "5c": {
+      "title": "The Unraveling",
+      "image": "scene_5c.png",
+      "description": "Cherokee citizens arguing among themselves in the streets and town squares. The unity of the Nation is shattered. Some pack their belongings to leave voluntarily; others refuse to acknowledge the treaty. Division and anger are everywhere.",
+      "narration": "Your attempt at negotiation has fractured the Cherokee Nation. Many call the treaty party traitors, and violence breaks out between Cherokee factions.\n\nDespite protests that the treaty is illegal—signed by those without authority—the U.S. Senate ratifies it by a single vote.\n\nThe path of peace has led to bitter internal conflict that will haunt the Nation for generations.",
+      "type": "auto_advance",
+      "next": "6c"
+    },
+    "6c": {
+      "title": "The Trail of Tears",
+      "image": "scene_6c.png",
+      "description": "A somber, haunting montage: Cherokee families packing their belongings, a long line of people marching through harsh weather, children crying, and a simple wooden grave marker in the foreground. Despite negotiation, the outcome is the same.",
+      "narration": "The treaty is enforced. In 1838, the U.S. Army arrives to oversee the removal.\n\nAlthough you avoided a war, the journey west is just as deadly. Over 4,000 of our people—a quarter of our Nation—perish from cold, disease, and starvation.\n\nYour attempt to save your people through negotiation still ends in a journey of sorrow now remembered as the Trail of Tears.",
+      "type": "end",
+      "outcome": "failure",
+      "outcome_message": "The Path of Negotiation - Trail of Tears"
+    }
+  }
+}

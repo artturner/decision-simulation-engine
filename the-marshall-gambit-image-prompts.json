@@ -1,0 +1,58 @@
+{
+  "1": {
+    "filename": "scene_1.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA cramped, low-ceilinged basement courtroom beneath a larger legislative hall in an unfinished stone building, Washington D.C., 1803. Bare plaster walls, rough wooden benches, and a modest elevated bench where a tall lean white man in his late 40s in a black judicial robe and white cravat presides. Several robed associate justices sit beside him. A small group of men in dark wool frock coats and white cravats stand before the bench holding rolled parchment documents. A few observers crowd the narrow gallery. Oil lamps and candles cast warm uneven light across the austere chamber. Mood is tense and expectant."
+  },
+  "2a": {
+    "filename": "scene_2a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA printing workshop in early 19th-century Washington D.C., daytime. Two men in dark wool frock coats and white cravats lean over a wooden press examining freshly printed broadsheets. Stacks of newsprint and inkpots crowd a rough wooden table. Through a small window, the unfinished Capitol building dome is faintly visible in the background. Candlelight supplements pale grey daylight. Mood is eager and conspiratorial."
+  },
+  "2b": {
+    "filename": "scene_2b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA small private office chamber in the Capitol basement, Washington D.C., 1803, daytime. A tall lean white man in a black judicial robe and white cravat — the Chief Justice — sits at a plain wooden desk speaking quietly with two older robed white men seated nearby. Leather-bound law volumes and loose parchment pages are stacked on the desk. A single oil lamp illuminates the tight space. Mood is deliberate and cautious, voices low."
+  },
+  "2c": {
+    "filename": "scene_2c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA candlelit private office chamber in the Capitol basement, Washington D.C., late night, 1803. A tall lean white man in a black judicial robe and white cravat sits alone at a wooden desk, two open parchment documents spread side by side before him under the glow of several tallow candles. A quill pen and inkpot rest nearby. Bookshelves of leather-bound volumes line the wall behind him. Deep shadows fill the corners. Mood is solitary, focused, and intense."
+  },
+  "3": {
+    "filename": "scene_3.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nThe cramped basement courtroom beneath the Capitol, Washington D.C., 1803, daytime. A tall lean white man in a black robe and white cravat presides at the elevated wooden bench flanked by four older robed white men. Two attorneys in dark wool frock coats stand at a small lectern holding parchment documents. A modest crowd of observers in period dress fills the narrow benches. Oil lamps cast warm yellow light across the chamber. Mood is solemn and weighty."
+  },
+  "4a": {
+    "filename": "scene_4a.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nThe cramped basement courtroom beneath the Capitol, Washington D.C., 1803, daytime. A tall lean white man in a black judicial robe and white cravat stands upright at the elevated bench, reading aloud from a parchment document with a raised voice and firm posture. Flanking associate justices sit attentively in their robes. The small gallery of observers in dark wool frock coats leans forward. Candlelight and oil lamps illuminate tense faces. Mood is commanding and charged."
+  },
+  "4b": {
+    "filename": "scene_4b.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nThe cramped basement courtroom beneath the Capitol, Washington D.C., 1803, daytime. A tall lean white man in a black judicial robe sits at the elevated bench reading quietly from a parchment in a subdued manner. The associate justices beside him are still. The small audience of men in dark wool frock coats and cravats sits in muted silence. The chamber feels dim under its oil lamps. Mood is restrained, almost anticlimactic, with a sense of deflation."
+  },
+  "4c": {
+    "filename": "scene_4c.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nThe cramped basement courtroom beneath the Capitol, Washington D.C., 1803, daytime. A tall lean white man in a black judicial robe and white cravat stands calmly at the elevated bench, reading in a measured voice from a long parchment document. Four robed associate justices sit in a unified row beside him. The small gallery of observers in dark wool frock coats sits in hushed attention. Candlelight falls evenly across the chamber. Mood is quiet, historic, and solemn."
+  },
+  "5.defiance": {
+    "filename": "scene_5_defiance.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nThe cramped basement courtroom beneath the Capitol, Washington D.C., several months after 1803, daytime. A tall lean white man in a black judicial robe sits at the elevated bench with two associate justices, the chamber noticeably sparse and underpopulated. The wooden benches of the gallery are mostly empty. Papers lie in disarray on the bench. A single oil lamp burns low. Mood is diminished and uncertain, a sense of authority gone unheeded."
+  },
+  "5.retreat": {
+    "filename": "scene_5_retreat.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nThe cramped basement courtroom beneath the Capitol, Washington D.C., 1803. A tall lean white man in a black judicial robe sits alone at the elevated bench reviewing papers in a near-empty chamber. A single associate justice sits apart. The gallery benches are vacant. Dust motes drift in thin daylight from a small high window. Mood is quiet and deflated, a sense of fading importance."
+  },
+  "6": {
+    "filename": "scene_6.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA candlelit private parlor in a Washington D.C. townhouse, 1803. Four men in dark wool frock coats, breeches, and white cravats sit and stand around a plain wooden table covered in printed broadsheets and parchment documents. One man gestures toward a document while others lean in to read. A fireplace glows behind them. Mood is animated, puzzled, and politically charged, men trying to interpret a consequential event."
+  },
+  "7": {
+    "filename": "scene_7.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA sunlit law lecture hall in an American city, circa 1820s. Rows of young men in dark wool coats and white cravats sit on tiered wooden benches facing an older white male professor at a lectern, a large bound volume open before him. On the wall behind him hangs a framed handwritten document. Tall windows let in bright morning light. The hall is full and attentive. Mood is reverent and intellectually serious, a sense of settled historical importance."
+  },
+  "5.foundation": {
+    "filename": "scene_5_foundation.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA well-appointed law library in an American city, circa early 1820s, daytime. A robed white male judge in his 50s sits at a broad wooden table surrounded by leather-bound law volumes, one large open book at the center with a parchment document placed beside it as reference. Sunlight streams through tall windows illuminating the books and papers. Mood is authoritative and assured, a sense of precedent firmly established."
+  },
+  "5.overreach": {
+    "filename": "scene_5_overreach.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nA crowded legislative chamber hall in Washington D.C., 1803, daytime. A group of men in dark wool frock coats and white cravats argue animatedly around a central floor, several pointing and gesturing toward one another. Printed broadsheets and parchment documents are waved in hands. Tall windows cast strong daylight across heated faces. The chamber is tense and loud in atmosphere. Mood is confrontational and politically charged, a backlash building."
+  }
+}

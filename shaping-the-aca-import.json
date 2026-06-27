@@ -1,0 +1,369 @@
+{
+  "slug": "shaping-the-aca",
+  "title": "Shaping the ACA: A Lobbyist's Gambit",
+  "description": "As a lobbyist for a major healthcare stakeholder, you deploy inside and outside tactics to influence the 2010 Affordable Care Act while navigating coalitions, courts, and counter-mobilization.",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "Shaping the ACA: A Lobbyist's Gambit",
+      "description": "As a lobbyist for a major healthcare stakeholder, you deploy inside and outside tactics to influence the 2010 Affordable Care Act while navigating coalitions, courts, and counter-mobilization.",
+      "page_title": "ACA Lobbyist Strategy",
+      "page_icon": "🏛️",
+      "author": "Political Science Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "reflection_questions": [
+      "How did you balance your client's narrow private interests against the broader political realities and public goods at stake in healthcare reform? What factors most influenced your trade-offs?",
+      "Consider the tension between inside lobbying (drafting language, testifying) and outside lobbying (mobilizing the public). When did each approach serve you best, and why do experienced lobbyists combine them?",
+      "Coalitions can amplify influence but dilute your specific preferences. How did you weigh the strength-in-numbers logic against the risk of compromising your client's particular goals?",
+      "Lobbyists tend to support lawmakers who already agree with them, making influence hard to measure. How did your targeting of committee members, swing votes, or conference members reflect this reality?",
+      "The Citizens United era and disclosure laws shape how money moves in politics. How did concerns about access, transparency, and the appearance of vote-buying affect your campaign-finance choices?"
+    ],
+    "reflection_prompts": [
+      "Think about how your decisions reflected the difference between pursuing particularized benefits and serving the public good",
+      "Consider the real-world consequences of your tactics on patients, competitors, and lawmakers' trust",
+      "Reflect on how counter-mobilization by opposing interests reduced or reshaped your advantages",
+      "Consider how the multi-branch nature of American government created multiple pathways and pressure points for influence"
+    ],
+    "variables": {
+      "ClientSatisfaction": 0,
+      "LegislativeAccess": 0,
+      "PublicCredibility": 0,
+      "CoalitionStrength": 0
+    },
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The Assignment",
+        "description": "A glass-walled K Street conference room overlooking a gray Washington morning in early 2009.",
+        "image": "scene_1.png",
+        "narration": "Reform is coming. The new administration has made comprehensive healthcare legislation its signature goal, and every stakeholder in the system is scrambling for position. You represent a major healthcare client, and your senior partner slides a thick briefing binder across the table.\n\nPartner: 'This bill will be written over the next year, and where the commas land will be worth billions. Insurers, hospitals, device makers, doctors, employers, patient groups—they're all hiring. We need a strategy before the committee markups begin.'\n\nThe first question is foundational: how will you primarily try to influence the legislation? The tactics you lead with will shape your reputation, your access, and your client's bottom line.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Lead with inside lobbying: build relationships with key staff, offer to draft technical bill language, and testify in committee hearings",
+            "next": "2a",
+            "effects": {
+              "LegislativeAccess": 3,
+              "ClientSatisfaction": 1,
+              "PublicCredibility": -1
+            }
+          },
+          {
+            "text": "Lead with outside lobbying: launch a press campaign and mobilize members and the public to pressure lawmakers",
+            "next": "2b",
+            "effects": {
+              "PublicCredibility": 2,
+              "LegislativeAccess": -1,
+              "ClientSatisfaction": 1
+            }
+          },
+          {
+            "text": "Pursue a deliberate combination of inside and outside tactics, sequencing them as the bill moves",
+            "next": "2c",
+            "effects": {
+              "LegislativeAccess": 2,
+              "PublicCredibility": 1,
+              "ClientSatisfaction": 1
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "Inside the Room",
+        "description": "A cramped Senate committee anteroom where staffers shuttle markup drafts in and out.",
+        "image": "scene_2a.png",
+        "narration": "You go where the votes happen. Within weeks you are a familiar face to committee counsel, supplying memos that translate dense actuarial concepts into legislative language. Your testimony in a hearing is measured and technical, and a senior staffer begins quietly forwarding you draft sections for comment.\n\nThis is the lobbyist's classic inside game: most surveys confirm that the vast majority of professional lobbyists rely on contacting lawmakers, testifying, and helping draft legislation. Your access is real—but it is invisible to the public, and a watchdog reporter has started asking who is writing these provisions.\n\nNow you must decide whom, specifically, to spend that access on.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2b": {
+        "title": "Into the Streets",
+        "description": "A bustling campaign war room with phone banks, printed yard signs, and a wall of media clippings.",
+        "image": "scene_2b.png",
+        "narration": "You take the message to the public. Press releases, op-eds placed in regional papers, and a grassroots email tree urge constituents to call their representatives. The framing matters: you describe your position in language designed to resonate with ordinary voters, not committee counsel.\n\nMembers of Congress notice when constituents flood their phone lines, and you generate genuine attention. But outside lobbying is a blunt instrument—you have less control over the precise statutory details, and you have spent little time cultivating the lawmakers who actually hold the pen.\n\nTo convert public pressure into legislative results, you still must decide which lawmakers to focus on.",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "2c": {
+        "title": "Both Hands on the Wheel",
+        "description": "Your firm's strategy room, split between a policy team drafting language and a communications team plotting media hits.",
+        "image": "scene_2c.png",
+        "narration": "You refuse to choose just one lane. Your policy staff quietly engages committee counsel with detailed language while your communications team prepares a public campaign you can activate if negotiations stall. Like the Sierra Club and many seasoned interests, you intend to use whatever tactic fits the moment.\n\nThe approach is resource-intensive and demands discipline, but it gives you both technical credibility inside the building and a credible threat of public mobilization outside it. Your client is pleased by the breadth of coverage.\n\nThe combination is only as good as your targeting. Which lawmakers will you prioritize?",
+        "type": "auto_advance",
+        "next": "3"
+      },
+      "3": {
+        "title": "Choosing Your Targets",
+        "description": "A wall-sized whiteboard mapping committee rosters, vote counts, and shifting alliances.",
+        "image": "scene_3.png",
+        "narration": "You cannot lobby all 535 members of Congress, and you would not want to. Lobbyists succeed by targeting strategically. Your team debates where to concentrate.\n\nThe sympathetic committee members are receptive and can shape the bill early, but they would likely support you anyway. The swing votes are uncertain and could tip the outcome, but they are besieged by every interest in town. The conference committee members will reconcile the House and Senate versions at the end, where a single phrase can move billions.\n\nYour partner taps the board: 'Pick where your finite hours and dollars actually change the result.'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Focus on sympathetic committee members who can introduce and champion provisions favorable to your client",
+            "next": "4a",
+            "effects": {
+              "LegislativeAccess": 2,
+              "ClientSatisfaction": 1
+            }
+          },
+          {
+            "text": "Concentrate on undecided swing votes whose decisions could determine whether the bill passes",
+            "next": "4b",
+            "effects": {
+              "ClientSatisfaction": 2,
+              "LegislativeAccess": 1,
+              "PublicCredibility": -1
+            }
+          },
+          {
+            "text": "Save your influence for the conference committee, where final differences between chambers get resolved",
+            "next": "4c",
+            "effects": {
+              "ClientSatisfaction": 1,
+              "LegislativeAccess": 1
+            }
+          }
+        ]
+      },
+      "4a": {
+        "title": "Friendly Ground",
+        "description": "A committee member's district office, walls lined with photos of local hospitals and clinics.",
+        "image": "scene_4a.png",
+        "narration": "You invest in lawmakers already inclined toward your client. They introduce report language you helped draft and defend it in markup. Because legislators defer to trusted colleagues on unfamiliar details, these champions amplify your message to others indirectly.\n\nThe wins are real but incremental, and a skeptic on your client's board grumbles that you are 'preaching to the choir' while the bill's overall shape is decided elsewhere. Still, you have banked durable relationships.\n\nAs the markup advances, a larger strategic question lands on your desk.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4b": {
+        "title": "The Fence-Sitters",
+        "description": "A Capitol hallway crowded with lobbyists waiting outside the office of an undecided senator.",
+        "image": "scene_4b.png",
+        "narration": "You chase the votes that could swing the outcome. It is grueling—every other interest is camped in the same hallway, and the swing members extract concessions from all sides. You secure meetings and offer detailed analyses of how the bill affects their states, but you also make commitments that stretch your client's flexibility.\n\nYour client is energized by the high-stakes positioning, though some of your promises to wavering members may prove awkward if the politics shift. You have spent heavily for uncertain returns.\n\nA larger strategic question now demands an answer.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4c": {
+        "title": "Playing the Long Game",
+        "description": "A quiet office where staff track both chambers' bill versions side by side, line by line.",
+        "image": "scene_4c.png",
+        "narration": "You hold your fire for the conference committee, the negotiation stage where a one-percent difference in a formula can mean millions. You map which members will likely sit on conference, cultivate them carefully, and prepare precise asks for the reconciliation.\n\nThe patience is a gamble: if the bill stalls before conference, your investment yields little. But if it reaches that stage, you will be positioned at the moment of maximum leverage. Your client trusts the discipline of the plan.\n\nBefore conference, a larger strategic question arrives.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "5": {
+        "title": "Go It Alone or Join Forces?",
+        "description": "A downtown ballroom where rival healthcare interests gather to discuss a possible joint front.",
+        "image": "scene_5.png",
+        "narration": "An invitation arrives to join a broad coalition spanning insurers, hospitals, device makers, and employers. There is real strength in numbers—a unified industry voice carries weight, and shared resources fund bigger campaigns. The American Beverage Association proves competitors can cooperate on common ground.\n\nBut coalitions come with a cost. Joining one dilutes your client's specific preferences and forces you to split benefits with rivals whose interests diverge from yours. On the device tax, the individual mandate, and Medicaid expansion, your allies want different things than you do.\n\nYour client's CEO calls: 'Do we link arms with the herd, or protect what's ours?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Join the broad coalition to present a unified, well-funded industry front",
+            "next": "6a",
+            "effects": {
+              "CoalitionStrength": 3,
+              "PublicCredibility": 1,
+              "ClientSatisfaction": -1
+            }
+          },
+          {
+            "text": "Lobby independently to fully protect your client's specific interests",
+            "next": "6b",
+            "effects": {
+              "ClientSatisfaction": 2,
+              "CoalitionStrength": -2,
+              "LegislativeAccess": 1
+            }
+          },
+          {
+            "text": "Join the coalition publicly but quietly pursue a separate inside track for your client's priorities",
+            "next": "6c",
+            "effects": {
+              "CoalitionStrength": 1,
+              "ClientSatisfaction": 1,
+              "PublicCredibility": -1
+            }
+          }
+        ]
+      },
+      "6a": {
+        "title": "Strength in Numbers",
+        "description": "A packed press conference where logos of multiple healthcare groups share a single banner.",
+        "image": "scene_6a.png",
+        "narration": "You sign on. The coalition's combined war chest funds national ads and a coordinated message that lawmakers cannot ignore. When the industry speaks with one voice, doors open and your collective influence rivals that of any single bloc.\n\nYet in coalition meetings you watch your client's sharper asks get sanded down for consensus. A provision your client wanted softened survives because hospitals insisted on keeping it. You traded precision for power.\n\nThen the political ground shifts beneath everyone.",
+        "type": "auto_advance",
+        "next": "7"
+      },
+      "6b": {
+        "title": "On Your Own Terms",
+        "description": "A focused one-on-one meeting between you and a key committee counsel.",
+        "image": "scene_6b.png",
+        "narration": "You stay independent, free to push your client's exact priorities without compromise. Your asks are precise, your messaging tailored, and when a provision lands in your favor it is unmistakably your win.\n\nBut you feel the loneliness of the solo lobbyist. Without coalition resources, your campaign is smaller, and rival groups—now aligned—sometimes drown you out. On at least one fight, a competing bloc's counter-mobilization neutralizes your push.\n\nThen the political ground shifts beneath everyone.",
+        "type": "auto_advance",
+        "next": "7"
+      },
+      "6c": {
+        "title": "Two Tracks at Once",
+        "description": "A hotel suite where you slip out of a coalition strategy session to take a private call.",
+        "image": "scene_6c.png",
+        "narration": "You play both sides of the table. Publicly you stand with the coalition, sharing its resources and visibility. Privately, your team works a separate inside track for the handful of provisions your client cares about most.\n\nIt is a delicate balance. The coalition gives you reach; the side channel preserves your priorities. But if allies discover you are freelancing on shared issues, trust could fracture, and a coalition partner has already raised an eyebrow at your selective enthusiasm.\n\nThen the political ground shifts beneath everyone.",
+        "type": "auto_advance",
+        "next": "7"
+      },
+      "7": {
+        "title": "Counter-Mobilization",
+        "description": "Television screens in the office show Tea Party rallies on one channel and Supreme Court reporters on another.",
+        "image": "scene_7.png",
+        "narration": "The reaction arrives like a wave. Tea Party groups rally against the law, framing it as government overreach, while a coalition of state governors and attorneys general files suit to block the mandate that states expand Medicaid coverage. The fight is no longer only in Congress—it has moved to the courts and the court of public opinion.\n\nLobbying the judiciary is a recognized pathway of influence: interests file amicus briefs, the 'friend of the court' documents that argue why a court should rule a certain way. Your client's interests are directly affected by how the Medicaid and mandate questions are resolved.\n\nYour litigation counsel asks: 'Do we step into the court battle, or stay focused on the legislative endgame?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "File an amicus brief defending the provisions that benefit your client and signal commitment to allies",
+            "next": "8a",
+            "effects": {
+              "ClientSatisfaction": 2,
+              "PublicCredibility": -1,
+              "CoalitionStrength": 1
+            }
+          },
+          {
+            "text": "Stay out of the courts and pour resources into shaping the final legislative text",
+            "next": "8b",
+            "effects": {
+              "LegislativeAccess": 2,
+              "ClientSatisfaction": 1
+            }
+          },
+          {
+            "text": "Quietly support allied briefs without putting your client's name on the litigation",
+            "next": "8c",
+            "effects": {
+              "CoalitionStrength": 1,
+              "PublicCredibility": 1,
+              "ClientSatisfaction": 1
+            }
+          }
+        ]
+      },
+      "8a": {
+        "title": "Into the Courtroom",
+        "description": "A law library where associates assemble exhibits for a Supreme Court amicus filing.",
+        "image": "scene_8a.png",
+        "narration": "You file. Your brief argues the constitutional and policy case for the provisions your client depends on, and your name on the docket signals seriousness to allies and adversaries alike. When the Court eventually upholds most of the law, your client feels vindicated for having fought on every front.\n\nBut public visibility cuts both ways. Critics highlight your filing as evidence of industry self-interest, and the press notes your fingerprints on yet another part of the process. You won influence at the cost of some public goodwill.\n\nNow the final decision of the campaign looms: the money.",
+        "type": "auto_advance",
+        "next": "9"
+      },
+      "8b": {
+        "title": "Eyes on the Text",
+        "description": "A late-night session marking up the latest reconciliation language clause by clause.",
+        "image": "scene_8b.png",
+        "narration": "You let the litigation play out and keep your hands on the statute. Every hour saved from the court fight goes into refining the bill's text, and your legislative relationships deepen as you remain a steady, technical presence while others chase headlines.\n\nThe risk is that the courts could reshape the very provisions you worked to perfect. But you reason that the legislative text is where your comparative advantage lies, and your client's core interests are written into the law you helped craft.\n\nNow the final decision of the campaign looms: the money.",
+        "type": "auto_advance",
+        "next": "9"
+      },
+      "8c": {
+        "title": "Behind the Curtain",
+        "description": "A discreet conference call coordinating talking points with allied counsel.",
+        "image": "scene_8c.png",
+        "narration": "You support the court fight without owning it. Allied groups file the briefs while you contribute research and funding from the background. The provisions you favor get defended, your coalition ties strengthen, and your client avoids the reputational exposure of front-line litigation.\n\nIt is a careful, low-profile play—influence without footprints. When the Court upholds most of the law, you share in the victory while having kept your client's name off the most contentious filings.\n\nNow the final decision of the campaign looms: the money.",
+        "type": "auto_advance",
+        "next": "9"
+      },
+      "9": {
+        "title": "Following the Money",
+        "description": "A finance meeting with spreadsheets of PAC contribution limits and election-cycle calendars.",
+        "image": "scene_9.png",
+        "narration": "Elections are approaching, and your client's PAC must decide where its contributions go. Lobbyists know that money rarely changes a lawmaker's mind, but it buys access and time with members.\n\nYou can hedge by giving to candidates of both parties to ensure access regardless of who wins—a common practice. You can go all-in behind the party most aligned with your client's position, maximizing influence if they prevail but risking the cold shoulder if they don't. Or you can keep contributions modest and lean on the relationships and credibility you have already built.\n\nYour finance director waits: 'How do we spend to keep our seat at the table?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Hedge by contributing to both major parties to preserve access no matter who wins",
+            "next": "10",
+            "effects": {
+              "LegislativeAccess": 2,
+              "ClientSatisfaction": 1,
+              "PublicCredibility": -1
+            }
+          },
+          {
+            "text": "Go all-in supporting the party most aligned with your client's interests",
+            "next": "10",
+            "effects": {
+              "ClientSatisfaction": 1,
+              "LegislativeAccess": -1,
+              "PublicCredibility": -1
+            }
+          },
+          {
+            "text": "Keep contributions modest and rely on the relationships and credibility you've earned",
+            "next": "10",
+            "effects": {
+              "PublicCredibility": 2,
+              "LegislativeAccess": 1
+            }
+          }
+        ]
+      },
+      "10": {
+        "title": "The Bill Becomes Law",
+        "description": "A television in the firm lobby shows the President signing the Affordable Care Act into law.",
+        "image": "scene_10.png",
+        "narration": "After a year of markups, hearings, rallies, lawsuits, and late-night negotiations, the Affordable Care Act is signed into law and later largely upheld by the Supreme Court. The final statute bears the marks of countless interests pulling in different directions—including yours.\n\nNow the verdict on your campaign depends on the balance you struck between access inside the building, credibility outside it, your client's specific demands, and the coalitions you built or avoided.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "ClientSatisfaction >= 5",
+            "next": "11.influential"
+          },
+          {
+            "condition": "PublicCredibility >= 3",
+            "next": "11.respected"
+          },
+          {
+            "condition": "LegislativeAccess <= 1",
+            "next": "11.sidelined"
+          }
+        ],
+        "default": "11.balanced"
+      },
+      "11.influential": {
+        "title": "Maximum Leverage",
+        "description": "Your client's executives gather to toast the outcome over a printout of the final bill text.",
+        "image": "scene_11_influential.png",
+        "narration": "Your relentless inside game paid off. Provisions you helped draft survived into law, your access to lawmakers proved decisive at key moments, and your client got much of what it wanted. You demonstrated how an organized, well-resourced interest can secure particularized benefits through sustained legislative engagement.\n\nYet the success carries a quieter lesson. Critics point to outcomes like yours as evidence that the system tilts toward those with the resources to hire skilled lobbyists. Your client is thrilled; whether the public good was equally served is a question others will debate.",
+        "type": "end",
+        "outcome": "influential",
+        "outcome_message": "You maximized your client's influence through deep legislative access, illustrating both the power and the equity concerns of resource-rich lobbying."
+      },
+      "11.respected": {
+        "title": "The Credible Voice",
+        "description": "A panel discussion where you are invited to speak as a respected industry representative.",
+        "image": "scene_11_respected.png",
+        "narration": "You built influence on credibility and coalition. By combining public engagement with collaborative strategy, you earned a reputation as an honest broker whose word carried weight with lawmakers and the press alike. Your coalition presented a united front that no single interest could have matched.\n\nYou did not win every provision—coalition compromise saw to that—but you advanced your client's core interests while preserving the trust that makes future influence possible. In a system where mobilization invites counter-mobilization, your durable relationships are an asset that outlasts any single bill.",
+        "type": "end",
+        "outcome": "respected",
+        "outcome_message": "You leveraged public credibility and coalition strength, earning lasting influence through trust and collaboration rather than raw access alone."
+      },
+      "11.sidelined": {
+        "title": "Outmaneuvered",
+        "description": "A subdued debrief meeting where the final bill text reveals few of your client's priorities.",
+        "image": "scene_11_sidelined.png",
+        "narration": "Despite your efforts, your client ended up on the outside looking in. Without strong access to the lawmakers who held the pen, your priorities were crowded out by better-positioned interests, and the counter-mobilization you faced eroded what advantages you had.\n\nThis is the hard reality of interest group politics: influence is not equally distributed, and even legitimate interests can be drowned out when they fail to secure access or allies. The experience is a costly lesson in how access, timing, and coalition-building determine who gets heard in a crowded field.",
+        "type": "end",
+        "outcome": "sidelined",
+        "outcome_message": "Your client was outmaneuvered by better-positioned interests, a lesson in how access and coalitions determine who gets heard."
+      },
+      "11.balanced": {
+        "title": "A Mixed Result",
+        "description": "Your team reviews the enacted law, marking wins in green and losses in red across its pages.",
+        "image": "scene_11_balanced.png",
+        "narration": "Your campaign produced a mixed but defensible result. You secured some of your client's priorities and lost others, navigating the competing pressures of access, public perception, coalition demands, and the courts without dominating any single arena.\n\nThis is perhaps the most common outcome in real lobbying: interests rarely get everything they want, and the final policy reflects a messy equilibrium of many competing groups. Your client is neither triumphant nor defeated—and you have learned how the multi-branch, multi-stakeholder American system distributes influence in fragments rather than wholesale.",
+        "type": "end",
+        "outcome": "balanced",
+        "outcome_message": "You achieved a realistic mix of wins and losses, reflecting how policy emerges from competition among many interests rather than the triumph of one."
+      }
+    }
+  }
+}

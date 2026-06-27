@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "title": "Party Realignment: The Civil Rights Decision",
+    "description": "Experience the 1960s party realignment as a Southern Democratic Congressman deciding whether to support the Civil Rights Act of 1964",
+    "page_title": "1960s Party Realignment Scenario",
+    "page_icon": "🏛️",
+    "author": "Civic Education Team",
+    "version": "1.0",
+    "completion_tracking": true
+  },
+  "reflection_questions": [
+    "This scenario placed you between three competing pressures: your conscience, your constituents, and your party leadership. Which of these did you prioritize, and why? How did it feel to be forced to make a 'no-win' choice?",
+    "This scenario is a direct example of party realignment. Based on your experience, explain how a party's shift on a single, major issue can cause voters and politicians to 'sort' themselves into new coalitions that last for decades.",
+    "This period saw the end of the conservative Southern Democrat and the liberal Northern Republican. How does your decision (and its consequences) help explain why party polarization has increased and why moderate politicians are much rarer in government today?"
+  ],
+  "reflection_prompts": [
+    "Think about which pressure felt most important to you and why certain choices feel impossible in politics",
+    "Consider how a single vote can trigger decades of political realignment and voter sorting",
+    "Reflect on how the choices made in the 1960s created today's polarized political landscape"
+  ],
+  "scenes": {
+    "1": {
+      "title": "The Whip's Call",
+      "image": "scene_1.png",
+      "description": "A 1960s-era congressional office. You (the player) are at your desk, which has a rotary phone. The mood is tense.",
+      "narration": "It is 1964. You are a Democratic Congressman from a rural district in the 'Solid South.' For decades, your party has dominated here. But now, President Lyndon B. Johnson, a fellow Democrat, is using every tool he has to pass a landmark Civil Rights Act.\n\nYour phone rings. You answer. It's the House Majority Whip.\n\nWhip: \"Mr. Congressman, the President needs your vote. This is about the soul of our nation and the future of our party. We are counting on you to vote 'Yea.' We don't forget our friends.\"",
+      "type": "auto_advance",
+      "next": "2"
+    },
+    "2": {
+      "title": "The View from Home",
+      "image": "scene_2.png",
+      "description": "Your office door opens. Your County Party Chairman, a powerful local figure, walks in. He looks furious and holds a local newspaper with a headline: \"WILL HE BETRAY US?\"",
+      "narration": "Chairman: \"I'm not here to ask, I'm here to tell you. If you vote 'Yea' on this bill, you are finished. Our people see this as a federal overreach and a violation of states' rights. The Republicans are already printing signs with your name on them, calling you a traitor. Don't you dare forget who sent you to Washington.\"",
+      "type": "auto_advance",
+      "next": "3"
+    },
+    "3": {
+      "title": "The Vote",
+      "image": "scene_3.png",
+      "description": "The floor of the U.S. House of Representatives. The chamber is loud. The final vote is being called. The electronic voting board is lighting up.",
+      "narration": "This is the moment. The Whip is staring at you from one side of the floor; you can feel the eyes of your constituents on your back. This vote will define your career and trigger a party realignment that will last for generations.\n\nHow do you vote?",
+      "type": "choice",
+      "choices": [
+        {
+          "text": "Vote YEA: Support the Civil Rights Act and President Johnson",
+          "next": "4a"
+        },
+        {
+          "text": "Vote NAY: Oppose the Civil Rights Act and side with your constituents",
+          "next": "4b"
+        }
+      ]
+    },
+    "4a": {
+      "title": "The 'Loyal' Democrat",
+      "image": "scene_4a.png",
+      "description": "The President signing the Civil Rights Act into law. You are in the back of the room, looking uncomfortable.",
+      "narration": "You vote 'Yea.' The bill passes. You are thanked by the President and praised by the national party for your conscience. But back home, the political ground has shattered. Your County Chairman calls you a 'political corpse.'",
+      "type": "auto_advance",
+      "next": "5a"
+    },
+    "5a": {
+      "title": "The Consequence",
+      "image": "scene_5a.png",
+      "description": "A stark \"DEFEATED\" election night banner from your 1966 primary campaign. Behind it, a modern U.S. electoral map showing a heavily Republican 'Solid South' and a Democratic Northeast.",
+      "narration": "You are challenged in the primary and overwhelmingly defeated. Your constituents have 'sorted' themselves, and they have left you behind. You are out of a job, a casualty of a 'critical election' that solidified the Democratic Party's new identity on civil rights... but also began to cede the South to the Republicans for the next 50 years.\n\nYour choice, while morally principled, contributed to a massive party realignment. The Democratic Party would become the party of civil rights and social progress, while conservative Southern voters began their decades-long migration to the Republican Party.",
+      "type": "end",
+      "outcome": "failure",
+      "outcome_message": "Scenario Complete - Defeated in Primary"
+    },
+    "4b": {
+      "title": "The 'Disloyal' Democrat",
+      "image": "scene_4b.png",
+      "description": "A local newspaper headline: \"OUR CONGRESSMAN VOTES 'NAY'! HONORS STATES' RIGHTS.\"",
+      "narration": "You vote 'Nay,' along with most of your Southern colleagues. Your constituents are overjoyed, and your re-election seems secure. But in Washington, you are now an outcast. You are removed from a key committee, and the national party leadership will no longer take your calls.",
+      "type": "auto_advance",
+      "next": "5b"
+    },
+    "5b": {
+      "title": "The Crossroads",
+      "image": "scene_5b.png",
+      "description": "A crossroads. One sign points to a 'Democratic Primary' (donkey). The other points to a 'Republican Primary' (elephant). A third, smaller sign points to 'Third Party.'",
+      "narration": "It's 1968. The national Democratic Party continues to move in a direction you cannot support. Republicans, seeing an opportunity, are actively recruiting Southern Democrats who oppose their party's national platform. You've secured your district, but you must now choose your future.\n\nWhat do you do?",
+      "type": "choice",
+      "choices": [
+        {
+          "text": "Stay a Democrat and fight for 'your' version of the party",
+          "next": "6b_stay"
+        },
+        {
+          "text": "Switch parties and run for re-election as a Republican",
+          "next": "6b_switch"
+        },
+        {
+          "text": "Run as a Third-Party 'States' Rights' candidate",
+          "next": "6b_third"
+        }
+      ]
+    },
+    "6b_stay": {
+      "title": "The Man Without a Party",
+      "image": "scene_6b_stay.png",
+      "description": "Your congressional desk, now in a poor location in the back of the chamber. You look isolated. Behind you, a modern U.S. electoral map showing a heavily Republican 'Solid South' and a Democratic Northeast.",
+      "narration": "You win re-election as a 'Dixiecrat'—a Democrat in name only. But you have no power. You are too conservative for the national party's leadership, and your seniority means nothing. You are a relic of a past era, watching as your conservative constituents begin 'sorting' themselves into the Republican party anyway.\n\nBy the 1980s, the party realignment is complete. The conservative Southern Democrats like you have either retired, been defeated, or switched parties. The political map has been redrawn along ideological lines, creating the polarized landscape we see today.",
+      "type": "end",
+      "outcome": "compromise",
+      "outcome_message": "Scenario Complete - Political Isolation"
+    },
+    "6b_switch": {
+      "title": "The Realignment",
+      "image": "scene_6b_switch.png",
+      "description": "A 'RE-ELECTED' banner, but now with the Republican elephant. You are shaking hands with new Republican colleagues. Behind you, a modern U.S. electoral map showing a heavily Republican 'Solid South' and a Democratic Northeast.",
+      "narration": "You switch parties. You are embraced by the Republicans and easily win re-election. You become a key figure in the great party realignment. You have secured your political career by helping turn the 'Solid South' from Democratic blue to Republican red, a shift built on social issues and states' rights.\n\nYour party switch represents the broader 'sorting' of American politics. Conservative Southern Democrats became Republicans, while liberal Northern Republicans became Democrats. This ideological sorting created the intense polarization that defines modern American politics.",
+      "type": "end",
+      "outcome": "success",
+      "outcome_message": "Scenario Complete - Successful Party Switch"
+    },
+    "6b_third": {
+      "title": "The Third-Party Spoiler",
+      "image": "scene_6b_third.png",
+      "description": "A picture of a sparsely attended rally for your 'States' Rights Party.' Behind you, a modern U.S. electoral map showing a heavily Republican 'Solid South' and a Democratic Northeast.",
+      "narration": "You run as a third-party candidate, championing a narrow set of causes. You are popular, but you split the conservative vote with the Republican candidate. This allows the national Democratic party to funnel money to a moderate and win the seat. Your effort fails, and your supporters are eventually absorbed by the Republican party, the typical fate of minor parties.\n\nYour third-party attempt illustrates why America's two-party system is so durable. Third parties may influence debate, but they rarely achieve lasting success. Your supporters eventually 'sorted' themselves into the Republican coalition, contributing to the partisan realignment.",
+      "type": "end",
+      "outcome": "failure",
+      "outcome_message": "Scenario Complete - Third-Party Failure"
+    }
+  }
+}
