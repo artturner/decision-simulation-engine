@@ -17,8 +17,10 @@ import {
 } from "@/lib/api/teacher";
 import type {
   ClassRoll,
+  GradingDifficulty,
   PublishedScenario,
   RollGradebook,
+  RollGradebookStudent,
   RollScenario,
 } from "@/lib/api/teacherTypes";
 import { getSupabaseClient } from "@/lib/auth/supabase";
@@ -178,6 +180,21 @@ export default function TeacherDashboardPage() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["teacher-roll-scenarios"] });
+    },
+  });
+
+  const difficultyMutation = useMutation({
+    mutationFn: (vars: {
+      assignment: RollScenario;
+      difficulty: GradingDifficulty;
+    }) =>
+      updateAssignment(token, selectedRollId, vars.assignment.scenario_id, {
+        grading_difficulty: vars.difficulty,
+      }),
+    onSuccess: (_data, vars) => {
+      setNotice(`Grading difficulty set to ${vars.difficulty}.`);
+      queryClient.invalidateQueries({ queryKey: ["teacher-roll-scenarios"] });
+      queryClient.invalidateQueries({ queryKey: ["teacher-gradebook"] });
     },
   });
 
@@ -348,6 +365,7 @@ export default function TeacherDashboardPage() {
                   error={
                     (assignMutation.error as Error | null)?.message ??
                     (visibilityMutation.error as Error | null)?.message ??
+                    (difficultyMutation.error as Error | null)?.message ??
                     null
                   }
                   onAssignmentScenarioChange={setAssignmentScenarioId}
@@ -356,6 +374,10 @@ export default function TeacherDashboardPage() {
                   onToggleVisible={(assignment) =>
                     visibilityMutation.mutate(assignment)
                   }
+                  onChangeDifficulty={(assignment, difficulty) =>
+                    difficultyMutation.mutate({ assignment, difficulty })
+                  }
+                  difficultyBusy={difficultyMutation.isPending}
                 />
 
                 <ResultsPanel
@@ -488,6 +510,8 @@ function ScenarioAssignments({
   onAssign,
   onSelectScenario,
   onToggleVisible,
+  onChangeDifficulty,
+  difficultyBusy,
 }: {
   scenarios: PublishedScenario[];
   assignments: RollScenario[];
@@ -499,6 +523,11 @@ function ScenarioAssignments({
   onAssign: () => void;
   onSelectScenario: (value: string) => void;
   onToggleVisible: (assignment: RollScenario) => void;
+  onChangeDifficulty: (
+    assignment: RollScenario,
+    difficulty: GradingDifficulty,
+  ) => void;
+  difficultyBusy: boolean;
 }) {
   const assignedIds = new Set(assignments.map((item) => item.scenario_id));
   const available = scenarios.filter((scenario) => !assignedIds.has(scenario.id));
@@ -566,6 +595,30 @@ function ScenarioAssignments({
                   {assignment.visible ? "Hide" : "Show"}
                 </button>
               </div>
+              <div className="mt-3 flex flex-col gap-1 border-t border-gray-200 pt-3 sm:flex-row sm:items-center sm:justify-between">
+                <label
+                  htmlFor={`difficulty-${assignment.id}`}
+                  className="text-sm font-semibold text-gray-700"
+                >
+                  Grading difficulty
+                </label>
+                <select
+                  id={`difficulty-${assignment.id}`}
+                  value={assignment.grading_difficulty}
+                  disabled={difficultyBusy}
+                  onChange={(event) =>
+                    onChangeDifficulty(
+                      assignment,
+                      event.target.value as GradingDifficulty,
+                    )
+                  }
+                  className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:opacity-50"
+                >
+                  <option value="lenient">Lenient — generous, formative</option>
+                  <option value="standard">Standard — balanced</option>
+                  <option value="strict">Strict — high-stakes</option>
+                </select>
+              </div>
             </div>
           ))}
         </div>
@@ -576,6 +629,24 @@ function ScenarioAssignments({
       )}
     </section>
   );
+}
+
+const DIFFICULTY_LABELS: Record<GradingDifficulty, string> = {
+  lenient: "Lenient",
+  standard: "Standard",
+  strict: "Strict",
+};
+
+function difficultyLabel(value: string | null): string {
+  if (value && value in DIFFICULTY_LABELS) {
+    return DIFFICULTY_LABELS[value as GradingDifficulty];
+  }
+  return "—";
+}
+
+function reflectionQuestionLabel(key: string): string {
+  const match = key.match(/^reflection_(\d+)$/);
+  return match ? `Reflection ${match[1]}` : key;
 }
 
 function ResultsPanel({
@@ -591,6 +662,14 @@ function ResultsPanel({
   exporting: boolean;
   onExport: () => void;
 }) {
+  const [selectedName, setSelectedName] = useState<string | null>(null);
+  const scenarioId = gradebook?.scenario_id;
+
+  // Clear the open detail when the teacher switches scenario.
+  useEffect(() => {
+    setSelectedName(null);
+  }, [scenarioId]);
+
   if (loading) {
     return (
       <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
@@ -619,6 +698,11 @@ function ResultsPanel({
     );
   }
 
+  const selectedStudent =
+    selectedName != null
+      ? gradebook.students.find((s) => s.student_name === selectedName) ?? null
+      : null;
+
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -626,8 +710,15 @@ function ResultsPanel({
           <h2 className="text-lg font-semibold">
             Results: {gradebook.scenario_title}
           </h2>
+          <div className="mt-1 flex items-center gap-2 text-sm text-gray-600">
+            <span>Grading difficulty:</span>
+            <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-gray-700">
+              {difficultyLabel(gradebook.grading_difficulty)}
+            </span>
+          </div>
           <p className="mt-1 text-sm text-gray-500">
-            Best attempt is the highest-scoring completed attempt.
+            Best attempt is the highest-scoring completed attempt. Select a
+            student to read their reflection and coaching.
           </p>
         </div>
         <button
@@ -640,7 +731,7 @@ function ResultsPanel({
         </button>
       </div>
       <div className="mt-4 overflow-x-auto">
-        <table className="w-full min-w-[860px] border-collapse text-sm">
+        <table className="w-full min-w-[720px] border-collapse text-sm">
           <thead>
             <tr className="border-b border-gray-200 text-left text-gray-600">
               <th className="py-2 pr-3 font-semibold">Student</th>
@@ -656,9 +747,27 @@ function ResultsPanel({
             {gradebook.students.map((student) => {
               const bestAttempt = student.best_attempt;
               const bestReflection = bestAttempt?.reflection;
+              const isSelected = selectedName === student.student_name;
               return (
-                <tr key={student.student_name} className="border-b border-gray-100">
-                  <td className="py-3 pr-3 font-medium">{student.student_name}</td>
+                <tr
+                  key={student.student_name}
+                  className={`border-b border-gray-100 ${
+                    isSelected ? "bg-blue-50" : ""
+                  }`}
+                >
+                  <td className="py-3 pr-3 font-medium">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedName(
+                          isSelected ? null : student.student_name,
+                        )
+                      }
+                      className="text-left font-medium text-blue-700 underline-offset-2 hover:underline"
+                    >
+                      {student.student_name}
+                    </button>
+                  </td>
                   <td className="py-3 pr-3">{statusLabel(student.status)}</td>
                   <td className="py-3 pr-3">{student.submitted_count}</td>
                   <td className="py-3 pr-3 whitespace-nowrap">
@@ -693,28 +802,22 @@ function ResultsPanel({
                       ? new Date(bestAttempt.ended_at).toLocaleString()
                       : ""}
                   </td>
-                  <td className="py-3 pr-3">
-                    {bestAttempt?.outcome ?? ""}
-                  </td>
+                  <td className="py-3 pr-3">{bestAttempt?.outcome ?? ""}</td>
                   <td className="py-3 pr-3">
                     {bestReflection ? (
-                      <div className="space-y-1">
-                        {Object.entries(bestReflection.responses).map(
-                          ([key, value]) => (
-                            <p key={key}>
-                              <span className="font-semibold">{key}: </span>
-                              {value}
-                            </p>
-                          ),
-                        )}
-                        {bestReflection.feedback && (
-                          <p className="mt-1 text-xs italic text-gray-500">
-                            Coaching: {bestReflection.feedback}
-                          </p>
-                        )}
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelectedName(
+                            isSelected ? null : student.student_name,
+                          )
+                        }
+                        className="rounded-md border border-gray-300 px-3 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                      >
+                        {isSelected ? "Hide" : "View"}
+                      </button>
                     ) : (
-                      <span className="text-gray-400">None</span>
+                      <span className="text-gray-400">—</span>
                     )}
                   </td>
                 </tr>
@@ -723,6 +826,88 @@ function ResultsPanel({
           </tbody>
         </table>
       </div>
+
+      {selectedStudent && (
+        <StudentReflectionDetail
+          student={selectedStudent}
+          onClose={() => setSelectedName(null)}
+        />
+      )}
     </section>
+  );
+}
+
+function StudentReflectionDetail({
+  student,
+  onClose,
+}: {
+  student: RollGradebookStudent;
+  onClose: () => void;
+}) {
+  const attempt = student.best_attempt;
+  const reflection = attempt?.reflection ?? null;
+
+  return (
+    <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50/40 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-base font-semibold">{student.student_name}</h3>
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-600">
+            {reflection?.grade_total != null && (
+              <span className="font-semibold text-gray-800">
+                {reflection.grade_total}/100
+              </span>
+            )}
+            {reflection?.difficulty && (
+              <span>Graded: {difficultyLabel(reflection.difficulty)}</span>
+            )}
+            {attempt?.ended_at && (
+              <span>Submitted {new Date(attempt.ended_at).toLocaleString()}</span>
+            )}
+            {attempt?.outcome && <span>Outcome: {attempt.outcome}</span>}
+            {reflection?.accepted && (
+              <span className="text-green-700">✓ Accepted</span>
+            )}
+            {reflection?.needs_human_review && (
+              <span className="text-amber-700">⚑ Flagged for review</span>
+            )}
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-md border border-gray-300 bg-white px-3 py-1 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+        >
+          Close
+        </button>
+      </div>
+
+      {reflection ? (
+        <div className="mt-4 space-y-3">
+          {Object.entries(reflection.responses).map(([key, value]) => (
+            <div key={key}>
+              <p className="text-sm font-semibold text-gray-700">
+                {reflectionQuestionLabel(key)}
+              </p>
+              <p className="mt-0.5 whitespace-pre-wrap text-sm text-gray-800">
+                {value}
+              </p>
+            </div>
+          ))}
+          {reflection.feedback && (
+            <div className="rounded-md border border-gray-200 bg-white p-3">
+              <p className="text-sm font-semibold text-gray-700">Coaching</p>
+              <p className="mt-0.5 whitespace-pre-wrap text-sm italic text-gray-600">
+                {reflection.feedback}
+              </p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <p className="mt-3 text-sm text-gray-500">
+          No reflection submitted for this student yet.
+        </p>
+      )}
+    </div>
   );
 }

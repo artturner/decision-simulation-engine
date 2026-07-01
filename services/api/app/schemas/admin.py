@@ -9,8 +9,12 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+
+# AI reflection grading leniency for an assignment.
+GradingDifficulty = Literal["strict", "standard", "lenient"]
 
 
 # ---------------------------------------------------------------------------
@@ -138,11 +142,13 @@ class AssignmentCreate(BaseModel):
     scenario_id: uuid.UUID
     visible: bool = False
     sort_order: int | None = None
+    grading_difficulty: GradingDifficulty = "standard"
 
 
 class AssignmentUpdate(BaseModel):
     visible: bool | None = None
     sort_order: int | None = None
+    grading_difficulty: GradingDifficulty | None = None
 
 
 class AssignmentOut(BaseModel):
@@ -153,6 +159,7 @@ class AssignmentOut(BaseModel):
     class_roll_id: uuid.UUID
     visible: bool
     sort_order: int | None
+    grading_difficulty: str
     created_at: datetime
 
 
@@ -171,6 +178,7 @@ class RollScenarioOut(BaseModel):
     class_roll_id: uuid.UUID
     visible: bool
     sort_order: int | None
+    grading_difficulty: str
     created_at: datetime
     slug: str
     title: str
@@ -221,6 +229,10 @@ class RollGradebookReflection(BaseModel):
     accepted: bool = False
     needs_human_review: bool = False
     graded_at: datetime | None = None
+    # Difficulty this attempt was actually graded under (from the stored
+    # breakdown); may differ from the assignment's current setting if the
+    # teacher changed it after grading. None for ungraded/legacy reflections.
+    difficulty: str | None = None
 
 
 class RollGradebookAttempt(BaseModel):
@@ -246,4 +258,5 @@ class RollGradebookOut(BaseModel):
     roll_id: uuid.UUID
     scenario_id: uuid.UUID
     scenario_title: str
+    grading_difficulty: str
     students: list[RollGradebookStudent]

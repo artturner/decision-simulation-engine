@@ -56,15 +56,48 @@ class TestBuildResult:
         assert result.completion_points == 0
         assert result.grade_total == 80
 
-    def test_level_fractions_map_to_points(self):
+    def test_level_fractions_map_to_points_standard(self):
+        # Default difficulty is "standard": solid=0.85, minimal=0.5.
         result = ai_grader._build_result(
             _ai_payload("solid", "minimal", "low_effort"), completed=True
         )
         dims = result.dimensions
-        assert dims["engagement"].points == round(0.8 * 25)  # 20
-        assert dims["reasoning"].points == round(0.4 * 30)  # 12
+        assert dims["engagement"].points == round(0.85 * 25)  # 21
+        assert dims["reasoning"].points == round(0.5 * 30)  # 15
         assert dims["insight"].points == 0
-        assert result.grade_total == 20 + 20 + 12 + 0
+        assert result.grade_total == 20 + 21 + 15 + 0
+        assert result.difficulty == "standard"
+
+    def test_difficulty_presets_order_by_leniency(self):
+        # Same levels, harsher-to-gentler difficulty => non-decreasing totals.
+        payload = _ai_payload("solid", "developing", "minimal")
+        strict = ai_grader._build_result(payload, completed=True, difficulty="strict")
+        standard = ai_grader._build_result(payload, completed=True, difficulty="standard")
+        lenient = ai_grader._build_result(payload, completed=True, difficulty="lenient")
+        assert strict.grade_total < standard.grade_total < lenient.grade_total
+
+    def test_developing_level_scores_between_minimal_and_solid(self):
+        for difficulty in ("strict", "standard", "lenient"):
+            solid = ai_grader._build_result(
+                _ai_payload("solid", "solid", "solid"), completed=True, difficulty=difficulty
+            ).grade_total
+            developing = ai_grader._build_result(
+                _ai_payload("developing", "developing", "developing"),
+                completed=True,
+                difficulty=difficulty,
+            ).grade_total
+            minimal = ai_grader._build_result(
+                _ai_payload("minimal", "minimal", "minimal"),
+                completed=True,
+                difficulty=difficulty,
+            ).grade_total
+            assert minimal < developing < solid
+
+    def test_invalid_difficulty_falls_back_to_standard(self):
+        result = ai_grader._build_result(
+            _ai_payload("solid", "solid", "solid"), completed=True, difficulty="bogus"
+        )
+        assert result.difficulty == "standard"
 
     def test_low_effort_gate_flags_dimension(self):
         result = ai_grader._build_result(
@@ -164,8 +197,10 @@ class TestGradeReflection:
         )
         assert result.model == "claude-sonnet-4-6"
         assert result.dimensions["engagement"].level == "full"
-        # 20 completion + 25 (full) + 24 (solid 0.8*30) + 10 (minimal 0.4*25)
-        assert result.grade_total == 20 + 25 + 24 + 10
+        assert result.difficulty == "standard"
+        # standard default: 20 completion + 25 (full) + 26 (solid 0.85*30)
+        # + 12 (minimal 0.5*25, banker's rounding) = 83
+        assert result.grade_total == 20 + 25 + round(0.85 * 30) + round(0.5 * 25)
 
     def test_api_failure_raises_grading_error(self, monkeypatch):
         monkeypatch.setattr(settings, "ANTHROPIC_API_KEY", "test-key", raising=False)

@@ -137,6 +137,43 @@ class TestRollAssignments:
         resp = client.get(f"/api/v1/teacher/rolls/{other_roll.id}/scenarios")
         assert resp.status_code == 404
 
+    def test_assignment_defaults_to_standard_difficulty(self, client, db: Session, roll):
+        scenario, _version = _scenario(db, "diff-default", VersionStatus.published)
+        db.flush()
+
+        resp = client.post(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios",
+            json={"scenario_id": str(scenario.id), "visible": True},
+        )
+        assert resp.status_code == 201
+        assert resp.json()["grading_difficulty"] == "standard"
+
+    def test_teacher_sets_grading_difficulty(self, client, db: Session, roll):
+        scenario, _version = _scenario(db, "diff-set", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
+        db.flush()
+
+        resp = client.patch(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}",
+            json={"grading_difficulty": "lenient"},
+        )
+        assert resp.status_code == 200
+        assert resp.json()["grading_difficulty"] == "lenient"
+
+        listed = client.get(f"/api/v1/teacher/rolls/{roll.id}/scenarios")
+        assert listed.json()[0]["grading_difficulty"] == "lenient"
+
+    def test_rejects_invalid_grading_difficulty(self, client, db: Session, roll):
+        scenario, _version = _scenario(db, "diff-bad", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
+        db.flush()
+
+        resp = client.patch(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}",
+            json={"grading_difficulty": "impossible"},
+        )
+        assert resp.status_code == 422
+
 
 class TestRollGradebook:
     def test_includes_roster_students_with_no_attempts(self, client, db: Session, roll):

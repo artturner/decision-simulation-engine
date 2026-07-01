@@ -859,6 +859,26 @@ def _reflection_questions(db: Session, scenario_version_id: uuid.UUID) -> list[s
     return [str(q) for q in questions] if isinstance(questions, list) else []
 
 
+def _grading_difficulty_for_play(db: Session, play) -> str:
+    """Resolve the grading difficulty from the play's class assignment.
+
+    Class plays inherit the difficulty the teacher set on the scenario's
+    assignment for that roll. Direct-link plays (no class_roll_id) and plays
+    whose assignment was removed fall back to the grader's default.
+    """
+    if play.class_roll_id is None:
+        return ai_grader.DEFAULT_DIFFICULTY
+    version = db.get(ScenarioVersion, play.scenario_version_id)
+    if version is None:
+        return ai_grader.DEFAULT_DIFFICULTY
+    assignment = RollRepository(db).get_assignment(
+        version.scenario_id, play.class_roll_id
+    )
+    if assignment is None:
+        return ai_grader.DEFAULT_DIFFICULTY
+    return ai_grader.normalize_difficulty(assignment.grading_difficulty)
+
+
 def _grade_result_out(reflection) -> GradeResultOut:
     """Build the API response from a graded reflection row."""
     breakdown = reflection.grade_breakdown or {}
@@ -957,6 +977,7 @@ def grade_reflection_endpoint(
             responses=body.responses,
             choice_path=_choice_path(play_repo, play_id),
             completed=play.completed,
+            difficulty=_grading_difficulty_for_play(db, play),
         )
     except ai_grader.GradingUnavailable:
         raise HTTPException(

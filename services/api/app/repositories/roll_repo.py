@@ -76,12 +76,14 @@ class RollRepository:
         *,
         visible: bool = False,
         sort_order: int | None = None,
+        grading_difficulty: str = "standard",
     ) -> ScenarioRollAssignment:
         assignment = ScenarioRollAssignment(
             scenario_id=scenario_id,
             class_roll_id=roll_id,
             visible=visible,
             sort_order=sort_order,
+            grading_difficulty=grading_difficulty,
         )
         self._db.add(assignment)
         self._db.flush()
@@ -110,11 +112,14 @@ class RollRepository:
         *,
         visible: bool | None = None,
         sort_order: int | None = None,
+        grading_difficulty: str | None = None,
     ) -> ScenarioRollAssignment:
         if visible is not None:
             assignment.visible = visible
         if sort_order is not None:
             assignment.sort_order = sort_order
+        if grading_difficulty is not None:
+            assignment.grading_difficulty = grading_difficulty
         self._db.flush()
         return assignment
 

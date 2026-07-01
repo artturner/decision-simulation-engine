@@ -25,12 +25,15 @@ export interface PublishedScenario {
   version_number: number;
 }
 
+export type GradingDifficulty = "strict" | "standard" | "lenient";
+
 export interface RollScenario {
   id: string;
   scenario_id: string;
   class_roll_id: string;
   visible: boolean;
   sort_order: number | null;
+  grading_difficulty: GradingDifficulty;
   created_at: string;
   slug: string;
   title: string;
@@ -41,11 +44,13 @@ export interface AssignmentCreate {
   scenario_id: string;
   visible?: boolean;
   sort_order?: number | null;
+  grading_difficulty?: GradingDifficulty;
 }
 
 export interface AssignmentUpdate {
   visible?: boolean;
   sort_order?: number | null;
+  grading_difficulty?: GradingDifficulty;
 }
 
 export interface RollGradebookReflection {
@@ -57,6 +62,7 @@ export interface RollGradebookReflection {
   accepted: boolean;
   needs_human_review: boolean;
   graded_at: string | null;
+  difficulty: GradingDifficulty | null;
 }
 
 export interface RollGradebookAttempt {
@@ -82,5 +88,6 @@ export interface RollGradebook {
   roll_id: string;
   scenario_id: string;
   scenario_title: string;
+  grading_difficulty: GradingDifficulty;
   students: RollGradebookStudent[];
 }

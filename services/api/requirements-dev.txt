@@ -1,0 +1,22 @@
+# Development / test dependencies for the API service.
+#
+# The API imports the local monorepo packages `engine` and `expr` (installed
+# by path in the Dockerfile). For local dev they must be installed editable,
+# so the canonical one-shot setup, run from the REPO ROOT with your venv active:
+#
+#   pip install -e packages/expr -e packages/engine -r services/api/requirements-dev.txt
+#
+# That installs the two local packages plus everything below (runtime deps are
+# pulled in via the -r include). Paths above are relative to the repo root, so
+# run the command from there.
+
+-r requirements.txt
+
+# Test runner (configured via pytest.ini).
+pytest==8.3.4
+
+# Async test support — pytest.ini sets asyncio_mode/asyncio_default_fixture_loop_scope.
+pytest-asyncio==0.24.0
+
+# Required by FastAPI's starlette TestClient used in the integration tests.
+httpx==0.28.1

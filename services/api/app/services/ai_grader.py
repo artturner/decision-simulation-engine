@@ -45,15 +45,49 @@ DIMENSION_POINTS: dict[str, int] = {
 
 COMPLETION_POINTS = 20
 
-# Anchored levels -> fraction of the dimension's max points.
-LEVEL_FRACTION: dict[str, float] = {
-    "full": 1.0,
-    "solid": 0.8,
-    "minimal": 0.4,
-    "low_effort": 0.0,
+# Anchored levels, strongest to weakest. The model assigns one per dimension;
+# how each level converts to points depends on the assignment's difficulty.
+LEVELS: tuple[str, ...] = ("full", "solid", "developing", "minimal", "low_effort")
+
+# Difficulty presets: each maps an anchored level to the fraction of a
+# dimension's max points it earns. Teachers pick a difficulty per assignment;
+# only this point mapping changes — never the model's qualitative level
+# judgment — so grades stay deterministic and explainable.
+DIFFICULTY_FRACTIONS: dict[str, dict[str, float]] = {
+    "strict": {
+        "full": 1.0,
+        "solid": 0.80,
+        "developing": 0.60,
+        "minimal": 0.40,
+        "low_effort": 0.0,
+    },
+    "standard": {
+        "full": 1.0,
+        "solid": 0.85,
+        "developing": 0.70,
+        "minimal": 0.50,
+        "low_effort": 0.0,
+    },
+    "lenient": {
+        "full": 1.0,
+        "solid": 0.92,
+        "developing": 0.80,
+        "minimal": 0.65,
+        "low_effort": 0.0,
+    },
 }
 
-_VALID_LEVELS = set(LEVEL_FRACTION)
+DEFAULT_DIFFICULTY = "standard"
+
+_VALID_LEVELS = set(LEVELS)
+_VALID_DIFFICULTIES = set(DIFFICULTY_FRACTIONS)
+
+
+def normalize_difficulty(difficulty: str | None) -> str:
+    """Return a valid difficulty, falling back to the default."""
+    if difficulty in _VALID_DIFFICULTIES:
+        return difficulty  # type: ignore[return-value]
+    return DEFAULT_DIFFICULTY
 
 DEFAULT_RUBRIC = """\
 Grade this learner reflection on an outcome-neutral, effort-based rubric.
@@ -67,12 +101,15 @@ ABSOLUTE RULES:
 - The LOW-EFFORT GATE: an answer that is empty, "idk"/"none"/"n/a", a single word,
   or a copy-paste of the prompt scores "low_effort" on every dimension it affects.
 
-Score each of three dimensions with one level: full | solid | minimal | low_effort.
+Score each of three dimensions with exactly one level, strongest to weakest:
+- full: specific, scenario-grounded, and developed.
+- solid: on-topic and sincere, but general or lightly developed.
+- developing: a genuine attempt that stays shallow, partial, or generic.
+- minimal: vague and barely engages the question.
+- low_effort: non-answer (see the low-effort gate above).
 
 - engagement: Does the reflection show the learner understood the choice they made
-  and the situation they were in? ("full" = specific and scenario-grounded;
-  "solid" = on-topic and sincere but general; "minimal" = vague attempt;
-  "low_effort" = non-answer.)
+  and the situation they were in?
 - reasoning: Does the learner give a *why* — weighing tradeoffs, acknowledging there
   was no clean answer, or referencing specifics from the scenario or their own
   decisions?
@@ -125,6 +162,7 @@ class GradeResult:
     needs_human_review: bool
     review_reason: str | None
     low_effort_flags: list[str]
+    difficulty: str
     model: str
     graded_at: datetime
 
@@ -132,6 +170,7 @@ class GradeResult:
         """Serialize to the JSONB shape stored on the reflection."""
         return {
             "completion_points": self.completion_points,
+            "difficulty": self.difficulty,
             "dimensions": {
                 name: {
                     "level": d.level,
@@ -216,6 +255,7 @@ def grade_reflection(
     responses: dict[str, str],
     choice_path: list[str],
     completed: bool,
+    difficulty: str = DEFAULT_DIFFICULTY,
 ) -> GradeResult:
     """Grade a reflection. Raises ``GradingUnavailable`` / ``GradingError``."""
     if not settings.ai_grading_enabled:
@@ -256,10 +296,14 @@ def grade_reflection(
     except json.JSONDecodeError as exc:
         raise GradingError("Grading API returned invalid JSON.") from exc
 
-    return _build_result(data, completed)
+    return _build_result(data, completed, difficulty)
 
 
-def _build_result(data: dict, completed: bool) -> GradeResult:
+def _build_result(
+    data: dict, completed: bool, difficulty: str = DEFAULT_DIFFICULTY
+) -> GradeResult:
+    resolved_difficulty = normalize_difficulty(difficulty)
+    fractions = DIFFICULTY_FRACTIONS[resolved_difficulty]
     dimensions: dict[str, DimensionScore] = {}
     low_effort_flags: list[str] = []
     total = COMPLETION_POINTS if completed else 0
@@ -268,7 +312,7 @@ def _build_result(data: dict, completed: bool) -> GradeResult:
         level = data.get(f"{name}_level")
         if level not in _VALID_LEVELS:
             level = "low_effort"
-        points = round(LEVEL_FRACTION[level] * max_points)
+        points = round(fractions[level] * max_points)
         total += points
         if level == "low_effort":
             low_effort_flags.append(name)
@@ -287,6 +331,7 @@ def _build_result(data: dict, completed: bool) -> GradeResult:
         needs_human_review=bool(data.get("needs_human_review", False)),
         review_reason=(data.get("review_reason") or None),
         low_effort_flags=low_effort_flags,
+        difficulty=resolved_difficulty,
         model=settings.AI_GRADER_MODEL,
         graded_at=datetime.now(timezone.utc),
     )

@@ -587,6 +587,7 @@ def _roll_scenario_out(assignment: object, db: Session) -> RollScenarioOut | Non
         class_roll_id=typed.class_roll_id,
         visible=typed.visible,
         sort_order=typed.sort_order,
+        grading_difficulty=typed.grading_difficulty,
         created_at=typed.created_at,
         slug=scenario.slug,
         title=scenario.title,
@@ -625,6 +626,7 @@ def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
             accepted=bool(r.accepted),
             needs_human_review=needs_review,
             graded_at=r.graded_at,
+            difficulty=(r.grade_breakdown or {}).get("difficulty"),
         )
     return RollGradebookAttempt(
         play_id=typed.id,
@@ -668,7 +670,7 @@ def _build_roll_gradebook(
 ) -> RollGradebookOut:
     from app.models.play import Play
 
-    roll, _assignment, scenario = _get_owned_roll_assignment(
+    roll, assignment, scenario = _get_owned_roll_assignment(
         roll_id,
         scenario_id,
         current_user,
@@ -757,6 +759,7 @@ def _build_roll_gradebook(
         roll_id=roll_id,
         scenario_id=scenario_id,
         scenario_title=scenario.title,
+        grading_difficulty=assignment.grading_difficulty,
         students=students,
     )
 
@@ -816,7 +819,11 @@ def assign_scenario(
 
     try:
         assignment = repo.assign_scenario(
-            body.scenario_id, roll_id, visible=body.visible, sort_order=body.sort_order
+            body.scenario_id,
+            roll_id,
+            visible=body.visible,
+            sort_order=body.sort_order,
+            grading_difficulty=body.grading_difficulty,
         )
         db.commit()
         db.refresh(assignment)
@@ -859,7 +866,12 @@ def update_assignment(
     if assignment is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Assignment not found.")
 
-    assignment = repo.update_assignment(assignment, visible=body.visible, sort_order=body.sort_order)
+    assignment = repo.update_assignment(
+        assignment,
+        visible=body.visible,
+        sort_order=body.sort_order,
+        grading_difficulty=body.grading_difficulty,
+    )
     db.commit()
     db.refresh(assignment)
     row = _roll_scenario_out(assignment, db)
@@ -954,6 +966,7 @@ def roll_gradebook_csv(
         "best_attempt_submitted_at",
         "best_attempt_outcome",
         "grade_total",
+        "grading_difficulty",
         "grade_accepted",
         "needs_human_review",
         "feedback",
@@ -985,6 +998,7 @@ def roll_gradebook_csv(
             "grade_total": reflection.grade_total
             if reflection and reflection.grade_total is not None
             else "",
+            "grading_difficulty": (reflection.difficulty if reflection and reflection.difficulty else gradebook.grading_difficulty),
             "grade_accepted": "yes" if reflection and reflection.accepted else "",
             "needs_human_review": "yes"
             if reflection and reflection.needs_human_review

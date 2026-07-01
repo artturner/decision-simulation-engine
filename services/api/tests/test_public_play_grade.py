@@ -80,7 +80,9 @@ def grading_on(monkeypatch):
 
     calls = {"n": 0}
 
-    def fake_grade(reflection_questions, responses, choice_path, completed):
+    def fake_grade(
+        reflection_questions, responses, choice_path, completed, difficulty="standard"
+    ):
         calls["n"] += 1
         return GradeResult(
             grade_total=85,
@@ -94,6 +96,7 @@ def grading_on(monkeypatch):
             needs_human_review=False,
             review_reason=None,
             low_effort_flags=[],
+            difficulty=difficulty,
             model="claude-sonnet-4-6",
             graded_at=datetime.now(timezone.utc),
         )

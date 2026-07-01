@@ -3,7 +3,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, UniqueConstraint, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -47,6 +47,13 @@ class ScenarioRollAssignment(Base):
         Integer,
         nullable=True,
         comment="Display order within the picker; lower numbers appear first",
+    )
+    grading_difficulty: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        server_default="standard",
+        default="standard",
+        comment="AI reflection grading leniency: strict | standard | lenient",
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
