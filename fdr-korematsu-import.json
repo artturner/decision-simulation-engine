@@ -1,13 +1,13 @@
 {
   "slug": "fdr-korematsu",
-  "title": "Executive Order or Congressional Deal?",
+  "title": "Japanese Internment: Executive Order or Congressional Deal?",
   "description": "As an advisor to President Roosevelt in early 1942, you must navigate the constitutional, military, and moral dimensions of a proposed mass removal of Japanese Americans from the West Coast",
   "status": "draft",
   "scenario_json": {
     "metadata": {
-      "title": "Executive Order or Congressional Deal?",
+      "title": "Japanese Internment: Executive Order or Congressional Deal?",
       "description": "As an advisor to President Roosevelt in early 1942, you must navigate the constitutional, military, and moral dimensions of a proposed mass removal of Japanese Americans from the West Coast",
-      "page_title": "Executive Order or Congressional Deal?",
+      "page_title": "Japanese Internment: Executive Order or Congressional Deal?",
       "page_icon": "⚖️",
       "author": "Civics Education Team",
       "version": "1.0",
@@ -93,7 +93,7 @@
         "title": "Citizens Spared",
         "description": "A narrower line is drawn, but it satisfies few.",
         "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2b.png",
-        "narration": "The President nods slowly. 'A middle path. Remove the aliens, protect the citizens.' But the room is uneasy.\n\nGeneral DeWitt's liaison protests that the distinction is meaningless to the Army—'A Jap is a Jap,' he says bluntly, 'citizen or not.' Attorney General Biddle counters that even removing non-citizens without hearings strains the Constitution, since many are long-settled residents barred from citizenship only by discriminatory law.\n\nPresident Roosevelt: 'It is a compromise that angers both sides. Now, how do we make it legal?'",
+        "narration": "The President nods slowly. 'A middle path. Remove the aliens, protect the citizens.' But the room is uneasy.\n\nGeneral DeWitt's liaison protests that the distinction is meaningless to the Army—'A Jap is a Jap,' he says bluntly, 'citizen or not.' Attorney General Biddle counters that even removing non-citizens without hearings strains the Constitution, since many are long-settled residents barred from citizenship only by discriminatory law.\n\nPresident Roosevelt: 'It is a compromise that angers both sides. Now, how do we make it legal?'\n\nIn the weeks that follow, the military reads the exclusion broadly. The line you drew between citizen and alien does not hold against DeWitt's insistence, and the program that takes shape sweeps in American-born citizens as well—over your objection.",
         "type": "auto_advance",
         "next": "3"
       },
@@ -101,7 +101,7 @@
         "title": "Evidence Over Ancestry",
         "description": "You press for individualized justice in a climate of mass fear.",
         "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2c.png",
-        "narration": "Attorney General Biddle brightens. 'This is the lawful course—act against individuals where we have proof, as we do with any suspected agent.'\n\nBut DeWitt's representative is furious. 'You would have us investigate one hundred thousand people one by one while invasion threatens? We do not have the time or the men.' The military's confidence in the administration wavers.\n\nPresident Roosevelt rubs his temples. 'Justice and speed are pulling in opposite directions. We still must choose how to act—by my hand, or with the Congress.'",
+        "narration": "Attorney General Biddle brightens. 'This is the lawful course—act against individuals where we have proof, as we do with any suspected agent.'\n\nBut DeWitt's representative is furious. 'You would have us investigate one hundred thousand people one by one while invasion threatens? We do not have the time or the men.' The military's confidence in the administration wavers.\n\nPresident Roosevelt rubs his temples. 'Justice and speed are pulling in opposite directions. We still must choose how to act—by my hand, or with the Congress.'\n\nThe President's tone leaves little doubt: the individualized, evidence-based course you urged will not survive the pressure for mass action. What proceeds is a sweeping removal by ancestry, the very thing you argued against—your caution noted, and set aside.",
         "type": "auto_advance",
         "next": "3"
       },
@@ -111,7 +111,7 @@
         "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2d.png",
         "narration": "Silence falls. 'You would have me tell the Army no, in the middle of a war,' the President says quietly.\n\nAttorney General Biddle supports you: 'It is the constitutionally sound position, sir. There is no factual basis for the fifth-column claims.' But Secretary of War Stimson warns that the press and Congress will accuse the President of leaving the coast defenseless, and that DeWitt may act on his own authority regardless.\n\nThe political risk is enormous. Yet the constitutional ground is firm. The President must now decide whether to follow your advice or seek a way to act that the public will accept.",
         "type": "auto_advance",
-        "next": "3"
+        "next": "2d.pressure"
       },
       "3": {
         "title": "Choosing the Mechanism",
@@ -178,12 +178,12 @@
         "title": "The Korematsu Challenge",
         "description": "A single act of defiance becomes a constitutional test. The administration must decide how to meet it.",
         "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_5.png",
-        "narration": "Fred Korematsu has been arrested and is challenging his conviction. His case is climbing toward the Supreme Court. The Solicitor General will argue the government's position, and your office must shape it.\n\nTroubling intelligence surfaces: government reports show no evidence of Japanese American disloyalty, undercutting the military-necessity claim DeWitt advanced. Some staff urge suppressing these findings to protect the case; others insist the Court must see them.\n\nPresident Roosevelt: 'The Court will decide whether what we did was lawful. How should we present our case—and how honest should we be about what we know?'",
+        "narration": "Fred Korematsu has been arrested and is challenging his conviction. His case is climbing toward the Supreme Court. The Solicitor General will argue the government's position, and your office must shape it.\n\nThe government's own reports now confirm on paper what voices in this room—Attorney General Biddle foremost among them—warned from the outset: there is no evidence of Japanese American disloyalty, and the military-necessity claim DeWitt advanced rests on nothing. Some staff urge burying these findings to protect the case; others insist the Court must see them.\n\nPresident Roosevelt: 'The Court will decide whether what we did was lawful. How should we present our case—and how honest should we be about what we know?'",
         "type": "choice",
         "choices": [
           {
             "text": "Direct the Solicitor General to defend the policy aggressively and withhold the exculpatory intelligence reports",
-            "next": "6.entrenched",
+            "next": "5.verdict",
             "effects": {
               "PresidentialPower": 1,
               "CivilLiberties": -3,
@@ -193,7 +193,7 @@
           },
           {
             "text": "Defend the policy but disclose the contradictory intelligence to the Court, letting it weigh the full record",
-            "next": "6.candid",
+            "next": "5.verdict",
             "effects": {
               "ConstitutionalLegitimacy": 2,
               "CivilLiberties": 1,
@@ -203,7 +203,7 @@
           },
           {
             "text": "Quietly signal a narrowing of the program and concede the weakness of the military-necessity argument",
-            "next": "6.retreat",
+            "next": "5.verdict",
             "effects": {
               "CivilLiberties": 3,
               "ConstitutionalLegitimacy": 3,
@@ -215,30 +215,105 @@
       },
       "6.entrenched": {
         "title": "A Precedent for the Worst",
-        "description": "The government wins its case—and loses far more.",
+        "description": "The whole arc of counsel had already set the outcome.",
         "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_entrenched.png",
-        "narration": "The Solicitor General argues forcefully, the exculpatory reports buried. In a 6–3 decision, the Supreme Court upholds the convictions, accepting the claim of military necessity. The administration prevails.\n\nBut the victory is hollow and corrosive. Korematsu becomes a precedent that, decades later, scholars and the Court itself will condemn. Forty-four years on, a President will issue a formal apology and compensation; the Justice Department will admit the Solicitor General argued in error. Yet a justice will warn that such a thing 'could happen again.'\n\nBy choosing certainty over candor and security over rights, you secured a courtroom win at the cost of the nation's constitutional conscience. The episode stands as a lasting warning about executive power unchecked in time of fear.",
+        "narration": "Whatever was argued in the final hour, the whole arc of your counsel had already set the outcome. Removal reached broadly, the machinery of exclusion moved on suspicion of ancestry alone, and by the time the case reached the Court the record you had built could not support the weight of the rights it displaced.\n\nIn a 6–3 decision the convictions are upheld and the administration prevails—but the victory is hollow and corrosive. Korematsu becomes a precedent that, decades later, scholars and the Court itself will condemn. Forty-four years on, a President will issue a formal apology and compensation; the Justice Department will admit the government argued in error. Yet a justice will warn that such a thing 'could happen again.' By letting certainty and security override rights across the decisions that mattered, you secured a courtroom win at the cost of the nation's constitutional conscience.",
         "type": "end",
         "outcome": "constitutional_failure",
         "outcome_message": "The policy was upheld but became a notorious symbol of rights sacrificed to wartime fear, repudiated by history."
       },
       "6.candid": {
-        "title": "The Honest Record",
-        "description": "Truth before the Court reshapes the legacy, if not the immediate outcome.",
+        "title": "A Mixed Legacy",
+        "description": "Neither the deepest failure nor a clean triumph.",
         "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_candid.png",
-        "narration": "The contradictory intelligence is disclosed. The Court still defers heavily to the military in wartime, and the convictions may stand—but the full record is preserved, and the dissents grow sharper and better grounded.\n\nThe President reflects: 'We may have done a hard thing, but we did not lie to the Court to do it. That distinction will matter when others look back.'\n\nWhen later generations reexamine the case, the honesty of the record accelerates the reckoning. Reform, apology, and acknowledgment of error come, and the precedent's authority erodes faster. You preserved a measure of constitutional legitimacy even within a flawed policy—an imperfect but defensible navigation of an impossible moment.",
+        "narration": "The final record is mixed. On the decisions that mattered you neither fully surrendered the Constitution nor fully defended it—but enough legitimacy was preserved that the reckoning, when it came, had something honest to build on.\n\nThe Court still defers heavily to the military in wartime, and the convictions may stand—but the dissents grow sharper and better grounded, and the full weight of the doubts is not lost to history. When later generations reexamine the case, that preserved integrity accelerates the reckoning; reform, apology, and acknowledgment of error come, and the precedent's authority erodes faster than it otherwise would. It was an imperfect navigation of an impossible moment—not a clean triumph, but not the deepest failure either.",
         "type": "end",
         "outcome": "qualified_integrity",
-        "outcome_message": "Candor with the Court limited the long-term damage and strengthened the constitutional reckoning that followed."
+        "outcome_message": "Partial integrity limited the long-term damage and strengthened the constitutional reckoning that followed."
       },
       "6.retreat": {
         "title": "Conscience Over Crisis",
-        "description": "A costly stand against the tide of wartime fear.",
+        "description": "The cumulative arc of your counsel protected the Constitution.",
         "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_retreat.png",
-        "narration": "You counsel the President to concede the weakness of the military-necessity claim and begin narrowing the program. The military is incensed, and political opponents accuse the administration of vacillating in wartime.\n\nYet the human cost is curtailed sooner, and the constitutional principle that ancestry alone cannot justify detention is preserved rather than buried. Attorney General Biddle: 'We will take heat now. But we will not be remembered as the men who taught the courts that the Constitution sleeps in war.'\n\nThe political price is real and the path uncertain. But by choosing the rights of citizens and the integrity of the Constitution over the demands of the moment, you spared the nation its deepest self-inflicted wound—and modeled the restraint that effective leadership in a system of shared powers sometimes demands.",
+        "narration": "You could not always prevent the removal—on some paths you argued against it from the first, on others you came to support it under the weight of the pressure. But once it was in motion, the decisions that followed bent toward principle: the military-necessity claim was tested rather than trusted, the exculpatory record was not buried to win the case, and the idea that ancestry alone can justify detention was contested at every step.\n\nThe human cost was real, and it was not undone. Yet the program was kept narrower and more honest than it might have been, the courts were not taught that the Constitution sleeps in war, and the episode did not harden into the unqualified precedent for the worst that it could have become. When later generations look back, they find—inside a grave injustice—a thread of restraint and candor that mattered, and a model of how leadership in a system of shared powers pulls back toward the Constitution when it counts most.",
         "type": "end",
         "outcome": "principled_restraint",
-        "outcome_message": "You bore heavy political costs to protect constitutional rights, avoiding one of history's gravest precedents."
+        "outcome_message": "You bore heavy political costs to defend constitutional rights—unable to stop the removal, but keeping a grave injustice from hardening into an unqualified precedent."
+      },
+      "5.verdict": {
+        "title": "The Second Verdict",
+        "description": "History weighs the whole arc of your counsel, not one choice.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_5.png",
+        "narration": "The Supreme Court will rule on whether what the administration did was lawful. But a second verdict—slower, and either harsher or kinder—is passed by history: by the scholars, jurists, and citizens who weigh not one decision but the whole arc of the counsel you gave. That verdict is now being written.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "ConstitutionalLegitimacy >= 4 && CivilLiberties >= 2",
+            "next": "6.retreat"
+          },
+          {
+            "condition": "ConstitutionalLegitimacy <= 0 || CivilLiberties <= -1",
+            "next": "6.entrenched"
+          }
+        ],
+        "default": "6.candid"
+      },
+      "2d.pressure": {
+        "title": "Holding the Line",
+        "description": "Your counsel to refuse removal collides with the pressure to act.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_2d_pressure.png",
+        "narration": "Your advice to refuse removal hangs in the air, and the President does not answer at once. General DeWitt's liaison makes the threat plain: if no order comes from Washington, the Western Defense Command may impose exclusion on its own military authority. Secretary Stimson warns that the press and Congress will brand the President reckless for leaving the coast 'defenseless.' Attorney General Biddle holds with you—there is no factual basis for the fifth-column claims—but he cannot promise the politics will survive it.\n\nPresident Roosevelt: 'You have told me what is lawful. Now tell me whether you will hold to it—knowing what it may cost.'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Hold firm and assert civilian control: urge the President to refuse removal and rein General DeWitt in, whatever the cost to Army relations",
+            "next": "6.removal_averted",
+            "effects": {
+              "CivilLiberties": 3,
+              "ConstitutionalLegitimacy": 3,
+              "MilitarySupport": -3,
+              "PresidentialPower": -1
+            }
+          },
+          {
+            "text": "Hold to your principle but decline to force a rupture with the Army—let DeWitt act on his own military authority in the coastal zone",
+            "next": "6.unilateral",
+            "effects": {
+              "CivilLiberties": -3,
+              "ConstitutionalLegitimacy": -3,
+              "PresidentialPower": -2,
+              "MilitarySupport": 1
+            }
+          },
+          {
+            "text": "Concede: the military and political cost of refusal is too high—support proceeding with an official removal after all",
+            "next": "3",
+            "effects": {
+              "CivilLiberties": -3,
+              "MilitarySupport": 2,
+              "PresidentialPower": 1,
+              "ConstitutionalLegitimacy": -2
+            }
+          }
+        ]
+      },
+      "6.removal_averted": {
+        "title": "The Road Not Taken",
+        "description": "Restraint holds, and the internment—and its precedent—never come.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_removal_averted.png",
+        "narration": "The President holds. No mass exclusion order is signed. DeWitt is reined in and told the coast will be defended through surveillance and individualized arrests where evidence warrants—and no invasion ever comes.\n\nThe political storm is real: the President is accused of gambling with national security, and for a season the decision looks like recklessness. But no hundred thousand people are uprooted, no citizen is imprisoned for ancestry, and there is no Korematsu case to climb toward the Supreme Court. Decades later, when other nations' wartime detentions are condemned and America weighs what it nearly did, historians point to this moment as the restraint that might have been—and, here, was. The Constitution was not made to sleep in war, and you did not let it.",
+        "type": "end",
+        "outcome": "removal_averted",
+        "outcome_message": "By refusing mass removal outright, you averted the internment and the precedent it created—at real political risk, and with history's vindication."
+      },
+      "6.unilateral": {
+        "title": "Rule of the General",
+        "description": "Removal by military fiat—lawless, and beyond any court.",
+        "image": "https://media.cruxlabs.academy/fdr_korematsu/1/scene_6_unilateral.png",
+        "narration": "The President will not sign an order—but he will not force a breach with his commander in the field either. General DeWitt, unwilling to wait, imposes exclusion on his own military authority. Removal proceeds: not by statute, not by executive order, but by the command of a general answering, in practice, to no one.\n\nThere is no clean law to challenge and no tidy test case; when suits come, the courts call the matter a political thicket and look away. The precedent is quieter than Korematsu, and in one way graver—that in a crisis a field commander can override civilian judgment and constitutional limits, and Washington will avert its eyes. You kept the President's hands clean and your own principles intact, and a hundred thousand people were removed anyway, with no one willing to own it. History records a wound that never had a name, because it never had a day in court.",
+        "type": "end",
+        "outcome": "military_supremacy",
+        "outcome_message": "You averted a lawful internment only to permit an unlawful one—removal by military fiat, beyond the reach of courts or the President."
       }
     }
   }

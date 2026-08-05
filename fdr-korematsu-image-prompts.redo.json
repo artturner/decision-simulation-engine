@@ -1,0 +1,14 @@
+{
+  "2d.pressure": {
+    "filename": "scene_2d_pressure.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nInterior of a wood-paneled 1940s Washington D.C. office, warm incandescent lighting. A middle-aged male advisor in a dark wool suit and tie stands firm with arms slightly raised in a restraining gesture, facing two men who lean toward him aggressively: a U.S. Army general in olive drab uniform with peaked cap and campaign medals, and a senior civilian official in a charcoal suit. Papers are strewn across a large mahogany table. An American flag stands in the corner. Heavy curtains are drawn. The mood is confrontational and tense, shadow falling across the faces of the men pressing forward while the advisor remains in the light."
+  },
+  "6.removal_averted": {
+    "filename": "scene_6_removal_averted.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nExterior, early 1942, rural West Coast, overcast morning light. A two-lane highway runs through flat farmland with snow-capped mountains in the background. A Japanese American farming family — an older man and woman in practical work clothes, two younger adults, and a child — stand together on the porch of a modest wooden farmhouse, going about ordinary morning tasks: the man holds a farm tool, the woman carries a basket. No military presence. A dusty pickup truck sits in the yard. The scene is quiet and undisturbed, soft grey natural light conveying cautious normalcy and relief."
+  },
+  "6.unilateral": {
+    "filename": "scene_6_unilateral.png",
+    "prompt": "Editorial illustration for an educational decision scenario. Consistent across the set: painterly, cinematic lighting, muted realistic palette, period- and context-accurate detail, no text, no captions, no logos, no UI, no word bubbles. 16:9 composition.\n\nExterior, early 1942, overcast West Coast day. A U.S. Army general in olive drab uniform, peaked cap, and campaign medals stands on a dirt road in front of a military command vehicle, gesturing authoritatively toward soldiers who hold printed notices. Rows of modest wooden homes line the background. Two armed military police in steel helmets and uniforms stand at attention nearby. No civilians are visible; the street is empty and still. The scene is shot from a low angle to emphasize the general's commanding posture. Harsh flat grey light and long shadows create a cold, ominous atmosphere conveying unchecked authority."
+  }
+}
