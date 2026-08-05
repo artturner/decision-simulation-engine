@@ -1,0 +1,246 @@
+{
+  "slug": "rio-grande",
+  "title": "The Rio Grande Dilemma",
+  "description": "Navigate the complexities of immigration policy as a Texas State Representative facing pressure from all sides",
+  "status": "published",
+  "scenario_json": {
+    "metadata": {
+      "title": "The Rio Grande Dilemma",
+      "description": "Navigate the complexities of immigration policy as a Texas State Representative facing pressure from all sides",
+      "page_title": "Rio Grande Dilemma",
+      "page_icon": "🏛️",
+      "author": "Political Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "reflection_questions": [
+      "How did you balance competing interests between business, security, and human rights concerns? What factors were most influential in your decisions?",
+      "Consider the tension between state and federal authority in immigration policy. How do constitutional principles like the Supremacy Clause affect state-level immigration laws?",
+      "What role did political pragmatism versus principled positions play in your choices? How do elected officials navigate between their personal beliefs and political survival?"
+    ],
+    "reflection_prompts": [
+      "Think about how your decisions reflected different approaches to federalism and constitutional law",
+      "Consider the real-world consequences of immigration policy on different stakeholders",
+      "Reflect on how political pressure and media coverage influence policy decisions"
+    ],
+    "variables": {
+      "HardlineSupport": 0,
+      "BusinessSupport": 0,
+      "ActivistSupport": 0
+    },
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The Call from Leadership",
+        "description": "Your office in the Texas State Capitol. It's early morning. Maps of your district and photos are on the wall. A stack of files labeled 'Border Security' sits on your desk.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_1.png",
+        "narration": "You are State Representative Alex Morales. The Governor has called a special session to pass a new, tough immigration bill, SB-42. Your constituents are divided. Ranchers demand action on property damage, while business owners worry about losing workers. The vote is in two weeks, and the party leadership wants to know your position.\n\nChief of Staff: 'Rep. Morales, the Speaker's office is on the line. They want to know if you'll co-sponsor SB-42. It's a strong bill—it would empower all state and local police to investigate and arrest anyone they suspect of being in the country illegally. What should I tell them?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Tell them I'm on board. It's time for Texas to lead on this.",
+            "next": "2a",
+            "effects": {
+              "HardlineSupport": 3
+            }
+          },
+          {
+            "text": "Tell them I have serious concerns. I need to see more data before committing.",
+            "next": "2b",
+            "effects": {
+              "HardlineSupport": 0
+            }
+          },
+          {
+            "text": "Tell them I cannot support it. This is federal overreach by the state and will lead to profiling.",
+            "next": "2c",
+            "effects": {
+              "HardlineSupport": -3,
+              "ActivistSupport": 3
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "The Speaker's Blessing",
+        "description": "You're on a conference call. The Speaker of the House is on screen, looking pleased.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_2a.png",
+        "narration": "Speaker: 'Glad to have you with us, Alex. With your support, we can send a clear message. We're securing the border, with or without Washington's help. We'll have a press conference tomorrow to announce the new co-sponsors.'\n\nYour support makes headlines. The next day, you get an urgent call from the Texas Business Council. They want a meeting. Immediately.",
+        "type": "auto_advance",
+        "next": "3a"
+      },
+      "2b": {
+        "title": "The Legal Briefing",
+        "description": "Your Chief of Staff hands you a legal memo. Key phrases are highlighted: 'Supremacy Clause,' 'Arizona v. U.S.,' 'Likely Injunction.'",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_2b.png",
+        "narration": "Chief of Staff: 'Here's the brief from Legislative Council. They're flagging major legal risks, especially with the provision empowering local police. They say the courts will almost certainly strike it down, just like they did with parts of Arizona's law. But polling in our district shows 60% of voters want some kind of action.'\n\nThe legal risks are clear, but so is the political pressure. You need to decide your next move.",
+        "type": "auto_advance",
+        "next": "3b"
+      },
+      "2c": {
+        "title": "The Activist Alliance",
+        "description": "You're meeting with a coalition of human rights activists and immigration lawyers in a community center. They look relieved.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_2c.png",
+        "narration": "Lead Activist: 'Thank you, Representative. Standing against this bill is crucial. It will terrorize our communities and is unconstitutional. We need to organize opposition. Will you speak at our rally on the Capitol steps next week?'\n\nYou've drawn a line in the sand. Your opposition has energized one part of your base but has drawn sharp criticism from conservative media and some of your own constituents.",
+        "type": "auto_advance",
+        "next": "3c"
+      },
+      "3a": {
+        "title": "Business Backlash",
+        "description": "You are in a sterile boardroom. The CEO of a major agricultural firm is across the table, looking grim.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_3a.png",
+        "narration": "CEO: 'Representative, we can't support this bill. We rely on migrant labor—full stop. If your bill creates a climate of fear, our workforce will vanish overnight. The Texas economy could lose billions. We need a stable, legal workforce, not a crackdown that hurts everyone. We need you to withdraw your support.'\n\nThe business community, usually a key ally, is turning up the heat. Their economic arguments are powerful. You must decide how to respond to their demand.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Hold firm. I gave the Speaker my word and I won't reverse course.",
+            "next": "4",
+            "effects": {
+              "HardlineSupport": 2,
+              "BusinessSupport": -3
+            }
+          },
+          {
+            "text": "Reassure them privately that I'll seek a worker-visa carve-out later.",
+            "next": "4",
+            "effects": {
+              "BusinessSupport": 2,
+              "HardlineSupport": -1
+            }
+          }
+        ]
+      },
+      "3b": {
+        "title": "A Fork in the Road",
+        "description": "Back in your office. Your Chief of Staff has two proposals on your desk.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_3b.png",
+        "narration": "Chief of Staff: 'Okay, since we didn't commit, we have options. We can introduce an amendment to soften the bill—remove the arrest power for local police and add funding for more courts to process asylum cases. Or, we can draft our own, separate bill that focuses purely on more funding for state border security technology—drones, sensors—without the controversial arrest provisions.'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Let's introduce the amendment. We can fix the bill from the inside.",
+            "next": "4",
+            "effects": {
+              "HardlineSupport": 1,
+              "BusinessSupport": 1
+            }
+          },
+          {
+            "text": "Draft the alternative bill. Let's offer a real, legal alternative.",
+            "next": "4",
+            "effects": {
+              "BusinessSupport": 2,
+              "ActivistSupport": 1
+            }
+          }
+        ]
+      },
+      "3c": {
+        "title": "Political Isolation",
+        "description": "You're watching the news in your office. The screen shows the rally, but the headline reads: 'Morales Sides with Open Border Activists, Defies Governor.' Your phone buzzes with a text from the Speaker: 'You're off the Appropriations Committee.'",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_3c.png",
+        "narration": "Chief of Staff: 'Well, we knew this would happen. You've been removed from your committee as punishment. The bill is still headed for a vote, and leadership is whipping hard to get it passed. Our opposition might not be enough to stop it. What's our plan for the floor vote?'\n\nYou've taken a principled stand, but it has cost you political capital and influence.",
+        "type": "auto_advance",
+        "next": "4",
+        "effects": {
+          "HardlineSupport": -2,
+          "ActivistSupport": 2
+        }
+      },
+      "4": {
+        "title": "The Final Vote",
+        "description": "You are on the floor of the Texas House. The voting board is lit up. The final vote on SB-42 is about to happen. Your path has led you here, with a final choice to make.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_4.png",
+        "narration": "Whatever maneuvering came before, leadership has muscled SB-42 to the floor. Amendments were tabled in committee, alternative bills bottled up, and the arrest provisions remain in the text that will be voted on today—the core of the bill survived every attempt to reshape it.\n\nThe Speaker calls for the vote on SB-42. How do you vote?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Vote YEA. Accept the political reality.",
+            "next": "5resolve",
+            "effects": {
+              "HardlineSupport": 2,
+              "BusinessSupport": -1,
+              "ActivistSupport": -2
+            }
+          },
+          {
+            "text": "Vote NAY. Stand by your principles and concerns.",
+            "next": "5resolve",
+            "effects": {
+              "HardlineSupport": -2,
+              "BusinessSupport": 1,
+              "ActivistSupport": 2
+            }
+          },
+          {
+            "text": "Abstain. Refuse to endorse but avoid a direct 'nay' vote.",
+            "next": "5resolve",
+            "effects": {
+              "HardlineSupport": -1,
+              "BusinessSupport": 0,
+              "ActivistSupport": 0
+            }
+          }
+        ]
+      },
+      "5resolve": {
+        "title": "The Reckoning",
+        "description": "The session gavels out. In the weeks that follow, the full weight of your accumulated choices—every alliance made and burned—comes due across your district, the Capitol, and the courts.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_4.png",
+        "narration": "The record of this session is now written. Not just your final vote, but the whole arc of it—whom you stood with, whom you defied, and what you were willing to trade. Party leadership, the business community, and the activist coalition each tally where you landed.\n\nThe consequences that arrive next are shaped by that cumulative record.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "HardlineSupport >= 4 && ActivistSupport <= -1",
+            "next": "5.yea"
+          },
+          {
+            "condition": "ActivistSupport >= 4 && HardlineSupport <= -2",
+            "next": "5.nay"
+          },
+          {
+            "condition": "BusinessSupport >= 3",
+            "next": "5.pragmatist"
+          }
+        ],
+        "default": "5.abstain"
+      },
+      "5.yea": {
+        "title": "The Hardliner",
+        "description": "A montage of news clips and documents summarizing the results of your choices.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_5_yea.png",
+        "narration": "The path you carved—leaning hard into enforcement at every turn—cements you as one of SB-42's fiercest champions. The Governor signs it into law. Within weeks, the federal government files a lawsuit citing the Supremacy Clause, and an injunction halts the law's key provisions. Major businesses freeze investments in Texas, costing thousands of jobs. You win your primary handily, but your relationship with the business community is fractured and immigrant-rights groups now count you an adversary.",
+        "type": "end",
+        "outcome": "hardliner_victory",
+        "outcome_message": "Enforcement Champion - Legal and Economic Fallout"
+      },
+      "5.nay": {
+        "title": "Standing on Principle",
+        "description": "A montage of news clips and documents summarizing the results of your choices.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_5_nay.png",
+        "narration": "Across the whole session you bent toward the activists' cause and refused to lend the bill your name. SB-42 passes narrowly without your support and is immediately challenged in court and blocked. Your opponent in the next election labels you 'soft on border security.' You become a hero to human rights groups but face a bruising re-election campaign.",
+        "type": "end",
+        "outcome": "principled_stand",
+        "outcome_message": "Voted Against - Facing Political Consequences"
+      },
+      "5.pragmatist": {
+        "title": "The Dealmaker",
+        "description": "A montage of news clips and documents summarizing the results of your choices.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_5_abstain.png",
+        "narration": "Whatever your final vote on the floor, the through-line of your session was the business channel—private reassurances, a floated worker-visa carve-out, an alternative bill built around technology instead of arrests. That effort kept the state's economic engine on your side. SB-42 passes and faces the familiar legal challenges, but the Business Council reads your record as fundamentally protective of their interests and pledges to back your next campaign. Hardliners grumble that you looked for the exits, and activists remain wary, but the coalition you cultivated most carefully—the one with the deepest pockets—stays intact, and your influence in the chamber is preserved.",
+        "type": "end",
+        "outcome": "business_pragmatist",
+        "outcome_message": "Kept the Business Coalition - Pragmatic Middle"
+      },
+      "5.abstain": {
+        "title": "The Uncounted",
+        "description": "A montage of news clips and documents summarizing the results of your choices.",
+        "image": "https://media.cruxlabs.academy/rio_grande/1/scene_5_abstain.png",
+        "narration": "When the factions add up your session, the one thing they agree on is that none of them can fully claim you. Your record does not resolve cleanly into any camp's ledger: whatever commitments, reversals, or hedges marked your path, the net signal each side receives is that you cannot be reliably counted as theirs when the next fight comes.\n\nSB-42 passes and faces the same legal challenges. In the aftermath, each side scrutinizes your record through its own lens. Party leadership notes where you ultimately landed and files you under 'watch closely'—useful, but not fully trusted. The business community weighs whether you can be worked with and wants firmer proof before committing. Activists parse your choices and withhold full trust. Editorials debate whether you led or merely maneuvered. You will now navigate the fallout holding together relationships across the spectrum—none of them especially strong, and each one uncertain of where you'll stand when the pressure returns.",
+        "type": "end",
+        "outcome": "cautious_survivor",
+        "outcome_message": "Mixed Record - Navigating Complex Politics"
+      }
+    }
+  }
+}

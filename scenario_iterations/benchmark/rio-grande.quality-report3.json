@@ -1,0 +1,172 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 2,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": true
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (ActivistSupport, BusinessSupport, HardlineSupport), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "4/4 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand) of 4 declared (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand)"
+        }
+      },
+      "metrics": {
+        "paths": 15,
+        "variables_declared": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 4,
+        "influential_points": 4,
+        "influential_of": 4,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ],
+        "outcomes_declared": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 15,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 1,
+        "stable_major": 1,
+        "clean": 12,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              1
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Uncounted (end)",
+            "example_explanation": "The ending states that 'no single camp comes away certain you belong to them' and that 'Party leadership tallies your votes and holds its judgment in reserve,' implying leadership is uncertain about the learner. However, the learner co-sponsored SB-42, publicly announced that support at a press conference, and explicitly refused to withdraw support even under business pressure. Only at the final vote did the learner vote NAY. The ending treats the learner as if they had a consistently ambiguous record, but the narrative never bridges the gap between the learner's strong, public early commitment to leadership (co-sponsorship, press conference) and the final NAY vote — it does not explain how leadership processes or reacts to the specific reversal of a co-sponsor voting against their own sponsored bill. That is a far more dramatic and specific betrayal than a vague 'mixed record,' yet the ending characterizes leadership's response as mere wariness rather than acknowledging the concrete contradiction of a co-sponsor voting NAY. More critically, the ending claims activists see moments the learner 'moved their way,' but on this path the learner co-sponsored and publicly championed SB-42 right up until the final vote, which is not a record of moving toward activists. The ending's characterization of the cumulative record as broadly mixed misrepresents what actually happened on this path."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        4,
+        2,
+        -1,
+        -1
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": true,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (ActivistSupport, BusinessSupport, HardlineSupport), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "4/4 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand) of 4 declared (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand)"
+        }
+      },
+      "metrics": {
+        "paths": 15,
+        "variables_declared": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 4,
+        "influential_points": 4,
+        "influential_of": 4,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ],
+        "outcomes_declared": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 15,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 0,
+        "stable_major": 0,
+        "clean": 14,
+        "stable": []
+      },
+      "score": [
+        1,
+        0,
+        4,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 1,
+  "revisions_attempted": 1,
+  "passed": true
+}

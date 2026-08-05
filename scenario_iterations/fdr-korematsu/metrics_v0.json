@@ -1,0 +1,684 @@
+{
+  "metrics": {
+    "paths": 36,
+    "variables_declared": [
+      "CivilLiberties",
+      "ConstitutionalLegitimacy",
+      "MilitarySupport",
+      "PresidentialPower"
+    ],
+    "variables_read": [],
+    "variables_read_count": 0,
+    "choice_points": 3,
+    "influential_points": 1,
+    "influential_of": 3,
+    "outcomes_reachable": [
+      "constitutional_failure",
+      "principled_restraint",
+      "qualified_integrity"
+    ],
+    "monotonicity": {
+      "inversions": 53,
+      "pairs": 608,
+      "disagreement": 0.0872
+    },
+    "contradiction_path_count": 0,
+    "contradiction_paths": [],
+    "virtue_spread": {
+      "min": -13.0,
+      "p25": -2.0,
+      "p75": 8.0,
+      "max": 14.0
+    },
+    "narrative_contradictions": {
+      "backend": "heuristic(offline stand-in)",
+      "model": null,
+      "judged_paths": 36,
+      "unique_transcripts": 36,
+      "contradiction_paths": 27,
+      "major": 18,
+      "minor": 9,
+      "rate": 0.75,
+      "examples": [
+        {
+          "choices": [
+            1,
+            0,
+            0
+          ],
+          "outcome": "constitutional_failure",
+          "severity": "minor",
+          "offending_scene": "4a",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        },
+        {
+          "choices": [
+            1,
+            0,
+            1
+          ],
+          "outcome": "qualified_integrity",
+          "severity": "minor",
+          "offending_scene": "4a",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        },
+        {
+          "choices": [
+            1,
+            0,
+            2
+          ],
+          "outcome": "principled_restraint",
+          "severity": "minor",
+          "offending_scene": "4a",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        },
+        {
+          "choices": [
+            1,
+            1,
+            0
+          ],
+          "outcome": "constitutional_failure",
+          "severity": "minor",
+          "offending_scene": "4b",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        },
+        {
+          "choices": [
+            1,
+            1,
+            1
+          ],
+          "outcome": "qualified_integrity",
+          "severity": "minor",
+          "offending_scene": "4b",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        },
+        {
+          "choices": [
+            1,
+            1,
+            2
+          ],
+          "outcome": "principled_restraint",
+          "severity": "minor",
+          "offending_scene": "4b",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        },
+        {
+          "choices": [
+            1,
+            2,
+            0
+          ],
+          "outcome": "constitutional_failure",
+          "severity": "minor",
+          "offending_scene": "4c",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        },
+        {
+          "choices": [
+            1,
+            2,
+            1
+          ],
+          "outcome": "qualified_integrity",
+          "severity": "minor",
+          "offending_scene": "4c",
+          "earlier_choice": "Advise limiting removal to non-citizen residents only, spari",
+          "explanation": "Narrower/opposed scope advice, yet later beats treat citizen-inclusive mass removal as fact with no acknowledged reversal."
+        }
+      ]
+    }
+  },
+  "paths": [
+    {
+      "choices": [
+        0,
+        0,
+        0
+      ],
+      "virtue": -13.0,
+      "variables": {
+        "CivilLiberties": -6.0,
+        "PresidentialPower": 5.0,
+        "MilitarySupport": 7.0,
+        "ConstitutionalLegitimacy": -7.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        0,
+        1
+      ],
+      "virtue": -4.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -2.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        0,
+        0,
+        2
+      ],
+      "virtue": -1.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": 2.0,
+        "ConstitutionalLegitimacy": -1.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        0,
+        1,
+        0
+      ],
+      "virtue": -8.0,
+      "variables": {
+        "CivilLiberties": -6.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        1,
+        1
+      ],
+      "virtue": 1.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": -1.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 3.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        0,
+        1,
+        2
+      ],
+      "virtue": 4.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 4.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        0,
+        2,
+        0
+      ],
+      "virtue": -11.0,
+      "variables": {
+        "CivilLiberties": -7.0,
+        "PresidentialPower": 4.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -4.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        2,
+        1
+      ],
+      "virtue": -2.0,
+      "variables": {
+        "CivilLiberties": -3.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 1.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        0,
+        2,
+        2
+      ],
+      "virtue": 1.0,
+      "variables": {
+        "CivilLiberties": -1.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        1,
+        0,
+        0
+      ],
+      "virtue": -6.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 4.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -4.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        1,
+        0,
+        1
+      ],
+      "virtue": 3.0,
+      "variables": {
+        "CivilLiberties": 2.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 1.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        1,
+        0,
+        2
+      ],
+      "virtue": 6.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        1,
+        1,
+        0
+      ],
+      "virtue": -1.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 1.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        1,
+        1,
+        1
+      ],
+      "virtue": 8.0,
+      "variables": {
+        "CivilLiberties": 2.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 6.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        1,
+        1,
+        2
+      ],
+      "virtue": 11.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": -3.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 7.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        1,
+        2,
+        0
+      ],
+      "virtue": -4.0,
+      "variables": {
+        "CivilLiberties": -3.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": -1.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        1,
+        2,
+        1
+      ],
+      "virtue": 5.0,
+      "variables": {
+        "CivilLiberties": 1.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 4.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        1,
+        2,
+        2
+      ],
+      "virtue": 8.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 5.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        2,
+        0,
+        0
+      ],
+      "virtue": -4.0,
+      "variables": {
+        "CivilLiberties": -1.0,
+        "PresidentialPower": 4.0,
+        "MilitarySupport": 2.0,
+        "ConstitutionalLegitimacy": -3.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        2,
+        0,
+        1
+      ],
+      "virtue": 5.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        2,
+        0,
+        2
+      ],
+      "virtue": 8.0,
+      "variables": {
+        "CivilLiberties": 5.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -3.0,
+        "ConstitutionalLegitimacy": 3.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        2,
+        1,
+        0
+      ],
+      "virtue": 1.0,
+      "variables": {
+        "CivilLiberties": -1.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        2,
+        1,
+        1
+      ],
+      "virtue": 10.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 7.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        2,
+        1,
+        2
+      ],
+      "virtue": 13.0,
+      "variables": {
+        "CivilLiberties": 5.0,
+        "PresidentialPower": -3.0,
+        "MilitarySupport": -6.0,
+        "ConstitutionalLegitimacy": 8.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        2,
+        2,
+        0
+      ],
+      "virtue": -2.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 0.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        2,
+        2,
+        1
+      ],
+      "virtue": 7.0,
+      "variables": {
+        "CivilLiberties": 2.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 5.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        2,
+        2,
+        2
+      ],
+      "virtue": 10.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -6.0,
+        "ConstitutionalLegitimacy": 6.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        3,
+        0,
+        0
+      ],
+      "virtue": -3.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": -3.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        3,
+        0,
+        1
+      ],
+      "virtue": 6.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        3,
+        0,
+        2
+      ],
+      "virtue": 9.0,
+      "variables": {
+        "CivilLiberties": 6.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 3.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        3,
+        1,
+        0
+      ],
+      "virtue": 2.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": -1.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        3,
+        1,
+        1
+      ],
+      "virtue": 11.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": -3.0,
+        "MilitarySupport": -5.0,
+        "ConstitutionalLegitimacy": 7.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        3,
+        1,
+        2
+      ],
+      "virtue": 14.0,
+      "variables": {
+        "CivilLiberties": 6.0,
+        "PresidentialPower": -4.0,
+        "MilitarySupport": -7.0,
+        "ConstitutionalLegitimacy": 8.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        0
+      ],
+      "virtue": -1.0,
+      "variables": {
+        "CivilLiberties": -1.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 0.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1
+      ],
+      "virtue": 8.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -5.0,
+        "ConstitutionalLegitimacy": 5.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        2
+      ],
+      "virtue": 11.0,
+      "variables": {
+        "CivilLiberties": 5.0,
+        "PresidentialPower": -1.0,
+        "MilitarySupport": -7.0,
+        "ConstitutionalLegitimacy": 6.0
+      },
+      "outcome": "principled_restraint"
+    }
+  ]
+}

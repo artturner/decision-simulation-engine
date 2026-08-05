@@ -10,7 +10,9 @@ IMAGE_SIZE = "1536x1024"  # 16:9-ish; supported by gpt-image-1
 MEDIA_VERSION = "1"  # version folder, matching the import convention
 
 
-def _generate_png(prompt: str, model: str) -> bytes:
+def render_png(prompt: str, model: str) -> bytes:
+    """Generate a single PNG from a prompt (no upload). Used by --images and by
+    the redo-images preview pass."""
     from openai import OpenAI
 
     from app.core.config import settings
@@ -41,7 +43,7 @@ def generate_and_upload(
     folder = slug_to_media_folder(slug)
     uploaded: dict[str, str] = {}
     for scene_id, spec in prompts.items():
-        png = _generate_png(spec["prompt"], model)
+        png = render_png(spec["prompt"], model)
         key = f"{folder}/{MEDIA_VERSION}/{spec['filename']}"
         url = upload_media(png, key, "image/png")
         scenario_json["scenes"][scene_id]["image"] = url

@@ -60,15 +60,20 @@ def call_conversation(
     model: str,
     max_tokens: int = 16000,
 ) -> str:
-    """Multi-turn variant used by the validate -> repair loop."""
+    """Multi-turn variant used by the validate -> repair and reviser loops.
+
+    Streams the response: large ``max_tokens`` (full scenario_json rewrites)
+    trip the SDK's non-streaming 10-minute guard otherwise.
+    """
     client = get_client()
-    resp = client.messages.create(
+    with client.messages.stream(
         model=model,
         max_tokens=max_tokens,
         system=system,
         messages=messages,
         extra_body={"thinking": {"type": "disabled"}},
-    )
+    ) as stream:
+        resp = stream.get_final_message()
     return next((b.text for b in resp.content if b.type == "text"), "")
 
 

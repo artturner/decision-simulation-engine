@@ -1,0 +1,85 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 0,
+    "judge_model": null,
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "4/5 choice points influential; inert: ['3a']"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (contested_gamble, fragile_bargain, hollow_authority, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 4,
+        "influential_of": 5,
+        "inert_choice_scenes": [
+          "3a"
+        ],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": null,
+      "score": [
+        0,
+        -1,
+        4,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 0,
+  "revisions_attempted": 0,
+  "passed": false
+}

@@ -1,0 +1,498 @@
+{
+  "k": 5,
+  "majority": 3,
+  "errors": 0,
+  "stable": [],
+  "flaky": [
+    {
+      "choices": [
+        0,
+        2,
+        2
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 1,
+      "samples": 5,
+      "modal_severity": "minor",
+      "modal_scene": "Beat 7: A Precedent for the Worst (end)"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1,
+        2
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 2,
+      "samples": 5,
+      "modal_severity": "minor",
+      "modal_scene": "Beat 8: Conscience Over Crisis (end)"
+    }
+  ],
+  "per_path": [
+    {
+      "choices": [
+        0,
+        0,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        0,
+        1
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        0,
+        2
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        1,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        1,
+        1
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        1,
+        2
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        2,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        2,
+        1
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        0,
+        2,
+        2
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 1,
+      "samples": 5,
+      "modal_severity": "minor",
+      "modal_scene": "Beat 7: A Precedent for the Worst (end)"
+    },
+    {
+      "choices": [
+        1,
+        0,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        0,
+        1
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        0,
+        2
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        1,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        1,
+        1
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        1,
+        2
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        2,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        2,
+        1
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        1,
+        2,
+        2
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        0,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        0,
+        1
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        0,
+        2
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        1,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        1,
+        1
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        1,
+        2
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        2,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        2,
+        1
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        2,
+        2,
+        2
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        0
+      ],
+      "outcome": "removal_averted",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        1
+      ],
+      "outcome": "military_supremacy",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        0,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        0,
+        1
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        0,
+        2
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1,
+        2
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 2,
+      "samples": 5,
+      "modal_severity": "minor",
+      "modal_scene": "Beat 8: Conscience Over Crisis (end)"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        2,
+        0
+      ],
+      "outcome": "constitutional_failure",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        2,
+        1
+      ],
+      "outcome": "qualified_integrity",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    },
+    {
+      "choices": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "outcome": "principled_restraint",
+      "flagged": 0,
+      "samples": 5,
+      "modal_severity": "none",
+      "modal_scene": ""
+    }
+  ]
+}

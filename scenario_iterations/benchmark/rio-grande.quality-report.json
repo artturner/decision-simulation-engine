@@ -1,0 +1,538 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": false,
+          "detail": "3 variable(s) declared (ActivistSupport, BusinessSupport, HardlineSupport), 0 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "0/3 choice points influential; inert: ['1', '3b', '4']"
+        },
+        "outcomes_reachable": {
+          "ok": false,
+          "detail": "1 reachable (success) of 1 declared (success)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read": [],
+        "variables_read_count": 0,
+        "choice_points": 3,
+        "influential_points": 0,
+        "influential_of": 3,
+        "inert_choice_scenes": [
+          "1",
+          "3b",
+          "4"
+        ],
+        "outcomes_reachable": [
+          "success"
+        ],
+        "outcomes_declared": [
+          "success"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 2,
+        "stable_major": 0,
+        "clean": 10,
+        "stable": [
+          {
+            "choices": [
+              0,
+              1
+            ],
+            "outcome": "success",
+            "end_scene": "reflection",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 4: The Final Vote (auto_advance narration before the choice)",
+            "example_explanation": "The opening narration of Beat 4 states 'Your amendment failed/alternative bill was stalled' — presupposing the learner pursued an amendment or alternative bill. However, on this path the learner co-sponsored SB-42 outright in Beat 1 and was never shown taking any step to amend or replace it. No beat depicts the learner introducing an amendment or alternative bill, yet Beat 4 asserts that such an effort occurred and failed. This is a factual claim about what happened on this path that the path's own choices never established."
+          },
+          {
+            "choices": [
+              0,
+              2
+            ],
+            "outcome": "success",
+            "end_scene": "reflection",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 4: The Final Vote (narration intro)",
+            "example_explanation": "The narration introducing Beat 4 states 'Your amendment failed/alternative bill was stalled,' implying the learner pursued an amendment or alternative bill at some intermediate point. However, no such choice or scene was presented between Beat 1 (where the learner enthusiastically co-sponsored SB-42) and Beat 4. The path shows only the business backlash scene with no opportunity to propose amendments. The Beat 4 narration presupposes an action the learner never took on this path, and the scenario never acknowledges how or when the learner shifted from co-sponsor to amendment-proposer. This is a minor inconsistency because it involves an unshown intermediate action rather than a core plot reversal."
+          }
+        ]
+      },
+      "score": [
+        0,
+        -3,
+        1,
+        0,
+        0,
+        -2
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (ActivistSupport, BusinessSupport, HardlineSupport), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "4/4 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand) of 4 declared (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand)"
+        }
+      },
+      "metrics": {
+        "paths": 15,
+        "variables_declared": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 4,
+        "influential_points": 4,
+        "influential_of": 4,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ],
+        "outcomes_declared": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 15,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 9,
+        "stable_major": 8,
+        "clean": 6,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              1
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration claims the learner 'avoided any decisive commitment to one camp' and that 'every side noted it,' framing the arc as ambiguous fence-sitting. However, the learner made two clear, committed choices: co-sponsoring SB-42 and explicitly refusing to withdraw that support when pressured by the business community. Only the final vote was NAY. The ending treats the path as uniformly wishy-washy rather than acknowledging that the learner was a firm co-sponsor who switched at the final vote — a specific, dramatic reversal the narration never explains or bridges. The characterization of the record as lacking 'any decisive commitment' directly contradicts the earlier firm commitments the learner made on the record."
+          },
+          {
+            "choices": [
+              0,
+              0,
+              2
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending states the learner 'avoided any decisive commitment to one camp,' implying a consistently fence-sitting posture throughout the session. However, in Beat 3 the learner explicitly doubled down on co-sponsorship, telling the business community they would hold firm and honor their word to the Speaker. That is a decisive commitment to the pro-SB-42 camp, not an ambiguous middle path. The abstention in Beat 4 is the only fence-sitting act, but the ending over-generalizes it to characterize the entire arc as one of avoiding commitment, ignoring the earlier firm stance. This is a minor inconsistency because the abstention does ultimately produce the ambiguous outcome, but the narrative mischaracterizes the full arc of choices made."
+          },
+          {
+            "choices": [
+              0,
+              1,
+              1
+            ],
+            "outcome": "business_pragmatist",
+            "end_scene": "5.pragmatist",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Dealmaker (end)",
+            "example_explanation": "The ending narration states 'the law passes' and credits the learner with 'working the business channel' and keeping influence through pragmatic deal-making, framing the outcome as one where SB-42 advanced with the learner's tacit support. However, the learner explicitly voted NAY on SB-42 in Beat 4—actively opposing the bill's passage. The ending presupposes a path where the learner facilitated or at least acquiesced to the bill's advancement, which directly contradicts the NAY vote. The scenario never acknowledges that the learner voted against the bill; instead it congratulates them as if they shepherded it through via pragmatic maneuvering. This is an unacknowledged reversal of the learner's final, definitive action."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              0
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 4 narration: 'the original, tough version of SB-42 has reached the floor largely intact'",
+            "example_explanation": "The learner explicitly chose to introduce an amendment to soften SB-42. Beat 4 then asserts that 'the original, tough version of SB-42 has reached the floor largely intact,' directly contradicting the amendment path without any acknowledged explanation of why the amendment failed, was rejected, or was overruled. The scenario never bridges this gap — it simply resets to the original bill as if the amendment choice never happened. This is an unacknowledged reversal of a core plot decision, making it a major contradiction."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              1
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration states the learner 'avoided any decisive commitment to one camp' and implies an ambiguous, fence-sitting record. However, the learner made a clear, unambiguous choice in Beat 4: voting NAY on SB-42. A definitive NO vote on final passage is a decisive commitment, not an evasion. The ending mischaracterizes this path as lacking a clear stance, which directly contradicts the explicit NAY vote the learner cast. The scenario never acknowledges any reversal or explains why a firm NAY vote would be tallied as an ambiguous record."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              2
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 4: The Final Vote — narration states 'the original, tough version of SB-42 has reached the floor largely intact.'",
+            "example_explanation": "The learner explicitly chose to introduce an amendment to soften SB-42. Beat 4 then narrates that the original, tough version arrived on the floor 'largely intact,' directly contradicting the premise that the amendment path was taken. The scenario never explains why the amendment failed, was rejected, or was overruled — there is no bridging event acknowledging the reversal. The amendment choice is simply ignored, making the later narration presuppose a state of affairs (the bill unchanged) that the learner's choice was specifically designed to prevent."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              0
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration states the learner 'avoided any decisive commitment to one camp,' implying an ambiguous or fence-sitting record. However, in Beat 4 the learner made a clear, unambiguous choice to vote YEA on SB-42 — a decisive commitment to the pro-bill camp. Voting in favor of the final bill is not an evasion; it is a definitive legislative act. The ending mischaracterizes what actually happened on this path by treating the final vote as though it were non-committal, which directly contradicts the learner's explicit YEA vote."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              1
+            ],
+            "outcome": "business_pragmatist",
+            "end_scene": "5.pragmatist",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Dealmaker (end)",
+            "example_explanation": "The ending narration credits the learner for 'working the business channel—quiet reassurances, carve-outs, alternative proposals' in a way that 'kept the state's economic engine on your side even as SB-42 advanced,' and frames the outcome as preserving a Business Coalition through pragmatic deal-making. However, the learner never pursued quiet reassurances or carve-outs with the business community; they drafted a separate alternative bill and then voted NAY on SB-42. The ending presupposes a path of behind-the-scenes business deal-making that this learner's choices explicitly rejected. No narration bridges this gap by explaining how the learner's actual choices (alternative bill + NAY vote) translated into business-channel deal-making. The ending mischaracterizes the entire arc of what this path did."
+          },
+          {
+            "choices": [
+              2,
+              0
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narrates that the learner 'avoided any decisive commitment to one camp,' implying a consistently centrist or ambiguous record. However, the path was anything but ambiguous: the learner made a very decisive early commitment — publicly refusing to co-sponsor SB-42 on constitutional grounds, being stripped of committee assignments as punishment, and energizing an activist opposition coalition. That is an unambiguous act of defiance. Only at the final vote did the learner flip to YEA. The ending fails to acknowledge this reversal and instead characterizes the entire arc as wishy-washy fence-sitting, which misrepresents what actually happened on this path. A more accurate ending would acknowledge the dramatic reversal from principled opposition to a YEA vote, but instead the ending treats the path as though no strong stance was ever taken — a factual mischaracterization of the recorded events."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        4,
+        2,
+        -8,
+        -9
+      ]
+    },
+    {
+      "iteration": 2,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (ActivistSupport, BusinessSupport, HardlineSupport), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "4/4 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand) of 4 declared (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand)"
+        }
+      },
+      "metrics": {
+        "paths": 15,
+        "variables_declared": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 4,
+        "influential_points": 4,
+        "influential_of": 4,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ],
+        "outcomes_declared": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 15,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 4,
+        "stable_major": 1,
+        "clean": 8,
+        "stable": [
+          {
+            "choices": [
+              1,
+              0,
+              0
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration explicitly describes possible paths such as 'opposed it loudly and then voted yea' or 'simply abstained,' and characterizes the learner's record as 'mixed and unaligned.' However, on this path the learner voted YEA — a clear, recorded affirmative vote on the final bill. Voting YEA is not an abstention, and while the learner did raise concerns earlier, the ending over-generalizes by treating the final vote as ambiguous or non-committal. A definitive YEA vote would be read by party leadership as alignment with them, not as a 'mixed' signal. The ending thus mischaracterizes the concrete final act the learner took, presupposing an ambiguity that a YEA vote does not produce."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              1
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration explicitly describes the learner's record as 'mixed and unaligned,' offering 'co-sponsoring the bill early only to vote against it at the end, or opposed it loudly and then voted yea when the gavel came down, or simply abstained' as possible explanations for the mixed outcome. However, on this path the learner (1) declined to co-sponsor, (2) attempted to amend the bill to remove its most controversial provisions, and (3) voted NAY on final passage. That is a consistent opposing record, not a mixed one. The ending presupposes an inconsistent or ambiguous voting history that this path's choices never produced, and it never acknowledges any event that would have reversed or muddied the learner's clear opposition to SB-42. Routing this path to a 'mixed record' outcome mischaracterizes what actually happened."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              2
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration offers 'co-sponsoring the bill early only to vote against it at the end' as one possible description of the learner's arc, but this path explicitly rejected co-sponsorship in Beat 1 and never co-sponsored the bill. While the ending frames these as illustrative examples rather than definitive characterizations, the specific example of early co-sponsorship directly contradicts the choice made — the learner declined to co-sponsor. A reader following this path would find that example falsely describes what happened. The rest of the ending's characterization (mixed, unaligned record) is broadly consistent with the path, so the severity is minor rather than major."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              0
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration describes the learner's record as ambiguous and gives 'co-sponsored early then voted against' and 'abstained' as example sequences, but on this path the learner explicitly voted YEA on final passage. A clear YEA vote is not an abstention and is not a vote against the bill. The ending then says no faction is sure where the learner stands, yet a final YEA vote—after public hesitation and drafting an alternative—would at minimum give party leadership and rancher constituencies a clear data point. The narration presupposes an unresolved or abstaining final vote that this path's explicit YEA choice contradicts, without acknowledging that the final vote was, in fact, affirmative."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        4,
+        2,
+        -1,
+        -4
+      ]
+    },
+    {
+      "iteration": 3,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (ActivistSupport, BusinessSupport, HardlineSupport), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "4/4 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand) of 4 declared (business_pragmatist, cautious_survivor, hardliner_victory, principled_stand)"
+        }
+      },
+      "metrics": {
+        "paths": 15,
+        "variables_declared": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read": [
+          "ActivistSupport",
+          "BusinessSupport",
+          "HardlineSupport"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 4,
+        "influential_points": 4,
+        "influential_of": 4,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ],
+        "outcomes_declared": [
+          "business_pragmatist",
+          "cautious_survivor",
+          "hardliner_victory",
+          "principled_stand"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 15,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 3,
+        "stable_major": 2,
+        "clean": 9,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              1
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration claims the learner 'never fully committed the rest of your influence' and that 'no faction walks away certain you are truly theirs,' framing the path as one of perpetual hedging and non-commitment. However, the learner made two clear, firm commitments: co-sponsoring SB-42 at the Speaker's request and then explicitly refusing to withdraw that support when pressured by the business community. The only ambiguity was the final NAY vote, which reversed the co-sponsorship position — but the ending never acknowledges this specific reversal (siding with the Speaker then voting against the bill). Instead it generically characterizes the entire arc as wishy-washy maneuvering, which misrepresents what actually happened. The hardliners, in particular, have concrete reason to feel betrayed by the NAY vote after a public co-sponsorship, yet the ending says they merely 'aren't convinced you'll carry their banner' rather than acknowledging the direct betrayal. The ending's framing presupposes a path of vague non-commitment that contradicts the two explicit commitments the learner made before the final vote."
+          },
+          {
+            "choices": [
+              2,
+              0
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending narration claims the learner 'never fully committed' and that 'the activists never secured you as a reliable champion,' framing the path as a muddled middle course. However, in Beat 1 the learner made a clear, decisive choice to oppose SB-42 outright—publicly enough to get removed from committee (Beat 3) and to energize the activist base (Beat 2). That is a strong, unambiguous commitment to one side, not a lack of commitment. The ending's characterization of the arc as non-committal is logically inconsistent with those earlier beats. The only genuine reversal was the final YEA vote (Beat 4), but the ending never acknowledges that specific reversal as the source of the fractured relationships; instead it retroactively rewrites the entire session as wishy-washy, which contradicts the clearly documented opposition stance the learner held for most of the path."
+          },
+          {
+            "choices": [
+              2,
+              2
+            ],
+            "outcome": "cautious_survivor",
+            "end_scene": "5.abstain",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6: The Middle Path (end)",
+            "example_explanation": "The ending states 'the activists never secured you as a reliable champion,' but the learner explicitly refused to co-sponsor SB-42 on constitutional/profiling grounds (Beat 1) and then energized the activist base by opposing the bill (Beat 2). The ending also says no faction is certain the learner is 'truly theirs,' which is a reasonable framing for the abstention — but the claim that activists never secured the learner as a reliable champion conflicts with the earlier narration in Beat 2 that the opposition 'energized one part of your base.' The larger issue is the ending's assertion that the learner 'never fully committed' their influence, when Beats 1–3 show a clear, costly public commitment against SB-42 (co-sponsorship refused, rally implied, committee seat lost as punishment). The abstention on the final vote is a narrowing of that commitment, but the ending over-claims by erasing the prior principled opposition arc without acknowledging the reversal, treating the whole session as uniformly non-committal when the record shows a distinct oppositional phase followed by a retreat to abstention."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        4,
+        2,
+        -2,
+        -3
+      ]
+    }
+  ],
+  "best_iteration": 2,
+  "revisions_attempted": 3,
+  "passed": false
+}

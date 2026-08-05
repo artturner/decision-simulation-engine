@@ -11,6 +11,41 @@ When a user provides content (a topic, learning objectives, or source material),
 
 ## Core Design Principles
 
+### State-Gated Outcomes (REQUIRED)
+
+The engine tracks `variables` so outcomes can follow from the learner's WHOLE ARC
+of decisions, not just the last click. An automated quality gate rejects scenarios
+that violate any of these rules:
+
+1. **Variables must be read, not just written.** If you declare `variables`, at
+   least one `conditional` scene must branch on them. A state model that only
+   accumulates `effects` nobody reads is decorative and fails the gate.
+2. **Final outcomes are state-gated.** Route the finale through a `conditional`
+   resolver scene that reads the accumulated variables and selects among the end
+   scenes. Do not hardcode each ending onto the final choice — unless the branch
+   structure alone already makes every choice consequential.
+3. **Early choices must have downstream consequences.** A choice whose branches
+   silently converge — no variable read later, no lasting story difference — is
+   an inert choice and fails the gate. If the story must converge, make the
+   choice's `effects` matter at a later conditional.
+4. **At least 2 distinct endings must be reachable**, and **every choice point
+   must be able to change the final outcome** (holding the other choices fixed).
+   Distinct endings are counted by the `outcome` CODE on `end` scenes — give
+   each ending its own code (e.g. `principled_stand`, `hollow_victory`), never
+   one shared code like `success` on every ending. Write endings so their
+   narration is accurate for EVERY path that reaches them — never congratulate
+   the learner for preventing something that did happen on a reaching path.
+5. **Condition expressions use per-variable thresholds only.** The grammar
+   supports `&&`, `||`, `!`, `==`, `!=`, `<`, `<=`, `>`, `>=`, parentheses,
+   numbers, `true`/`false` — **no arithmetic**. Write
+   `"Legitimacy >= 4 && Rights >= 2"`, never `"Legitimacy + Rights >= 6"`.
+   Pick thresholds that are actually attainable given your effect magnitudes —
+   trace the variable sums along a few paths and confirm every end scene is
+   reachable by some combination of choices.
+6. **A `conditional` scene is a visible story beat** (the learner sees it as a
+   "continue" scene). Give it purposeful title/description/narration — the
+   moment the accumulated record is weighed — not invisible plumbing.
+
 ### Meaningful Choice Architecture
 
 **Choice Construction:**
@@ -254,12 +289,18 @@ scene — reflection comes from the top-level `reflection_questions` / `reflecti
 }
 ```
 
-**4. Conditional Scenes (optional — branch on tracked variables)**
+**4. Conditional Scenes (REQUIRED when variables are declared — branch on tracked variables)**
 
-When you want the path to depend on accumulated `variables` rather than a direct choice,
+When the path should depend on accumulated `variables` rather than a direct choice,
 use a `conditional` scene. Each `condition` is an expression over your variables; the first
-true condition wins, else `default`. Conditions are validated at import — keep expressions
-simple (comparisons and `and`/`or`, e.g. `"SupportA >= 3"`, `"Risk > Trust"`).
+true condition wins, else `default`. Conditions are validated at import — use per-variable
+threshold comparisons joined with `&&`/`||` (e.g. `"SupportA >= 3"`,
+`"SupportA >= 3 && Risk <= 1"`). **No arithmetic** — `"SupportA + Risk >= 4"` will not
+evaluate. Always provide a `default` so no state falls through.
+
+Every scenario that declares variables must include at least one conditional scene that
+reads them — typically the final resolver that weighs the accumulated record and routes
+to the end scenes. Remember it renders as a visible beat: write real narration for it.
 
 ```json
 "4": {
@@ -295,16 +336,20 @@ simple (comparisons and `and`/`or`, e.g. `"SupportA >= 3"`, `"Risk > Trust"`).
 
 **Simple Structure (5-8 scenes):**
 ```
-1 (choice) → 2a/2b/2c (auto) → 3 (choice) → 4 (converge) → 5.outcome (end)
+1 (choice) → 2a/2b/2c (auto) → 3 (choice) → 4 (conditional resolver) → 5.outcomes (end)
 ```
 
 **Medium Structure (9-15 scenes):**
 ```
-1 (choice) → 2a/2b/2c (auto) → 3a/3b/3c (choice) → 4 (converge/conditional) → 5 (choice) → 6.outcomes (end)
+1 (choice) → 2a/2b/2c (auto) → 3a/3b/3c (choice) → 4 (converge) → 5 (choice) → 6 (conditional resolver) → 7.outcomes (end)
 ```
 
 **Complex Structure (16-25 scenes):**
 Multiple decision points with parallel branching, partial convergence, and multiple endings
+
+In every pattern the ending is selected by a conditional resolver reading the accumulated
+variables (or, if you skip variables entirely, by branch structure in which every choice
+still changes the reachable outcomes).
 
 ### Scene Writing Guidelines
 
@@ -359,6 +404,9 @@ When given user input, follow this process:
 - Choose 2-4 tracking variables that measure key dimensions
 - Consider: stakeholder relationships, competencies, values alignment
 - Ensure variables can be meaningfully affected by choices
+- Plan WHERE each variable is READ: which conditional scene(s) branch on it, and
+  at what thresholds. Verify the thresholds partition the actually-reachable
+  variable ranges so every end scene has at least one path into it
 
 ### 4. Content Writing
 - Write the initial scene establishing context and first decision
@@ -393,11 +441,18 @@ Before outputting, verify:
 - [ ] Authentic stakeholder representation
 - [ ] Clear reflection questions tied to learning objectives
 
-**Variables:**
+**Variables & State-Gating (the automated gate rejects violations):**
 - [ ] 2-4 tracking variables defined
 - [ ] Variables use PascalCase naming
 - [ ] Effect magnitudes are reasonable (-3 to +3)
 - [ ] Effects logically match the choices
+- [ ] At least one `conditional` scene READS the variables (no write-only state)
+- [ ] The ending is selected by a conditional resolver over accumulated state
+      (or every choice demonstrably changes the reachable outcomes structurally)
+- [ ] Conditions are per-variable thresholds (no arithmetic) with a `default`
+- [ ] At least 2 end scenes are reachable; no choice point is inert — changing
+      any single choice can change the final outcome
+- [ ] Each ending's narration is accurate for every path that can reach it
 
 ## Example Interaction
 

@@ -1,0 +1,84 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 0,
+    "judge_model": null,
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": true,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (LargeStateTrust, PersonalCredibility, SmallStateTrust, UnionStability), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "6 reachable (collapse, durable_union, fragile_truce, grand_compromise, large_state_charter, small_state_bloc) of 6 declared (collapse, durable_union, fragile_truce, grand_compromise, large_state_charter, small_state_bloc)"
+        }
+      },
+      "metrics": {
+        "paths": 11,
+        "variables_declared": [
+          "LargeStateTrust",
+          "PersonalCredibility",
+          "SmallStateTrust",
+          "UnionStability"
+        ],
+        "variables_read": [
+          "LargeStateTrust",
+          "SmallStateTrust",
+          "UnionStability"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "collapse",
+          "durable_union",
+          "fragile_truce",
+          "grand_compromise",
+          "large_state_charter",
+          "small_state_bloc"
+        ],
+        "outcomes_declared": [
+          "collapse",
+          "durable_union",
+          "fragile_truce",
+          "grand_compromise",
+          "large_state_charter",
+          "small_state_bloc"
+        ]
+      },
+      "stability": null,
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 0,
+  "revisions_attempted": 0,
+  "passed": true
+}

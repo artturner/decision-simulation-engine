@@ -1,0 +1,642 @@
+{
+  "metrics": {
+    "paths": 38,
+    "variables_declared": [
+      "CivilLiberties",
+      "ConstitutionalLegitimacy",
+      "MilitarySupport",
+      "PresidentialPower"
+    ],
+    "variables_read": [
+      "CivilLiberties",
+      "ConstitutionalLegitimacy"
+    ],
+    "variables_read_count": 2,
+    "choice_points": 4,
+    "influential_points": 4,
+    "influential_of": 4,
+    "outcomes_reachable": [
+      "constitutional_failure",
+      "military_supremacy",
+      "principled_restraint",
+      "qualified_integrity",
+      "removal_averted"
+    ],
+    "monotonicity": {
+      "inversions": 2,
+      "pairs": 677,
+      "disagreement": 0.003
+    },
+    "contradiction_path_count": 0,
+    "contradiction_paths": [],
+    "virtue_spread": {
+      "min": -13.0,
+      "p25": -3.0,
+      "p75": 7.0,
+      "max": 13.0
+    },
+    "narrative_contradictions": {
+      "backend": "llm",
+      "model": "claude-sonnet-4-6",
+      "judged_paths": 38,
+      "unique_transcripts": 38,
+      "contradiction_paths": 1,
+      "major": 0,
+      "minor": 1,
+      "rate": 0.0263,
+      "examples": [
+        {
+          "choices": [
+            0,
+            2,
+            2
+          ],
+          "outcome": "constitutional_failure",
+          "severity": "minor",
+          "offending_scene": "Beat 7: A Precedent for the Worst (end)",
+          "earlier_choice": "Quietly signal a narrowing of the program and concede the weakness of the military-necessity argument",
+          "explanation": "In Beat 5 the learner chose to quietly signal a narrowing of the program and concede the weakness of the military-necessity argument, suggesting a partial retreat from the broad policy. Beat 7, however, narrates the outcome as though the government argued the case without any such concession or narrowing signal, describing a full 6\u20133 upholding of the convictions with no acknowledgment that the administration had softened its position before the Court. The final narration presupposes the government pressed its original case intact, which contradicts the earlier choice to signal weakness and concede the military-necessity argument. The scenario never bridges this gap by explaining why the concession had no effect or was overridden."
+        }
+      ]
+    }
+  },
+  "paths": [
+    {
+      "choices": [
+        0,
+        0,
+        0
+      ],
+      "virtue": -13.0,
+      "variables": {
+        "CivilLiberties": -6.0,
+        "PresidentialPower": 5.0,
+        "MilitarySupport": 7.0,
+        "ConstitutionalLegitimacy": -7.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        0,
+        1
+      ],
+      "virtue": -4.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        0,
+        2
+      ],
+      "virtue": -1.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": 2.0,
+        "ConstitutionalLegitimacy": -1.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        1,
+        0
+      ],
+      "virtue": -8.0,
+      "variables": {
+        "CivilLiberties": -6.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        1,
+        1
+      ],
+      "virtue": 1.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": -1.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 3.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        1,
+        2
+      ],
+      "virtue": 4.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 4.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        0,
+        2,
+        0
+      ],
+      "virtue": -11.0,
+      "variables": {
+        "CivilLiberties": -7.0,
+        "PresidentialPower": 4.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -4.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        2,
+        1
+      ],
+      "virtue": -2.0,
+      "variables": {
+        "CivilLiberties": -3.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 1.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        0,
+        2,
+        2
+      ],
+      "virtue": 1.0,
+      "variables": {
+        "CivilLiberties": -1.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        1,
+        0,
+        0
+      ],
+      "virtue": -6.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 4.0,
+        "MilitarySupport": 4.0,
+        "ConstitutionalLegitimacy": -4.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        1,
+        0,
+        1
+      ],
+      "virtue": 3.0,
+      "variables": {
+        "CivilLiberties": 2.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 1.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        1,
+        0,
+        2
+      ],
+      "virtue": 6.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        1,
+        1,
+        0
+      ],
+      "virtue": -1.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": 1.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        1,
+        1,
+        1
+      ],
+      "virtue": 8.0,
+      "variables": {
+        "CivilLiberties": 2.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 6.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        1,
+        1,
+        2
+      ],
+      "virtue": 11.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": -3.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 7.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        1,
+        2,
+        0
+      ],
+      "virtue": -4.0,
+      "variables": {
+        "CivilLiberties": -3.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": 1.0,
+        "ConstitutionalLegitimacy": -1.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        1,
+        2,
+        1
+      ],
+      "virtue": 5.0,
+      "variables": {
+        "CivilLiberties": 1.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 4.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        1,
+        2,
+        2
+      ],
+      "virtue": 8.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 5.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        2,
+        0,
+        0
+      ],
+      "virtue": -4.0,
+      "variables": {
+        "CivilLiberties": -1.0,
+        "PresidentialPower": 4.0,
+        "MilitarySupport": 2.0,
+        "ConstitutionalLegitimacy": -3.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        2,
+        0,
+        1
+      ],
+      "virtue": 5.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        2,
+        0,
+        2
+      ],
+      "virtue": 8.0,
+      "variables": {
+        "CivilLiberties": 5.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -3.0,
+        "ConstitutionalLegitimacy": 3.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        2,
+        1,
+        0
+      ],
+      "virtue": 1.0,
+      "variables": {
+        "CivilLiberties": -1.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        2,
+        1,
+        1
+      ],
+      "virtue": 10.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 7.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        2,
+        1,
+        2
+      ],
+      "virtue": 13.0,
+      "variables": {
+        "CivilLiberties": 5.0,
+        "PresidentialPower": -3.0,
+        "MilitarySupport": -6.0,
+        "ConstitutionalLegitimacy": 8.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        2,
+        2,
+        0
+      ],
+      "virtue": -2.0,
+      "variables": {
+        "CivilLiberties": -2.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": -1.0,
+        "ConstitutionalLegitimacy": 0.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        2,
+        2,
+        1
+      ],
+      "virtue": 7.0,
+      "variables": {
+        "CivilLiberties": 2.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -4.0,
+        "ConstitutionalLegitimacy": 5.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        2,
+        2,
+        2
+      ],
+      "virtue": 10.0,
+      "variables": {
+        "CivilLiberties": 4.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -6.0,
+        "ConstitutionalLegitimacy": 6.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        3,
+        0
+      ],
+      "virtue": 11.0,
+      "variables": {
+        "CivilLiberties": 6.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -6.0,
+        "ConstitutionalLegitimacy": 5.0
+      },
+      "outcome": "removal_averted"
+    },
+    {
+      "choices": [
+        3,
+        1
+      ],
+      "virtue": -1.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": -3.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": -1.0
+      },
+      "outcome": "military_supremacy"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        0,
+        0
+      ],
+      "virtue": -8.0,
+      "variables": {
+        "CivilLiberties": -3.0,
+        "PresidentialPower": 4.0,
+        "MilitarySupport": 3.0,
+        "ConstitutionalLegitimacy": -5.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        0,
+        1
+      ],
+      "virtue": 1.0,
+      "variables": {
+        "CivilLiberties": 1.0,
+        "PresidentialPower": 2.0,
+        "MilitarySupport": 0.0,
+        "ConstitutionalLegitimacy": 0.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        0,
+        2
+      ],
+      "virtue": 4.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -2.0,
+        "ConstitutionalLegitimacy": 1.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "virtue": -3.0,
+      "variables": {
+        "CivilLiberties": -3.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": 0.0,
+        "ConstitutionalLegitimacy": 0.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "virtue": 6.0,
+      "variables": {
+        "CivilLiberties": 1.0,
+        "PresidentialPower": -2.0,
+        "MilitarySupport": -3.0,
+        "ConstitutionalLegitimacy": 5.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        1,
+        2
+      ],
+      "virtue": 9.0,
+      "variables": {
+        "CivilLiberties": 3.0,
+        "PresidentialPower": -3.0,
+        "MilitarySupport": -5.0,
+        "ConstitutionalLegitimacy": 6.0
+      },
+      "outcome": "principled_restraint"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        2,
+        0
+      ],
+      "virtue": -6.0,
+      "variables": {
+        "CivilLiberties": -4.0,
+        "PresidentialPower": 3.0,
+        "MilitarySupport": 0.0,
+        "ConstitutionalLegitimacy": -2.0
+      },
+      "outcome": "constitutional_failure"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        2,
+        1
+      ],
+      "virtue": 3.0,
+      "variables": {
+        "CivilLiberties": 0.0,
+        "PresidentialPower": 1.0,
+        "MilitarySupport": -3.0,
+        "ConstitutionalLegitimacy": 3.0
+      },
+      "outcome": "qualified_integrity"
+    },
+    {
+      "choices": [
+        3,
+        2,
+        2,
+        2
+      ],
+      "virtue": 6.0,
+      "variables": {
+        "CivilLiberties": 2.0,
+        "PresidentialPower": 0.0,
+        "MilitarySupport": -5.0,
+        "ConstitutionalLegitimacy": 4.0
+      },
+      "outcome": "principled_restraint"
+    }
+  ]
+}

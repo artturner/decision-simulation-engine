@@ -1,0 +1,404 @@
+{
+  "slug": "regen-check-2",
+  "title": "Presidential Disability and the 25th Amendment",
+  "description": "As Vice President, you must navigate the untested Section 4 process of the 25th Amendment when the President's fitness is in doubt and contested",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "Presidential Disability and the 25th Amendment",
+      "description": "As Vice President, you must navigate the untested Section 4 process of the 25th Amendment when the President's fitness is in doubt and contested",
+      "page_title": "Cabinet Crisis: The 25th Amendment",
+      "page_icon": "⚖️",
+      "author": "Constitutional Studies Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "variables": {
+      "CabinetSupport": 0,
+      "CongressionalTrust": 0,
+      "PublicLegitimacy": 0,
+      "ConstitutionalFidelity": 0
+    },
+    "reflection_questions": [
+      "The 25th Amendment routes a contested inability finding to Congress, which decides by a two-thirds vote of both Houses. How did the prospect of that ultimate arbiter shape your choices, and what does it reveal about the Framers' design in Article XXV, Section 4?",
+      "You had to balance constitutional fidelity against political legitimacy and the appearance of opportunism. When these came into tension, which did you prioritize, and why?",
+      "Section 3 lets the President voluntarily transmit a declaration of inability, while Section 4 forces the question over the President's objection. What are the trade-offs between waiting for a voluntary act and initiating a confrontation?",
+      "Cabinet officers face real political consequences for signing a Section 4 declaration. How did their willingness (or reluctance) affect what you believed was possible and legitimate?",
+      "How did concern for how the American public and foreign governments would perceive the stability of the government influence your handling of a genuine constitutional ambiguity?"
+    ],
+    "reflection_prompts": [
+      "Consider how the untested nature of Section 4 raised the stakes of every choice you made",
+      "Reflect on the difference between what the Constitution permits and what political circumstances make wise",
+      "Think about the competing interests of the President, cabinet, Congress, and the public",
+      "Consider whether procedural correctness alone can confer legitimacy in a crisis"
+    ],
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The Briefing",
+        "description": "The Vice President's West Wing office, early morning. A closed-door briefing with the White House physician and the Chief of Staff.",
+        "image": "scene_1.png",
+        "narration": "The White House physician's report sits on the table between you. Over the past week, the President has shown episodes of disorientation, missed a scheduled call with an allied head of state, and issued contradictory instructions to the National Security Council. The Chief of Staff is visibly shaken.\n\nChief of Staff: 'Mr. Vice President, I don't know what we're dealing with. Some hours he's completely himself. Others... he's not. We can't keep improvising. But the moment this gets out, every market and every capital in the world starts asking who is actually running the country.'\n\nWhite House Physician: 'I can document what I've observed. I cannot tell you it rises to a permanent incapacity. It may pass. It may not.'\n\nThe 25th Amendment offers you paths, but none of them were written for a case like this. How do you begin?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Approach the President privately and urge him to invoke Section 3 himself, voluntarily transmitting a declaration of inability",
+            "next": "2a",
+            "effects": {
+              "ConstitutionalFidelity": 2,
+              "PublicLegitimacy": 2,
+              "CabinetSupport": 0
+            }
+          },
+          {
+            "text": "Begin quietly canvassing cabinet officers to assess support for a Section 4 declaration",
+            "next": "2b",
+            "effects": {
+              "CabinetSupport": 2,
+              "ConstitutionalFidelity": 1,
+              "PublicLegitimacy": -1
+            }
+          },
+          {
+            "text": "Reach out confidentially to congressional leaders to gauge a political path before touching the Amendment",
+            "next": "2c",
+            "effects": {
+              "CongressionalTrust": 3,
+              "ConstitutionalFidelity": -1,
+              "PublicLegitimacy": 0
+            }
+          },
+          {
+            "text": "Hold off entirely and manage the President's schedule informally to avoid any showdown",
+            "next": "2d",
+            "effects": {
+              "ConstitutionalFidelity": -2,
+              "PublicLegitimacy": 1,
+              "CabinetSupport": -1
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "The Private Appeal",
+        "description": "The Oval Office, late that evening. The President appears lucid, guarded, and wary of your visit.",
+        "image": "scene_2a.png",
+        "narration": "You lay it out gently: the physician's observations, the missed call, the concern for continuity. You remind him that Section 3 is his own instrument, a dignified step under which he transmits a written declaration to the President pro tempore of the Senate and the Speaker, and resumes his powers the moment he declares no inability exists.\n\nPresident: 'You want me to hand you my office. On a doctor's hunch.'\n\nHe is not wrong that the report is not conclusive. But he is also not denying that something is happening. He agrees to 'think about it overnight.' Whether he acts, or digs in, is now uncertain — and the clock is running.",
+        "type": "auto_advance",
+        "next": "3a"
+      },
+      "2b": {
+        "title": "Sounding the Cabinet",
+        "description": "A series of hushed one-on-one conversations across the Cabinet in the space of two days.",
+        "image": "scene_2b.png",
+        "narration": "You approach the cabinet officers individually. Section 4 requires you plus a majority of the principal officers of the executive departments to transmit a written declaration that the President is unable to discharge his office. It is a heavy signature to ask for.\n\nThe Secretary of the Treasury is alarmed enough to be receptive. The Secretary of Defense insists on seeing formal medical documentation. Two others fear being branded as conspirators against a President who may recover tomorrow.\n\nSecretary of State: 'If we sign and the President contests it, this goes to Congress. Are you certain the votes are there? Because if they aren't, we've staged a coup that failed — and history will call it exactly that.'\n\nWord of your canvassing is beginning to circulate. Discretion is slipping away.",
+        "type": "auto_advance",
+        "next": "3b"
+      },
+      "2c": {
+        "title": "The Congressional Soundings",
+        "description": "A secure phone line and a discreet dinner with the leadership of both chambers.",
+        "image": "scene_2c.png",
+        "narration": "You reason that if a contested inability finding ultimately lands in Congress, you should understand the terrain before you move. You brief the congressional leadership in confidence.\n\nThe response is cautious but grateful for the consultation. They remind you of the gravity of the constitutional machinery: should the President contest a Section 4 declaration, Congress must assemble and, within twenty-one days, decide by a two-thirds vote of both Houses whether he can discharge his office.\n\nSpeaker: 'Two-thirds. Of both chambers. Mr. Vice President, that is a mountain. I will not pretend the votes are sitting here waiting. If you act without them, you will have made yourself Acting President on a foundation Congress may knock out from under you.'\n\nThey urge you to keep them informed — and to be very sure before you cross the line.",
+        "type": "auto_advance",
+        "next": "3c"
+      },
+      "2d": {
+        "title": "Quiet Management",
+        "description": "Two weeks of improvised governance, with the crisis carefully hidden from public view.",
+        "image": "scene_2d.png",
+        "narration": "You choose to steady the ship without invoking anything. Sensitive decisions are routed through trusted staff. The President's public appearances are minimized. On good days he governs; on bad days, the machinery hums along without him.\n\nIt works — until it doesn't. During a bad spell, an ambiguous instruction nearly triggers a military miscalculation abroad, caught only at the last moment by an alert duty officer.\n\nChief of Staff: 'We got lucky. We are governing by improvisation with no legal authority behind any of it. If this surfaces — and it will — no one will ask why we were cautious. They'll ask why we hid a crisis and left the country exposed.'\n\nThe informal approach has bought time but built no legitimacy. You can no longer pretend a decision is avoidable.",
+        "type": "auto_advance",
+        "next": "3d"
+      },
+      "3a": {
+        "title": "The President's Answer",
+        "description": "The next morning. The President summons you before the staff arrives.",
+        "image": "scene_3a.png",
+        "narration": "The President has slept on it. His demeanor is different — more resigned, more clear-eyed than the night before.\n\nPresident: 'I have spent my life defending this office. I will not be the man who broke it by clinging to it. But I will not be pushed out either. If I step aside, I do it my way, on my signature, and I resume the moment I am able.'\n\nHe has left the door open to Section 3 — the voluntary path — but he wants assurance that this will not become a permanent removal engineered behind his back. This is the crux: do you honor the voluntary framework, or do you hedge against the possibility that he changes his mind when he is impaired?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Fully honor Section 3: help him transmit his own declaration and publicly commit that he resumes power on his own written say-so",
+            "next": "4a",
+            "effects": {
+              "ConstitutionalFidelity": 3,
+              "PublicLegitimacy": 2,
+              "CongressionalTrust": 1
+            }
+          },
+          {
+            "text": "Accept Section 3 for now, but quietly line up cabinet signatures as insurance in case he refuses to yield during a future episode",
+            "next": "4b",
+            "effects": {
+              "CabinetSupport": 2,
+              "ConstitutionalFidelity": -1,
+              "PublicLegitimacy": -1
+            }
+          },
+          {
+            "text": "Press him to accept a longer, staff-negotiated arrangement that keeps him nominally in office but strips his practical authority",
+            "next": "4c",
+            "effects": {
+              "ConstitutionalFidelity": -3,
+              "CongressionalTrust": -1,
+              "PublicLegitimacy": 1
+            }
+          }
+        ]
+      },
+      "3b": {
+        "title": "The Signatures Question",
+        "description": "A tense afternoon meeting with the cabinet officers most willing to consider Section 4.",
+        "image": "scene_3b.png",
+        "narration": "You have perhaps a bare majority within reach — if the documentation is strong and the President's condition worsens visibly. The physician has agreed to put his observations in writing, but stops short of certifying permanent incapacity.\n\nThe Secretary of Defense lays down a condition: 'I will sign only if I am convinced Congress would sustain us. Section 4 is not the end. He can contest it, and then it's two-thirds of both Houses or he takes his office right back — and we are finished.'\n\nYou must decide how to build toward a declaration: rush it while the crisis is acute, or first secure the congressional ground so that a contest would not collapse the whole effort.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Move now while the President is visibly impaired: gather the signatures and transmit the Section 4 declaration immediately",
+            "next": "4d",
+            "effects": {
+              "CabinetSupport": 3,
+              "ConstitutionalFidelity": 1,
+              "CongressionalTrust": -2
+            }
+          },
+          {
+            "text": "Pause to brief congressional leaders and secure their commitment before transmitting anything",
+            "next": "4e",
+            "effects": {
+              "CongressionalTrust": 3,
+              "CabinetSupport": 1,
+              "ConstitutionalFidelity": 2
+            }
+          },
+          {
+            "text": "Insist the physician certify a firmer medical finding before proceeding, even if it costs precious time",
+            "next": "4f",
+            "effects": {
+              "ConstitutionalFidelity": 2,
+              "PublicLegitimacy": 2,
+              "CabinetSupport": -1
+            }
+          }
+        ]
+      },
+      "3c": {
+        "title": "A Political Path Emerges",
+        "description": "A follow-up meeting where congressional leaders propose an alternative to a formal invocation.",
+        "image": "scene_3c.png",
+        "narration": "The leadership floats a political resolution: a bipartisan, confidential understanding under which the President agrees to a medical leave framed as voluntary, with a defined review period, avoiding any formal Section 4 confrontation.\n\nSpeaker: 'It keeps the Amendment holstered. No spectacle of a President contesting his own removal. But understand — this arrangement has no constitutional force. It holds only as long as everyone honors it. If he reneges, you are exactly where you started, except now the country knows.'\n\nIt is elegant and dangerous in equal measure. Do you pursue the political fix, or use the goodwill you've built to steer toward the Amendment's actual mechanisms?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Pursue the political arrangement, keeping the constitutional machinery in reserve",
+            "next": "4g",
+            "effects": {
+              "CongressionalTrust": 2,
+              "PublicLegitimacy": 1,
+              "ConstitutionalFidelity": -2
+            }
+          },
+          {
+            "text": "Use congressional goodwill to build a Section 4 coalition with the votes to sustain it if contested",
+            "next": "4e",
+            "effects": {
+              "CongressionalTrust": 2,
+              "CabinetSupport": 2,
+              "ConstitutionalFidelity": 3
+            }
+          },
+          {
+            "text": "Encourage the leaders to persuade the President to invoke Section 3 voluntarily instead",
+            "next": "4a",
+            "effects": {
+              "ConstitutionalFidelity": 2,
+              "PublicLegitimacy": 2,
+              "CongressionalTrust": 1
+            }
+          }
+        ]
+      },
+      "3d": {
+        "title": "The Reckoning",
+        "description": "An emergency late-night session in the Situation Room after the near-miss abroad.",
+        "image": "scene_3d.png",
+        "narration": "The near-catastrophe has forced your hand. The improvisation is over. You now confront the same fork you avoided at the start — but with less time, thinner secrecy, and a crisis that could break into the open at any hour.\n\nChief of Staff: 'Whatever you do now, you do it knowing we already gambled with the country's safety once. There is no clean option left. There is only the least bad one.'\n\nThe cabinet is uneasy. Congress does not yet know the full picture. The President's condition remains variable. You must choose a lawful path forward.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Go to the President and press hard for a Section 3 voluntary declaration before this leaks",
+            "next": "4a",
+            "effects": {
+              "ConstitutionalFidelity": 3,
+              "PublicLegitimacy": 1,
+              "CongressionalTrust": 1
+            }
+          },
+          {
+            "text": "Assemble the cabinet immediately and transmit a Section 4 declaration without waiting to secure Congress",
+            "next": "4d",
+            "effects": {
+              "CabinetSupport": 2,
+              "ConstitutionalFidelity": 1,
+              "CongressionalTrust": -2
+            }
+          },
+          {
+            "text": "Brief congressional leaders on the near-miss first, then build a sustainable Section 4 coalition",
+            "next": "4e",
+            "effects": {
+              "CongressionalTrust": 3,
+              "CabinetSupport": 1,
+              "ConstitutionalFidelity": 2
+            }
+          }
+        ]
+      },
+      "4a": {
+        "title": "Section 3 Invoked",
+        "description": "The President's study, with counsel and the physician present, as the declaration is drafted.",
+        "image": "scene_4a.png",
+        "narration": "The President transmits his written declaration to the President pro tempore of the Senate and the Speaker of the House, stating he is unable to discharge the powers and duties of his office. Under Section 3, those powers pass to you as Acting President until he transmits a written declaration to the contrary.\n\nThe transition is orderly. Markets steady. Allied capitals exhale. Because the President acted on his own signature, no one can credibly call it a seizure of power.\n\nBut a hard question remains for the arc ahead: what happens if, during a future impaired episode, he transmits a declaration that no inability exists — and resumes power when he plainly should not? The voluntary path you honored may soon test whether it can hold.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4b": {
+        "title": "The Insurance Policy",
+        "description": "Simultaneous tracks: a public Section 3 handoff and a private cabinet contingency.",
+        "image": "scene_4b.png",
+        "narration": "The President invokes Section 3, and power passes to you cleanly in public view. But behind the scenes, you have quietly secured tentative cabinet commitments to a Section 4 declaration should he try to reclaim his office while impaired.\n\nIt feels prudent. It is also perilous. A staffer aware of the contingency is uneasy about its secrecy, and the arrangement blurs the line between honoring the President's voluntary act and preparing to override him.\n\nChief of Staff: 'If this contingency ever leaks, the story won't be that you were careful. It'll be that you accepted his surrender with one hand while loading a weapon with the other.'\n\nThe test will come when the President decides to return.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4c": {
+        "title": "The Shadow Arrangement",
+        "description": "A negotiated understanding brokered by senior staff, memorialized in nothing official.",
+        "image": "scene_4c.png",
+        "narration": "You press for an arrangement that leaves the President nominally in office while routing real authority to you and the staff. No Section 3 declaration, no Section 4 filing — just an informal concentration of power justified by necessity.\n\nIt avoids a public rupture. But it rests on no constitutional foundation whatsoever. You are exercising presidential authority without the President having transmitted anything and without a cabinet declaration. The physician is deeply uncomfortable. Counsel warns that if the truth emerges, there is no lawful hook to point to.\n\nWhite House Counsel: 'You are acting as President without any of the two doors the Amendment actually provides. If a court, or Congress, or the press asks by what authority — there is no answer.'\n\nThe arrangement holds, for now, on trust and secrecy alone.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4d": {
+        "title": "Section 4 Transmitted",
+        "description": "The Cabinet Room. Signatures are gathered and the declaration is dispatched to the Hill.",
+        "image": "scene_4d.png",
+        "narration": "You and a majority of the principal officers of the executive departments transmit your written declaration to the President pro tempore and the Speaker: the President is unable to discharge the powers and duties of his office. By operation of Section 4, you immediately assume those powers as Acting President.\n\nWithin hours, the President transmits his own written declaration that no inability exists. Under the Amendment, that would return power to him — unless you and the cabinet majority again transmit your declaration within four days. You do. The contest now belongs to Congress, which must decide by a two-thirds vote of both Houses whether the President can discharge his office.\n\nYou moved fast and decisively while he was impaired. But you did not secure the votes first. The two-thirds mountain now looms, and your legitimacy hangs on a chamber you did not prepare.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4e": {
+        "title": "The Prepared Coalition",
+        "description": "A carefully sequenced effort: firm medical findings, committed cabinet, and briefed congressional leaders.",
+        "image": "scene_4e.png",
+        "narration": "You do the patient work. The physician's documentation is strengthened. A majority of the cabinet is genuinely convinced, not merely pressured. Congressional leaders of both parties have been briefed and understand the stakes of a two-thirds decision.\n\nOnly then do you and the cabinet transmit the Section 4 declaration. When the President contests it and you reaffirm within four days, the matter goes to Congress — but this time the ground has been prepared. The debate is grave, but the institution has been treated as a partner, not ambushed.\n\nSenate leader: 'You gave us the truth and the time to weigh it. Whatever we decide, no one can say this was done in the dark.'\n\nThe outcome is not guaranteed, but the process has integrity.",
+        "type": "auto_advance",
+        "next": "5",
+        "effects": {
+          "ConstitutionalFidelity": 1,
+          "CabinetSupport": 1
+        }
+      },
+      "4f": {
+        "title": "Waiting for Certainty",
+        "description": "Days pass as the physician conducts further evaluation before any declaration is filed.",
+        "image": "scene_4f.png",
+        "narration": "You refuse to move on ambiguous grounds. You insist on a firmer medical finding, accepting the cost in time and momentum. Some cabinet officers grow restless; one worries the window is closing.\n\nWhen the finding finally comes, it is clearer and harder to dispute — but the delay has allowed rumors to spread, and the President has had time to marshal his own defenders. You now hold a stronger case built on genuine evidence, though the acute moment that might have unified the cabinet has passed.\n\nSecretary of the Treasury: 'You were right not to sign on a hunch. But be honest — waiting for certainty in a crisis is its own kind of gamble.'\n\nWhatever comes next, you can say you did not act until you were sure.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "4g": {
+        "title": "The Political Fix",
+        "description": "A confidential bipartisan understanding is reached, and the President accepts a framed medical leave.",
+        "image": "scene_4g.png",
+        "narration": "The arrangement holds together. The President agrees to a medical leave presented as voluntary, with a review period, and congressional leaders quietly bless it. No Section 4 spectacle, no President contesting his own removal on the public stage.\n\nIt is a triumph of politics over confrontation — and it rests on nothing but honored commitments. Should the President repudiate the deal, the Amendment's actual mechanisms sit untouched and untested, and the country will suddenly learn that its continuity of government was managed by handshake.\n\nSpeaker: 'We bought stability. We did not buy certainty. This works right up until someone decides it doesn't.'\n\nYou have avoided a crisis of legitimacy by declining to invoke the very instrument designed for this moment.",
+        "type": "auto_advance",
+        "next": "5"
+      },
+      "5": {
+        "title": "The Weight of the Record",
+        "description": "A quiet moment alone before the outcome of your choices becomes history. The full arc of your decisions is now weighed.",
+        "image": "scene_5.png",
+        "narration": "Whatever path you took, the country is now watching to see whether the transfer — or non-transfer — of power was legitimate, durable, and true to the Constitution. The 25th Amendment gave you doors; the question was always which one you would walk through, and whether you would bring the cabinet, the Congress, and the public with you.\n\nThe record of your choices is now assembled: How much cabinet backing did you earn? Did you treat Congress as a partner or an obstacle? Did the public and the world see stability or maneuvering? And above all, did you honor the constitutional design or improvise around it?\n\nThe judgment of that record follows.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "ConstitutionalFidelity >= 4 && PublicLegitimacy >= 2 && CongressionalTrust >= 1",
+            "next": "6.principled_transition"
+          },
+          {
+            "condition": "ConstitutionalFidelity >= 2 && CongressionalTrust >= 2 && CabinetSupport >= 1",
+            "next": "6.sustained_section4"
+          },
+          {
+            "condition": "CabinetSupport >= 3 && CongressionalTrust <= -1",
+            "next": "6.contested_gamble"
+          },
+          {
+            "condition": "CongressionalTrust >= 2 && ConstitutionalFidelity <= 0",
+            "next": "6.fragile_bargain"
+          },
+          {
+            "condition": "ConstitutionalFidelity <= -2",
+            "next": "6.hollow_authority"
+          }
+        ],
+        "default": "6.uneasy_stewardship"
+      },
+      "6.principled_transition": {
+        "title": "A Transition That Held",
+        "description": "The White House press room, where the transfer of power is explained calmly to the nation.",
+        "image": "scene_6_principled.png",
+        "narration": "You honored the Constitution's design and brought the country with you. Whether the President invoked Section 3 on his own signature or a well-prepared coalition sustained a Section 4 finding, the transfer of power was orderly, transparent, and rooted in the Amendment's actual text. Congress was informed and respected; the public and foreign governments saw a government that knew its own rules.\n\nHistorians will study this as the case that proved Article XXV could work under pressure — not as a weapon, but as a framework. You assumed the powers of Acting President without the taint of opportunism, because every step could be defended by reference to the document you swore to preserve, protect, and defend.\n\nStability was not merely preserved. Its legitimacy was demonstrated.",
+        "type": "end",
+        "outcome": "principled_transition",
+        "outcome_message": "You navigated an untested constitutional crisis with fidelity to the 25th Amendment and the trust of every stakeholder."
+      },
+      "6.sustained_section4": {
+        "title": "The Declaration That Survived",
+        "description": "The Capitol, where Congress renders its two-thirds judgment after a grave and public debate.",
+        "image": "scene_6_sustained.png",
+        "narration": "You built the coalition the Constitution requires and did not flinch from the confrontation. The Section 4 declaration, backed by a genuinely convinced cabinet majority and a Congress that had been treated as a partner, withstood the President's challenge. Because you secured the ground before you acted, the two-thirds mountain — daunting as it was — did not collapse beneath you.\n\nThe process was painful and public, exactly as the Framers may have anticipated when they routed a contested inability finding to the full Congress. But it worked. You are Acting President by the operation of the Amendment's hardest mechanism, sustained by the branch designed to be its final arbiter.\n\nYou proved that Section 4 is not merely theoretical — and that it demands preparation, not just resolve.",
+        "type": "end",
+        "outcome": "sustained_section4",
+        "outcome_message": "You invoked and sustained a contested Section 4 declaration by preparing the cabinet and Congress before acting."
+      },
+      "6.contested_gamble": {
+        "title": "The Votes That Weren't There",
+        "description": "A divided Capitol, where the two-thirds threshold proves out of reach.",
+        "image": "scene_6_contested.png",
+        "narration": "You acted decisively while the President was impaired, gathering cabinet signatures and transmitting a Section 4 declaration in the heat of the crisis. But you did not secure Congress first. When the President contested the finding and you reaffirmed it, the matter went to a Congress that had not been prepared for the two-thirds decision the Amendment demands.\n\nThe mountain held its height. Without two-thirds of both Houses to sustain the inability finding, the President resumes the powers and duties of his office. Your bold move, however well-intentioned, is now cast by critics as a failed attempt to displace him.\n\nYou were procedurally within the Amendment's letter. But legitimacy in a contested case lives in the Congress — and you asked the country to trust a coalition you had not yet built.",
+        "type": "end",
+        "outcome": "contested_gamble",
+        "outcome_message": "You transmitted a Section 4 declaration without securing the congressional votes, and the contest collapsed."
+      },
+      "6.hollow_authority": {
+        "title": "Power Without a Foundation",
+        "description": "A shadowed corridor of the West Wing, where authority is exercised but never explained.",
+        "image": "scene_6_hollow.png",
+        "narration": "You avoided a public rupture, but you did so by improvising around the Constitution rather than through it. Whether by managing the President informally or by concentrating authority in a shadow arrangement, you exercised presidential power without a clean Section 3 declaration from the President or a properly grounded Section 4 declaration from the cabinet.\n\nFor a time, it held on secrecy and necessity. But the Amendment provided two doors precisely so that authority in a crisis would rest on something more than trust. When the questions come — from the press, from Congress, from history — there is no clause you can confidently point to, no signature that settles the matter.\n\nThe crisis was managed. Its legitimacy was never established. And a precedent has been set that the next crisis may exploit.",
+        "type": "end",
+        "outcome": "hollow_authority",
+        "outcome_message": "You governed around the 25th Amendment instead of squarely through it, leaving your authority without a firm constitutional foundation."
+      },
+      "6.fragile_bargain": {
+        "title": "The Handshake Republic",
+        "description": "A tense calm that everyone knows could break, held together by an unwritten understanding.",
+        "image": "scene_6_fragile.png",
+        "narration": "You steadied the country by winning the confidence of Congress and steering away from a public constitutional confrontation. The immediate danger passed without the spectacle of a President contesting his own removal — but the peace you brokered leaned more on cultivated political goodwill than on the settled force of the Amendment's own text.\n\nBecause you kept the constitutional machinery in reserve rather than driving it to a decisive, textually grounded conclusion, the resolution's durability now depends on the continued good faith of everyone involved rather than on a clause that settles the matter beyond dispute. Observers read the outcome as an arrangement — a fragile understanding — more than a firmly grounded invocation of Article XXV. The clarity that only an unambiguous constitutional resolution can supply was left in shadow.\n\nYou were a skilled broker of a delicate peace. Whether that peace rests on a foundation firm enough to survive the next crisis is a question you have left for others to answer.",
+        "type": "end",
+        "outcome": "fragile_bargain",
+        "outcome_message": "You steadied the crisis through political goodwill while keeping the Amendment's machinery in reserve, leaving a resolution that read as a bargain rather than a firmly grounded constitutional invocation."
+      },
+      "6.uneasy_stewardship": {
+        "title": "An Uneasy Stewardship",
+        "description": "A muted transfer of responsibility, correct in parts, unsettled as a whole.",
+        "image": "scene_6_uneasy.png",
+        "narration": "You navigated the crisis, and power moved or was managed without the government falling. The immediate danger passed. But to those who will judge it, the record reads as an in-between one: neither a resolution that every branch plainly rallied behind at once, nor an outright rupture.\n\nObservers will note that the outcome did not quite crystallize into an unassailable, precedent-setting whole — the alignment of cabinet, Congress, and public that would have put the matter beyond dispute never fully came together in their eyes. To some it will read as prudence; to others, as a resolution that fell short of the decisive, thoroughly grounded outcome the moment seemed to call for.\n\nYou were a careful steward in an impossible moment — neither a clear triumph nor a clear failure in the judgment of history, but a reminder that the untested corners of the Constitution reward the fullest possible alignment and leave anything less open to second-guessing.",
+        "type": "end",
+        "outcome": "uneasy_stewardship",
+        "outcome_message": "Your resolution survived but read to observers as incomplete, setting no clear constitutional precedent."
+      }
+    }
+  }
+}

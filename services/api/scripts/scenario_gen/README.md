@@ -6,10 +6,41 @@ Turn a source PDF into a ready-to-import branching scenario.
 
 PDF (local path or URL) → propose candidate subjects → you pick one → generate a
 best-practices branching scenario → validate it against the engine
-(`engine.validator.validate_scenario`) with a self-repair loop → write:
+(`engine.validator.validate_scenario`) with a self-repair loop → **quality loop**
+(below) → write:
 
 - `<slug>-import.json` — the import body for `POST /api/v1/admin/scenarios/import`
 - `<slug>-image-prompts.json` — one image prompt per scene
+- `<slug>-quality-report.json` — per-version gate metrics, judge results, verdict
+
+## Quality loop (pre-image)
+
+Before any image spend, `quality.run_quality_loop` gates the generated scenario
+(cost-ordered):
+
+1. **Structural gate** (free): every root→end path is walked through the real
+   engine. Requires: declared variables are READ by a conditional, every choice
+   point can change the outcome, ≥2 outcomes reachable.
+2. **LLM contradiction judge** (only when needed): K-sample majority vote per
+   path (`--judge-k`, default 5) — single passes are too noisy to gate on. Only
+   STABLE (majority-flagged) contradictions count.
+3. **Reviser**: on failure, the gen model rewrites the scenario from the
+   findings; each revision is re-validated and re-scored, the best version is
+   kept, iterations capped at `--quality-iters` (default 3).
+
+Default mode is **advisory** (warn + report, images proceed); `--strict`
+blocks the image step on a failing gate (exit code 2). `--no-quality` skips the
+loop; `--no-judge` keeps the structural gate but skips LLM judging.
+
+To run the same loop on an existing import JSON (repair or benchmark):
+`py -3.11 scenario_iterations/run_quality_loop.py <import.json> [--gate-only]`
+(writes `<input>.revised.json` + report; never overwrites the original).
+For repair runs add `--judge-on-pass` (existing files don't get the
+as-generated benefit of the doubt). Structural failures typically fix in one
+revision; narrative contradictions converge monotonically but can need more
+than one 3-iteration run — chain runs by feeding `.revised.json` back in until
+PASSED (benchmarks: rio-grande needed 3 chained runs from the worst library
+state to a full pass).
 
 Image prompts are written by an **art-director pass**: an LLM reads the whole scenario
 (title, description, every scene) and infers a single consistent setting (era, place,
@@ -35,7 +66,8 @@ python -m scripts.scenario_gen --pdf source.pdf --non-interactive --slug my-topi
 ```
 
 Flags: `--pdf` (required), `--out <dir>` (default repo root), `--subjects N`,
-`--slug`, `--images`, `--gen-model`, `--scout-model`, `--non-interactive`.
+`--slug`, `--images`, `--gen-model`, `--scout-model`, `--non-interactive`,
+`--strict`, `--no-quality`, `--no-judge`, `--quality-iters N`, `--judge-k N`.
 
 ## Required environment (services/api/.env)
 

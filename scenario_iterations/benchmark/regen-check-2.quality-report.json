@@ -1,0 +1,450 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "4/5 choice points influential; inert: ['3a']"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (contested_gamble, fragile_bargain, hollow_authority, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 4,
+        "influential_of": 5,
+        "inert_choice_scenes": [
+          "3a"
+        ],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 5,
+        "stable_major": 5,
+        "clean": 6,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0
+            ],
+            "outcome": "uneasy_stewardship",
+            "end_scene": "6.uneasy_stewardship",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: An Uneasy Stewardship (end)",
+            "example_explanation": "The ending claims the learner's record is 'a patchwork,' that they 'hedged, delayed, or leaned on improvisation,' built only 'partial cabinet support' and 'uneven congressional trust,' and that 'no clean precedent was set.' However, on this path the learner made two consistent, constitutionally faithful choices: first urging voluntary Section 3 invocation, then fully honoring the President's own declaration with a public commitment to restore power on his written say-so. Beat 4 explicitly confirms the transition was 'orderly,' markets steadied, allies were reassured, and 'no one can credibly call it a seizure of power.' Nothing in the intervening beats shows hedging, improvisation, or failure to bring Cabinet/Congress along. The ending's characterization of mixed, half-measure choices directly contradicts the choices actually made and the outcomes described in Beat 4, without any acknowledged reversal or new event that would explain the downgrade."
+          },
+          {
+            "choices": [
+              1,
+              1
+            ],
+            "outcome": "uneasy_stewardship",
+            "end_scene": "6.uneasy_stewardship",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: An Uneasy Stewardship (end)",
+            "example_explanation": "The ending characterizes the learner's record as a 'patchwork' involving 'partial cabinet support, uneven congressional trust,' 'improvisation,' and 'mixed signals,' and states 'no clean precedent was set' and that scholars will debate whether 'you respected the process fully.' However, Beat 4's narration explicitly confirms the opposite on this path: the physician's documentation was strengthened, a genuine majority of cabinet was 'genuinely convinced, not merely pressured,' congressional leaders of both parties were briefed and understood the stakes, and the Senate leader praised the transparency of the process. Beat 4 describes an outcome of procedural integrity and coalition-building. The ending's condemnation of 'half-measures,' 'improvisation,' and 'partial' support directly contradicts what the narration said occurred in Beat 4, and this reversal is never acknowledged or explained."
+          },
+          {
+            "choices": [
+              2,
+              1
+            ],
+            "outcome": "uneasy_stewardship",
+            "end_scene": "6.uneasy_stewardship",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: An Uneasy Stewardship (end)",
+            "example_explanation": "The ending characterizes the learner's record as 'a patchwork,' involving 'partial cabinet support, uneven congressional trust,' 'half-measures,' and failure to set a 'clean precedent.' However, Beat 4 explicitly narrates that the learner did the 'patient work,' secured a 'majority of the cabinet genuinely convinced,' briefed congressional leaders of both parties, prepared the two-thirds coalition before acting, and treated the institution 'as a partner, not ambushed.' The Senate leader even praises the process as transparent. The ending's characterization of mixed, improvised, and incomplete execution directly contradicts the path's narration, which describes a thorough, constitutionally grounded process. The scenario never acknowledges any reversal or failure that would justify the negative verdict delivered at the end."
+          },
+          {
+            "choices": [
+              2,
+              2
+            ],
+            "outcome": "uneasy_stewardship",
+            "end_scene": "6.uneasy_stewardship",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: An Uneasy Stewardship (end)",
+            "example_explanation": "The learner's two choices were both constitutionally sound and process-respecting: first, consulting congressional leadership before acting (explicitly praised by the Speaker as the right approach), and second, steering toward the President's own voluntary Section 3 declaration rather than an informal political deal with no constitutional force. Beat 4 confirms the outcome was orderly, markets steadied, and allies were reassured — precisely because the President acted on his own signature within the Amendment's formal mechanism. The ending, however, characterizes the path as 'patchwork,' involving 'improvisation,' 'hedging,' 'delaying,' and 'mixed signals,' and claims 'no clean precedent was set.' This directly contradicts what the path actually showed: the learner rejected the informal political fix in favor of the Amendment's own voluntary-transfer mechanism (Section 3), which is the cleanest, most constitutionally orthodox path available. The ending's characterization of the outcome as a half-measure presupposes choices the learner explicitly did not make, without any acknowledged reversal or bridging explanation."
+          },
+          {
+            "choices": [
+              3,
+              2
+            ],
+            "outcome": "fragile_bargain",
+            "end_scene": "6.fragile_bargain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Handshake Republic (end)",
+            "example_explanation": "The learner explicitly chose to build a Section 4 coalition and transmit a formal Section 4 declaration, which Beat 4 confirms occurred ('you and the cabinet transmit the Section 4 declaration... the matter goes to Congress'). The ending, however, states 'you left the Amendment holstered' and that the resolution 'rests on honored commitments rather than constitutional force,' directly contradicting the path where the Amendment's Section 4 mechanism was formally invoked and Congress was engaged as a constitutional partner. The ending's outcome summary ('never grounded it in the Amendment's mechanisms') is factually incompatible with what Beat 4 narrates happening on this exact path."
+          }
+        ]
+      },
+      "score": [
+        0,
+        -1,
+        4,
+        2,
+        -5,
+        -5
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "6 reachable (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 1,
+        "stable_total": 2,
+        "stable_major": 2,
+        "clean": 10,
+        "stable": [
+          {
+            "choices": [
+              2,
+              1
+            ],
+            "outcome": "uneasy_stewardship",
+            "end_scene": "6.uneasy_stewardship",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: An Uneasy Stewardship (end)",
+            "example_explanation": "Beat 4 explicitly narrates that the learner did the patient preparatory work, secured genuine cabinet conviction, briefed congressional leaders of both parties, and that the process had integrity — the Senate leader even says 'no one can say this was done in the dark.' This is the very definition of bringing the cabinet, Congress, and the public along in alignment. Yet Beat 6's ending asserts that 'the cabinet, the Congress, and the public were not all brought to the same clear place at the same time' and characterizes the outcome as incomplete and not a 'thoroughly grounded' resolution. The ending's characterization directly contradicts the path's own narration without any acknowledged reversal or new complicating event — it condemns the learner for a failure of alignment that Beat 4 explicitly said was achieved."
+          },
+          {
+            "choices": [
+              3,
+              2
+            ],
+            "outcome": "fragile_bargain",
+            "end_scene": "6.fragile_bargain",
+            "flagged": 4,
+            "samples": 4,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Handshake Republic (end)",
+            "example_explanation": "The learner explicitly chose to build a Section 4 coalition, brief Congress, and then formally transmit a Section 4 declaration. Beat 4 confirms this: the cabinet majority was 'genuinely convinced,' congressional leaders were briefed, the Section 4 declaration was transmitted, and the President's contest triggered the four-day reaffirmation period, sending the matter to Congress. This is a textbook invocation of the Amendment's own mechanisms. Yet the ending (Beat 6) asserts the learner 'relied on honored commitments instead of the Amendment's own force' and that 'the durable clarity that comes from squarely invoking the Amendment's mechanisms was left in doubt.' That directly contradicts what Beat 4 narrates: the Amendment's Section 4 process was formally invoked, not bypassed. The ending describes a politically brokered deal that matches a different path (possibly the 'hold off entirely' path from Beat 1), not the path this learner actually took."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        -2,
+        -2
+      ]
+    },
+    {
+      "iteration": 2,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "6 reachable (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 2,
+        "stable_major": 2,
+        "clean": 10,
+        "stable": [
+          {
+            "choices": [
+              2,
+              2
+            ],
+            "outcome": "fragile_bargain",
+            "end_scene": "6.fragile_bargain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Handshake Republic (end)",
+            "example_explanation": "The learner explicitly chose to pursue Section 3 voluntary invocation rather than the informal political arrangement ('keep the Amendment holstered'). Beat 4 confirms this: the President formally transmitted a written declaration under Section 3, powers passed constitutionally to the VP as Acting President, and the narration notes 'no one can credibly call it a seizure of power.' This is an unambiguous, textually grounded constitutional invocation of the 25th Amendment. Yet the ending in Beat 6 characterizes the outcome as a 'political bargain,' an arrangement 'leaning more on political goodwill than on the settled force of the Amendment's own text,' and says 'the clarity that comes from an unambiguous invocation of the Amendment was left in shadow.' This directly contradicts what Beat 4 established: an unambiguous Section 3 invocation did occur. The ending applies language more appropriate to the rejected path (the informal bipartisan medical-leave arrangement) to a path that never took that route, mischaracterizing the core constitutional fact of what happened."
+          },
+          {
+            "choices": [
+              3,
+              2
+            ],
+            "outcome": "fragile_bargain",
+            "end_scene": "6.fragile_bargain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Handshake Republic (end)",
+            "example_explanation": "Beat 4 explicitly narrates that the learner followed the full Section 4 procedure — transmitting the declaration, reaffirming within four days when the President contested it, and sending the matter to Congress — and that congressional leaders praised the process as transparent and principled ('no one can say this was done in the dark'). The ending in Beat 6, however, characterizes the resolution as one that 'leaned more on political goodwill than on the settled force of the Amendment's own text' and says 'the clarity that comes from an unambiguous invocation of the Amendment was left in shadow.' This directly contradicts the path taken: the learner did unambiguously invoke Section 4, did reaffirm, and did allow Congress to decide. The ending's framing presupposes that the formal Section 4 mechanism was bypassed or left incomplete, which is the opposite of what this path's narration established."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        -2,
+        -2
+      ]
+    },
+    {
+      "iteration": 3,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "5 reachable (contested_gamble, fragile_bargain, principled_transition, sustained_section4, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 1,
+        "stable_major": 1,
+        "clean": 11,
+        "stable": [
+          {
+            "choices": [
+              3,
+              2
+            ],
+            "outcome": "fragile_bargain",
+            "end_scene": "6.fragile_bargain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Handshake Republic (end)",
+            "example_explanation": "Beat 4 explicitly narrates that the learner and cabinet transmitted the Section 4 declaration, the President contested it, the learner reaffirmed within four days, and the matter went to Congress — a textbook invocation of the Amendment's formal machinery, with Congress treated as a prepared partner. The ending in Beat 6, however, characterizes the resolution as one where 'you kept the constitutional machinery in reserve rather than driving it to a decisive, textually grounded conclusion' and describes the outcome as a political arrangement rather than a constitutional invocation. This directly contradicts what Beat 4 narrates actually happened: the Section 4 machinery was fully engaged, not held in reserve. The ending's core claim is logically incompatible with the path's events and is never bridged or explained."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        -1,
+        -1
+      ]
+    }
+  ],
+  "best_iteration": 3,
+  "revisions_attempted": 3,
+  "passed": false
+}

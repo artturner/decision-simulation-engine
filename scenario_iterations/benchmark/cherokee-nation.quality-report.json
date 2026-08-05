@@ -1,0 +1,207 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "0 variable(s) declared (none), 0 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "0/1 choice points influential; inert: ['2']"
+        },
+        "outcomes_reachable": {
+          "ok": false,
+          "detail": "1 reachable (failure) of 1 declared (failure)"
+        }
+      },
+      "metrics": {
+        "paths": 3,
+        "variables_declared": [],
+        "variables_read": [],
+        "variables_read_count": 0,
+        "choice_points": 1,
+        "influential_points": 0,
+        "influential_of": 1,
+        "inert_choice_scenes": [
+          "2"
+        ],
+        "outcomes_reachable": [
+          "failure"
+        ],
+        "outcomes_declared": [
+          "failure"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 3,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 0,
+        "stable_major": 0,
+        "clean": 3,
+        "stable": []
+      },
+      "score": [
+        0,
+        -1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (LegalLegitimacy, LivesPreserved, NationalUnity), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "0/1 choice points influential; inert: ['2']"
+        },
+        "outcomes_reachable": {
+          "ok": false,
+          "detail": "1 reachable (failure) of 1 declared (failure)"
+        }
+      },
+      "metrics": {
+        "paths": 3,
+        "variables_declared": [
+          "LegalLegitimacy",
+          "LivesPreserved",
+          "NationalUnity"
+        ],
+        "variables_read": [
+          "LegalLegitimacy",
+          "LivesPreserved",
+          "NationalUnity"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 1,
+        "influential_points": 0,
+        "influential_of": 1,
+        "inert_choice_scenes": [
+          "2"
+        ],
+        "outcomes_reachable": [
+          "failure"
+        ],
+        "outcomes_declared": [
+          "failure"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 3,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 0,
+        "stable_major": 0,
+        "clean": 3,
+        "stable": []
+      },
+      "score": [
+        0,
+        -1,
+        1,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 2,
+      "accepted": true,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (LegalLegitimacy, LivesPreserved, NationalUnity), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "1/1 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (legal_path, negotiation_path, resistance_path) of 3 declared (legal_path, negotiation_path, resistance_path)"
+        }
+      },
+      "metrics": {
+        "paths": 3,
+        "variables_declared": [
+          "LegalLegitimacy",
+          "LivesPreserved",
+          "NationalUnity"
+        ],
+        "variables_read": [
+          "LegalLegitimacy",
+          "LivesPreserved",
+          "NationalUnity"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 1,
+        "influential_points": 1,
+        "influential_of": 1,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "legal_path",
+          "negotiation_path",
+          "resistance_path"
+        ],
+        "outcomes_declared": [
+          "legal_path",
+          "negotiation_path",
+          "resistance_path"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 3,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 0,
+        "stable_major": 0,
+        "clean": 3,
+        "stable": []
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 2,
+  "revisions_attempted": 2,
+  "passed": true
+}

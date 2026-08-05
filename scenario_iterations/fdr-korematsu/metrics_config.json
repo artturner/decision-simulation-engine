@@ -1,0 +1,11 @@
+{
+  "_comment": "Valence config for analyze.py --config (fdr-korematsu family). virtue_vars are the axes the endings claim to be 'about'; outcome_rank is worst(0) -> best. military_supremacy ranks with constitutional_failure (removal by military fiat, outside law); removal_averted ranks with principled_restraint so the two top outcomes never count as inversions.",
+  "virtue_vars": ["ConstitutionalLegitimacy", "CivilLiberties"],
+  "outcome_rank": {
+    "constitutional_failure": 0,
+    "military_supremacy": 0,
+    "qualified_integrity": 1,
+    "principled_restraint": 2,
+    "removal_averted": 2
+  }
+}

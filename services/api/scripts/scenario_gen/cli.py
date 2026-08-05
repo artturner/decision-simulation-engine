@@ -12,7 +12,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import REPO_ROOT, assemble, generate, image_prompts, images, ingest, scout
+from . import REPO_ROOT, assemble, generate, image_prompts, images, ingest, quality, scout
 
 
 def _select_subject(subjects: list[dict], non_interactive: bool) -> dict:
@@ -48,6 +48,26 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--non-interactive", action="store_true", help="Auto-pick subject #1; no prompts."
     )
+    parser.add_argument(
+        "--strict", action="store_true",
+        help="Hard-block image generation if the quality gate fails (default: warn).",
+    )
+    parser.add_argument(
+        "--no-quality", action="store_true",
+        help="Skip the quality gate + reviser loop entirely.",
+    )
+    parser.add_argument(
+        "--no-judge", action="store_true",
+        help="Quality gate: structural metrics only, no LLM contradiction judge.",
+    )
+    parser.add_argument(
+        "--quality-iters", type=int, default=quality.DEFAULT_MAX_ITERS,
+        help="Max reviser iterations in the quality loop.",
+    )
+    parser.add_argument(
+        "--judge-k", type=int, default=quality.DEFAULT_JUDGE_K,
+        help="Judge samples per path (majority vote).",
+    )
     args = parser.parse_args(argv)
 
     from app.core.config import settings
@@ -77,6 +97,34 @@ def main(argv: list[str] | None = None) -> int:
         print(f"✗ {exc}", file=sys.stderr)
         return 1
 
+    # Quality loop: gate (structural + stabilized LLM judge) and, on failure,
+    # LLM revision with keep-best guardrails — all BEFORE any image spend.
+    quality_result = None
+    if not args.no_quality:
+        print(f"→ Quality gate{' [strict]' if args.strict else ''} …")
+        quality_result = quality.run_quality_loop(
+            scenario_json,
+            gen_model=gen_model,
+            judge_k=args.judge_k,
+            max_iters=args.quality_iters,
+            use_judge=not args.no_judge,
+        )
+        scenario_json = quality_result.scenario_json
+        verdict = "PASSED" if quality_result.passed else "FAILED"
+        print(f"  quality gate {verdict} "
+              f"(best of {len(quality_result.report['versions'])} version(s), "
+              f"{quality_result.report['revisions_attempted']} revision(s))")
+
+    # Validate BEFORE the image steps so a broken scenario never costs images.
+    from engine.validator import validate_scenario
+
+    errors = validate_scenario(scenario_json)
+    if errors:
+        print("✗ Final scenario failed validation:", file=sys.stderr)
+        for e in errors:
+            print(f"   - {e}", file=sys.stderr)
+        return 1
+
     title, description = _derive_meta(scenario_json, subject)
     slug = args.slug or assemble.slugify(title)
     if not args.non_interactive:
@@ -92,7 +140,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  (art-director prompts unavailable: {exc}; using template prompts)")
         prompts = image_prompts.build_prompts(scenario_json)
 
-    if args.images:
+    gate_blocked = bool(
+        args.strict and quality_result is not None and not quality_result.passed
+    )
+    if args.images and gate_blocked:
+        print("✗ --strict: quality gate failed — image generation blocked. "
+              "Inspect the quality report, fix or re-run, then generate images.",
+              file=sys.stderr)
+    elif args.images:
         print(f"→ Generating {len(prompts)} images ({settings.SCENARIO_IMAGE_MODEL}) "
               "and uploading to R2 …")
         try:
@@ -104,23 +159,24 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print(f"  uploaded {len(urls)} images")
 
-    # Validate the final scenario_json before writing.
-    from engine.validator import validate_scenario
-
-    errors = validate_scenario(scenario_json)
-    if errors:
-        print("✗ Final scenario failed validation:", file=sys.stderr)
-        for e in errors:
-            print(f"   - {e}", file=sys.stderr)
-        return 1
-
     import_obj = assemble.build_import(slug, title, description, scenario_json)
     import_path = assemble.write_json(out_dir / f"{slug}-import.json", import_obj)
     prompts_path = assemble.write_json(out_dir / f"{slug}-image-prompts.json", prompts)
+    report_path = None
+    if quality_result is not None:
+        report_path = assemble.write_json(
+            out_dir / f"{slug}-quality-report.json", quality_result.report
+        )
 
     print("\n✓ Done.")
     print(f"  Scenario : {import_path}")
     print(f"  Prompts  : {prompts_path}")
+    if report_path:
+        print(f"  Quality  : {report_path} "
+              f"({'PASSED' if quality_result.passed else 'FAILED'})")
+    if quality_result is not None and not quality_result.passed and not args.strict:
+        print("  ⚠ quality gate FAILED (advisory mode) — review the report "
+              "before publishing; re-run with --strict to block images.")
     if not args.images and prompts:
         print(f"  ({len(prompts)} scene image prompts — run again with --images to "
               "auto-generate and upload them)")
@@ -128,7 +184,7 @@ def main(argv: list[str] | None = None) -> int:
         "\nNext: POST the import file to /api/v1/admin/scenarios/import "
         "(X-Admin-Key header) via Postman."
     )
-    return 0
+    return 2 if gate_blocked else 0
 
 
 if __name__ == "__main__":

@@ -1,0 +1,573 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": true
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 2 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "3/3 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy"
+        ],
+        "variables_read_count": 2,
+        "choice_points": 3,
+        "influential_points": 3,
+        "influential_of": 3,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 11,
+        "stable_major": 4,
+        "clean": 25,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'you kept the policy tethered, however imperfectly, to legal legitimacy, whether by narrowing its scope...' and later acknowledges 'on some paths you compromised on scope,' but the opening framing of the ending credits the learner with partially 'narrowing its scope' as one of the legitimacy-preserving acts. In fact, the learner explicitly chose the broadest possible scope — all persons of Japanese ancestry including citizens — which is the opposite of narrowing. The ending's summary language groups scope-narrowing as a positive thing this learner may have done, when this path's record shows the learner actively rejected any narrowing. The scenario does add a hedge ('on some paths you compromised on scope'), but it still lists 'narrowing its scope' as among the things that preserved legitimacy on this path, which mischaracterizes what actually happened."
+          },
+          {
+            "choices": [
+              0,
+              0,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'you kept the policy tethered, however imperfectly, to legal legitimacy, whether by narrowing its scope...' and credits the learner with partially preserving constitutional legitimacy partly through scope limitation. However, the learner's very first choice was explicitly to recommend the broadest possible removal — all persons of Japanese ancestry including citizens — to satisfy the military's demand for certainty. The learner never narrowed the scope; they maximized it. The ending's framing that the learner 'narrowed its scope' or held some ground on scope directly contradicts the first choice, and the scenario never acknowledges a reversal on that dimension. While the learner's Beat 5 choice to concede weakness of the military-necessity argument is partially consistent with the 'honest' framing, the ending over-claims by attributing scope-narrowing legitimacy to a path that chose maximum scope from the outset."
+          },
+          {
+            "choices": [
+              0,
+              1,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'you kept the policy tethered, however imperfectly, to legal legitimacy, whether by narrowing its scope, anchoring it in law, or refusing to let its factual foundation go wholly uncontested.' The phrase 'narrowing its scope' credits the learner with a scope-limiting choice, but the learner explicitly chose the broadest possible scope — removing all persons of Japanese ancestry including citizens. The ending's positive framing of 'narrowing scope' as one of the legitimacy-preserving moves contradicts what this path actually did. The scenario never acknowledges or reverses the broad-scope choice; it simply omits it in the final accounting, causing the ending to over-claim relative to this path's actual choices."
+          },
+          {
+            "choices": [
+              0,
+              1,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'you kept the policy tethered, however imperfectly, to legal legitimacy, whether by narrowing its scope, anchoring it in law, or refusing to let its factual foundation go wholly uncontested.' However, the learner's first choice was explicitly the broadest possible scope — removing all persons of Japanese ancestry including citizens — which is the opposite of narrowing scope. The ending then says 'on some paths you compromised on scope, mechanism, or candor before the Court,' which partially acknowledges this, but the framing of 'narrowing its scope' as one of the legitimacy-preserving acts the learner may have taken is inaccurate for this path. The ending appears to import language from other branches without fully excluding the scope-narrowing credit from this path, mildly mischaracterizing what the learner actually chose."
+          },
+          {
+            "choices": [
+              0,
+              2,
+              1
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'the truth of the intelligence findings never carried the weight it deserved' and that 'the record that reached the Court came out compromised rather than fully corrected,' but the learner explicitly chose to disclose the contradictory intelligence to the Court. The scenario never narrates an event that overrode or nullified this disclosure — no scene shows the disclosure being suppressed, ignored, or overruled. The ending thus presupposes a compromised, undisclosed record that the learner's choice directly rejected. While the ending acknowledges the learner 'attempted disclosure,' it characterizes the record as compromised anyway without explaining how the disclosure failed to correct it, creating an unacknowledged reversal of the choice's effect."
+          },
+          {
+            "choices": [
+              0,
+              2,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'you kept the policy tethered, however imperfectly, to legal legitimacy, whether by narrowing its scope...' and credits the learner with partially 'narrowing' the program. However, the learner's first choice was explicitly to advise the broadest possible removal — all persons of Japanese ancestry including citizens — which is the opposite of narrowing. The ending's framing that the learner 'narrowed scope' as a legitimacy-preserving act contradicts the actual first choice. The later signal to quietly concede weakness before the Court (Beat 5) addresses candor, not scope, so it does not bridge this gap. The ending over-claims credit for scope-narrowing that this path's first choice foreclosed."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 3,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the learner preserved legitimacy partly by 'anchoring it in law,' but the learner explicitly chose a unilateral executive order over congressional legislation precisely because they did not want to anchor it in statutory law. The earlier choice was described as resting 'entirely on your war powers' with 'no act of Congress behind it.' The ending's claim that anchoring in law was one of the legitimacy-preserving moves contradicts the mechanism chosen on this path, without acknowledging that this path specifically rejected that option."
+          },
+          {
+            "choices": [
+              2,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the learner avoided 'let[ting] its factual foundation go wholly uncontested' and 'preserved enough constitutional legitimacy' partly by maintaining candor before the Court. It also says reform came sooner because of legitimacy preserved. However, the learner explicitly chose to withhold exculpatory intelligence reports from the Supreme Court — the historically decisive act of bad faith that, in the real Korematsu case, was later identified as prosecutorial misconduct and led to the 1983 coram nobis ruling. The ending never acknowledges this reversal; instead it credits the learner with a degree of honesty before the Court that this path's choice directly foreclosed. The ending's positive framing ('refused to let its factual foundation go wholly uncontested') flatly contradicts the learner's decision to suppress the exculpatory reports."
+          },
+          {
+            "choices": [
+              3,
+              0,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'you kept the policy tethered... by narrowing its scope' and references 'some paths you compromised on scope,' implying the learner made concessions on scope. However, the learner's first choice was to reject mass removal entirely on constitutional grounds — the broadest possible stance against scope. The ending also says 'you did not prevent the injustice, and on some paths you compromised on scope, mechanism, or candor,' which generically lumps this path with others where the learner did compromise on scope. While Beat 3 acknowledged events overtook the scope question (providing a narrative bridge), the ending's summary credits the learner with 'narrowing scope' as a legitimacy-preserving act when in fact the learner argued for no removal at all, and was overridden. The ending mildly mischaracterizes the learner's stance on scope as a deliberate narrowing rather than a total rejection that was overruled."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the learner refused 'to let its factual foundation go wholly uncontested' and 'preserved enough constitutional legitimacy' partly through candor before the Court, and credits them with keeping 'the record open to correction.' However, the learner explicitly chose to withhold exculpatory intelligence from the Supreme Court and defend the policy aggressively — the exact opposite of honesty before the Court. The ending never acknowledges this reversal; it instead congratulates the learner for a quality of candor this path directly rejected. This is an unacknowledged contradiction between the choice made and what the ending presupposes about how the learner behaved."
+          },
+          {
+            "choices": [
+              3,
+              2,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the learner helped keep 'the factual foundation' from going 'wholly uncontested' and credits them with 'refusing to let its factual foundation go wholly uncontested,' preserving 'constitutional legitimacy' and leaving 'the record open to correction.' But in Beat 5 the learner explicitly chose to suppress the exculpatory intelligence reports and argue the case aggressively — the precise opposite of contesting the factual foundation. The ending never acknowledges this reversal; it simply attributes to the learner a quality of candor before the Court that this path's choice foreclosed. This is an unacknowledged contradiction between a core choice and the ending's characterization of what happened on this path."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        -4,
+        -11
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 2 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "3/3 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy"
+        ],
+        "variables_read_count": 2,
+        "choice_points": 3,
+        "influential_points": 3,
+        "influential_of": 3,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 3,
+        "stable_major": 1,
+        "clean": 33,
+        "stable": [
+          {
+            "choices": [
+              2,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending narration states the advisor 'did not run entirely from the truth' and that the mixed record 'kept the door to correction open,' attributing a partial commitment to honesty as a mitigating factor. However, the learner explicitly chose to withhold exculpatory intelligence from the Supreme Court — the most direct and consequential act of dishonesty on this path. The ending presupposes some degree of candor with the Court that this choice categorically foreclosed. The scenario never acknowledges that this specific act of suppression undercuts the 'partial honesty' framing; instead, the ending awards credit for keeping the record honest enough to hasten reform, which directly contradicts the choice to hide evidence that would have revealed the military-necessity claim was false."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'we did not run entirely from the truth of it' and credits the learner with a 'mixed record' that 'kept the door to correction open' partly because of honesty with the Court. However, the learner explicitly chose to withhold exculpatory intelligence reports from the Supreme Court — a deliberate suppression of evidence — which is the very act that in the real Korematsu history was later condemned as prosecutorial misconduct. The ending never acknowledges this specific act of concealment; instead it characterizes the record as one that avoided full compromise of truth. This is a mild overstatement: the path showed a concrete dishonest act (suppressing reports) that the ending fails to account for, crediting the learner with partial truthfulness that the record on this path does not fully support."
+          },
+          {
+            "choices": [
+              3,
+              2,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the advisor 'did not run entirely from the truth' and that 'the mixed record you left was read by history as one that kept the door to correction open,' attributing a partial commitment to honesty as a reason reform and acknowledgment of error came sooner. However, in Beat 5 the learner explicitly chose to suppress exculpatory intelligence reports and direct an aggressive defense — the most direct act of concealment and dishonesty available in the scenario. The ending never acknowledges or bridges this choice; instead it treats the overall record as reflecting some meaningful tether to truth, which directly contradicts the suppression of evidence the learner ordered. The ending over-claims the honesty dimension of the path actually taken."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        -1,
+        -3
+      ]
+    },
+    {
+      "iteration": 2,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 2 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "3/3 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy"
+        ],
+        "variables_read_count": 2,
+        "choice_points": 3,
+        "influential_points": 3,
+        "influential_of": 3,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 1,
+        "stable_major": 0,
+        "clean": 35,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Muddled Middle (end)",
+            "example_explanation": "The ending characterizes the advisor's record as 'ambivalent' and says 'no single, damning act' defines it, implying the removal scope was not pushed to its harshest extreme. However, in Beat 1 the learner explicitly chose the broadest possible removal — all persons of Japanese ancestry including citizens — which IS the harshest extreme on scope. The only moderating choice was disclosing intelligence in Beat 5. The ending's framing that the record is too ambiguous to sustain 'the harshest reading' partially conflicts with the fact that the learner advised the maximally broad removal from the outset. The scenario never explicitly acknowledges that the scope choice was the most aggressive option available before softening it into general ambivalence. This is a minor rather than major contradiction because the ending does acknowledge a removal program was carried out and convictions stood, but it understates how extreme the scope advice was."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        0,
+        -1
+      ]
+    },
+    {
+      "iteration": 3,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 2 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "3/3 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy"
+        ],
+        "variables_read_count": 2,
+        "choice_points": 3,
+        "influential_points": 3,
+        "influential_of": 3,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 5,
+        "stable_major": 0,
+        "clean": 30,
+        "stable": [
+          {
+            "choices": [
+              1,
+              0,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Muddled Middle (end)",
+            "example_explanation": "The ending states 'including, on some paths, endorsing the broadest possible reach' as part of characterizing the learner's record. However, the learner explicitly chose the narrowest scope (non-citizens only, sparing citizens). Beat 4 does acknowledge that the Army's machinery swept past this line despite the learner's advice, but the ending conflates what the learner counseled with what actually happened operationally, partially mischaracterizing the learner's counsel as potentially having endorsed the broadest reach. That said, Beat 4 does bridge this gap by explaining the Army overrode the distinction, so the contradiction is minor rather than major — the ending's rhetorical framing implies the learner may have endorsed broad removal when in fact they advised a narrower scope, without clearly attributing the expansion to the Army override already established."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Muddled Middle (end)",
+            "example_explanation": "The ending states 'including, on some paths, endorsing the broadest possible reach' as part of characterizing this learner's record, but on this specific path the learner explicitly chose to limit removal to non-citizen residents only, sparing citizens — the narrowest scope option. The ending's characterization of the record as including endorsement of the broadest possible reach misattributes a choice this path rejected. The rest of the ending's 'muddled middle' framing is defensible given the congressional authorization and disclosure choices, but that specific parenthetical claim contradicts what actually happened on this path without any acknowledgment that it was a generic description rather than path-specific."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Muddled Middle (end)",
+            "example_explanation": "The ending states 'including, on some paths, endorsing the broadest possible reach' as part of characterizing this learner's record, but on this path the learner explicitly advised limiting removal to non-citizens only — the narrowest scope option available, not the broadest. The ending's framing of the record as including endorsement of the broadest reach mischaracterizes what this path's choices actually were. The scenario never acknowledges a reversal of the citizenship-line choice, yet the ending partially attributes 'broadest possible reach' advocacy to this learner's file."
+          },
+          {
+            "choices": [
+              2,
+              0,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Muddled Middle (end)",
+            "example_explanation": "The ending states 'including, on some paths, endorsing the broadest possible reach' as part of characterizing the learner's record as mixed. However, on this specific path the learner explicitly chose the most restrictive scope option (targeted detention based on individual evidence), not a broad sweep. While the executive order mechanism then overrode that restraint in practice (acknowledged in Beat 4), the learner never endorsed broad reach. The ending's framing implies the learner may have advocated for maximum breadth, which contradicts what they actually chose. This is a minor contradiction because the broader removal did occur (acknowledged), but the characterization of the learner's counsel as potentially including endorsement of the broadest possible reach misrepresents the actual choice made."
+          },
+          {
+            "choices": [
+              2,
+              1,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Muddled Middle (end)",
+            "example_explanation": "The ending narration states 'on some paths, endorsing the broadest possible reach' as part of characterizing this learner's record, but on this specific path the learner consistently chose restraint (targeted approach), congressional authorization, and disclosure to the Court. The ending's framing of the record as including endorsement of the broadest possible reach is inaccurate for this path. While the ending does acknowledge a 'mixed' record, attributing 'broadest possible reach' endorsement to this learner's choices mischaracterizes what actually occurred on this path. That said, the contradiction is minor because the ending also acknowledges partial restraint and the overall 'muddled middle' framing is partly defensible given that removal did proceed despite the targeted-approach counsel."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        0,
+        -5
+      ]
+    }
+  ],
+  "best_iteration": 2,
+  "revisions_attempted": 3,
+  "passed": false
+}

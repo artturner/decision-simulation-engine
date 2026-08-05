@@ -1,0 +1,961 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": false,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 0 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "1/3 choice points influential; inert: ['1', '3']"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [],
+        "variables_read_count": 0,
+        "choice_points": 3,
+        "influential_points": 1,
+        "influential_of": 3,
+        "inert_choice_scenes": [
+          "1",
+          "3"
+        ],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 13,
+        "stable_major": 9,
+        "clean": 22,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: Conscience Over Crisis (end)",
+            "example_explanation": "The ending claims 'you spared the nation its deepest self-inflicted wound' and that 'the constitutional principle that ancestry alone cannot justify detention is preserved rather than buried.' However, on this path the learner explicitly chose to remove ALL persons of Japanese ancestry including citizens, and Beat 4 confirms the order was signed and families were already being transported to relocation centers. The mass removal — the very wound the ending claims was spared — already occurred on this path. The ending over-claims: at most, a later narrowing or concession in court arguments was signaled, but the core constitutional violation (mass removal by ancestry) was never reversed or acknowledged as reversed. The ending congratulates the learner for preventing an event that the path clearly shows occurring."
+          },
+          {
+            "choices": [
+              0,
+              1,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6 (Conscience Over Crisis end)",
+            "example_explanation": "The ending states 'the constitutional principle that ancestry alone cannot justify detention is preserved rather than buried' and claims the learner 'spared the nation its deepest self-inflicted wound.' However, in Beat 1 the learner explicitly chose the broadest possible removal — all persons of Japanese ancestry including citizens — which is precisely the policy that embodies the principle that ancestry alone justifies removal/detention. Beat 6 never acknowledges that the learner initiated this sweeping ancestry-based policy; it instead congratulates them as if they protected the constitutional principle against ancestry-based detention. Signaling a 'narrowing' of the program in Beat 5 does not retroactively undo the original choice, and the ending does not bridge this gap by acknowledging the contradiction or the harm already done. The ending thus over-claims what this path achieved, asserting the preservation of a principle that the learner's own first choice violated."
+          },
+          {
+            "choices": [
+              0,
+              2,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: Conscience Over Crisis (end)",
+            "example_explanation": "The ending congratulates the learner for 'protecting constitutional rights' and 'sparing the nation its deepest self-inflicted wound,' as if the mass removal of over 100,000 Japanese Americans (including citizens) never occurred on this path. But it did — the learner explicitly chose and caused that outcome in Beat 1, and Beats 2–4 confirmed it was carried out. The late-path choice to narrow the program and concede the military-necessity weakness in the Korematsu litigation does not undo the mass removal that already happened. The ending's framing presupposes that the constitutional wound was avoided, when this path's central event was precisely that wound being inflicted. The scenario never acknowledges this reversal — it treats the final choice as if it erased the prior one, which is a major logical inconsistency between the learner's earlier choice and the ending's characterization of what occurred."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6 (end): '...you spared the nation its deepest self-inflicted wound—and modeled the restraint that effective leadership in a system of shared powers sometimes demands.' and '[OUTCOME] You bore heavy political costs to protect constitutional rights, avoiding one of history's gravest precedents.'",
+            "example_explanation": "The ending claims the learner 'spared the nation its deepest self-inflicted wound' and avoided 'one of history's gravest precedents,' but Beat 4 already established that Executive Order 9066 was signed and implemented — trains were literally carrying families to relocation centers. The removal program happened on this path. The choice in Beat 5 only narrowed or wound down an already-executing program; it did not prevent the mass removal. The ending's triumphant framing that the learner avoided the gravest precedent directly contradicts the earlier narration showing the program was enacted and in progress, with no acknowledgment of this gap."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6 (end): 'you spared the nation its deepest self-inflicted wound'",
+            "example_explanation": "The ending narration claims the learner 'spared the nation its deepest self-inflicted wound' and preserved 'the constitutional principle that ancestry alone cannot justify detention.' But on this path the removal program was implemented (for non-citizen residents), congressional legislation was passed anchoring it in law, Korematsu was arrested and convicted, and the learner only 'quietly signaled a narrowing' at the Korematsu stage. The program was not prevented — it happened, with congressional backing. The ending over-claims that the constitutional wound was avoided, when the path shows the program occurred, Korematsu was prosecuted, and only a belated softening of the legal argument was chosen. The scenario never acknowledges that a significant removal policy was in fact carried out before the narrowing began, making the triumphant framing of having avoided the gravest precedent a direct contradiction of what the path shows occurring."
+          },
+          {
+            "choices": [
+              1,
+              2,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: Conscience Over Crisis (end)",
+            "example_explanation": "The ending states 'the constitutional principle that ancestry alone cannot justify detention is preserved' and that the path avoided 'one of history's gravest precedents,' strongly implying no removal program affecting citizens occurred. However, the learner's first choice explicitly limited removal to non-citizen residents — meaning a removal program was still implemented against non-citizen Japanese Americans. The ending narration over-claims by presenting the outcome as broadly avoiding the constitutional wound, when in fact a removal order was issued and executed (against non-citizens), never acknowledged as having been reversed or stopped. The ending conflates 'narrowing the program' with having prevented it entirely, crediting the learner with preserving a constitutional principle that was still compromised by the ongoing removal of non-citizen residents."
+          },
+          {
+            "choices": [
+              2,
+              1,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: A Precedent for the Worst (end)",
+            "example_explanation": "The learner's first choice explicitly advised against mass removal, recommending detention only of individuals with specific evidence of disloyalty. However, the ending narration presupposes that a mass removal policy was implemented and upheld — describing Korematsu's conviction for refusing to comply with 'military exclusion orders' and condemning the learner for sacrificing the rights of Japanese Americans collectively. The scenario never acknowledges that the targeted approach was overruled or abandoned; instead, subsequent beats proceed as though a mass exclusion program was adopted without bridging the gap. The ending then condemns the learner for 'choosing certainty over candor and security over rights' in the context of a sweeping mass removal policy that the learner's first choice explicitly rejected."
+          },
+          {
+            "choices": [
+              2,
+              2,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6 (Conscience Over Crisis) — '[OUTCOME] You bore heavy political costs to protect constitutional rights, avoiding one of history's gravest precedents.'",
+            "example_explanation": "The final outcome claims the learner 'avoided one of history's gravest precedents,' but the path shows that the executive order was in fact issued and enforced (Beat 4), Korematsu was arrested and prosecuted (Beat 5), and the program was only 'narrowed' rather than prevented (Beat 6). The mass removal occurred on this path; the learner at most curtailed it somewhat and conceded its weakness in court. The ending's assertion that the learner 'avoided' the grave precedent overstates what actually happened on this path, where the removal and Korematsu prosecution already took place. This is a misleading characterization of the path's events rather than a fully accurate summary."
+          },
+          {
+            "choices": [
+              3,
+              0,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 4: Executive Order 9066 (auto_advance) and Beat 6: A Precedent for the Worst (end)",
+            "example_explanation": "In Beat 1 the learner explicitly chose to advise Roosevelt to reject mass removal entirely on constitutional grounds. Beat 2 confirms this advice was given and that constitutional ground was firm. Yet Beat 4 narrates the mass removal proceeding as if the learner had recommended it, with no acknowledged reversal — the story never states that Roosevelt overruled the learner's Beat-1 advice before pivoting to the Beat-3 mechanism question. The mechanism question in Beat 3 presupposes the removal will happen, directly contradicting the learner's prior choice to counsel against it entirely. The ending then condemns the learner for 'choosing certainty over candor and security over rights,' when on this path the learner's first and foundational choice was to oppose the removal as unconstitutional. The scenario treats the removal as the learner's endorsed outcome without ever bridging the gap between the rejected-removal advice and the subsequent executive-order path."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 4: Asking the Congress (auto_advance) and Beat 6: A Precedent for the Worst (end)",
+            "example_explanation": "In Beat 1, the learner explicitly advised President Roosevelt to reject mass removal entirely on constitutional grounds. Yet Beat 4 onward narrates the policy being enacted, exclusion orders being issued, Korematsu being arrested for violating them, and the Supreme Court upholding the convictions. The scenario never acknowledges that Roosevelt overruled the learner's advice — it simply proceeds as if the removal happened with the learner's blessing. The only acknowledged reversal is about mechanism (executive order vs. congressional authorization), not about whether removal happens at all. The ending even frames the outcome as the learner's choices leading to a hollow victory, directly contradicting the learner's initial stance of opposing any removal. This is a major unacknowledged reversal of the central plot fact the learner's first choice foreclosed."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 4: Asking the Congress (auto_advance) and Beat 6: The Honest Record (end)",
+            "example_explanation": "In Beat 1 the learner explicitly advised rejecting mass removal entirely. Beat 4 and Beat 6 then narrate and evaluate a policy of removal that was actually implemented (Korematsu is arrested for defying an exclusion order; the ending speaks of 'a flawed policy' the advisors navigated). The scenario never acknowledges an explicit reversal — no beat states that the President overruled the learner's Beat 1 advice and proceeded with removal anyway. The existence of Korematsu's arrest and the framing of the ending presuppose that removal was carried out, which directly contradicts the learner's initial choice to reject mass removal. Beat 2 hints at the political risk and that DeWitt 'may act on his own authority,' but it never explicitly bridges the gap by stating the President rejected the learner's counsel and ordered removal regardless. This is therefore an unacknowledged reversal of the learner's core initial position."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6 (end): '...you spared the nation its deepest self-inflicted wound'",
+            "example_explanation": "The learner's first choice was to reject mass removal entirely. However, Beat 4 narration establishes that Congress passed a statute and the exclusion program proceeded (Korematsu was arrested and convicted), meaning the removal did occur on this path. Beat 6 then claims the learner 'spared the nation its deepest self-inflicted wound,' which overstates the outcome — the wound (mass removal, Korematsu's conviction, the program itself) did happen; the learner only curtailed it somewhat by signaling a narrowing at the Korematsu stage. The ending congratulates the learner for preventing an event the path shows as having occurred. The scenario does partially acknowledge the narrowing, but still over-claims that the nation was spared the 'deepest self-inflicted wound' when the core injustice (the removal program) was never actually stopped on this path."
+          },
+          {
+            "choices": [
+              3,
+              2,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 3,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 6: A Precedent for the Worst (end)",
+            "example_explanation": "In Beat 1, the learner explicitly advised rejecting mass removal entirely as unconstitutional. Beat 2 acknowledges this advice was given and notes political risk, but the scenario never narrates Roosevelt overruling or rejecting the learner's counsel before proceeding. Yet Beat 3 onward treats the removal policy as already in motion, with the learner now shaping its mechanism and legal defense. The ending then condemns the learner for 'choosing certainty over candor and security over rights,' presupposing the learner endorsed the removal — when the learner's first and foundational choice was to oppose it entirely. While Beat 2 hints that Roosevelt might not follow the advice, it never explicitly states he overruled the learner, leaving the reversal unacknowledged. The ending's moral condemnation over-claims against this path, which began with the learner taking the constitutionally sound anti-removal position."
+          }
+        ]
+      },
+      "score": [
+        0,
+        -2,
+        3,
+        0,
+        -9,
+        -13
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 2 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "3/3 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy"
+        ],
+        "variables_read_count": 2,
+        "choice_points": 3,
+        "influential_points": 3,
+        "influential_of": 3,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 16,
+        "stable_major": 11,
+        "clean": 19,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              1
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'when the exculpatory reports appeared, the record was left compromised rather than corrected' and characterizes the path as one where candor lost out. However, in Beat 5 the learner explicitly chose to disclose the contradictory intelligence to the Court. The ending never acknowledges this choice or bridges the gap (e.g., by saying the disclosure was overruled or ignored); instead it flatly asserts the opposite — that the record was compromised and the truth was buried. This is an unacknowledged reversal of the learner's actual decision on disclosure."
+          },
+          {
+            "choices": [
+              0,
+              1,
+              1
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The learner explicitly chose to disclose the contradictory intelligence to the Court rather than suppress it. However, the ending narration states 'when the exculpatory reports appeared, the record was left compromised rather than corrected,' directly asserting the opposite of what the learner chose. The ending also says 'the Justice Department will admit the government argued in error' in a way that presupposes suppression occurred, and the outcome summary accuses the learner of lacking 'candor' — yet candor is precisely what the learner chose in Beat 5. No bridging beat explains how the disclosure choice was reversed or overridden. This is an unacknowledged contradiction between a core choice and the ending's characterization of the path."
+          },
+          {
+            "choices": [
+              0,
+              2,
+              1
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'when the exculpatory reports appeared, the record was left compromised rather than corrected,' implying the learner suppressed or mishandled the contradictory intelligence. However, in Beat 5 the learner explicitly chose to disclose the contradictory intelligence to the Court. The scenario never acknowledges a reversal of this choice or explains why disclosure was ineffective or overridden. The ending's characterization of a compromised record due to hidden intelligence directly contradicts the learner's choice to be honest with the Court."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The learner's first choice explicitly limited removal to non-citizen residents, sparing American-born citizens. However, Beat 4 narrates that DeWitt's exclusion machinery turns without any acknowledgment that it was narrowed to non-citizens only, and Beat 7's ending states 'your advice pushed the policy toward its widest reach,' directly contradicting the learner's choice to restrict scope to non-citizens. The ending condemns the learner for advocating the broadest possible removal, but the learner's actual first choice was the opposite — a deliberate narrowing. The scenario never bridges this gap by explaining how the citizen-sparing restriction was overridden or abandoned, making this an unacknowledged reversal of a core choice."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The learner's first choice explicitly limited removal to non-citizen residents, sparing American-born citizens. However, the ending narration states 'your advice pushed the policy toward its widest reach,' characterizing the path as one of maximum, unrestricted removal. The scenario never acknowledges that the first choice actually narrowed the scope of removal relative to DeWitt's full proposal. The ending treats the path as equivalent to advising the broadest possible removal, which contradicts the choice that was made and was never reversed or overruled by later narration."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: Conscience Over Crisis (end)",
+            "example_explanation": "The ending claims 'the constitutional principle that ancestry alone cannot justify detention was defended rather than buried' and that the learner's counsel 'bent, again and again, toward the rights of citizens.' However, the learner's first choice explicitly endorsed removal of non-citizen Japanese residents — a policy still grounded in ethnic ancestry rather than individual evidence of disloyalty. The ending treats the path as one that defended against ancestry-based detention, but the learner's own choice authorized exactly that for non-citizens. The scenario never acknowledges this reversal; instead the ending over-credits the learner's record as though no removal occurred or was sanctioned on this path."
+          },
+          {
+            "choices": [
+              1,
+              2,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end) — 'your advice pushed the policy toward its widest reach'",
+            "example_explanation": "The ending claims the learner's advice 'pushed the policy toward its widest reach,' but the learner's first choice explicitly recommended limiting removal to non-citizen residents and sparing American-born citizens — the narrowest available scope. Beat 4 does acknowledge that the German/Italian inclusion was cosmetic and fell almost entirely on Japanese Americans in practice, but that concerns the mechanism choice (Beat 3), not the scope choice (Beat 1). The ending's characterization of 'widest reach' on scope is never reconciled with the earlier narrowing advice on scope, making it a mischaracterization of this path's actual choices on that dimension."
+          },
+          {
+            "choices": [
+              2,
+              0,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end) — 'your advice pushed the policy toward its widest reach'",
+            "example_explanation": "The ending states 'your advice pushed the policy toward its widest reach,' but the learner's first choice explicitly advised a targeted, individualized approach rather than mass removal. Beat 3 acknowledges that 'events have overtaken the question of whether' and the President proceeds regardless, which partially bridges the gap, but the ending's sweeping indictment of the learner for advising the 'widest reach' of the policy directly contradicts the learner's first choice to limit scope. The scenario never explicitly acknowledges that the learner's initial counsel of restraint was overridden on the scope question — it only bridges the mechanism question — so the ending's characterization over-claims culpability for the breadth of removal."
+          },
+          {
+            "choices": [
+              2,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending narration states 'we did not lie our way to it,' credits the learner with keeping 'the record honest,' and claims that 'the honesty of the record accelerates the reckoning.' However, in Beat 5 the learner explicitly chose to withhold exculpatory intelligence reports from the Supreme Court — a historically recognized act of dishonesty with the Court. The ending presupposes the opposite choice was made and was never bridged or reversed by any subsequent beat. This is a direct, unacknowledged contradiction between the learner's choice and the ending's characterization of the path taken."
+          },
+          {
+            "choices": [
+              2,
+              1,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: Conscience Over Crisis (end)",
+            "example_explanation": "Beat 3's choice was to anchor the removal program in congressional legislation, which Beat 4 confirms did happen — Congress passed a statute making violation of exclusion orders a federal crime, explicitly described as giving the program a 'foundation in law' that made it 'harder to challenge, harder to undo.' The ending in Beat 7 claims the counsel 'worked to curtail it sooner' and that 'the human cost was curtailed sooner,' and praises the path for 'defending the constitutional principle that ancestry alone cannot justify detention.' However, the congressional authorization choice actively entrenched and legitimized the mass removal program, making it harder to challenge or overturn — the opposite of curtailing it. The ending's congratulatory framing presupposes the learner undermined or limited the removal machinery, when the congressional authorization choice specifically made the removal more legally durable and resistant to judicial challenge. The scenario never acknowledges this reversal or bridges the gap between entrenching the program legislatively and 'curtailing' the injustice sooner."
+          },
+          {
+            "choices": [
+              2,
+              2,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end) — 'your advice pushed the policy toward its widest reach'",
+            "example_explanation": "The ending flatly states that the learner's advice 'pushed the policy toward its widest reach,' but the learner's very first choice was explicitly to counsel a narrow, targeted approach based on individual evidence — the opposite of widest reach. Beat 2 confirms this advice was given and acknowledged. While later choices (broadening the order to include German and Italian Americans, withholding intelligence) were problematic, the ending's sweeping claim that the learner consistently advised the 'widest reach' directly contradicts the initial targeted-approach choice, and the narrative never acknowledges or bridges this reversal — it simply erases the first choice from the verdict."
+          },
+          {
+            "choices": [
+              2,
+              2,
+              2
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: Conscience Over Crisis (end)",
+            "example_explanation": "The learner's choice in Beat 3 was to recommend issuing an executive order (not seeking congressional legislation, and not refusing to act), and Beat 4 explicitly narrates that the order was issued and 'applies broadly on paper but falls almost entirely on Japanese Americans.' A mass removal program was thus set in motion by the learner's own recommendation. Yet the ending in Beat 7 claims the learner's counsel bent 'again and again toward the rights of citizens,' that they worked to 'curtail' removal, and praises 'seeking lawful footing.' The path never included seeking lawful congressional footing — the learner specifically chose the executive order route — and the order triggered the very mass removal the ending implicitly credits the learner with resisting. The ending over-claims the learner's record of restraint without acknowledging that their Beat 3 choice affirmatively recommended the executive order mechanism that enabled the removal, a reversal that is never bridged or acknowledged in the narration."
+          },
+          {
+            "choices": [
+              3,
+              0,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'your advice pushed the policy toward its widest reach' and that 'security and certainty repeatedly won out over rights,' characterizing the learner's overall counsel as uniformly pro-removal. However, the learner's first and foundational choice was to reject mass removal entirely as unconstitutional. Beat 2 acknowledges this was the learner's position, and Beat 3 explicitly bridges the reversal by narrating that 'events have overtaken the question of whether.' That bridge prevents a contradiction on the mechanism question. But the ending's summary sweepingly claims the learner's advice pushed toward 'widest reach,' which mischaracterizes the first choice—the learner actually counseled against any removal. The ending never acknowledges that the learner initially opposed the policy before later choices shaped its execution, presenting a one-sided characterization that over-claims the learner's culpability on scope."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending narration states 'we did not lie our way to it,' credits the learner with 'keeping the record honest,' and claims that 'the honesty of the record accelerates the reckoning.' However, in Beat 5 the learner explicitly chose to withhold exculpatory intelligence reports from the Supreme Court — a decision to suppress evidence and deceive the Court. The ending never acknowledges this reversal; it simply congratulates the learner for honesty that this path's choice directly foreclosed. This is a major contradiction between the learner's actual choice and what the ending asserts happened."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              1
+            ],
+            "outcome": "principled_restraint",
+            "end_scene": "6.retreat",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: Conscience Over Crisis (end)",
+            "example_explanation": "The ending narration claims the learner's counsel worked to 'curtail' the removal program and that 'the human cost was curtailed sooner,' crediting the path with limiting the injustice. However, in Beat 3 the learner chose congressional authorization specifically because it gives the policy 'durable legal footing' that is 'harder to challenge, harder to undo' — a choice that entrenched and strengthened the removal program rather than curtailing it. Beat 4 confirms this: Congress passed a statute making violations a federal crime, giving the program a more robust legal foundation than a bare executive order. The ending's characterization that this path 'curtailed' the injustice sooner contradicts the mechanical consequence of the Beat 3 choice, which made the removal harder to overturn. The scenario never acknowledges or bridges this reversal — it simply awards the learner credit for limiting the program despite having chosen the mechanism best suited to sustaining it."
+          },
+          {
+            "choices": [
+              3,
+              2,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "In Beat 5, the learner explicitly chose to withhold exculpatory intelligence from the Court and defend the policy aggressively. Yet the ending in Beat 7 repeatedly praises the learner for keeping 'the record honest,' states 'we did not lie our way to it,' and claims that 'the honesty of the record accelerates the reckoning.' This directly contradicts the path taken: the learner suppressed evidence, which is the opposite of honesty with the Court. The ending's core characterization presupposes a choice the learner never made and explicitly rejected, and the scenario never acknowledges this reversal."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        -11,
+        -16
+      ]
+    },
+    {
+      "iteration": 2,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 2 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "3/3 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy"
+        ],
+        "variables_read_count": 2,
+        "choice_points": 3,
+        "influential_points": 3,
+        "influential_of": 3,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 8,
+        "stable_major": 4,
+        "clean": 26,
+        "stable": [
+          {
+            "choices": [
+              0,
+              2,
+              1
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'the record before the Court came out compromised rather than fully corrected' and references 'the truth still buried beneath the military's claims,' and the Justice Department acknowledging 'the government argued on a false factual record.' However, the learner explicitly chose to disclose the contradictory intelligence to the Court in Beat 5. The ending attempts to paper over this with the caveat 'on others, whatever candor or restraint you attempted was outweighed by earlier choices,' but this is not a true narrative bridge — it does not show any mechanism by which the disclosed intelligence was suppressed or ignored, it simply asserts that the disclosure was effectively nullified. The ending's characterization that the truth was buried and the record was compromised is not consistent with a choice that specifically required full disclosure to the Court, making this a minor contradiction since the core plot (removal upheld) is plausible, but the factual claim about the record being hidden conflicts with the disclosure choice."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'your counsel left the removal broad in its reach' and references paths where choices 'widened the policy's scope or deepened its reliance on ancestry.' However, the learner's first choice explicitly advised limiting removal to non-citizens only, sparing citizens — a narrowing choice, not a broadening one. Beat 4 does acknowledge that the Army's machinery swept past that line anyway, but the ending then attributes the broad reach to the learner's counsel rather than to the Army overriding the learner's recommendation. The ending mischaracterizes the learner's first choice as having counseled broad removal, when in fact the learner counseled a narrower scope that was subsequently overridden by events — a distinction the ending never acknowledges, instead lumping this path together with paths that chose broader removal from the start."
+          },
+          {
+            "choices": [
+              1,
+              1,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states the counsel left the removal 'weak in its constitutional footing' and relied on 'a bare executive order,' but the learner explicitly chose congressional authorization precisely to give the policy durable legal footing. Beat 4 confirms Congress passed authorizing legislation. The ending's characterization of weak constitutional footing directly contradicts this path's core structural choice and is never acknowledged or bridged — the ending applies boilerplate language from a different path ('on others, whatever candor or restraint you attempted was outweighed by earlier choices') without reconciling it with the actual congressional-authorization outcome."
+          },
+          {
+            "choices": [
+              1,
+              2,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'your counsel left the removal broad in its reach' and references choices that 'widened the policy's scope or deepened its reliance on ancestry.' However, the learner's first choice explicitly limited removal to non-citizen residents, sparing American-born citizens — a narrowing, not a broadening, of scope. While the later mechanism choice (including German and Italian Americans on paper) was cynical, it was framed as blunting racial targeting, not expanding the Japanese-American removal. The ending's blanket characterization that the removal was 'broad in its reach' due to the learner's counsel contradicts the path's first choice, which specifically restricted scope. The scenario never acknowledges that this scope-limiting choice was overridden or reversed; instead the ending treats all paths leading here as equivalently broad, which mischaracterizes what this specific path chose."
+          },
+          {
+            "choices": [
+              2,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "In Beat 5, the learner explicitly chose to withhold the exculpatory intelligence reports from the Court. Yet Beat 7's ending narration states 'where you had the chance to lay the full record before the Court you did not choose to bury it wholesale' and credits the learner with preserving 'candor' and leaving 'the record open to correction.' This directly contradicts the earlier choice to suppress the intelligence findings. The ending presupposes a degree of honesty with the Court that this path's choice explicitly foreclosed, and no intervening beat acknowledges any reversal of that decision. The ending's positive framing of the learner's handling of the Court record is logically inconsistent with what the learner actually chose."
+          },
+          {
+            "choices": [
+              3,
+              0,
+              0
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 3,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states 'your counsel left the removal broad in its reach' and 'Across the arc of your choices, security and certainty repeatedly won out over rights and candor,' characterizing the learner as having consistently favored mass removal. However, the learner's first choice was explicitly to reject mass removal entirely as unconstitutional. Beat 3 acknowledged that 'events overtook' that choice, and Beat 4 showed the machinery proceeding anyway — but those beats framed the reversal as externally driven, not as the learner's counsel. The ending then collapses this distinction, attributing 'broad reach' of the removal to the learner's overall counsel rather than to the overriding political/military forces. While subsequent choices (unilateral executive order, suppressing intelligence) were harmful, the ending over-claims by saying security 'repeatedly' won out over rights across all choices, erasing the first choice's dissent without acknowledging it. This is a minor rather than major contradiction because the later choices do partially support the ending's framing, but the blanket characterization misrepresents the full arc."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The learner explicitly chose to withhold the exculpatory intelligence reports from the Court and suppress the findings of no Japanese American disloyalty. Yet the ending narration states 'where you had the chance to lay the full record before the Court you did not choose to bury it wholesale' and credits the learner with preserving 'candor' and leaving 'the record open to correction.' This directly contradicts the learner's choice to suppress the reports. The ending never acknowledges that the learner did in fact bury the exculpatory evidence; instead it falsely congratulates them for partial honesty they never chose."
+          },
+          {
+            "choices": [
+              3,
+              2,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "In Beat 5, the learner explicitly chose to withhold exculpatory intelligence from the Court and defend the policy aggressively. Yet the ending narration in Beat 7 states 'where you had the chance to lay the full record before the Court you did not choose to bury it wholesale' and credits the learner with preserving 'candor' and leaving 'the record open to correction.' This directly contradicts the learner's choice to suppress the intelligence reports. The ending congratulates the learner for a form of honesty they explicitly rejected, without any acknowledged reversal or intervening event that would explain the discrepancy."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        -4,
+        -8
+      ]
+    },
+    {
+      "iteration": 3,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CivilLiberties, ConstitutionalLegitimacy, MilitarySupport, PresidentialPower), 2 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "3/3 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "3 reachable (constitutional_failure, principled_restraint, qualified_integrity) of 3 declared (constitutional_failure, principled_restraint, qualified_integrity)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy",
+          "MilitarySupport",
+          "PresidentialPower"
+        ],
+        "variables_read": [
+          "CivilLiberties",
+          "ConstitutionalLegitimacy"
+        ],
+        "variables_read_count": 2,
+        "choice_points": 3,
+        "influential_points": 3,
+        "influential_of": 3,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ],
+        "outcomes_declared": [
+          "constitutional_failure",
+          "principled_restraint",
+          "qualified_integrity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 36,
+        "capped": false,
+        "errors": 0,
+        "stable_total": 11,
+        "stable_major": 3,
+        "clean": 25,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'you kept the policy tethered, however imperfectly, to legal legitimacy, whether by narrowing its scope, anchoring it in law, or refusing to let its factual foundation go wholly uncontested.' However, on this path the learner explicitly chose the broadest possible scope (all persons of Japanese ancestry, citizens included) rather than narrowing it, and chose a unilateral executive order rather than anchoring it in congressional law. The ending's framing of 'narrowing its scope' and 'anchoring it in law' as things this learner did is directly contradicted by the two earlier choices. The only legitimacy-preserving choice was disclosing intelligence to the Court. The ending partially acknowledges compromise ('some concessions to fear, some ground held') but still credits scope-narrowing and legal anchoring as part of this path's record, which mischaracterizes what actually happened."
+          },
+          {
+            "choices": [
+              0,
+              0,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending narration claims the learner kept the policy 'tethered' partly 'by narrowing its scope,' and frames the overall counsel as preserving constitutional legitimacy in part through scope limitation. However, the learner's first choice explicitly rejected any narrowing — they chose the broadest possible removal of all persons of Japanese ancestry, citizens included. Beat 4 confirms the sweep was total. The ending's credit for 'narrowing scope' is directly contradicted by the first choice and is never bridged by any in-story reversal on scope. The learner did later signal concession on military-necessity before the Court (Beat 5), but that is distinct from scope. The ending conflates these, partially mischaracterizing what this path actually did."
+          },
+          {
+            "choices": [
+              0,
+              1,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'some concessions to fear, some ground held for the Constitution' and credits the learner with 'narrowing its scope' as one of the legitimacy-preserving acts. However, the learner explicitly chose the broadest possible removal scope — all persons of Japanese ancestry including citizens — which is the opposite of narrowing scope. While the ending does hedge with 'on some paths you compromised on scope,' it still lists 'narrowing its scope' as a positive thing this learner may have done, which directly contradicts the scope choice made in Beat 1. The ending mildly mischaracterizes the path by including scope-narrowing as a potential source of legitimacy on a path where the learner chose maximum scope."
+          },
+          {
+            "choices": [
+              0,
+              1,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'on some paths you compromised on scope, mechanism, or candor before the Court' in a hedged, uncertain way, but also credits the learner with 'narrowing its scope' as one of the legitimacy-preserving actions. However, the learner explicitly chose the broadest possible scope — removal of all persons of Japanese ancestry including citizens — so the ending's framing that the learner helped keep the policy 'tethered' partly by 'narrowing its scope' mischaracterizes what this path actually did. The learner never narrowed scope; they chose the maximum scope. The ending does not acknowledge this reversal and instead lists scope-narrowing as a legitimacy-preserving act attributed to this path's counsel, which contradicts the Beat 1 choice."
+          },
+          {
+            "choices": [
+              0,
+              2,
+              1
+            ],
+            "outcome": "constitutional_failure",
+            "end_scene": "6.entrenched",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: A Precedent for the Worst (end)",
+            "example_explanation": "The ending states that 'the truth of the intelligence findings never carried the weight it deserved' and that 'the record that reached the Court came out compromised rather than fully corrected,' and explicitly floats the possibility the learner attempted 'disclosure too late to outweigh the ground already lost.' However, in Beat 5 the learner explicitly chose to disclose the contradictory intelligence to the Court rather than suppress it. The scenario never narrates any event that prevented, reversed, or negated that disclosure — no superior overruled it, no suppression occurred, no later beat explains why the disclosure failed to reach the Court. The ending therefore presupposes a compromised or withheld record without acknowledging that this path actually chose full disclosure, leaving an unacknowledged reversal of a core decision."
+          },
+          {
+            "choices": [
+              0,
+              2,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states 'on some paths you compromised on scope, mechanism, or candor before the Court' and credits the learner with 'narrowing its scope' as one of the legitimacy-preserving actions. However, on this path the learner explicitly chose the broadest possible scope — removal of all persons of Japanese ancestry including citizens — which is the opposite of narrowing scope. The ending's framing of scope-narrowing as a credit to this learner is inconsistent with that earlier choice. The scenario never acknowledges a reversal of the scope decision, so the ending partially mischaracterizes what this path actually did by listing 'narrowing its scope' among the legitimacy-preserving acts the learner may have taken."
+          },
+          {
+            "choices": [
+              1,
+              0,
+              2
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 4,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending credits the learner with 'anchoring it in law' as one of the ways constitutional legitimacy was preserved ('whether by narrowing its scope, anchoring it in law, or refusing to let its factual foundation go wholly uncontested'). However, the learner explicitly chose a unilateral executive order over congressional legislation precisely to avoid anchoring the action in statutory law. Beat 4 even quotes Biddle warning that 'with no act of Congress behind it, the courts may yet test it.' The ending never acknowledges that this path lacked a congressional anchor; instead it lists 'anchoring it in law' as a possible source of legitimacy on this path, which contradicts the mechanism the learner chose."
+          },
+          {
+            "choices": [
+              2,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the learner avoided 'let[ting] its factual foundation go wholly uncontested' and 'preserved enough constitutional legitimacy to leave the record open to correction,' crediting them for partial honesty before the Court. However, the learner explicitly chose to withhold exculpatory intelligence and defend the policy aggressively — the precise act that historically destroyed the case's legitimacy and led to later vacatur. The ending never acknowledges this suppression or bridges the gap; instead it characterizes the path as one where the learner 'refused to let its factual foundation go wholly uncontested,' which directly contradicts the choice made. The scenario also never narrates a reversal (e.g., a superior overruling the suppression order). The ending thus mischaracterizes what actually happened on this path."
+          },
+          {
+            "choices": [
+              3,
+              0,
+              1
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "minor",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending narration states 'some concessions to fear, some ground held for the Constitution' and mentions that 'on some paths you compromised on scope, mechanism, or candor before the Court.' It also says 'you kept the policy tethered... by narrowing its scope' — but on this path the learner advised rejecting mass removal entirely (not narrowing it), and the ending treats this as if scope was a concession made. More directly, the ending says 'you did not prevent the injustice, and on some paths you compromised on scope... before the Court,' which is accurate, but it also credits the learner with 'narrowing its scope' as a positive action, which mischaracterizes this path where the learner opposed removal entirely rather than narrowing it. The mismatch is minor because the ending does acknowledge removal occurred and is generally hedged, but it inaccurately lists 'narrowing its scope' as one of the legitimacy-preserving acts attributed to this learner's counsel, when this path's first choice was outright rejection of mass removal, not scope-narrowing."
+          },
+          {
+            "choices": [
+              3,
+              1,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the learner kept the policy tethered to legal legitimacy and did not 'let its factual foundation go wholly uncontested,' crediting them with preserving 'constitutional legitimacy' and leaving 'the record open to correction.' However, the learner explicitly chose to suppress exculpatory intelligence reports and direct an aggressive, dishonest defense before the Supreme Court — the precise act that historically made Korematsu one of the most reviled precedents and that a later federal court vacated on grounds of government misconduct. The ending's favorable characterization of candor and legitimacy directly contradicts and is never reconciled with the choice to withhold material evidence from the Court."
+          },
+          {
+            "choices": [
+              3,
+              2,
+              0
+            ],
+            "outcome": "qualified_integrity",
+            "end_scene": "6.candid",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 7: The Honest Record (end)",
+            "example_explanation": "The ending states the learner 'refus[ed] to let its factual foundation go wholly uncontested' and 'preserved enough constitutional legitimacy to leave the record open to correction,' crediting the learner with a degree of honesty before the Court. However, the learner explicitly chose to suppress exculpatory intelligence reports and direct an aggressive, dishonest defense — the precise opposite of maintaining factual integrity before the Court. The ending presupposes a path of partial candor that this choice foreclosed, without ever acknowledging the reversal. The narrative never bridges this gap (no superior overruled the suppression, no event overtook the decision), so the ending's characterization of the learner's record as preserving constitutional legitimacy through honest engagement with the evidence directly contradicts what this path actually did."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        3,
+        2,
+        -3,
+        -11
+      ]
+    }
+  ],
+  "best_iteration": 3,
+  "revisions_attempted": 3,
+  "passed": false
+}

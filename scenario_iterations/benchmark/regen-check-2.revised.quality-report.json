@@ -1,0 +1,271 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 2,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": true
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "5 reachable (contested_gamble, fragile_bargain, principled_transition, sustained_section4, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 1,
+        "stable_major": 1,
+        "clean": 11,
+        "stable": [
+          {
+            "choices": [
+              3,
+              2
+            ],
+            "outcome": "fragile_bargain",
+            "end_scene": "6.fragile_bargain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Handshake Republic (end)",
+            "example_explanation": "Beat 4 explicitly narrates that the learner and cabinet transmitted the Section 4 declaration, the President contested it, it was reaffirmed within four days, and the matter went to Congress — a full, textually grounded invocation of Article XXV machinery that concluded with an institutional process. Yet the ending in Beat 6 asserts that 'the constitutional machinery' was 'kept in reserve rather than driving it to a decisive, textually grounded conclusion,' that the Amendment was never unambiguously invoked, and that the resolution read as a 'bargain' rather than a constitutional invocation. This directly contradicts what Beat 4 established: the Section 4 declaration was transmitted, contested, reaffirmed, and sent to Congress — the full constitutional mechanism was engaged, not held in reserve. The ending condemns the learner for something this path explicitly avoided doing."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        -1,
+        -1
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": false,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "5 reachable (contested_gamble, fragile_bargain, principled_transition, sustained_section4, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 1,
+        "stable_major": 1,
+        "clean": 11,
+        "stable": [
+          {
+            "choices": [
+              3,
+              2
+            ],
+            "outcome": "fragile_bargain",
+            "end_scene": "6.fragile_bargain",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 6: The Handshake Republic (end)",
+            "example_explanation": "The learner's path in Beat 3 explicitly chose to build a 'sustainable Section 4 coalition' through full constitutional machinery, and Beat 4 confirms this was executed: cabinet was genuinely convinced, congressional leaders of both parties were briefed, the Section 4 declaration was formally transmitted, the President's contest was reaffirmed within four days, and Congress debated it as a constitutional partner. The Senate leader even says 'the institution has been treated as a partner, not ambushed.' Yet the ending in Beat 6 characterizes the resolution as resting 'more on cultivated political goodwill than on grounds firm enough to place the matter beyond dispute,' with 'constitutional fidelity struck them as thin' and clarity 'left in shadow.' This directly contradicts Beat 4's narration, which describes a textbook Section 4 process carried out with integrity and constitutional grounding. The ending's characterization fits the informal management path (Beat 1 choice), not the path actually taken. The scenario never acknowledges any reversal or failure of the Section 4 process that would justify this conclusion."
+          }
+        ]
+      },
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        -1,
+        -1
+      ]
+    },
+    {
+      "iteration": 2,
+      "accepted": true,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (CabinetSupport, CongressionalTrust, ConstitutionalFidelity, PublicLegitimacy), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "5 reachable (contested_gamble, fragile_bargain, principled_transition, sustained_section4, uneasy_stewardship) of 6 declared (contested_gamble, fragile_bargain, hollow_authority, principled_transition, sustained_section4, uneasy_stewardship)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read": [
+          "CabinetSupport",
+          "CongressionalTrust",
+          "ConstitutionalFidelity",
+          "PublicLegitimacy"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "contested_gamble",
+          "fragile_bargain",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ],
+        "outcomes_declared": [
+          "contested_gamble",
+          "fragile_bargain",
+          "hollow_authority",
+          "principled_transition",
+          "sustained_section4",
+          "uneasy_stewardship"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 0,
+        "stable_major": 0,
+        "clean": 12,
+        "stable": []
+      },
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 2,
+  "revisions_attempted": 2,
+  "passed": true
+}
