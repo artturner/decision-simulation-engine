@@ -49,6 +49,11 @@ export default function TeacherDashboardPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [selectedRollId, setSelectedRollId] = useState<string>("");
+  // True while the teacher is composing a brand-new class ("New" button).
+  // Guards the auto-select effect below, which would otherwise re-select the
+  // first class and silently turn the create form back into an edit form
+  // (saving would then overwrite the selected class).
+  const [creatingNew, setCreatingNew] = useState(false);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>("");
   const [className, setClassName] = useState("");
   const [studentNames, setStudentNames] = useState("");
@@ -98,10 +103,10 @@ export default function TeacherDashboardPage() {
   }, [rollsQuery.data, selectedRollId]);
 
   useEffect(() => {
-    if (!selectedRollId && rollsQuery.data?.length) {
+    if (!creatingNew && !selectedRollId && rollsQuery.data?.length) {
       setSelectedRollId(rollsQuery.data[0].id);
     }
-  }, [rollsQuery.data, selectedRollId]);
+  }, [rollsQuery.data, selectedRollId, creatingNew]);
 
   useEffect(() => {
     setClassName(selectedRoll?.name ?? "");
@@ -141,6 +146,7 @@ export default function TeacherDashboardPage() {
       }),
     onSuccess: (roll) => {
       setNotice(`Created ${roll.name}. Class code: ${roll.join_code}`);
+      setCreatingNew(false);
       setSelectedRollId(roll.id);
       queryClient.invalidateQueries({ queryKey: ["teacher-rolls"] });
     },
@@ -289,6 +295,7 @@ export default function TeacherDashboardPage() {
               <button
                 type="button"
                 onClick={() => {
+                  setCreatingNew(true);
                   setSelectedRollId("");
                   setClassName("");
                   setStudentNames("");
@@ -308,7 +315,10 @@ export default function TeacherDashboardPage() {
                   <button
                     key={roll.id}
                     type="button"
-                    onClick={() => setSelectedRollId(roll.id)}
+                    onClick={() => {
+                      setCreatingNew(false);
+                      setSelectedRollId(roll.id);
+                    }}
                     className={`w-full rounded-md border px-3 py-2 text-left text-sm ${
                       selectedRollId === roll.id
                         ? "border-blue-500 bg-blue-50"
