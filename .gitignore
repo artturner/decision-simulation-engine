@@ -27,6 +27,12 @@ yarn-error.log*
 # Test output
 playwright-report/
 
+# Generated scenario image previews (scenario_gen image tooling output)
+image_previews/
+
+# Local dev server logs
+apps/web/.dev-server*.log
+
 # Docker
 *.override.yml
 
