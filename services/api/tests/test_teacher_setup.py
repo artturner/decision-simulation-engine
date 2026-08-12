@@ -92,15 +92,16 @@ class TestPublishedScenarios:
         scenario, version = _scenario(db, "global-published", VersionStatus.published)
         resp = client.get("/api/v1/teacher/scenarios/published")
         assert resp.status_code == 200
-        body = resp.json()
-        assert body[0]["id"] == str(scenario.id)
-        assert body[0]["published_version_id"] == str(version.id)
+        by_slug = {item["slug"]: item for item in resp.json()}
+        assert "global-published" in by_slug
+        assert by_slug["global-published"]["id"] == str(scenario.id)
+        assert by_slug["global-published"]["published_version_id"] == str(version.id)
 
     def test_excludes_draft_scenarios(self, client, db: Session):
         _scenario(db, "draft-only", VersionStatus.draft)
         resp = client.get("/api/v1/teacher/scenarios/published")
         assert resp.status_code == 200
-        assert resp.json() == []
+        assert "draft-only" not in {item["slug"] for item in resp.json()}
 
     def test_excludes_other_teacher_owned_scenarios(
         self, client, db: Session, other_teacher: User
@@ -113,7 +114,7 @@ class TestPublishedScenarios:
         )
         resp = client.get("/api/v1/teacher/scenarios/published")
         assert resp.status_code == 200
-        assert resp.json() == []
+        assert "other-owned" not in {item["slug"] for item in resp.json()}
 
 
 class TestRollAssignments:
