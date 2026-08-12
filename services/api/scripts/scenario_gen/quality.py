@@ -31,7 +31,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
-from . import REPO_ROOT, llm
+from . import REPO_ROOT, depth, llm
 
 _ITERATIONS_DIR = REPO_ROOT / "scenario_iterations"
 
@@ -73,6 +73,9 @@ def structural_gate(scenario_json: dict) -> GateResult:
     analyze, _cj, _sj = _harness()
     paths = analyze.enumerate_paths(scenario_json)
     m = analyze.compute_metrics(scenario_json, paths)
+    # Informational (not gated): fewest choice scenes on any start→end route,
+    # so the report shows whether a --min-decisions floor was met.
+    m["decisions_min"] = depth.min_decision_depth(scenario_json)
 
     declared = m["variables_declared"]
     checks = {

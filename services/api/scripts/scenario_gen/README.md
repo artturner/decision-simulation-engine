@@ -67,7 +67,16 @@ python -m scripts.scenario_gen --pdf source.pdf --non-interactive --slug my-topi
 
 Flags: `--pdf` (required), `--out <dir>` (default repo root), `--subjects N`,
 `--slug`, `--images`, `--gen-model`, `--scout-model`, `--non-interactive`,
-`--strict`, `--no-quality`, `--no-judge`, `--quality-iters N`, `--judge-k N`.
+`--strict`, `--no-quality`, `--no-judge`, `--quality-iters N`, `--judge-k N`,
+`--min-decisions N`.
+
+`--min-decisions N` requires every route from start to an ending to pass
+through at least N choice scenes. The floor is enforced *during generation*:
+a shortfall is injected as a validation error into the model's self-repair
+loop (engine errors are reported first; prompt-level depth instructions alone
+under-deliver, while the injected error fixes depth on the first retry).
+Default 0 (off). The measured floor is surfaced as `decisions_min` in each
+version's metrics in the quality report.
 
 ## Required environment (services/api/.env)
 

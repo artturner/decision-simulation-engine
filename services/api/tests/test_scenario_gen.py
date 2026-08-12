@@ -12,7 +12,7 @@ import json
 
 import pytest
 
-from scripts.scenario_gen import assemble, generate, image_prompts, llm, quality
+from scripts.scenario_gen import assemble, depth, generate, image_prompts, llm, quality
 
 
 # ---------------------------------------------------------------------------
@@ -388,3 +388,117 @@ class TestQualityLoop:
         with pytest.raises(quality.ReviseError):
             quality.revise_scenario(BAD_SJ, "findings", "m",
                                     call_fn=call_fn, max_repairs=1)
+
+
+# ---------------------------------------------------------------------------
+# Decision depth (--min-decisions)
+# ---------------------------------------------------------------------------
+
+# Every route passes 2 choice scenes ("1", then "3" — reached directly, via
+# the auto_advance bridge, or via the conditional's only condition).
+DEEP_SJ = {
+    "metadata": {"title": "Deep"},
+    "start_scene_id": "1",
+    "scenes": {
+        "1": {
+            "title": "First", "type": "choice",
+            "choices": [
+                {"text": "long way", "next": "2"},
+                {"text": "short way", "next": "4"},
+            ],
+        },
+        "2": {"title": "Bridge", "type": "auto_advance", "next": "3"},
+        "3": {
+            "title": "Second", "type": "choice",
+            "choices": [{"text": "on", "next": "5"}],
+        },
+        "4": {
+            "title": "Weigh", "type": "conditional",
+            "conditions": [{"condition": "true", "next": "3"}],
+        },
+        "5": {"title": "End", "type": "end", "outcome": "o",
+              "outcome_message": "m"},
+    },
+}
+
+
+class TestMinDecisionDepth:
+    def test_counts_choice_scenes_only(self):
+        # choice → conditional → end: one decision beat.
+        assert depth.min_decision_depth(GOOD_SJ) == 1
+
+    def test_min_over_all_routes(self):
+        assert depth.min_decision_depth(DEEP_SJ) == 2
+
+    def test_conditional_default_is_a_route(self):
+        # A default that skips the second choice scene shortens the minimum.
+        sj = json.loads(json.dumps(DEEP_SJ))
+        sj["scenes"]["4"]["default"] = "5"
+        assert depth.min_decision_depth(sj) == 1
+
+    def test_cycles_do_not_hang_or_shorten(self):
+        sj = {
+            "start_scene_id": "1",
+            "scenes": {
+                "1": {"type": "choice", "choices": [
+                    {"text": "loop", "next": "2"},
+                    {"text": "on", "next": "3"},
+                ]},
+                "2": {"type": "auto_advance", "next": "1"},
+                "3": {"type": "end", "outcome": "o"},
+            },
+        }
+        assert depth.min_decision_depth(sj) == 1
+
+    def test_no_reachable_end_returns_zero(self):
+        sj = {
+            "start_scene_id": "1",
+            "scenes": {
+                "1": {"type": "auto_advance", "next": "2"},
+                "2": {"type": "auto_advance", "next": "1"},
+            },
+        }
+        assert depth.min_decision_depth(sj) == 0
+
+
+class TestMinDecisionsValidator:
+    def test_passes_when_floor_met(self):
+        assert depth.min_decisions_validator(1)(GOOD_SJ) == []
+
+    def test_depth_error_when_valid_but_shallow(self):
+        errors = depth.min_decisions_validator(2)(GOOD_SJ)
+        assert len(errors) == 1
+        assert "only 1 choice scene" in errors[0]
+        assert "at least 2" in errors[0]
+        assert "EVERY branch" in errors[0]
+
+    def test_engine_errors_come_first_without_depth_error(self):
+        sj = json.loads(json.dumps(GOOD_SJ))
+        sj["scenes"]["1"]["choices"][0]["next"] = "nowhere"
+        errors = depth.min_decisions_validator(2)(sj)
+        assert errors
+        assert not any("Decision depth" in e for e in errors)
+
+    def test_depth_shortfall_flows_through_the_repair_loop(self):
+        outputs = [json.dumps(GOOD_SJ), json.dumps(DEEP_SJ)]
+        seen = {"depth_error_in_repair_turn": False}
+
+        def call_fn(*, system, messages, model):
+            if len(messages) > 1:
+                seen["depth_error_in_repair_turn"] = any(
+                    isinstance(m.get("content"), str)
+                    and "Decision depth too shallow" in m["content"]
+                    for m in messages
+                )
+            return outputs[len(messages) // 2]
+
+        result = generate.generate_scenario(
+            [], {"title": "S"}, "m",
+            call_fn=call_fn,
+            validate_fn=depth.min_decisions_validator(2),
+        )
+        assert result == DEEP_SJ
+        assert seen["depth_error_in_repair_turn"]
+
+    def test_gate_metrics_surface_decisions_min(self):
+        assert quality.structural_gate(GOOD_SJ).metrics["decisions_min"] == 1

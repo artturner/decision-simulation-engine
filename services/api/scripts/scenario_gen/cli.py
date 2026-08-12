@@ -12,7 +12,17 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import REPO_ROOT, assemble, generate, image_prompts, images, ingest, quality, scout
+from . import (
+    REPO_ROOT,
+    assemble,
+    depth,
+    generate,
+    image_prompts,
+    images,
+    ingest,
+    quality,
+    scout,
+)
 
 
 def _select_subject(subjects: list[dict], non_interactive: bool) -> dict:
@@ -68,6 +78,12 @@ def main(argv: list[str] | None = None) -> int:
         "--judge-k", type=int, default=quality.DEFAULT_JUDGE_K,
         help="Judge samples per path (majority vote).",
     )
+    parser.add_argument(
+        "--min-decisions", type=int, default=0,
+        help="Require at least N choice scenes on every route to an ending, "
+             "enforced as a validation error in the generation self-repair "
+             "loop (0 = off).",
+    )
     args = parser.parse_args(argv)
 
     from app.core.config import settings
@@ -90,9 +106,18 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     subject = _select_subject(subjects, args.non_interactive)
 
-    print(f"\n→ Generating scenario ({gen_model}) …")
+    # --min-decisions: enforce the depth floor inside generation, where the
+    # self-repair loop can fix it (prompt instructions alone under-deliver).
+    validate_fn = (
+        depth.min_decisions_validator(args.min_decisions)
+        if args.min_decisions > 0 else None
+    )
+    floor = f", min decisions {args.min_decisions}" if validate_fn else ""
+    print(f"\n→ Generating scenario ({gen_model}{floor}) …")
     try:
-        scenario_json = generate.generate_scenario(pdf_blocks, subject, gen_model)
+        scenario_json = generate.generate_scenario(
+            pdf_blocks, subject, gen_model, validate_fn=validate_fn
+        )
     except generate.GenerationError as exc:
         print(f"✗ {exc}", file=sys.stderr)
         return 1
