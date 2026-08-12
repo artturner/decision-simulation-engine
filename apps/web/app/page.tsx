@@ -11,8 +11,8 @@ const scenarios = [
   },
   {
     number: "02",
-    era: "Public policy · Present day",
-    title: "Strength in Numbers",
+    era: "Interest groups · 2009–2010",
+    title: "Shaping the ACA: A Lobbyist's Gambit",
     prompt: "Can a coalition hold when every ally wants something different?",
     image: "/scenes/healthcare-coalition.png",
     position: "center 38%",
