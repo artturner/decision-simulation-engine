@@ -1,0 +1,83 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": null,
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": true,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (ChineseGoodwill, CrewSafety, DomesticStanding, USCredibility), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "6/6 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "5 reachable (crisis_deepens, deft_resolution, firm_but_free, hollow_homecoming, workmanlike_close) of 5 declared (crisis_deepens, deft_resolution, firm_but_free, hollow_homecoming, workmanlike_close)"
+        }
+      },
+      "metrics": {
+        "paths": 36,
+        "variables_declared": [
+          "ChineseGoodwill",
+          "CrewSafety",
+          "DomesticStanding",
+          "USCredibility"
+        ],
+        "variables_read": [
+          "ChineseGoodwill",
+          "CrewSafety",
+          "DomesticStanding",
+          "USCredibility"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 6,
+        "influential_points": 6,
+        "influential_of": 6,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "crisis_deepens",
+          "deft_resolution",
+          "firm_but_free",
+          "hollow_homecoming",
+          "workmanlike_close"
+        ],
+        "outcomes_declared": [
+          "crisis_deepens",
+          "deft_resolution",
+          "firm_but_free",
+          "hollow_homecoming",
+          "workmanlike_close"
+        ]
+      },
+      "stability": null,
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 0,
+  "revisions_attempted": 0,
+  "passed": true
+}

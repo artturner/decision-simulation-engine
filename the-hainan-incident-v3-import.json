@@ -1,0 +1,384 @@
+{
+  "slug": "the-hainan-incident",
+  "title": "The Hainan Island Incident",
+  "description": "As a senior White House advisor, recommend a response strategy to free 24 detained crew members after a mid-air collision with China, navigating the escalation ladder from quiet diplomacy to military force",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "The Hainan Island Incident",
+      "description": "As a senior White House advisor, recommend a response strategy to free 24 detained crew members after a mid-air collision with China, navigating the escalation ladder from quiet diplomacy to military force",
+      "page_title": "The Hainan Island Incident",
+      "page_icon": "✈️",
+      "author": "Foreign Policy Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "variables": {
+      "CrewSafety": 0,
+      "ChineseGoodwill": 0,
+      "DomesticStanding": 0,
+      "USCredibility": 0
+    },
+    "reflection_questions": [
+      "How did you balance the immediate priority of the crew's safe return against the longer-term goal of preserving U.S. credibility and deterrence? Which pressures pushed you up or down the escalation ladder?",
+      "The chapter describes soft power (diplomacy, sanctions) and hard power (military force) as distinct instruments. How did your opening posture constrain which options remained credible at the endgame?",
+      "Consider the competing interests of the crew's families, the business community, Congress, and the Chinese government. Whose concerns did you weight most heavily, and what did that reveal about your assumptions?",
+      "The real incident was resolved through slow diplomacy and a carefully worded statement. How does the tension between idealism and realism, or between appearing strong and staying flexible, shape crisis decision-making?",
+      "How did the way you framed the eventual settlement to the American public affect your position, and how do domestic politics intrude on foreign policy that supposedly 'stops at the water's edge'?"
+    ],
+    "reflection_prompts": [
+      "Think about how your opening posture set the ceiling and floor for every later option",
+      "Consider the real-world consequences on the detained crew, U.S.-China relations, and domestic opinion",
+      "Reflect on how the absence of a world-level authority makes crisis diplomacy an ongoing bargain",
+      "Consider whether appearing tough and actually being effective always point in the same direction"
+    ],
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The Situation Room",
+        "description": "The White House Situation Room, hours after the collision. Maps of the South China Sea glow on the screens.",
+        "image": "scene_1.png",
+        "narration": "It is April 2001. A U.S. Navy EP-3 surveillance plane, conducting a routine mission in international airspace near Hainan Island, has collided with a Chinese J-8 fighter that was shadowing it aggressively. The Chinese pilot is missing and presumed dead. The crippled American plane made an emergency landing on Hainan without permission. China has seized the aircraft and is holding all 24 American crew members.\n\nThe President turns to you, the senior advisor at the table. Beijing is furious and demanding an apology. The families of the crew are frantic. Cable news is already running the flag.\n\nThe President: 'I need a recommendation for our opening posture. Everyone in this room knows we have a ladder of options. Where do we start?'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Recommend quiet diplomacy: work confidential back-channels through our ambassador, keep the rhetoric low, prioritize getting the crew home",
+            "next": "2a",
+            "effects": {
+              "CrewSafety": 3,
+              "ChineseGoodwill": 2,
+              "DomesticStanding": -1,
+              "USCredibility": 0
+            }
+          },
+          {
+            "text": "Recommend a firm public protest: the President condemns China's reckless flying and demands the crew's immediate return at a televised briefing",
+            "next": "2b",
+            "effects": {
+              "CrewSafety": 0,
+              "ChineseGoodwill": -2,
+              "DomesticStanding": 3,
+              "USCredibility": 2
+            }
+          },
+          {
+            "text": "Recommend preparing economic pressure: quietly signal that China's most-favored-nation trade status and pending deals are on the table if the crew isn't released",
+            "next": "2c",
+            "effects": {
+              "CrewSafety": -1,
+              "ChineseGoodwill": -2,
+              "DomesticStanding": 2,
+              "USCredibility": 1
+            }
+          },
+          {
+            "text": "Recommend a visible military posture: move a carrier group toward the region as a reminder of U.S. reach while diplomacy proceeds",
+            "next": "2d",
+            "effects": {
+              "CrewSafety": -2,
+              "ChineseGoodwill": -3,
+              "DomesticStanding": 1,
+              "USCredibility": 3
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "The Apology Demand",
+        "description": "A secure line to Beijing. The ambassador reports back from a tense first meeting.",
+        "image": "scene_2a.png",
+        "narration": "Your quiet approach opens a channel quickly. The Chinese foreign ministry receives the ambassador without the theater of a public standoff, and word comes that the crew is being treated adequately. But Beijing has planted its flag on one word.\n\nChinese officials insist the United States must apologize, fully and formally, for the death of their pilot and for the intrusion. Domestically, the President cannot say 'sorry' without a firestorm from Congress and veterans' groups, who point out the crew was in international airspace and the Chinese pilot flew recklessly.\n\nThe ambassador on the line: 'They want the word. Our side won't give it. There may be language that threads the needle, but I need direction on how far to bend.'",
+        "type": "auto_advance",
+        "next": "3a"
+      },
+      "3a": {
+        "title": "Threading the Needle",
+        "description": "Late night in the West Wing. Diplomats and lawyers pore over draft language.",
+        "image": "scene_3a.png",
+        "narration": "The crew's fate now hinges on wording. Your team has explored expressions of 'regret' and being 'very sorry' for the loss of the pilot and the unauthorized landing, formulations that stop short of accepting blame.\n\nThe President wants the crew home but will not humiliate the country. Beijing wants to save face after losing a pilot and a public argument. This is soft power in its purest form: no armies move, only phrases.\n\nHow do you advise threading the needle?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Offer a carefully worded 'letter of the two sorries': sorry for the pilot's loss and for the landing, but no apology accepting fault",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 3,
+              "ChineseGoodwill": 2,
+              "USCredibility": 1
+            }
+          },
+          {
+            "text": "Hold firm on no expression of regret whatsoever and keep pressing purely on the illegality of the detention",
+            "next": "4",
+            "effects": {
+              "CrewSafety": -2,
+              "ChineseGoodwill": -2,
+              "DomesticStanding": 1,
+              "USCredibility": 1
+            }
+          },
+          {
+            "text": "Privately concede a fuller apology to speed release, betting the domestic backlash is worth 24 lives home fast",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 3,
+              "ChineseGoodwill": 3,
+              "DomesticStanding": -3,
+              "USCredibility": -2
+            }
+          }
+        ]
+      },
+      "2b": {
+        "title": "Hardliners on the Hill",
+        "description": "The morning after the President's televised statement. Congressional leaders crowd into a briefing.",
+        "image": "scene_2b.png",
+        "narration": "The President's firm public statement plays well at home. Flags wave, and polls tick up. But the public shaming stiffens Beijing's spine; Chinese state media casts the U.S. as an arrogant aggressor and slows the diplomatic channel to a crawl.\n\nNow hardliners in Congress smell an opportunity. Several senators are calling for the President to cut China's trade privileges immediately and to withdraw the U.S. ambassador in protest, framing anything softer as weakness.\n\nA senior senator, off camera: 'You went out strong. Don't go wobbly now. The country wants to see us make China pay for this.'",
+        "type": "auto_advance",
+        "next": "3b"
+      },
+      "3b": {
+        "title": "Answering the Hawks",
+        "description": "The Oval Office. The President weighs the political pressure against the crew still on Hainan.",
+        "image": "scene_3b.png",
+        "narration": "You've locked in a tough public posture. The question now is whether to let congressional hawks drag you further up the ladder or to hold your position and quietly reopen a path to resolution.\n\nEvery step you take to satisfy the Hill raises the stakes for the 24 crew members whose freedom still depends on Chinese cooperation. But being seen to cave to Beijing after such a public stand would cost the President dearly at home.\n\nHow do you answer the hawks?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Hold the firm line publicly but instruct the ambassador to quietly reopen negotiations for a face-saving exit",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 2,
+              "ChineseGoodwill": 1,
+              "DomesticStanding": 1,
+              "USCredibility": 1
+            }
+          },
+          {
+            "text": "Escalate to match Congress: publicly threaten China's trade status and recall the ambassador for consultations",
+            "next": "4",
+            "effects": {
+              "CrewSafety": -3,
+              "ChineseGoodwill": -3,
+              "DomesticStanding": 2,
+              "USCredibility": 2
+            }
+          },
+          {
+            "text": "Push back on the hawks publicly, urging patience and reminding the country the crew's safety comes first",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 2,
+              "ChineseGoodwill": 2,
+              "DomesticStanding": -2,
+              "USCredibility": -1
+            }
+          }
+        ]
+      },
+      "2c": {
+        "title": "Business Blowback",
+        "description": "A hastily arranged meeting with the Commerce Secretary and business leaders.",
+        "image": "scene_2c.png",
+        "narration": "Word of your economic-pressure signaling leaks. Beijing reads it as a threat and hardens, warning that coercion will only lengthen the crew's detention. Meanwhile, the reaction at home surprises you: it comes from your own side.\n\nMajor U.S. companies with enormous China trade interests flood the White House with calls. Cutting China's most-favored-nation status, they warn, would cost American jobs, unravel supply chains, and hand markets to European competitors, all over an incident diplomacy could still resolve.\n\nThe Commerce Secretary: 'The business community is telling us the sanctions threat is bigger than the crisis. And it hasn't gotten a single crew member home yet.'",
+        "type": "auto_advance",
+        "next": "3c"
+      },
+      "3c": {
+        "title": "Pressure or Pivot",
+        "description": "The National Security Council reconvenes to decide whether the economic threat was a bluff worth keeping.",
+        "image": "scene_3c.png",
+        "narration": "Your opening move put economic leverage on the table. Now you must decide whether it was a genuine tool or an overreach. Soft power like sanctions can signal displeasure, but the chapter's lesson is stark: without a world authority to enforce anything, coercion is a bargain that can backfire.\n\nThe crew is still on Hainan. Business is uneasy, Beijing is defensive, and Congress is watching to see if you blink.\n\nHow do you resolve the pressure question?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Quietly walk back the sanctions threat and pivot to pure diplomacy, reassuring both Beijing and business",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 3,
+              "ChineseGoodwill": 2,
+              "DomesticStanding": -1,
+              "USCredibility": -1
+            }
+          },
+          {
+            "text": "Keep the threat credible but private, using it as quiet leverage while diplomats work the release",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 1,
+              "ChineseGoodwill": 0,
+              "DomesticStanding": 1,
+              "USCredibility": 2
+            }
+          },
+          {
+            "text": "Double down publicly on sanctions to prove resolve, accepting the business cost and the risk to the crew",
+            "next": "4",
+            "effects": {
+              "CrewSafety": -3,
+              "ChineseGoodwill": -3,
+              "DomesticStanding": 1,
+              "USCredibility": 2
+            }
+          }
+        ]
+      },
+      "2d": {
+        "title": "Allied Restraint",
+        "description": "A secure call with allied capitals as the carrier group repositions.",
+        "image": "scene_2d.png",
+        "narration": "The carrier group's movement is unmistakable, and it reverberates far beyond Hainan. Beijing denounces the deployment as gunboat diplomacy and freezes the negotiating channel, warning that hard power will not free the crew.\n\nMore unexpectedly, your allies grow nervous. Regional partners who host U.S. bases urge restraint, worried a miscalculation over a downed plane could spiral into something no one wants. Even hawks acknowledge that a naval standoff cannot land a diplomatic settlement.\n\nAn allied foreign minister: 'We stand with you, but a show of force over 24 detainees risks turning an accident into a confrontation. What exactly does the carrier buy you?'",
+        "type": "auto_advance",
+        "next": "3d"
+      },
+      "3d": {
+        "title": "The Ladder's Top Rung",
+        "description": "The President studies the map as the carrier holds position off the coast.",
+        "image": "scene_3d.png",
+        "narration": "You've climbed near the top of the escalation ladder. The military posture signals unmistakable resolve, but it has done nothing to open the cell doors on Hainan, and it has spooked the very allies whose support gives the posture meaning.\n\nThe crew's freedom still runs through Beijing's diplomats, not through the carrier's radar. The chapter's warning echoes: hard power projects strength, but diplomacy tends to be the first step, and usually the one that actually resolves a conflict.\n\nHow do you handle the ladder's top rung?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Keep the carrier on station as backdrop but hand the lead back to diplomats to negotiate the release",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 1,
+              "ChineseGoodwill": 0,
+              "DomesticStanding": 1,
+              "USCredibility": 2
+            }
+          },
+          {
+            "text": "Quietly pull the carrier back to reassure allies and Beijing, signaling you want an off-ramp",
+            "next": "4",
+            "effects": {
+              "CrewSafety": 3,
+              "ChineseGoodwill": 3,
+              "DomesticStanding": -1,
+              "USCredibility": -1
+            }
+          },
+          {
+            "text": "Hold the military posture and add a public deadline for the crew's return, betting pressure forces Beijing's hand",
+            "next": "4",
+            "effects": {
+              "CrewSafety": -3,
+              "ChineseGoodwill": -3,
+              "DomesticStanding": 2,
+              "USCredibility": 3
+            }
+          }
+        ]
+      },
+      "4": {
+        "title": "The Endgame Call",
+        "description": "Eleven days in. Beijing signals it is ready to close the matter, but on its own terms and with its own framing.",
+        "image": "scene_4.png",
+        "narration": "After days of tension, a path to resolution finally appears. Chinese negotiators indicate they will release the crew, but they attach conditions and expect the United States to accept language and terms that let Beijing claim vindication at home. The aircraft itself will be returned only later, likely disassembled.\n\nThe crew's families are pleading. Congress is watching. The business community wants normalcy. And the President wants both the crew home and the country's dignity intact.\n\nThe President: 'This is the endgame. Do we accept their final terms and how do we frame this to the American people? Make the call.'",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Accept Beijing's terms now and frame the settlement publicly as a principled resolution that brought our people home safely",
+            "next": "5",
+            "effects": {
+              "CrewSafety": 3,
+              "ChineseGoodwill": 2,
+              "DomesticStanding": 1
+            }
+          },
+          {
+            "text": "Accept the terms but frame it bluntly as a hard-nosed deal, refusing to let Beijing claim a diplomatic victory",
+            "next": "5",
+            "effects": {
+              "CrewSafety": 2,
+              "ChineseGoodwill": -2,
+              "DomesticStanding": 2,
+              "USCredibility": 2
+            }
+          },
+          {
+            "text": "Hold out for better terms, refusing conditions until China concedes more, and telling the public we will not be pressured",
+            "next": "5",
+            "effects": {
+              "CrewSafety": -3,
+              "ChineseGoodwill": -3,
+              "DomesticStanding": 1,
+              "USCredibility": 2
+            }
+          }
+        ]
+      },
+      "5": {
+        "title": "Weighing the Whole Record",
+        "description": "The President reviews the arc of every decision before the outcome becomes public.",
+        "image": "scene_5.png",
+        "narration": "The crisis is drawing to its close. Before the resolution reaches the podium and the history books, the whole record of your counsel is weighed: how you opened, how you answered the complication your posture provoked, and how you closed the endgame.\n\nDid you get the crew home while preserving the nation's standing and credibility? Or did the ladder of escalation carry you somewhere costlier? The accumulated consequences now determine how this incident is remembered.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "CrewSafety >= 6 && ChineseGoodwill >= 2 && DomesticStanding >= 0",
+            "next": "6.deft_resolution"
+          },
+          {
+            "condition": "CrewSafety >= 5 && USCredibility >= 3 && DomesticStanding >= 2",
+            "next": "6.firm_but_free"
+          },
+          {
+            "condition": "CrewSafety <= -1 || ChineseGoodwill <= -6",
+            "next": "6.crisis_deepens"
+          },
+          {
+            "condition": "DomesticStanding <= -3 || USCredibility <= -2",
+            "next": "6.hollow_homecoming"
+          }
+        ],
+        "default": "6.workmanlike_close"
+      },
+      "6.deft_resolution": {
+        "title": "A Deft Resolution",
+        "description": "Eleven days after the collision, the 24 crew members board a plane home.",
+        "image": "scene_6_deft_resolution.png",
+        "narration": "Your patient, diplomacy-first approach threaded an impossibly narrow needle. Carefully chosen words let Beijing save face while the United States conceded no fault, and all 24 crew members return home safely to their families.\n\nThe episode becomes a textbook case of soft power: no shots fired, relations strained but intact, and a foundation preserved for the vital U.S.-China economic relationship. Critics grumble that the language was too soft, but the sight of the crew stepping onto American soil answers them. You demonstrated that in a world with no higher authority to appeal to, skilled diplomacy is often the instrument that actually works.",
+        "type": "end",
+        "outcome": "deft_resolution",
+        "outcome_message": "Skilled diplomacy brought the crew home while preserving both national dignity and the U.S.-China relationship."
+      },
+      "6.firm_but_free": {
+        "title": "Firm and Free",
+        "description": "The crew returns home to a President who stood tall throughout.",
+        "image": "scene_6_firm_but_free.png",
+        "narration": "You projected unmistakable resolve and still landed the crew safely home. Beijing came away irritated, and the relationship is chillier for it, but the President never appeared to flinch, and the country rallied behind a leader who refused to be pushed around.\n\nThe hard-edged posture bought credibility that will echo in future negotiations, a demonstration that the United States will back its diplomats with strength. The cost is a colder relationship with a rising China, but with the crew home and standing intact, most Americans judge the trade worthwhile. Strength and success, this time, pointed the same direction.",
+        "type": "end",
+        "outcome": "firm_but_free",
+        "outcome_message": "A firm posture returned the crew and boosted U.S. credibility, at the price of a colder relationship with China."
+      },
+      "6.crisis_deepens": {
+        "title": "The Crisis Deepens",
+        "description": "The negotiating channel collapses. The crew remains on Hainan as tensions climb.",
+        "image": "scene_6_crisis_deepens.png",
+        "narration": "The escalation ladder carried you too far, too fast. Coercion and confrontation convinced Beijing that releasing the crew now would look like capitulation, so China dug in. The 24 crew members remain detained, the aircraft is stripped for intelligence, and what began as an accident has hardened into a prolonged standoff.\n\nAllies fret, the business community reels, and the families' anguish plays out on the evening news. The chapter's lesson lands with brutal clarity: with no world authority to enforce a settlement, crisis diplomacy is a fragile bargain, and pushing a defensive adversary into a corner can slam the very door you needed to walk through. Recovery is possible, but it will be longer and costlier now.",
+        "type": "end",
+        "outcome": "crisis_deepens",
+        "outcome_message": "Overescalation hardened Beijing, prolonging the detention and turning an accident into a dangerous standoff."
+      },
+      "6.hollow_homecoming": {
+        "title": "A Hollow Homecoming",
+        "description": "The crew comes home, but the political price is steep.",
+        "image": "scene_6_hollow_homecoming.png",
+        "narration": "You secured the crew's release, and their families are grateful, but the manner of the settlement left the President badly exposed at home. Whether through a concession that looked like an apology or a public retreat from a tough stand, the deal was framed by critics as weakness, and the administration's standing took a real hit.\n\nCongress holds hearings, editorials question American resolve, and the sense lingers that the United States gave away too much. The crew's safe return is a genuine achievement, yet it is overshadowed by the domestic cost, a reminder that foreign policy rarely 'stops at the water's edge' and that how a settlement is framed can matter as much as the settlement itself.",
+        "type": "end",
+        "outcome": "hollow_homecoming",
+        "outcome_message": "The crew returned, but concessions and poor framing damaged the President's standing at home."
+      },
+      "6.workmanlike_close": {
+        "title": "A Workmanlike Close",
+        "description": "The incident ends without triumph or disaster, its lessons plain.",
+        "image": "scene_6_workmanlike_close.png",
+        "narration": "The crew comes home and the crisis subsides, but the resolution is remembered as competent rather than deft. Your choices balanced the pressures without ever fully aligning them, so the outcome satisfies no one completely and disappoints no one entirely.\n\nBeijing is neither placated nor enraged, the domestic reaction is muted, and U.S. credibility stands roughly where it began. The episode fades quickly from the headlines, a workmanlike close that returned the crew but left the harder questions about escalation and leverage unresolved. In a crisis with no perfect answer, holding the middle proved a defensible, if unmemorable, course.",
+        "type": "end",
+        "outcome": "workmanlike_close",
+        "outcome_message": "A middling course returned the crew without triumph or catastrophe, leaving the deeper tensions unresolved."
+      }
+    }
+  }
+}

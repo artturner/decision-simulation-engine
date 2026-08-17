@@ -1,0 +1,352 @@
+{
+  "slug": "blowing-the-whistle",
+  "title": "The Civil Service Whistleblower's Dilemma",
+  "description": "A mid-level federal analyst discovers agency misconduct and must decide how to respond under the legal frameworks that protect—and endanger—whistleblowers.",
+  "status": "draft",
+  "scenario_json": {
+    "metadata": {
+      "title": "The Civil Service Whistleblower's Dilemma",
+      "description": "A mid-level federal analyst discovers agency misconduct and must decide how to respond under the legal frameworks that protect—and endanger—whistleblowers.",
+      "page_title": "The Whistleblower's Dilemma",
+      "page_icon": "🏛️",
+      "author": "Public Administration Education Team",
+      "version": "1.0",
+      "completion_tracking": true
+    },
+    "variables": {
+      "PublicProtection": 0,
+      "PersonalRisk": 0,
+      "LegalStanding": 0,
+      "InstitutionalTrust": 0
+    },
+    "start_scene_id": "1",
+    "scenes": {
+      "1": {
+        "title": "The Discovery",
+        "description": "A cramped analyst's office at the Bureau of Regulatory Compliance, late on a Thursday.",
+        "image": "scene_1.png",
+        "narration": "You are Dana Okafor, a GS-12 budget analyst who has served the Bureau of Regulatory Compliance for nine years. Tonight, while reconciling quarterly disbursements, you find something you cannot un-see: roughly $4 million in enforcement funds have been quietly redirected, and a series of internal emails suggest inspections were suspended against politically connected firms—firms whose products have since been tied to a cluster of consumer injuries.\n\nThe textbook framing echoes in your mind. Bureaucrats are best positioned to recognize misconduct, yet the personal cost of doing the right thing can be prohibitive. The Civil Service Reform Act of 1978 built the Merit Systems Protection Board to hear such matters. The Whistleblower Protection Act promises shields against reprisal. But promises are not guarantees, and you have a mortgage, a probationary colleague, and a reputation.\n\nThe cursor blinks. The public is being harmed right now. How do you respond?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "File a formal disclosure immediately through Merit Systems Protection Board channels, on the record.",
+            "next": "2a",
+            "effects": {
+              "PublicProtection": 2,
+              "PersonalRisk": 3,
+              "LegalStanding": 3,
+              "InstitutionalTrust": 1
+            }
+          },
+          {
+            "text": "Leak the documents anonymously to a congressional oversight committee and the press.",
+            "next": "2b",
+            "effects": {
+              "PublicProtection": 3,
+              "PersonalRisk": 2,
+              "LegalStanding": -2,
+              "InstitutionalTrust": -1
+            }
+          },
+          {
+            "text": "Raise it internally first with my direct supervisor and give the agency a chance to fix it.",
+            "next": "2c",
+            "effects": {
+              "PublicProtection": -1,
+              "PersonalRisk": 0,
+              "LegalStanding": 1,
+              "InstitutionalTrust": 2
+            }
+          },
+          {
+            "text": "Quietly document everything and wait for a safer, more defensible moment to act.",
+            "next": "2d",
+            "effects": {
+              "PublicProtection": -2,
+              "PersonalRisk": -1,
+              "LegalStanding": 1,
+              "InstitutionalTrust": 0
+            }
+          }
+        ]
+      },
+      "2a": {
+        "title": "On the Record",
+        "description": "A federal intake portal and a sealed disclosure form.",
+        "image": "scene_2a.png",
+        "narration": "You submit a formal whistleblower disclosure, attaching the disbursement records and the emails. The MSPB acknowledges receipt; the Office of Special Counsel opens a preliminary review. You have created a paper trail that ties your protected activity to a specific date—exactly what the Whistleblower Protection Act contemplates.\n\nWithin a week, your supervisor's tone cools. A reorganization memo lands on your desk 'reassigning' you to a records-retention unit two floors down. It may be routine. It may be reprisal. Either way, your standing as a lawful discloser is now firmly established.\n\nDays later, an oversight committee staffer calls: they have heard an OSC referral is coming and want your cooperation.",
+        "type": "auto_advance",
+        "next": "3a"
+      },
+      "2b": {
+        "title": "Into the Light",
+        "description": "A burner email account and a reporter's encrypted inbox.",
+        "image": "scene_2b.png",
+        "narration": "You copy the files to a personal drive and route them—anonymously, you hope—to a congressional oversight committee and a national reporter. Within seventy-two hours the story breaks: 'Agency Buried Inspections as Consumers Were Harmed.' Public reaction is immediate and fierce.\n\nThe disclosure protects the public far faster than any internal process could. But you have bypassed the Merit Systems Protection Board, and some of the material may have been marked for internal use only. Agency security launches an internal investigation to identify the source. Your legal footing is now uncertain, and the anonymity you counted on feels thin.\n\nAn oversight committee, energized by the coverage, requests documents from the agency—and quietly seeks the identity of the source.",
+        "type": "auto_advance",
+        "next": "3b"
+      },
+      "2c": {
+        "title": "Up the Chain",
+        "description": "Your supervisor's glass-walled office, blinds half-drawn.",
+        "image": "scene_2c.png",
+        "narration": "You bring the records to your supervisor, Marcus Reyes, framing it as a compliance concern rather than an accusation. He listens, jaw tightening. 'This is serious. Let me handle it through channels,' he says. 'Don't put anything else in writing until I've briefed the front office.'\n\nYou have preserved institutional trust and given the agency a chance to correct itself internally—the responsive-bureaucracy ideal. But you have also placed the matter inside the very hierarchy that allowed it, and 'don't put anything in writing' unsettles you. The harm to the public continues while the front office deliberates.\n\nA week passes. Then Marcus asks you to lunch.",
+        "type": "auto_advance",
+        "next": "3c"
+      },
+      "2d": {
+        "title": "The Waiting Game",
+        "description": "A locked drawer, a growing folder, and sleepless nights.",
+        "image": "scene_2d.png",
+        "narration": "You decide the smart move is a bulletproof record. Over the following weeks you methodically archive disbursement logs, email threads, and inspection cancellations, building a case no one could dismiss. Your documentation is meticulous and your legal position, should you ever act, is strong.\n\nBut the calendar is not neutral. Two more consumer-injury reports surface in the news, tied to the same unregulated firms. Every day you wait is a day the harm compounds. A colleague, Priya—still in her probationary period—mentions she noticed the same anomalies and is thinking about 'saying something.'\n\nYou realize the choice to wait may soon be made for you.",
+        "type": "auto_advance",
+        "next": "3d"
+      },
+      "3a": {
+        "title": "The Committee Calls",
+        "description": "A quiet conference room reserved for a preliminary interview.",
+        "image": "scene_3a.png",
+        "narration": "The oversight committee wants your testimony, and the Office of Special Counsel is building on your disclosure. You are now the linchpin of two parallel processes. Your reassignment looks more like retaliation each day, which—paradoxically—strengthens any WPA claim you might bring.\n\nMarcus corners you by the elevators. 'You went outside before giving us a chance,' he says. 'People here feel blindsided.' Some colleagues avoid your eyes; others slip you notes of quiet support.\n\nHow do you carry this forward?",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Cooperate fully and on the record with both the OSC and the committee, pressing for the fastest possible public remedy.",
+            "next": "4",
+            "effects": {
+              "PublicProtection": 3,
+              "LegalStanding": 2,
+              "PersonalRisk": 2
+            }
+          },
+          {
+            "text": "Cooperate, but insist on formal WPA protection and legal counsel before every session, prioritizing an airtight legal record.",
+            "next": "4",
+            "effects": {
+              "LegalStanding": 3,
+              "PublicProtection": -1,
+              "PersonalRisk": -1,
+              "InstitutionalTrust": 1
+            }
+          },
+          {
+            "text": "Publicly urge the agency to reform itself, positioning yourself as a reformer rather than an adversary.",
+            "next": "4",
+            "effects": {
+              "InstitutionalTrust": 3,
+              "PublicProtection": 1,
+              "PersonalRisk": 1
+            }
+          }
+        ]
+      },
+      "3b": {
+        "title": "The Leak Investigation",
+        "description": "A memo announcing an internal review of 'unauthorized disclosures.'",
+        "image": "scene_3b.png",
+        "narration": "The public pressure is enormous—hearings are scheduled, and the redirected funds are being frozen. You achieved protection for the public at scale. But the agency's counsel is systematically reviewing access logs, and your name appears on several of the files.\n\nA sympathetic committee staffer offers a lifeline: if you come forward voluntarily and cooperate, they may be able to route your case toward whistleblower protections retroactively, though the anonymous route weakened your legal standing considerably.\n\nMeanwhile, Priya, your probationary colleague, is being interviewed by security simply because she sat near you.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Step forward voluntarily and try to convert this into a protected disclosure.",
+            "next": "4",
+            "effects": {
+              "LegalStanding": 2,
+              "PersonalRisk": 1,
+              "PublicProtection": 1
+            }
+          },
+          {
+            "text": "Stay silent and let the investigation run its course, protecting the public impact already achieved.",
+            "next": "4",
+            "effects": {
+              "PublicProtection": 1,
+              "LegalStanding": -1,
+              "PersonalRisk": 2
+            }
+          },
+          {
+            "text": "Come forward specifically to shield Priya, taking full responsibility.",
+            "next": "4",
+            "effects": {
+              "InstitutionalTrust": 2,
+              "PersonalRisk": 2,
+              "LegalStanding": 1
+            }
+          }
+        ]
+      },
+      "3c": {
+        "title": "The Lunch",
+        "description": "A booth in the back of a diner three blocks from the office.",
+        "image": "scene_3c.png",
+        "narration": "Over cooling coffee, Marcus is candid. 'The front office says it's being handled. Between us, I'm not sure it is. I could lose my job pushing this.' He looks tired. 'If you escalate now, you're covered under the reform act. If you don't, this could sit forever.'\n\nYou have kept trust intact, but the internal route is stalling and the public is still exposed. Marcus is, in his way, giving you permission—and a warning. The window to act with the record you have is open, but it will not stay open.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Escalate now to the Merit Systems Protection Board with a formal, documented disclosure and press hard for a fast public remedy.",
+            "next": "4",
+            "effects": {
+              "LegalStanding": 3,
+              "PublicProtection": 6,
+              "PersonalRisk": 2,
+              "InstitutionalTrust": 1
+            }
+          },
+          {
+            "text": "Give the front office one more deadline, in writing, before going external, keeping the reform inside the house.",
+            "next": "4",
+            "effects": {
+              "InstitutionalTrust": 3,
+              "LegalStanding": 1,
+              "PublicProtection": 4
+            }
+          },
+          {
+            "text": "Go straight to the press now, arguing the internal process has failed the public, and accept the legal exposure.",
+            "next": "4",
+            "effects": {
+              "PublicProtection": 6,
+              "LegalStanding": -4,
+              "PersonalRisk": 2,
+              "InstitutionalTrust": -3
+            }
+          }
+        ]
+      },
+      "3d": {
+        "title": "Priya's Decision",
+        "description": "The break room, where a nervous colleague waits for your answer.",
+        "image": "scene_3d.png",
+        "narration": "Priya finds you. 'I know something's wrong with the enforcement funds,' she whispers. 'I'm going to report it. I don't have your years in, but I can't sit on it.' A probationary employee has almost no protection; a reprisal could end her career before it begins.\n\nYour careful waiting has run out of runway. If you act now, your thorough documentation gives you and possibly Priya a strong position. If you let her go alone, the harm may finally be exposed—but at her expense, and yours may look like cowardice in hindsight.",
+        "type": "choice",
+        "choices": [
+          {
+            "text": "Act now, filing a formal MSPB disclosure using your documentation and offering to shield Priya.",
+            "next": "4",
+            "effects": {
+              "PublicProtection": 3,
+              "LegalStanding": 3,
+              "PersonalRisk": 2,
+              "InstitutionalTrust": 1
+            }
+          },
+          {
+            "text": "Advise Priya to wait while you both build an ironclad joint case first.",
+            "next": "4",
+            "effects": {
+              "LegalStanding": 2,
+              "PublicProtection": -2,
+              "InstitutionalTrust": 1
+            }
+          },
+          {
+            "text": "Let Priya report alone and keep your own documentation in reserve.",
+            "next": "4",
+            "effects": {
+              "PublicProtection": 1,
+              "PersonalRisk": -2,
+              "InstitutionalTrust": -2
+            }
+          }
+        ]
+      },
+      "4": {
+        "title": "The Reckoning",
+        "description": "A hearing room where the accumulated weight of your choices is finally measured.",
+        "image": "scene_4.png",
+        "narration": "Months of choices converge. An oversight committee has convened, the Office of Special Counsel has ruled on your disclosures, and the agency's leadership is under scrutiny. Now the record you built—how you protected the public, how you protected yourself under the law, and whether you kept faith with the institution and your colleagues—will determine what this cost you and what it changed.\n\nThe clerk calls the room to order. Every decision you made is about to be weighed.",
+        "type": "conditional",
+        "conditions": [
+          {
+            "condition": "PublicProtection >= 5 && LegalStanding >= 4",
+            "next": "5.principled_vindication"
+          },
+          {
+            "condition": "InstitutionalTrust >= 4 && PublicProtection >= 2",
+            "next": "5.reformer_within"
+          },
+          {
+            "condition": "PublicProtection >= 4 && LegalStanding <= 0",
+            "next": "5.hollow_exposure"
+          },
+          {
+            "condition": "LegalStanding >= 5 && PublicProtection <= 2",
+            "next": "5.protected_but_late"
+          },
+          {
+            "condition": "PublicProtection <= 0 && InstitutionalTrust <= 0",
+            "next": "5.silent_complicity"
+          }
+        ],
+        "default": "5.partial_justice"
+      },
+      "5.principled_vindication": {
+        "title": "Vindicated",
+        "description": "A committee affirms your disclosure; the misconduct is corrected.",
+        "image": "scene_5_principled_vindication.png",
+        "narration": "The Office of Special Counsel substantiates your disclosure, the redirected funds are recovered, and inspections resume against the firms that endangered the public. Because you documented your protected activity and built a strong legal record, the Merit Systems Protection Board reverses your reassignment and formally shields you from reprisal.\n\nYou paid a real price—months of stress, strained relationships, and professional uncertainty. But the harm was stopped while your standing under the Whistleblower Protection Act held firm. You demonstrated that a single civil servant, acting within the law, can bend a bureaucracy back toward its mission.",
+        "type": "end",
+        "outcome": "principled_vindication",
+        "outcome_message": "You protected the public and yourself, proving the whistleblower framework can work as intended."
+      },
+      "5.hollow_exposure": {
+        "title": "The Truth, at a Cost",
+        "description": "The misconduct is public knowledge—but your career is in ruins.",
+        "image": "scene_5_hollow_exposure.png",
+        "narration": "The public learned the truth, funds were frozen, and the endangered inspections resumed. That victory is real and it matters. But because your route to exposure sat outside the protected channels, the agency's leak investigation was able to pursue you, and the Whistleblower Protection Act's shields never fully attached. You face termination and possible referral for mishandling agency records.\n\nThe public was protected; you were not. Your story becomes a cautionary tale about how the fastest route to exposure can leave the discloser legally exposed as well. Reformers will debate for years whether the ends justified the means.",
+        "type": "end",
+        "outcome": "hollow_exposure",
+        "outcome_message": "You forced the misconduct into the light, but sacrificed your own legal protection to do it."
+      },
+      "5.protected_but_late": {
+        "title": "Airtight, but Slow",
+        "description": "Your legal position is impeccable; the harm ran longer than it should have.",
+        "image": "scene_5_protected_but_late.png",
+        "narration": "By the time the record was complete, your documentation was unassailable and your protections under the reform act were secure. The Merit Systems Protection Board affirms your status, and no reprisal can touch you. Yet the deliberate caution that made your case airtight also meant the public remedy came slower than it might have, and additional harm accrued while the strongest possible record was assembled.\n\nInvestigators commend your thoroughness. Consumer advocates ask a harder question: was a perfect legal record worth the pace? You protected yourself well and eventually protected the public—but the gap between the two will weigh on you.",
+        "type": "end",
+        "outcome": "protected_but_late",
+        "outcome_message": "You secured strong legal standing, but caution let the public harm continue longer than necessary."
+      },
+      "5.reformer_within": {
+        "title": "Change from Inside",
+        "description": "The agency corrects course with your standing intact.",
+        "image": "scene_5_reformer_within.png",
+        "narration": "By preserving trust and pressing the agency to confront its own misconduct, you helped it change course without tearing it apart. Leadership implements new controls, some officials are quietly removed, and inspections resume. Because you kept faith with colleagues and the institution, you emerge respected rather than isolated.\n\nThe public was protected, though perhaps more slowly than a leak would have achieved. You proved the responsive-bureaucracy ideal—that an institution can be pushed to police itself—while accepting that internal reform requires patience and carries the risk that the front office might have buried it all.",
+        "type": "end",
+        "outcome": "reformer_within",
+        "outcome_message": "You reformed the agency from within, preserving institutional trust while protecting the public."
+      },
+      "5.silent_complicity": {
+        "title": "The Cost of Silence",
+        "description": "The misconduct persists, and you are left with what you did not do.",
+        "image": "scene_5_silent_complicity.png",
+        "narration": "In the end, you protected neither the public nor the institution. Whether through excessive caution or a decision to shield yourself, the misconduct continued largely unaddressed. When elements of it eventually surface through other means, your inaction is part of the record.\n\nThe textbook warned that for a bureaucrat weighing reprisal against a steady paycheck, silence can seem like the easy choice. You now understand its true cost. The public bore the harm, colleagues who spoke up did so without your support, and the agency's culture of suppression endured.",
+        "type": "end",
+        "outcome": "silent_complicity",
+        "outcome_message": "Caution and self-protection left the misconduct unchecked and the public unprotected."
+      },
+      "5.partial_justice": {
+        "title": "A Mixed Outcome",
+        "description": "Some accountability, some unfinished business.",
+        "image": "scene_5_partial_justice.png",
+        "narration": "Your choices produced a middling result. Some of the misconduct was addressed and a measure of the public was protected, but the accountability was incomplete—the record you left did not line up cleanly enough on any single front to force a decisive reckoning.\n\nOversight bodies note both the value of your disclosure and its limits. To some observers you looked cautious; to others, bold; to none did the outcome feel like a clean victory. You learned firsthand that whistleblowing rarely offers tidy endings; it is a series of trade-offs between protecting the public, protecting yourself, and keeping faith with an institution that can be both flawed and worth saving.",
+        "type": "end",
+        "outcome": "partial_justice",
+        "outcome_message": "You achieved partial accountability, navigating trade-offs without a decisive win on any front."
+      }
+    },
+    "reflection_questions": [
+      "How did you weigh the immediate protection of the public against your own legal and professional safety? Which did you prioritize, and why?",
+      "The text notes bureaucrats are best positioned to see misconduct yet face real reprisal for reporting it. How did the legal frameworks—the Civil Service Reform Act, the Merit Systems Protection Board, the Whistleblower Protection Act—shape the options you found viable?",
+      "Consider the tension between exposing wrongdoing quickly and building an airtight, protected case. When, if ever, is delay justified while harm continues?",
+      "How did your responsibility toward fellow civil servants, especially a vulnerable probationary colleague, influence your decisions?",
+      "Reflect on whether reforming an institution from within or forcing accountability from outside better serves the public. What does your path suggest about your view of bureaucratic responsiveness?"
+    ],
+    "reflection_prompts": [
+      "Think about which stakeholder—the public, yourself, your colleagues, or the institution—drove your key decisions.",
+      "Consider how the availability (or fragility) of legal protection changed the calculus of speaking out.",
+      "Reflect on the real-world trade-offs between speed of exposure and strength of legal standing.",
+      "Consider how organizational culture and the fear of reprisal shape whether misconduct ever comes to light."
+    ]
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": "claude-sonnet-4-6",
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (InstitutionalTrust, LegalStanding, PersonalRisk, PublicProtection), 4 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "4/5 choice points influential; inert: ['3a']"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (hollow_exposure, partial_justice, protected_but_late, silent_complicity) of 6 declared (hollow_exposure, partial_justice, principled_vindication, protected_but_late, reformer_within, silent_complicity)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "InstitutionalTrust",
+          "LegalStanding",
+          "PersonalRisk",
+          "PublicProtection"
+        ],
+        "variables_read": [
+          "InstitutionalTrust",
+          "LegalStanding",
+          "PersonalRisk",
+          "PublicProtection"
+        ],
+        "variables_read_count": 4,
+        "choice_points": 5,
+        "influential_points": 4,
+        "influential_of": 5,
+        "inert_choice_scenes": [
+          "3a"
+        ],
+        "outcomes_reachable": [
+          "hollow_exposure",
+          "partial_justice",
+          "protected_but_late",
+          "silent_complicity"
+        ],
+        "outcomes_declared": [
+          "hollow_exposure",
+          "partial_justice",
+          "principled_vindication",
+          "protected_but_late",
+          "reformer_within",
+          "silent_complicity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 1,
+        "stable_major": 1,
+        "clean": 11,
+        "stable": [
+          {
+            "choices": [
+              0,
+              0
+            ],
+            "outcome": "partial_justice",
+            "end_scene": "5.partial_justice",
+            "flagged": 5,
+            "samples": 5,
+            "modal_severity": "major",
+            "modal_scene": "Beat 5: A Mixed Outcome (end)",
+            "example_explanation": "The ending states that 'your legal position left you exposed to lingering professional consequences' and that a 'different sequence of decisions might have achieved more with less cost,' implying Dana's approach was legally suboptimal. However, the narration in Beats 2 and 3 explicitly affirms that filing on the record 'exactly what the Whistleblower Protection Act contemplates' established protected status firmly, that the reassignment 'strengthens any WPA claim,' and that full cooperation with both the OSC and the committee built the strongest possible legal record. The ending's claim of legal exposure directly contradicts the earlier narration's unambiguous assertion that these choices maximized Dana's legal protections, with no intervening event acknowledged to explain how a textbook-optimal legal path produced legal vulnerability."
+          }
+        ]
+      },
+      "score": [
+        0,
+        -1,
+        4,
+        2,
+        -1,
+        -1
+      ]
+    },
+    {
+      "iteration": 1,
+      "accepted": false,
+      "gate_ok": false,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (InstitutionalTrust, LegalStanding, PersonalRisk, PublicProtection), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": false,
+          "detail": "4/5 choice points influential; inert: ['3c']"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "6 reachable (hollow_exposure, partial_justice, principled_vindication, protected_but_late, reformer_within, silent_complicity) of 6 declared (hollow_exposure, partial_justice, principled_vindication, protected_but_late, reformer_within, silent_complicity)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "InstitutionalTrust",
+          "LegalStanding",
+          "PersonalRisk",
+          "PublicProtection"
+        ],
+        "variables_read": [
+          "InstitutionalTrust",
+          "LegalStanding",
+          "PublicProtection"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 5,
+        "influential_points": 4,
+        "influential_of": 5,
+        "inert_choice_scenes": [
+          "3c"
+        ],
+        "outcomes_reachable": [
+          "hollow_exposure",
+          "partial_justice",
+          "principled_vindication",
+          "protected_but_late",
+          "reformer_within",
+          "silent_complicity"
+        ],
+        "outcomes_declared": [
+          "hollow_exposure",
+          "partial_justice",
+          "principled_vindication",
+          "protected_but_late",
+          "reformer_within",
+          "silent_complicity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 0,
+        "stable_major": 0,
+        "clean": 12,
+        "stable": []
+      },
+      "score": [
+        0,
+        -1,
+        5,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "iteration": 2,
+      "accepted": true,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "4 variable(s) declared (InstitutionalTrust, LegalStanding, PersonalRisk, PublicProtection), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "6 reachable (hollow_exposure, partial_justice, principled_vindication, protected_but_late, reformer_within, silent_complicity) of 6 declared (hollow_exposure, partial_justice, principled_vindication, protected_but_late, reformer_within, silent_complicity)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "InstitutionalTrust",
+          "LegalStanding",
+          "PersonalRisk",
+          "PublicProtection"
+        ],
+        "variables_read": [
+          "InstitutionalTrust",
+          "LegalStanding",
+          "PublicProtection"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "hollow_exposure",
+          "partial_justice",
+          "principled_vindication",
+          "protected_but_late",
+          "reformer_within",
+          "silent_complicity"
+        ],
+        "outcomes_declared": [
+          "hollow_exposure",
+          "partial_justice",
+          "principled_vindication",
+          "protected_but_late",
+          "reformer_within",
+          "silent_complicity"
+        ]
+      },
+      "stability": {
+        "k": 5,
+        "majority": 3,
+        "judged_transcripts": 12,
+        "capped": false,
+        "errors": 0,
+        "all_errors": false,
+        "stable_total": 0,
+        "stable_major": 0,
+        "clean": 12,
+        "stable": []
+      },
+      "score": [
+        1,
+        0,
+        5,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 2,
+  "revisions_attempted": 2,
+  "passed": true
+}

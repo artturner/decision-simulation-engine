@@ -1,0 +1,80 @@
+{
+  "thresholds": {
+    "variables_read": ">=1 when variables are declared",
+    "all_choices_influential": "every reached choice point can change the outcome",
+    "outcomes_reachable": ">=2",
+    "stable_contradictions": "0 (K-sample majority vote)"
+  },
+  "policy": {
+    "judge_k": 5,
+    "transcript_cap": 80,
+    "max_iters": 3,
+    "judge_model": null,
+    "judge_available": true,
+    "judge_on_initial_pass": false
+  },
+  "versions": [
+    {
+      "iteration": 0,
+      "accepted": true,
+      "gate_ok": true,
+      "checks": {
+        "variables_read": {
+          "ok": true,
+          "detail": "3 variable(s) declared (ChineseRelations, CrewSafety, DomesticStanding), 3 read by conditional scenes"
+        },
+        "all_choices_influential": {
+          "ok": true,
+          "detail": "5/5 choice points influential; inert: none"
+        },
+        "outcomes_reachable": {
+          "ok": true,
+          "detail": "4 reachable (brink, diplomatic_triumph, frozen_relations, measured_resolution) of 5 declared (brink, crew_home_costly, diplomatic_triumph, frozen_relations, measured_resolution)"
+        }
+      },
+      "metrics": {
+        "paths": 12,
+        "variables_declared": [
+          "ChineseRelations",
+          "CrewSafety",
+          "DomesticStanding"
+        ],
+        "variables_read": [
+          "ChineseRelations",
+          "CrewSafety",
+          "DomesticStanding"
+        ],
+        "variables_read_count": 3,
+        "choice_points": 5,
+        "influential_points": 5,
+        "influential_of": 5,
+        "inert_choice_scenes": [],
+        "outcomes_reachable": [
+          "brink",
+          "diplomatic_triumph",
+          "frozen_relations",
+          "measured_resolution"
+        ],
+        "outcomes_declared": [
+          "brink",
+          "crew_home_costly",
+          "diplomatic_triumph",
+          "frozen_relations",
+          "measured_resolution"
+        ]
+      },
+      "stability": null,
+      "score": [
+        1,
+        0,
+        4,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "best_iteration": 0,
+  "revisions_attempted": 0,
+  "passed": true
+}
