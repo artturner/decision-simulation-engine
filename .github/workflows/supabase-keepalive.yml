@@ -1,0 +1,41 @@
+# Pings the shared Supabase auth project daily so the free tier never pauses
+# it for inactivity. This is the evening twin of the identical workflow in the
+# essay-grader repo (06:23 UTC) — both apps share this Supabase project for
+# teacher auth, and two active repos cover each other against GitHub's
+# ~60-days-of-repo-inactivity scheduled-workflow disablement.
+#
+# The ping is a PostgREST query against the public.keepalive table — it must
+# reach Postgres itself to count as activity. /auth/v1/health does NOT work:
+# GoTrue answers it without a database hit, and Supabase's inactivity scan
+# ignored 12 days of successful health pings (pause warning 2026-08-17).
+#
+# The URL and publishable (anon) key are public by design — both ship in the
+# frontend JS bundle — so they can live in this file without secrets.
+
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: "41 18 * * *" # daily at 18:41 UTC — ~12h offset from the essay-grader twin
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query the keepalive table (real database activity)
+        run: |
+          KEY="sb_publishable_my65htwaG4yvpVkImjog9g_0lPErJQc"
+          for attempt in 1 2 3; do
+            code=$(curl -s -o /tmp/body -w "%{http_code}" \
+              --max-time 20 \
+              -H "apikey: $KEY" \
+              -H "Authorization: Bearer $KEY" \
+              "https://ldtrukooegjbyrlopcfi.supabase.co/rest/v1/keepalive?select=id&limit=1") && \
+              [ "$code" = "200" ] && { echo "OK (attempt $attempt)"; cat /tmp/body; exit 0; }
+            echo "Attempt $attempt failed with HTTP $code — retrying in 30s"
+            cat /tmp/body || true
+            sleep 30
+          done
+          echo "Keepalive query failed after 3 attempts. If HTTP 404: the public.keepalive table is missing — create it via the SQL in this workflow's commit message. Otherwise the project may be paused or unreachable."
+          exit 1
