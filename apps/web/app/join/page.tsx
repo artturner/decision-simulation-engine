@@ -1,8 +1,8 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, Suspense, useState } from "react";
 import {
   ApiClientError,
   getClassPickerByCode,
@@ -11,10 +11,12 @@ import {
 } from "@/lib/api/client";
 import type { StudentScenarioStatus } from "@/lib/api/types";
 
-export default function JoinPage() {
+function JoinPageContent() {
   const router = useRouter();
-  const [codeInput, setCodeInput] = useState("");
-  const [joinCode, setJoinCode] = useState("");
+  const searchParams = useSearchParams();
+  const codeFromUrl = (searchParams.get("code") ?? "").trim().toUpperCase();
+  const [codeInput, setCodeInput] = useState(codeFromUrl);
+  const [joinCode, setJoinCode] = useState(codeFromUrl);
   const [selectedName, setSelectedName] = useState("");
 
   const classQuery = useQuery({
@@ -211,5 +213,13 @@ export default function JoinPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function JoinPage() {
+  return (
+    <Suspense fallback={null}>
+      <JoinPageContent />
+    </Suspense>
   );
 }
