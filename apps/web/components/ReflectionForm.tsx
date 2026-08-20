@@ -192,9 +192,35 @@ export default function ReflectionForm({
             Reflection Questions
           </h2>
           {grade && (
-            <p className="mt-1 text-sm text-gray-500">
-              Revise your answers below, then submit again for new feedback.
-            </p>
+            <>
+              <p className="mt-1 text-sm text-gray-500">
+                Revise your answers below, then submit again for new feedback.
+              </p>
+              <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50/50 p-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-gray-800">
+                    Feedback on your previous attempt
+                  </h3>
+                  <span className="shrink-0 rounded-full bg-white px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+                    {grade.grade_total} / 100
+                  </span>
+                </div>
+                {grade.feedback && (
+                  <p className="mt-2 text-sm text-gray-700">{grade.feedback}</p>
+                )}
+                <ul className="mt-3 space-y-1.5">
+                  {Object.entries(grade.dimensions).map(([name, dim]) => (
+                    <li key={name} className="text-xs text-gray-600">
+                      <span className="font-medium text-gray-700">
+                        {DIMENSION_LABELS[name] ?? name} ({dim.points}/
+                        {dim.max_points}):
+                      </span>{" "}
+                      {dim.evidence}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
           )}
 
           {/* Student name — only asked on anonymous plays; class-joined plays
