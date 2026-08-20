@@ -35,6 +35,10 @@ export default function ReflectionForm({
   initialStudentName,
 }: ReflectionFormProps) {
   const [studentName, setStudentName] = useState(initialStudentName ?? "");
+  // Class-joined plays already carry the roster name picked at the class page;
+  // asking again is redundant and risks mismatching the gradebook. Only
+  // anonymous direct-link plays still need to ask.
+  const lockedName = Boolean((initialStudentName ?? "").trim());
   const [responses, setResponses] = useState<Record<string, string>>(() =>
     Object.fromEntries(questions.map((_, i) => [`reflection_${i + 1}`, ""])),
   );
@@ -96,7 +100,7 @@ export default function ReflectionForm({
 
   const validate = (): boolean => {
     const next: Errors = {};
-    if (!studentName.trim()) {
+    if (!lockedName && !studentName.trim()) {
       next.student_name = "Name is required.";
     }
     questions.forEach((_, i) => {
@@ -193,7 +197,9 @@ export default function ReflectionForm({
             </p>
           )}
 
-          {/* Student name */}
+          {/* Student name — only asked on anonymous plays; class-joined plays
+              already carry the roster name picked at the class page */}
+          {!lockedName && (
           <div className="mt-5">
             <label
               htmlFor="student_name"
@@ -223,6 +229,7 @@ export default function ReflectionForm({
               </p>
             )}
           </div>
+          )}
 
           {/* Reflection questions */}
           {questions.map((question, i) => {
