@@ -99,10 +99,14 @@ export default function CompletePage() {
             You have completed this scenario.
           </p>
           <button
-            onClick={() => router.push(`/${slug}`)}
+            onClick={() =>
+              router.push(
+                play.class_roll_id ? `/class/${play.class_roll_id}` : `/${slug}`,
+              )
+            }
             className="mt-6 w-full rounded-lg bg-gray-100 px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-200"
           >
-            Back to start
+            {play.class_roll_id ? "Back to your class page" : "Back to start"}
           </button>
         </div>
       </main>

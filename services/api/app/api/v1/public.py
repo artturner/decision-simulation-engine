@@ -251,6 +251,7 @@ def compute_play_view(play_id: uuid.UUID, db: Session) -> PlayViewResponse:
     return PlayViewResponse(
         play_id=play_id,
         learner_label=play.learner_label,
+        class_roll_id=play.class_roll_id,
         scene=_build_scene_dto(current_scene_raw, scenario_orm.slug, version.version_number),
         progress=progress,
         done=done,
@@ -513,6 +514,60 @@ def start_play(
         scene=scene_dto,
         progress=ProgressOut(step_count=0, choices_made=[]),
     )
+
+
+# ---------------------------------------------------------------------------
+# POST /public/plays/{play_id}/restart
+# ---------------------------------------------------------------------------
+
+
+@router.post(
+    "/plays/{play_id}/restart",
+    response_model=PlayViewResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Restart a play as a fresh attempt with the same identity",
+)
+def restart_play(
+    play_id: uuid.UUID,
+    db: Session = Depends(get_db),
+) -> PlayViewResponse:
+    """Create a new play of the same scenario version, carrying over the
+    source play's ``learner_label`` and ``class_roll_id`` so class-roll
+    attribution survives a restart (a plain re-start from the scenario
+    landing page would create an anonymous play invisible to the roll
+    gradebook). The source play is left as-is and simply remains
+    incomplete.
+
+    Returns:
+        ``HTTP 201`` with the new play's full ``PlayViewResponse``.
+        ``HTTP 404`` if the source play does not exist.
+    """
+    play_repo = PlayRepository(db)
+    source = play_repo.get_play(play_id)
+    if source is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Play not found.",
+        )
+
+    version: ScenarioVersion = db.get(ScenarioVersion, source.scenario_version_id)  # type: ignore[assignment]
+
+    new_play = play_repo.create_play(
+        version.id,
+        learner_label=source.learner_label,
+        class_roll_id=source.class_roll_id,
+    )
+
+    engine = ScenarioEngine(version.scenario_json)
+    _state, scene_raw = engine.start()
+    play_repo.append_event(
+        new_play.id,
+        EventType.view_scene,
+        scene_id=scene_raw["scene_id"],
+    )
+    db.commit()
+
+    return compute_play_view(new_play.id, db)
 
 
 # ---------------------------------------------------------------------------

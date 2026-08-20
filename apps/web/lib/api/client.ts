@@ -153,6 +153,18 @@ export function getPlay(playId: string): Promise<PlayViewResponse> {
 }
 
 /**
+ * POST /public/plays/{playId}/restart
+ *
+ * Start a fresh attempt of the same scenario, carrying over the source
+ * play's learner_label and class_roll_id so gradebook attribution survives.
+ */
+export function restartPlay(playId: string): Promise<PlayViewResponse> {
+  return apiFetch<PlayViewResponse>(`/plays/${playId}/restart`, {
+    method: "POST",
+  });
+}
+
+/**
  * POST /public/plays/{playId}/step
  *
  * Advance the play by one step.

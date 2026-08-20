@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { backPlay, getPlay, stepPlay } from "@/lib/api/client";
+import { backPlay, getPlay, restartPlay, stepPlay } from "@/lib/api/client";
 import type { PlayViewResponse } from "@/lib/api/types";
 import SceneRenderer from "@/components/SceneRenderer";
 
@@ -53,7 +53,21 @@ export default function PlayPage() {
     },
   });
 
-  const isMutating = stepMutation.isPending || backMutation.isPending;
+  // ------------------------------------------------------------------
+  // Restart — fresh attempt of the same scenario, SAME identity
+  // (carries learner_label + class_roll_id so the gradebook still sees it;
+  // routing to the landing page instead would create an anonymous play)
+  // ------------------------------------------------------------------
+  const restartMutation = useMutation({
+    mutationFn: () => restartPlay(playId),
+    onSuccess: (data) => {
+      queryClient.setQueryData(["play", data.play_id], data);
+      router.push(`/${slug}/play/${data.play_id}`);
+    },
+  });
+
+  const isMutating =
+    stepMutation.isPending || backMutation.isPending || restartMutation.isPending;
 
   // ------------------------------------------------------------------
   // Loading
@@ -107,9 +121,11 @@ export default function PlayPage() {
       <div className="mx-auto max-w-2xl">
 
         {/* Mutation error banner */}
-        {(stepMutation.error || backMutation.error) && (
+        {(stepMutation.error || backMutation.error || restartMutation.error) && (
           <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-            {((stepMutation.error ?? backMutation.error) as Error).message}
+            {((stepMutation.error ??
+              backMutation.error ??
+              restartMutation.error) as Error).message}
           </div>
         )}
 
@@ -149,10 +165,11 @@ export default function PlayPage() {
           </button>
 
           <button
-            onClick={() => router.push(`/${slug}`)}
-            className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-500 transition hover:bg-gray-50"
+            onClick={() => restartMutation.mutate()}
+            disabled={isMutating}
+            className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-500 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Restart
+            {restartMutation.isPending ? "Restarting…" : "Restart"}
           </button>
         </nav>
 
