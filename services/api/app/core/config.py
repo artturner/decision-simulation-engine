@@ -88,6 +88,10 @@ class Settings(BaseSettings):
     # must accept their last score.
     AI_GRADER_MAX_ATTEMPTS: int = 3
 
+    # Monthly cap on AI grading calls per teacher (calendar month, counted
+    # in grading_calls).  0 disables the cap.
+    AI_GRADER_MONTHLY_TEACHER_LIMIT: int = 300
+
     @property
     def ai_grading_enabled(self) -> bool:
         """Return True when an Anthropic API key is configured."""

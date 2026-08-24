@@ -313,3 +313,59 @@ class Reflection(Base):
 
     def __repr__(self) -> str:
         return f"<Reflection id={self.id} play={self.play_id}>"
+
+
+class GradingCall(Base):
+    """One AI grading API call, recorded for per-teacher cost accounting.
+
+    Grading is restricted to class-joined plays, so at insert time the play
+    always resolves to a roll and its owning teacher; the FKs are SET NULL
+    only so the usage ledger survives account or roll deletion.
+    """
+
+    __tablename__ = "grading_calls"
+    __table_args__ = (
+        Index("ix_grading_calls_teacher_created", "teacher_id", "created_at"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        PG_UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    play_id: Mapped[uuid.UUID | None] = mapped_column(
+        PG_UUID(as_uuid=True),
+        ForeignKey("plays.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    teacher_id: Mapped[uuid.UUID | None] = mapped_column(
+        PG_UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    class_roll_id: Mapped[uuid.UUID | None] = mapped_column(
+        PG_UUID(as_uuid=True),
+        ForeignKey("class_rolls.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+    model: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    input_tokens: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+    )
+    output_tokens: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+        default=0,
+        server_default=text("0"),
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+    def __repr__(self) -> str:
+        return f"<GradingCall id={self.id} teacher={self.teacher_id}>"

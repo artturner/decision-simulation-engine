@@ -40,6 +40,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_approved_user, get_current_user, get_db, verify_admin_key
+from app.core.config import settings
 from app.models.scenario import VersionStatus
 from app.models.user import User
 from app.repositories.roll_repo import RollRepository
@@ -52,6 +53,7 @@ from app.schemas.admin import (
     ClassRollCreate,
     ClassRollOut,
     ClassRollUpdate,
+    GradingUsageOut,
     PublishedScenarioOut,
     PublishResponse,
     RollGradebookAttempt,
@@ -479,6 +481,41 @@ def approve_user(user_id: uuid.UUID, db: Session = Depends(get_db)) -> AdminUser
 )
 def revoke_user(user_id: uuid.UUID, db: Session = Depends(get_db)) -> AdminUserOut:
     return _set_user_approval(user_id, False, db)
+
+
+@router.get(
+    "/grading-usage",
+    response_model=list[GradingUsageOut],
+    summary="Current-month AI grading usage per teacher",
+)
+def grading_usage(db: Session = Depends(get_db)) -> list[GradingUsageOut]:
+    from sqlalchemy import func, select
+
+    from app.models.play import GradingCall
+
+    stmt = (
+        select(
+            User.email,
+            func.count(GradingCall.id),
+            func.coalesce(func.sum(GradingCall.input_tokens), 0),
+            func.coalesce(func.sum(GradingCall.output_tokens), 0),
+        )
+        .select_from(GradingCall)
+        .join(User, GradingCall.teacher_id == User.id, isouter=True)
+        .where(GradingCall.created_at >= func.date_trunc("month", func.now()))
+        .group_by(User.email)
+        .order_by(func.count(GradingCall.id).desc())
+    )
+    return [
+        GradingUsageOut(
+            teacher_email=email,
+            calls=calls,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            monthly_limit=settings.AI_GRADER_MONTHLY_TEACHER_LIMIT,
+        )
+        for email, calls, input_tokens, output_tokens in db.execute(stmt)
+    ]
 
 
 # ===========================================================================

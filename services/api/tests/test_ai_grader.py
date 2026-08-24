@@ -198,6 +198,9 @@ class TestGradeReflection:
         assert result.model == "claude-sonnet-4-6"
         assert result.dimensions["engagement"].level == "full"
         assert result.difficulty == "standard"
+        # API usage is captured for the grading_calls cost ledger.
+        assert result.input_tokens == 123
+        assert result.output_tokens == 45
         # standard default: 20 completion + 25 (full) + 26 (solid 0.85*30)
         # + 12 (minimal 0.5*25, banker's rounding) = 83
         assert result.grade_total == 20 + 25 + round(0.85 * 30) + round(0.5 * 25)
@@ -230,9 +233,14 @@ def _make_fake_anthropic(text: str | None, raise_exc: Exception | None = None):
             self.type = "text"
             self.text = text
 
+    class _Usage:
+        input_tokens = 123
+        output_tokens = 45
+
     class _Resp:
         def __init__(self, text):
             self.content = [_Block(text)]
+            self.usage = _Usage()
 
     class _Messages:
         def create(self, **kwargs):

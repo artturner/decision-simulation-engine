@@ -27,6 +27,7 @@ POST /plays/{play_id}/step
 
 from __future__ import annotations
 
+import logging
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -34,7 +35,8 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
 from app.core.config import settings
-from app.models.play import Event, EventType
+from app.core.ratelimit import limiter
+from app.models.play import Event, EventType, GradingCall
 from app.models.scenario import Scenario, ScenarioVersion, VersionStatus
 from app.repositories.play_repo import PlayRepository
 from app.repositories.roll_repo import RollRepository
@@ -68,6 +70,8 @@ from engine.models import (
     ConditionalScene,
     Scenario as EngineScenario,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/public",
@@ -352,6 +356,7 @@ def get_class_picker(
     "/classes/code/{join_code}",
     response_model=ClassPickerResponse,
     summary="Get the class picker by join code",
+    dependencies=[Depends(limiter.limit("class-code", 30, 60))],
 )
 def get_class_picker_by_code(
     join_code: str,
@@ -374,6 +379,7 @@ def get_class_picker_by_code(
     "/classes/code/{join_code}/students/{student_name}",
     response_model=StudentClassStatusResponse,
     summary="Get visible assignments and attempt status for a student",
+    dependencies=[Depends(limiter.limit("class-code", 30, 60))],
 )
 def get_student_class_status(
     join_code: str,
@@ -440,6 +446,7 @@ def get_student_class_status(
     response_model=PlayStartResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Start a new play session",
+    dependencies=[Depends(limiter.limit("start-play", 30, 60))],
 )
 def start_play(
     body: PlayStartRequest,
@@ -526,6 +533,7 @@ def start_play(
     response_model=PlayViewResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Restart a play as a fresh attempt with the same identity",
+    dependencies=[Depends(limiter.limit("start-play", 30, 60))],
 )
 def restart_play(
     play_id: uuid.UUID,
@@ -971,6 +979,7 @@ def _grade_result_out(reflection) -> GradeResultOut:
     "/plays/{play_id}/reflection/grade",
     response_model=GradeResultOut,
     summary="Grade (or re-grade) a learner reflection with AI coaching feedback",
+    dependencies=[Depends(limiter.limit("grade", 10, 60))],
 )
 def grade_reflection_endpoint(
     play_id: uuid.UUID,
@@ -980,7 +989,10 @@ def grade_reflection_endpoint(
     """Grade a reflection against the rubric and return score + coaching.
 
     The learner may revise and re-grade until they accept, capped at
-    ``AI_GRADER_MAX_ATTEMPTS`` calls per play.
+    ``AI_GRADER_MAX_ATTEMPTS`` calls per play.  Grading is limited to
+    class-joined plays so every API call is attributable to a teacher and
+    counted against their monthly quota; direct-link plays fall back to
+    plain submission.
 
     Returns:
         ``HTTP 200`` with the grade. When attempts are exhausted, returns the
@@ -989,8 +1001,9 @@ def grade_reflection_endpoint(
         ``HTTP 404`` if *play_id* does not exist.
         ``HTTP 409`` if the reflection has already been accepted (locked).
         ``HTTP 502`` if the grading API call fails.
-        ``HTTP 503`` if AI grading is not configured (client should fall back
-        to plain submission).
+        ``HTTP 503`` if AI grading is not configured, the play is not
+        class-joined, or the teacher's monthly quota is exhausted (client
+        should fall back to plain submission).
     """
     play_repo = PlayRepository(db)
 
@@ -1016,9 +1029,35 @@ def grade_reflection_endpoint(
             detail="AI grading is not available.",
         )
 
+    if play.class_roll_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI grading is only available for class plays.",
+        )
+    teacher_id = play.class_roll.owner_id if play.class_roll else None
+
     # Attempt cap: return the last grade instead of grading again.
     if existing is not None and (existing.grade_attempts or 0) >= settings.AI_GRADER_MAX_ATTEMPTS:
         return _grade_result_out(existing)
+
+    # Monthly per-teacher quota, counted from the grading_calls ledger.
+    monthly_limit = settings.AI_GRADER_MONTHLY_TEACHER_LIMIT
+    if monthly_limit > 0 and teacher_id is not None:
+        from sqlalchemy import func, select
+
+        month_calls = db.scalar(
+            select(func.count())
+            .select_from(GradingCall)
+            .where(
+                GradingCall.teacher_id == teacher_id,
+                GradingCall.created_at >= func.date_trunc("month", func.now()),
+            )
+        )
+        if (month_calls or 0) >= monthly_limit:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Monthly AI grading limit reached for this class.",
+            )
 
     reflection = play_repo.upsert_reflection(
         play_id=play_id,
@@ -1039,10 +1078,11 @@ def grade_reflection_endpoint(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI grading is not available.",
         )
-    except ai_grader.GradingError as exc:
+    except ai_grader.GradingError:
+        logger.exception("AI grading call failed for play %s", play_id)
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=f"Grading failed: {exc}",
+            detail="Grading failed. Please try again.",
         )
 
     play_repo.save_grade(
@@ -1052,6 +1092,16 @@ def grade_reflection_endpoint(
         feedback=result.feedback,
         grader_model=result.model,
         graded_at=result.graded_at,
+    )
+    db.add(
+        GradingCall(
+            play_id=play.id,
+            teacher_id=teacher_id,
+            class_roll_id=play.class_roll_id,
+            model=result.model,
+            input_tokens=result.input_tokens,
+            output_tokens=result.output_tokens,
+        )
     )
     db.commit()
 

@@ -15,8 +15,13 @@ from sqlalchemy.orm import Session
 
 # Import models so their metadata is registered on Base before create_all.
 import app.models  # noqa: F401
+from app.core.ratelimit import limiter
 from app.db.base import Base
 from app.core.config import settings
+
+# The suite fires many requests per second from one client; per-IP limits
+# would trip nondeterministically. Rate limiting is verified manually.
+limiter.enabled = False
 
 
 @pytest.fixture(scope="session")

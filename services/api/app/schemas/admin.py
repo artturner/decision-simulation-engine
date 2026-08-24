@@ -209,6 +209,16 @@ class AdminUserOut(BaseModel):
     created_at: datetime
 
 
+class GradingUsageOut(BaseModel):
+    """Current-month AI grading spend for one teacher."""
+
+    teacher_email: str | None
+    calls: int
+    input_tokens: int
+    output_tokens: int
+    monthly_limit: int
+
+
 # ---------------------------------------------------------------------------
 # Gradebook schemas
 # ---------------------------------------------------------------------------

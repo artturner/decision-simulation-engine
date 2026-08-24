@@ -165,6 +165,9 @@ class GradeResult:
     difficulty: str
     model: str
     graded_at: datetime
+    # API usage for the call that produced this grade (0 when stubbed).
+    input_tokens: int = 0
+    output_tokens: int = 0
 
     def breakdown_dict(self) -> dict:
         """Serialize to the JSONB shape stored on the reflection."""
@@ -296,7 +299,11 @@ def grade_reflection(
     except json.JSONDecodeError as exc:
         raise GradingError("Grading API returned invalid JSON.") from exc
 
-    return _build_result(data, completed, difficulty)
+    result = _build_result(data, completed, difficulty)
+    usage = getattr(response, "usage", None)
+    result.input_tokens = getattr(usage, "input_tokens", 0) or 0
+    result.output_tokens = getattr(usage, "output_tokens", 0) or 0
+    return result
 
 
 def _build_result(

@@ -19,7 +19,10 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.db.session import get_db
 from app.main import app
+from app.models.play import GradingCall
 from app.models.scenario import VersionStatus
+from app.models.user import User, UserRole
+from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
 from app.services import ai_grader
 from app.services.ai_grader import DimensionScore, GradeResult
@@ -58,18 +61,47 @@ def client(db: Session):
 
 
 @pytest.fixture()
-def completed_play_id(client, db: Session) -> uuid.UUID:
+def teacher(db: Session) -> User:
+    user = User(
+        id=uuid.uuid4(),
+        email="grade-teacher@example.com",
+        role=UserRole.teacher,
+        is_approved=True,
+    )
+    db.add(user)
+    db.flush()
+    return user
+
+
+@pytest.fixture()
+def roll(db: Session, teacher: User):
+    created = RollRepository(db).create(teacher.id, "Period 1", ["Alice Adams"])
+    db.flush()
+    return created
+
+
+def _start_completed_play(client, db: Session, roll=None) -> uuid.UUID:
     repo = ScenarioRepository(db)
     s = repo.create_scenario("grade-test", "Test")
     v = repo.create_version(s.id, SCENARIO_JSON, status=VersionStatus.published)
+    if roll is not None:
+        RollRepository(db).assign_scenario(s.id, roll.id, visible=True)
     db.flush()
-    resp = client.post(
-        "/api/v1/public/plays/start", json={"scenario_version_id": str(v.id)}
-    )
+    body: dict = {"scenario_version_id": str(v.id)}
+    if roll is not None:
+        body["class_roll_id"] = str(roll.id)
+        body["learner_label"] = "Alice Adams"
+    resp = client.post("/api/v1/public/plays/start", json=body)
     assert resp.status_code == 201
     play_id = uuid.UUID(resp.json()["play_id"])
     client.post(f"/api/v1/public/plays/{play_id}/step", json={"choice_index": 0})
     return play_id
+
+
+@pytest.fixture()
+def completed_play_id(client, db: Session, roll) -> uuid.UUID:
+    """A completed class-joined play (grading requires class attribution)."""
+    return _start_completed_play(client, db, roll)
 
 
 @pytest.fixture()
@@ -99,6 +131,8 @@ def grading_on(monkeypatch):
             difficulty=difficulty,
             model="claude-sonnet-4-6",
             graded_at=datetime.now(timezone.utc),
+            input_tokens=500,
+            output_tokens=200,
         )
 
     monkeypatch.setattr(ai_grader, "grade_reflection", fake_grade)
@@ -155,3 +189,44 @@ class TestGradeEndpoint:
             f"/api/v1/public/plays/{completed_play_id}/reflection/accept", json={}
         )
         assert acc.status_code == 404
+
+
+class TestGradingCostControls:
+    def test_direct_link_play_gets_503(self, client, db: Session, grading_on):
+        """Anonymous plays are not attributable to a teacher; grading is
+        refused so the frontend falls back to plain submission."""
+        play_id = _start_completed_play(client, db, roll=None)
+        resp = _grade(client, play_id)
+        assert resp.status_code == 503
+        assert grading_on["n"] == 0
+
+    def test_grading_call_recorded_with_usage(
+        self, client, db: Session, teacher, completed_play_id, grading_on
+    ):
+        assert _grade(client, completed_play_id).status_code == 200
+        calls = list(
+            db.query(GradingCall).filter(GradingCall.teacher_id == teacher.id)
+        )
+        assert len(calls) == 1
+        assert calls[0].play_id == completed_play_id
+        assert calls[0].input_tokens == 500
+        assert calls[0].output_tokens == 200
+        assert calls[0].model == "claude-sonnet-4-6"
+
+    def test_monthly_quota_blocks_grading(
+        self, client, db: Session, completed_play_id, grading_on, monkeypatch
+    ):
+        monkeypatch.setattr(settings, "AI_GRADER_MONTHLY_TEACHER_LIMIT", 1, raising=False)
+        assert _grade(client, completed_play_id).status_code == 200
+        resp = _grade(client, completed_play_id)
+        assert resp.status_code == 503
+        assert "limit" in resp.json()["detail"].lower()
+        assert grading_on["n"] == 1
+
+    def test_zero_limit_disables_quota(
+        self, client, db: Session, completed_play_id, grading_on, monkeypatch
+    ):
+        monkeypatch.setattr(settings, "AI_GRADER_MONTHLY_TEACHER_LIMIT", 0, raising=False)
+        assert _grade(client, completed_play_id).status_code == 200
+        assert _grade(client, completed_play_id).status_code == 200
+        assert grading_on["n"] == 2
