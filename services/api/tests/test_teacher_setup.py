@@ -318,3 +318,11 @@ class TestRollGradebook:
             f"/api/v1/teacher/rolls/{other_roll.id}/scenarios/{scenario.id}/gradebook"
         )
         assert resp.status_code == 404
+
+    def test_scenario_level_gradebook_route_is_gone(self, client, db: Session):
+        """The unscoped /teacher/scenarios/{id}/gradebook endpoint leaked plays
+        across all teachers' rolls and was removed; only the roll-scoped
+        gradebook may exist."""
+        scenario, _version = _scenario(db, "no-global-gradebook", VersionStatus.published)
+        resp = client.get(f"/api/v1/teacher/scenarios/{scenario.id}/gradebook")
+        assert resp.status_code == 404

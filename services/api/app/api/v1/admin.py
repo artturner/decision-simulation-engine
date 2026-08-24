@@ -51,10 +51,6 @@ from app.schemas.admin import (
     ClassRollCreate,
     ClassRollOut,
     ClassRollUpdate,
-    GradebookOut,
-    GradebookAttempt,
-    GradebookReflection,
-    GradebookStudent,
     PublishedScenarioOut,
     PublishResponse,
     RollGradebookAttempt,
@@ -1017,85 +1013,4 @@ def roll_gradebook_csv(
         content=output.getvalue(),
         media_type="text/csv",
         headers={"Content-Disposition": f"attachment; filename={filename}"},
-    )
-
-
-# ---------------------------------------------------------------------------
-# GET /teacher/scenarios/{scenario_id}/gradebook
-# ---------------------------------------------------------------------------
-
-
-@teacher_router.get(
-    "/scenarios/{scenario_id}/gradebook",
-    response_model=GradebookOut,
-    summary="Get all student plays for a scenario, grouped by student name",
-)
-def gradebook(
-    scenario_id: uuid.UUID,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-) -> GradebookOut:
-    """Return every recorded play for a scenario, expanded by student.
-
-    Only returns plays that were started via a class picker (plays.class_roll_id
-    is not null) so the teacher sees roll-validated names, not free-text entries.
-
-    Plays are grouped by learner_label; within each group they are ordered
-    oldest-first so attempts read chronologically.
-    """
-    from collections import defaultdict
-
-    from sqlalchemy import select
-    from sqlalchemy.orm import selectinload
-
-    from app.models.play import Play, Reflection
-    from app.models.scenario import Scenario
-
-    scenario = db.get(Scenario, scenario_id)
-    if scenario is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scenario not found.")
-    if scenario.owner_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not your scenario.")
-
-    stmt = (
-        select(Play)
-        .join(Play.scenario_version)
-        .where(
-            Play.scenario_version.has(scenario_id=scenario_id),
-            Play.class_roll_id.isnot(None),
-        )
-        .options(selectinload(Play.reflection))
-        .order_by(Play.learner_label, Play.started_at)
-    )
-    plays = list(db.scalars(stmt))
-
-    groups: dict[str | None, list[GradebookAttempt]] = defaultdict(list)
-    for play in plays:
-        ref = play.reflection
-        reflection_out = None
-        if ref is not None:
-            reflection_out = GradebookReflection(
-                student_name=ref.student_name,
-                submitted_at=ref.submitted_at,
-                responses=ref.responses_json,
-            )
-        groups[play.learner_label].append(
-            GradebookAttempt(
-                play_id=play.id,
-                started_at=play.started_at,
-                completed=play.completed,
-                outcome=play.outcome,
-                reflection=reflection_out,
-            )
-        )
-
-    students = [
-        GradebookStudent(learner_label=label, attempts=attempts)
-        for label, attempts in sorted(groups.items(), key=lambda x: (x[0] or ""))
-    ]
-
-    return GradebookOut(
-        scenario_id=scenario_id,
-        scenario_title=scenario.title,
-        students=students,
     )

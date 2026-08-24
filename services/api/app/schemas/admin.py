@@ -190,36 +190,6 @@ class RollScenarioOut(BaseModel):
 # ---------------------------------------------------------------------------
 
 
-class GradebookReflection(BaseModel):
-    student_name: str | None
-    submitted_at: datetime
-    responses: dict
-    grade_total: int | None = None
-    feedback: str | None = None
-    accepted: bool = False
-    needs_human_review: bool = False
-    graded_at: datetime | None = None
-
-
-class GradebookAttempt(BaseModel):
-    play_id: uuid.UUID
-    started_at: datetime
-    completed: bool
-    outcome: str | None
-    reflection: GradebookReflection | None
-
-
-class GradebookStudent(BaseModel):
-    learner_label: str | None
-    attempts: list[GradebookAttempt]
-
-
-class GradebookOut(BaseModel):
-    scenario_id: uuid.UUID
-    scenario_title: str
-    students: list[GradebookStudent]
-
-
 class RollGradebookReflection(BaseModel):
     student_name: str | None
     submitted_at: datetime
