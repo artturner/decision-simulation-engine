@@ -39,12 +39,13 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Respon
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_user, get_db, verify_admin_key
+from app.api.deps import get_approved_user, get_current_user, get_db, verify_admin_key
 from app.models.scenario import VersionStatus
 from app.models.user import User
 from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
 from app.schemas.admin import (
+    AdminUserOut,
     AssignmentCreate,
     AssignmentOut,
     AssignmentUpdate,
@@ -61,6 +62,7 @@ from app.schemas.admin import (
     ScenarioImportRequest,
     ScenarioImportResponse,
     ScenarioOut,
+    TeacherMeOut,
     VersionCreateRequest,
     VersionCreateResponse,
 )
@@ -75,10 +77,34 @@ router = APIRouter(
 )
 
 # Teacher-authenticated router — uses JWT instead of the legacy API key.
+# The router-level dependency blocks unapproved accounts; the per-route
+# get_current_user dependencies below share its cached result.
 teacher_router = APIRouter(
     prefix="/teacher",
     tags=["teacher"],
+    dependencies=[Depends(get_approved_user)],
 )
+
+# Same JWT auth but no approval gate — /teacher/me must work for accounts
+# that are still pending so the frontend can show that state.
+teacher_account_router = APIRouter(
+    prefix="/teacher",
+    tags=["teacher"],
+)
+
+
+@teacher_account_router.get(
+    "/me",
+    response_model=TeacherMeOut,
+    summary="Get the authenticated teacher's account status",
+)
+def teacher_me(current_user: User = Depends(get_current_user)) -> TeacherMeOut:
+    return TeacherMeOut(
+        id=current_user.id,
+        email=current_user.email,
+        role=current_user.role.value,
+        is_approved=current_user.is_approved,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -394,6 +420,65 @@ async def upload_media(
     content_type = file.content_type or "application/octet-stream"
     url = _upload(content, key, content_type)
     return {"url": url, "key": key}
+
+
+# ---------------------------------------------------------------------------
+# Teacher account management (signup approval gate)
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/users",
+    response_model=list[AdminUserOut],
+    summary="List teacher accounts, newest first",
+)
+def list_users(db: Session = Depends(get_db)) -> list[AdminUserOut]:
+    from sqlalchemy import select
+
+    users = db.scalars(select(User).order_by(User.created_at.desc()))
+    return [
+        AdminUserOut(
+            id=u.id,
+            email=u.email,
+            role=u.role.value,
+            is_approved=u.is_approved,
+            created_at=u.created_at,
+        )
+        for u in users
+    ]
+
+
+def _set_user_approval(user_id: uuid.UUID, approved: bool, db: Session) -> AdminUserOut:
+    user = db.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+    user.is_approved = approved
+    db.flush()
+    return AdminUserOut(
+        id=user.id,
+        email=user.email,
+        role=user.role.value,
+        is_approved=user.is_approved,
+        created_at=user.created_at,
+    )
+
+
+@router.post(
+    "/users/{user_id}/approve",
+    response_model=AdminUserOut,
+    summary="Approve a teacher account",
+)
+def approve_user(user_id: uuid.UUID, db: Session = Depends(get_db)) -> AdminUserOut:
+    return _set_user_approval(user_id, True, db)
+
+
+@router.post(
+    "/users/{user_id}/revoke",
+    response_model=AdminUserOut,
+    summary="Revoke a teacher account's approval",
+)
+def revoke_user(user_id: uuid.UUID, db: Session = Depends(get_db)) -> AdminUserOut:
+    return _set_user_approval(user_id, False, db)
 
 
 # ===========================================================================

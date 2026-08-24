@@ -43,7 +43,9 @@ export default function TeacherLoginPage() {
     }
 
     if (mode === "sign-up" && !auth.data.session) {
-      setMessage("Check your email to confirm your account, then sign in.");
+      setMessage(
+        "Check your email to confirm your account, then sign in. New accounts also need operator approval before the dashboard unlocks.",
+      );
       return;
     }
 

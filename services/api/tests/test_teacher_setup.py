@@ -38,7 +38,12 @@ SCENARIO_JSON: dict = {
 
 @pytest.fixture()
 def teacher(db: Session) -> User:
-    user = User(id=uuid.uuid4(), email="teacher@example.com", role=UserRole.teacher)
+    user = User(
+        id=uuid.uuid4(),
+        email="teacher@example.com",
+        role=UserRole.teacher,
+        is_approved=True,
+    )
     db.add(user)
     db.flush()
     return user
@@ -46,7 +51,12 @@ def teacher(db: Session) -> User:
 
 @pytest.fixture()
 def other_teacher(db: Session) -> User:
-    user = User(id=uuid.uuid4(), email="other@example.com", role=UserRole.teacher)
+    user = User(
+        id=uuid.uuid4(),
+        email="other@example.com",
+        role=UserRole.teacher,
+        is_approved=True,
+    )
     db.add(user)
     db.flush()
     return user
@@ -326,3 +336,67 @@ class TestRollGradebook:
         scenario, _version = _scenario(db, "no-global-gradebook", VersionStatus.published)
         resp = client.get(f"/api/v1/teacher/scenarios/{scenario.id}/gradebook")
         assert resp.status_code == 404
+
+
+@pytest.fixture()
+def pending_teacher(db: Session) -> User:
+    user = User(
+        id=uuid.uuid4(),
+        email="pending@example.com",
+        role=UserRole.teacher,
+        is_approved=False,
+    )
+    db.add(user)
+    db.flush()
+    return user
+
+
+class TestApprovalGate:
+    def test_unapproved_teacher_blocked(self, client, pending_teacher: User):
+        from app.main import app
+
+        app.dependency_overrides[get_current_user] = lambda: pending_teacher
+        resp = client.get("/api/v1/teacher/rolls")
+        assert resp.status_code == 403
+        assert resp.json()["detail"] == "Account pending approval."
+
+    def test_me_reports_pending_state(self, client, pending_teacher: User):
+        from app.main import app
+
+        app.dependency_overrides[get_current_user] = lambda: pending_teacher
+        resp = client.get("/api/v1/teacher/me")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["email"] == "pending@example.com"
+        assert body["is_approved"] is False
+
+    def test_me_reports_approved_state(self, client, teacher: User):
+        resp = client.get("/api/v1/teacher/me")
+        assert resp.status_code == 200
+        assert resp.json()["is_approved"] is True
+
+    def test_admin_can_approve_and_revoke(self, client, pending_teacher: User):
+        from app.core.config import settings
+
+        headers = {"X-Admin-Key": settings.ADMIN_API_KEY}
+
+        resp = client.get("/api/v1/admin/users", headers=headers)
+        assert resp.status_code == 200
+        listed = {u["id"]: u for u in resp.json()}
+        assert listed[str(pending_teacher.id)]["is_approved"] is False
+
+        resp = client.post(
+            f"/api/v1/admin/users/{pending_teacher.id}/approve", headers=headers
+        )
+        assert resp.status_code == 200
+        assert resp.json()["is_approved"] is True
+
+        resp = client.post(
+            f"/api/v1/admin/users/{pending_teacher.id}/revoke", headers=headers
+        )
+        assert resp.status_code == 200
+        assert resp.json()["is_approved"] is False
+
+    def test_admin_users_requires_key(self, client):
+        resp = client.get("/api/v1/admin/users")
+        assert resp.status_code == 403

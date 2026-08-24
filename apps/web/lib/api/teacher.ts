@@ -8,6 +8,7 @@ import type {
   PublishedScenario,
   RollGradebook,
   RollScenario,
+  TeacherMe,
 } from "./teacherTypes";
 
 const API_BASE =
@@ -47,6 +48,10 @@ async function teacherFetch<T>(
     return undefined as T;
   }
   return res.json() as Promise<T>;
+}
+
+export function getMe(token: string): Promise<TeacherMe> {
+  return teacherFetch<TeacherMe>(token, "/me");
 }
 
 export function listRolls(token: string): Promise<ClassRoll[]> {

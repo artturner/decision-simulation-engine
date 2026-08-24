@@ -186,6 +186,30 @@ class RollScenarioOut(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Account schemas
+# ---------------------------------------------------------------------------
+
+
+class TeacherMeOut(BaseModel):
+    """The authenticated teacher's own account status (GET /teacher/me)."""
+
+    id: uuid.UUID
+    email: str
+    role: str
+    is_approved: bool
+
+
+class AdminUserOut(BaseModel):
+    """A teacher account as listed/managed by the operator."""
+
+    id: uuid.UUID
+    email: str
+    role: str
+    is_approved: bool
+    created_at: datetime
+
+
+# ---------------------------------------------------------------------------
 # Gradebook schemas
 # ---------------------------------------------------------------------------
 

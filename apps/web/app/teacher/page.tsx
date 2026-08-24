@@ -8,6 +8,7 @@ import {
   assignScenario,
   createRoll,
   downloadRollGradebookCsv,
+  getMe,
   getRollGradebook,
   listPublishedScenarios,
   listRolls,
@@ -86,16 +87,23 @@ export default function TeacherDashboardPage() {
 
   const token = session?.access_token ?? "";
 
+  const meQuery = useQuery({
+    queryKey: ["teacher-me"],
+    queryFn: () => getMe(token),
+    enabled: Boolean(token),
+  });
+  const approved = meQuery.data?.is_approved === true;
+
   const rollsQuery = useQuery({
     queryKey: ["teacher-rolls"],
     queryFn: () => listRolls(token),
-    enabled: Boolean(token),
+    enabled: Boolean(token) && approved,
   });
 
   const scenariosQuery = useQuery({
     queryKey: ["teacher-published-scenarios"],
     queryFn: () => listPublishedScenarios(token),
-    enabled: Boolean(token),
+    enabled: Boolean(token) && approved,
   });
 
   const selectedRoll = useMemo(() => {
@@ -263,6 +271,36 @@ export default function TeacherDashboardPage() {
 
   if (!session) {
     return null;
+  }
+
+  if (meQuery.isLoading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center">
+        <p className="text-gray-500">Checking sign in...</p>
+      </main>
+    );
+  }
+
+  if (meQuery.data && !meQuery.data.is_approved) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gray-50 p-8">
+        <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <h1 className="text-xl font-bold text-gray-950">Account pending approval</h1>
+          <p className="mt-2 text-sm text-gray-600">
+            You are signed in as <span className="font-semibold">{session.user.email}</span>,
+            but this account has not been approved yet. Contact the site
+            operator to activate it, then sign in again.
+          </p>
+          <button
+            type="button"
+            onClick={signOut}
+            className="mt-4 rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+          >
+            Sign out
+          </button>
+        </div>
+      </main>
+    );
   }
 
   return (

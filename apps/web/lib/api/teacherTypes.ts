@@ -1,3 +1,10 @@
+export interface TeacherMe {
+  id: string;
+  email: string;
+  role: string;
+  is_approved: boolean;
+}
+
 export interface ClassRoll {
   id: string;
   name: string;

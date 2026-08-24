@@ -81,7 +81,9 @@ describe("TeacherLoginPage", () => {
       },
     });
     expect(
-      screen.getByText("Check your email to confirm your account, then sign in."),
+      screen.getByText(
+        "Check your email to confirm your account, then sign in. New accounts also need operator approval before the dashboard unlocks.",
+      ),
     ).toBeVisible();
   });
 });

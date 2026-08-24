@@ -38,7 +38,12 @@ SCENARIO_JSON: dict = {
 
 @pytest.fixture()
 def teacher(db: Session) -> User:
-    user = User(id=uuid.uuid4(), email="teacher@example.com", role=UserRole.teacher)
+    user = User(
+        id=uuid.uuid4(),
+        email="teacher@example.com",
+        role=UserRole.teacher,
+        is_approved=True,
+    )
     db.add(user)
     db.flush()
     return user

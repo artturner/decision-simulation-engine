@@ -6,7 +6,7 @@ import string
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, Enum as SAEnum, ForeignKey, String, func
+from sqlalchemy import DateTime, Enum as SAEnum, ForeignKey, String, false as sa_false, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -52,6 +52,12 @@ class User(Base):
         SAEnum(UserRole, name="userrole", create_type=True),
         nullable=False,
         default=UserRole.teacher,
+    )
+    is_approved: Mapped[bool] = mapped_column(
+        nullable=False,
+        default=False,
+        server_default=sa_false(),
+        comment="Teacher endpoints are blocked until an operator approves the account",
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

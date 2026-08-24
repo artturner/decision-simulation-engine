@@ -198,4 +198,23 @@ def get_current_user(
     return user
 
 
-__all__ = ["verify_admin_key", "get_current_user", "get_db"]
+def get_approved_user(user: User = Depends(get_current_user)) -> User:
+    """Require an approved teacher account.
+
+    Signup is open (the Supabase project is shared with other apps), so a
+    brand-new account can authenticate before the operator has approved it.
+    Teacher endpoints sit behind this gate; ``GET /teacher/me`` deliberately
+    does not, so the frontend can show a pending-approval state.
+
+    Raises:
+        HTTPException 403: The account has not been approved yet.
+    """
+    if not user.is_approved:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Account pending approval.",
+        )
+    return user
+
+
+__all__ = ["verify_admin_key", "get_current_user", "get_approved_user", "get_db"]
