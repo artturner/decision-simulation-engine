@@ -81,6 +81,7 @@ const baseProgress = {
 const completedPlay: PlayViewResponse = {
   play_id: "play-abc",
   learner_label: null,
+  class_roll_id: null,
   scene: endScene,
   progress: baseProgress,
   done: true,
