@@ -91,10 +91,21 @@ export interface RollGradebookStudent {
   attempts: RollGradebookAttempt[];
 }
 
+/** A play whose learner_label matches no current roster name (e.g. after a
+ * student was renamed). Surfaced so the teacher can re-link or grade it
+ * manually instead of it being silently dropped. */
+export interface RollGradebookUnmatchedPlay {
+  play_id: string;
+  label: string;
+  started_at: string;
+  completed: boolean;
+}
+
 export interface RollGradebook {
   roll_id: string;
   scenario_id: string;
   scenario_title: string;
   grading_difficulty: GradingDifficulty;
   students: RollGradebookStudent[];
+  unmatched: RollGradebookUnmatchedPlay[];
 }

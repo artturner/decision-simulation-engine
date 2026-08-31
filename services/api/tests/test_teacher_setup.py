@@ -309,6 +309,99 @@ class TestRollGradebook:
         assert "Ben Brown,completed,1" in resp.text
         assert "I learned." in resp.text
 
+    def test_matches_plays_despite_whitespace_differences(
+        self, client, db: Session, roll
+    ):
+        """A legacy play stored with a double-space label must still group
+        under the roster student (labels are compared whitespace-normalized)."""
+        scenario, version = _scenario(db, "gradebook-whitespace", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
+        repo = PlayRepository(db)
+        play = repo.create_play(
+            version.id,
+            learner_label="Alice  Adams",  # legacy double space
+            class_roll_id=roll.id,
+        )
+        db.flush()
+
+        resp = client.get(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}/gradebook"
+        )
+        assert resp.status_code == 200
+        body = resp.json()
+        students = {student["student_name"]: student for student in body["students"]}
+        assert students["Alice Adams"]["status"] == "in_progress"
+        assert students["Alice Adams"]["in_progress_play_id"] == str(play.id)
+        assert body["unmatched"] == []
+
+    def test_matches_double_space_roster_entry_to_normalized_play(
+        self, client, db: Session, teacher: User
+    ):
+        """The inverse: the roster still holds the double-space spelling but
+        new plays store the normalized label."""
+        dirty_roll = RollRepository(db).create(teacher.id, "Period 9", ["Jalen  Doe"])
+        scenario, version = _scenario(db, "gradebook-dirty-roster", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, dirty_roll.id, visible=True)
+        repo = PlayRepository(db)
+        play = repo.create_play(
+            version.id,
+            learner_label="Jalen Doe",
+            class_roll_id=dirty_roll.id,
+        )
+        repo.complete_play(play.id, outcome="ok")
+        db.flush()
+
+        resp = client.get(
+            f"/api/v1/teacher/rolls/{dirty_roll.id}/scenarios/{scenario.id}/gradebook"
+        )
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["students"][0]["student_name"] == "Jalen  Doe"
+        assert body["students"][0]["status"] == "completed"
+        assert body["unmatched"] == []
+
+    def test_lists_unmatched_plays_after_roster_rename(
+        self, client, db: Session, roll
+    ):
+        """Plays whose label matches no current roster name (e.g. the student
+        was renamed) must be listed, not silently dropped."""
+        scenario, version = _scenario(db, "gradebook-unmatched", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
+        repo = PlayRepository(db)
+        orphan = repo.create_play(
+            version.id,
+            learner_label="Old Name",
+            class_roll_id=roll.id,
+        )
+        repo.complete_play(orphan.id, outcome="ok")
+        matched = repo.create_play(
+            version.id,
+            learner_label="Ben Brown",
+            class_roll_id=roll.id,
+        )
+        db.flush()
+
+        resp = client.get(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}/gradebook"
+        )
+        assert resp.status_code == 200
+        body = resp.json()
+
+        assert len(body["unmatched"]) == 1
+        entry = body["unmatched"][0]
+        assert entry["play_id"] == str(orphan.id)
+        assert entry["label"] == "Old Name"
+        assert entry["completed"] is True
+        assert entry["started_at"]
+
+        students = {student["student_name"]: student for student in body["students"]}
+        assert students["Ben Brown"]["in_progress_play_id"] == str(matched.id)
+        assert all(
+            attempt["play_id"] != str(orphan.id)
+            for student in body["students"]
+            for attempt in student["attempts"]
+        )
+
     def test_requires_scenario_assigned_to_roll(self, client, db: Session, roll):
         scenario, _version = _scenario(db, "not-assigned", VersionStatus.published)
         resp = client.get(

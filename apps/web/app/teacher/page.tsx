@@ -875,6 +875,43 @@ function ResultsPanel({
         </table>
       </div>
 
+      {(gradebook.unmatched ?? []).length > 0 && (
+        <div className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-4">
+          <h3 className="text-sm font-semibold text-amber-900">
+            Plays not matching any roster name
+          </h3>
+          <p className="mt-1 text-sm text-amber-800">
+            These plays were recorded under a name that is no longer on the
+            class roll (usually because a student was renamed after playing).
+            Restore the old spelling on the roll to re-link them to a student.
+          </p>
+          <table className="mt-3 w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-amber-200 text-left text-amber-900">
+                <th className="py-1.5 pr-3 font-semibold">Recorded name</th>
+                <th className="py-1.5 pr-3 font-semibold">Started</th>
+                <th className="py-1.5 pr-3 font-semibold">Completed</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gradebook.unmatched.map((play) => (
+                <tr key={play.play_id} className="border-b border-amber-100">
+                  <td className="py-1.5 pr-3 font-medium whitespace-pre">
+                    {play.label}
+                  </td>
+                  <td className="py-1.5 pr-3">
+                    {new Date(play.started_at).toLocaleString()}
+                  </td>
+                  <td className="py-1.5 pr-3">
+                    {play.completed ? "Yes" : "No"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {selectedStudent && (
         <StudentReflectionDetail
           student={selectedStudent}
