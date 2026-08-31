@@ -31,12 +31,24 @@ transition information the engine needs.
 from __future__ import annotations
 
 import uuid
+from collections.abc import Sequence
 from datetime import datetime, timezone
 
 from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.models.play import Event, EventType, Play, Reflection
+
+
+def _label_filter(learner_label: str | Sequence[str]):
+    """Build a WHERE clause matching one label or any of several.
+
+    Callers pass multiple labels when a roster name has legacy spelling
+    variants (e.g. a double space) that older plays were stored under.
+    """
+    if isinstance(learner_label, str):
+        return Play.learner_label == learner_label
+    return Play.learner_label.in_(list(learner_label))
 
 
 class PlayRepository:
@@ -94,7 +106,7 @@ class PlayRepository:
         self,
         *,
         class_roll_id: uuid.UUID,
-        learner_label: str,
+        learner_label: str | Sequence[str],
         scenario_version_id: uuid.UUID,
     ) -> Play | None:
         """Return the most recent unfinished play for a roll student/version."""
@@ -102,7 +114,7 @@ class PlayRepository:
             select(Play)
             .where(
                 Play.class_roll_id == class_roll_id,
-                Play.learner_label == learner_label,
+                _label_filter(learner_label),
                 Play.scenario_version_id == scenario_version_id,
                 Play.completed.is_(False),
             )
@@ -114,13 +126,13 @@ class PlayRepository:
         self,
         *,
         class_roll_id: uuid.UUID,
-        learner_label: str,
+        learner_label: str | Sequence[str],
         scenario_version_id: uuid.UUID,
     ) -> int:
         """Count completed plays for a roll student/version."""
         stmt = select(func.count()).select_from(Play).where(
             Play.class_roll_id == class_roll_id,
-            Play.learner_label == learner_label,
+            _label_filter(learner_label),
             Play.scenario_version_id == scenario_version_id,
             Play.completed.is_(True),
         )
@@ -130,7 +142,7 @@ class PlayRepository:
         self,
         *,
         class_roll_id: uuid.UUID,
-        learner_label: str,
+        learner_label: str | Sequence[str],
         scenario_version_id: uuid.UUID,
     ) -> Play | None:
         """Return the most recently completed play for a roll student/version."""
@@ -138,7 +150,7 @@ class PlayRepository:
             select(Play)
             .where(
                 Play.class_roll_id == class_roll_id,
-                Play.learner_label == learner_label,
+                _label_filter(learner_label),
                 Play.scenario_version_id == scenario_version_id,
                 Play.completed.is_(True),
             )

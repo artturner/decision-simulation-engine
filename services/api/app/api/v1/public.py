@@ -42,6 +42,7 @@ from app.repositories.play_repo import PlayRepository
 from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
 from app.services import ai_grader
+from app.services.names import normalize_student_name
 from app.schemas.public import (
     BackResponse,
     ChoiceOut,
@@ -391,23 +392,33 @@ def get_student_class_status(
     roll = roll_repo.get_by_join_code(join_code)
     if roll is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Class roll not found.")
-    if student_name not in roll.student_names:
+    student_name = normalize_student_name(student_name)
+    # Roster names are normalized at comparison time so entries with stray
+    # whitespace (e.g. a pasted double space) still match.
+    matching_roster_names = [
+        name for name in roll.student_names
+        if normalize_student_name(name) == student_name
+    ]
+    if not student_name or not matching_roster_names:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="student_name must match a name on the class roll.",
         )
+    # New plays store the normalized label, but plays recorded before
+    # normalization carry the raw roster spelling — look up both.
+    candidate_labels = list(dict.fromkeys([student_name, *matching_roster_names]))
 
     play_repo = PlayRepository(db)
     scenarios: list[StudentScenarioStatus] = []
     for scenario in _visible_scenarios_for_roll(roll.id, db):
         in_progress = play_repo.find_in_progress(
             class_roll_id=roll.id,
-            learner_label=student_name,
+            learner_label=candidate_labels,
             scenario_version_id=scenario.scenario_version_id,
         )
         latest_completed = play_repo.latest_completed_attempt(
             class_roll_id=roll.id,
-            learner_label=student_name,
+            learner_label=candidate_labels,
             scenario_version_id=scenario.scenario_version_id,
         )
         scenarios.append(
@@ -420,7 +431,7 @@ def get_student_class_status(
                 in_progress_play_id=in_progress.id if in_progress else None,
                 submitted_count=play_repo.count_completed_attempts(
                     class_roll_id=roll.id,
-                    learner_label=student_name,
+                    learner_label=candidate_labels,
                     scenario_version_id=scenario.scenario_version_id,
                 ),
                 latest_submitted_play_id=latest_completed.id if latest_completed else None,
@@ -475,6 +486,10 @@ def start_play(
             detail=f"Published scenario version {body.scenario_version_id} not found.",
         )
 
+    # Store the whitespace-normalized label so gradebook matching never
+    # depends on invisible spacing differences in what the client sent.
+    learner_label = normalize_student_name(body.learner_label) or None
+
     # 1b. Validate roll membership when started via class picker
     if body.class_roll_id is not None:
         roll_repo = RollRepository(db)
@@ -484,7 +499,8 @@ def start_play(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Class roll not found.",
             )
-        if not body.learner_label or body.learner_label not in roll.student_names:
+        roster_names = {normalize_student_name(name) for name in roll.student_names}
+        if not learner_label or learner_label not in roster_names:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="learner_label must match a name on the class roll.",
@@ -494,7 +510,7 @@ def start_play(
     play_repo = PlayRepository(db)
     play = play_repo.create_play(
         version.id,
-        learner_label=body.learner_label,
+        learner_label=learner_label,
         class_roll_id=body.class_roll_id,
     )
 
@@ -560,9 +576,11 @@ def restart_play(
 
     version: ScenarioVersion = db.get(ScenarioVersion, source.scenario_version_id)  # type: ignore[assignment]
 
+    # Normalize whitespace so a restart of a pre-normalization play stores
+    # the canonical label going forward.
     new_play = play_repo.create_play(
         version.id,
-        learner_label=source.learner_label,
+        learner_label=normalize_student_name(source.learner_label) or None,
         class_roll_id=source.class_roll_id,
     )
 

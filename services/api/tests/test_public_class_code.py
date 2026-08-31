@@ -221,3 +221,118 @@ class TestStudentStatus:
         )
         assert in_progress is not None
         assert in_progress.id == new_play_id
+
+
+@pytest.fixture()
+def double_space_roll(db: Session, teacher: User):
+    """A roll with a legacy double-space roster entry (the real incident)."""
+    roll = RollRepository(db).create(
+        teacher.id,
+        "Period 5",
+        ["Jalen  Doe", "Alice Adams"],
+    )
+    db.flush()
+    return roll
+
+
+class TestNameNormalization:
+    def test_status_normalizes_whitespace_in_student_name(
+        self, client, db: Session, class_roll
+    ):
+        _assign_visible(db, class_roll)
+        # Double space between first and last name in the request path.
+        resp = client.get(
+            f"/api/v1/public/classes/code/{class_roll.join_code}/students/Alice%20%20Adams"
+        )
+        assert resp.status_code == 200
+        assert resp.json()["student_name"] == "Alice Adams"
+
+    def test_status_matches_double_space_roster_entry(
+        self, client, db: Session, double_space_roll
+    ):
+        _assign_visible(db, double_space_roll)
+        resp = client.get(
+            f"/api/v1/public/classes/code/{double_space_roll.join_code}/students/Jalen%20Doe"
+        )
+        assert resp.status_code == 200
+        assert resp.json()["student_name"] == "Jalen Doe"
+
+    def test_status_finds_legacy_play_stored_with_raw_roster_spelling(
+        self, client, db: Session, double_space_roll
+    ):
+        """Plays recorded before normalization carry the raw roster label
+        (double space); the status lookup must still resume them."""
+        _scenario, version = _assign_visible(db, double_space_roll)
+        play = PlayRepository(db).create_play(
+            version.id,
+            learner_label="Jalen  Doe",  # raw legacy label
+            class_roll_id=double_space_roll.id,
+        )
+        db.flush()
+
+        resp = client.get(
+            f"/api/v1/public/classes/code/{double_space_roll.join_code}/students/Jalen%20Doe"
+        )
+        assert resp.status_code == 200
+        scenario = resp.json()["scenarios"][0]
+        assert scenario["in_progress_play_id"] == str(play.id)
+
+    def test_start_play_stores_normalized_learner_label(
+        self, client, db: Session, class_roll
+    ):
+        _scenario, version = _assign_visible(db, class_roll)
+        resp = client.post(
+            "/api/v1/public/plays/start",
+            json={
+                "scenario_version_id": str(version.id),
+                "learner_label": "  Alice  Adams ",
+                "class_roll_id": str(class_roll.id),
+            },
+        )
+        assert resp.status_code == 201
+        play = PlayRepository(db).get_play(uuid.UUID(resp.json()["play_id"]))
+        assert play.learner_label == "Alice Adams"
+
+    def test_start_play_accepts_normalized_label_for_double_space_roster_entry(
+        self, client, db: Session, double_space_roll
+    ):
+        _scenario, version = _assign_visible(db, double_space_roll)
+        resp = client.post(
+            "/api/v1/public/plays/start",
+            json={
+                "scenario_version_id": str(version.id),
+                "learner_label": "Jalen Doe",
+                "class_roll_id": str(double_space_roll.id),
+            },
+        )
+        assert resp.status_code == 201
+        play = PlayRepository(db).get_play(uuid.UUID(resp.json()["play_id"]))
+        assert play.learner_label == "Jalen Doe"
+
+    def test_start_play_still_rejects_name_not_on_roll(
+        self, client, db: Session, class_roll
+    ):
+        _scenario, version = _assign_visible(db, class_roll)
+        resp = client.post(
+            "/api/v1/public/plays/start",
+            json={
+                "scenario_version_id": str(version.id),
+                "learner_label": "Nobody Here",
+                "class_roll_id": str(class_roll.id),
+            },
+        )
+        assert resp.status_code == 422
+
+    def test_start_play_rejects_whitespace_only_label(
+        self, client, db: Session, class_roll
+    ):
+        _scenario, version = _assign_visible(db, class_roll)
+        resp = client.post(
+            "/api/v1/public/plays/start",
+            json={
+                "scenario_version_id": str(version.id),
+                "learner_label": "   ",
+                "class_roll_id": str(class_roll.id),
+            },
+        )
+        assert resp.status_code == 422

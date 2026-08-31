@@ -119,6 +119,14 @@ class ClassRollCreate(BaseModel):
 
 
 class ClassRollUpdate(BaseModel):
+    """Partial update for a class roll.
+
+    Renaming a student in ``student_names`` does NOT rewrite the
+    ``learner_label`` stored on that student's past plays; those plays
+    surface in the gradebook's ``unmatched`` section instead of under
+    the new name.  See ``update_roll`` for details.
+    """
+
     name: str | None = Field(None, min_length=1, max_length=500)
     student_names: list[str] | None = None
 
@@ -258,9 +266,23 @@ class RollGradebookStudent(BaseModel):
     attempts: list[RollGradebookAttempt]
 
 
+class RollGradebookUnmatchedPlay(BaseModel):
+    """A roll play whose ``learner_label`` matches no current roster name.
+
+    Usually the aftermath of a teacher renaming a student after plays were
+    recorded; listed so the plays stay visible instead of silently dropped.
+    """
+
+    play_id: uuid.UUID
+    label: str
+    started_at: datetime
+    completed: bool
+
+
 class RollGradebookOut(BaseModel):
     roll_id: uuid.UUID
     scenario_id: uuid.UUID
     scenario_title: str
     grading_difficulty: str
     students: list[RollGradebookStudent]
+    unmatched: list[RollGradebookUnmatchedPlay] = Field(default_factory=list)

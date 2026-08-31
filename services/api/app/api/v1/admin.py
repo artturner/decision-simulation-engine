@@ -60,6 +60,7 @@ from app.schemas.admin import (
     RollGradebookOut,
     RollGradebookReflection,
     RollGradebookStudent,
+    RollGradebookUnmatchedPlay,
     RollScenarioOut,
     ScenarioImportRequest,
     ScenarioImportResponse,
@@ -70,6 +71,7 @@ from app.schemas.admin import (
 )
 from app.services.analytics import get_analytics
 from app.services.export import export_csv
+from app.services.names import normalize_student_name
 from engine.validator import validate_scenario
 
 router = APIRouter(
@@ -603,6 +605,18 @@ def update_roll(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> ClassRollOut:
+    """Update a roll's name and/or student list.
+
+    CAUTION — renaming a student orphans their past plays: plays store
+    ``learner_label`` as a string and the gradebook matches labels against
+    the *current* roster (whitespace-normalized, but otherwise exact), so
+    plays recorded under the old spelling stop matching after a rename.
+    They are not lost — they appear in the gradebook's ``unmatched``
+    section, and re-adding the old spelling to the roster re-links them.
+    We deliberately do not rewrite play labels on rename: a roster edit
+    can be a fix, a swap, or a removal, and guessing wrong would silently
+    reattribute student work.
+    """
     repo = RollRepository(db)
     roll = repo.get(roll_id)
     if roll is None or roll.owner_id != current_user.id:
@@ -809,14 +823,20 @@ def _build_roll_gradebook(
         .order_by(Play.learner_label, Play.started_at)
     )
     plays = list(db.scalars(stmt))
-    plays_by_student: dict[str, list[Play]] = defaultdict(list)
+    # Group by whitespace-normalized label so a stray double space (in a
+    # stored label or in the roster) can't orphan a student's plays.
+    plays_by_label: dict[str, list[Play]] = defaultdict(list)
     for play in plays:
-        if play.learner_label:
-            plays_by_student[play.learner_label].append(play)
+        label = normalize_student_name(play.learner_label)
+        if label:
+            plays_by_label[label].append(play)
 
     students: list[RollGradebookStudent] = []
+    roster_labels: set[str] = set()
     for student_name in roll.student_names:
-        student_plays = plays_by_student.get(student_name, [])
+        normalized_name = normalize_student_name(student_name)
+        roster_labels.add(normalized_name)
+        student_plays = plays_by_label.get(normalized_name, [])
         attempts: list[RollGradebookAttempt] = []
         in_progress_play_id: uuid.UUID | None = None
         latest_submitted_at = None
@@ -873,12 +893,29 @@ def _build_roll_gradebook(
             )
         )
 
+    # Plays whose label matches no current roster name (typically after a
+    # student was renamed) — surfaced so the teacher can see them instead
+    # of the gradebook silently dropping them.
+    unmatched = [
+        RollGradebookUnmatchedPlay(
+            play_id=play.id,
+            label=play.learner_label or label,
+            started_at=play.started_at,
+            completed=play.completed,
+        )
+        for label, label_plays in plays_by_label.items()
+        if label not in roster_labels
+        for play in label_plays
+    ]
+    unmatched.sort(key=lambda p: p.started_at)
+
     return RollGradebookOut(
         roll_id=roll_id,
         scenario_id=scenario_id,
         scenario_title=scenario.title,
         grading_difficulty=assignment.grading_difficulty,
         students=students,
+        unmatched=unmatched,
     )
 
 

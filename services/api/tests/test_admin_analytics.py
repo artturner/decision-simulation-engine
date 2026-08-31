@@ -14,8 +14,8 @@ Blueprint requirements covered:
 - reflection_rate computed against completed plays
 - CSV format valid (headers, commas escaped, correct row count)
 - CSV filters by version_number correctly
-- CSV columns: play_id, learner_label, started_at, completed, outcome,
-               path, reflection_1, reflection_2, ...
+- CSV columns: play_id, learner_label, reflection_student_name, started_at,
+               completed, outcome, path, reflection_1, reflection_2, ...
 - 404 for unknown scenario on both endpoints
 """
 
@@ -395,8 +395,22 @@ class TestExportColumns:
         )
         rows = list(csv.reader(io.StringIO(resp.text)))
         headers = rows[0]
-        for col in ("play_id", "learner_label", "started_at", "completed", "outcome", "path"):
+        for col in (
+            "play_id",
+            "learner_label",
+            "reflection_student_name",
+            "started_at",
+            "completed",
+            "outcome",
+            "path",
+        ):
             assert col in headers
+        # Anonymous plays' only identifier is the typed reflection name, so
+        # it sits right next to learner_label.
+        assert (
+            headers.index("reflection_student_name")
+            == headers.index("learner_label") + 1
+        )
 
     def test_reflection_columns_present(self, client, populated_scenario):
         """SCENARIO_JSON has 2 reflection questions → reflection_1 and reflection_2."""
@@ -465,6 +479,15 @@ class TestExportContent:
         labels = {r["learner_label"] for r in rows}
         assert "Alice" in labels
         assert "Bob" in labels
+
+    def test_reflection_student_name_in_csv(self, client, populated_scenario):
+        """Alice submitted her reflection under the name "Alice"; Bob has no
+        reflection so his column is empty."""
+        rows = self._get_csv_rows(client, populated_scenario["scenario_id"])
+        alice = next(r for r in rows if r["learner_label"] == "Alice")
+        bob = next(r for r in rows if r["learner_label"] == "Bob")
+        assert alice["reflection_student_name"] == "Alice"
+        assert bob["reflection_student_name"] == ""
 
     def test_reflection_answers_in_csv(self, client, populated_scenario):
         """Alice's reflection answers should appear in reflection_1/reflection_2."""

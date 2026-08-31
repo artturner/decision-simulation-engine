@@ -7,8 +7,13 @@ questions defined in the scenario JSON.
 
 Column order
 ------------
-play_id, learner_label, started_at, completed, outcome,
-path, reflection_1, reflection_2, ...
+play_id, learner_label, reflection_student_name, started_at, completed,
+outcome, path, reflection_1, reflection_2, ...
+
+``reflection_student_name``
+    The name the learner typed when submitting their reflection, or ``""``
+    when there is no reflection.  For anonymous plays (no class roll,
+    ``learner_label`` empty) this is the only identifier on the row.
 
 ``path``
     Scene IDs visited in order, joined by `` -> ``
@@ -70,6 +75,7 @@ def export_csv(
     headers = [
         "play_id",
         "learner_label",
+        "reflection_student_name",
         "started_at",
         "completed",
         "outcome",
@@ -129,6 +135,7 @@ def export_csv(
             [
                 str(play.id),
                 play.learner_label or "",
+                (reflection.student_name or "") if reflection is not None else "",
                 play.started_at.isoformat() if play.started_at else "",
                 str(play.completed).lower(),
                 play.outcome or "",
