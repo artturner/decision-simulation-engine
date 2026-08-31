@@ -103,7 +103,7 @@ def main(argv: list[str] | None = None) -> int:
             missing.append(f"{scene_id} ({spec['filename']})")
             continue
         key = f"{folder}/{images.MEDIA_VERSION}/{spec['filename']}"
-        url = upload_media(png_path.read_bytes(), key, "image/png")
+        url = upload_media(images.optimize_png(png_path.read_bytes()), key, "image/png")
         scenario_json["scenes"][scene_id]["image"] = url
         uploaded += 1
         print(f"    {scene_id} → {url}")

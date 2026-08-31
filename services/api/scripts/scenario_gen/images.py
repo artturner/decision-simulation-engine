@@ -8,6 +8,31 @@ from .assemble import slug_to_media_folder
 
 IMAGE_SIZE = "1536x1024"  # 16:9-ish; supported by gpt-image-1
 MEDIA_VERSION = "1"  # version folder, matching the import convention
+MAX_WIDTH = 1600  # the app renders scenes at ~700 CSS px; 1600 covers retina
+PALETTE_COLORS = 256
+
+
+def optimize_png(png: bytes) -> bytes:
+    """Shrink a scene PNG for web delivery: cap width at MAX_WIDTH and quantize
+    to a dithered 256-color palette. Returns the original bytes unless the
+    optimized version is at least 20% smaller."""
+    import io
+
+    from PIL import Image
+
+    img = Image.open(io.BytesIO(png)).convert("RGB")
+    if img.size[0] > MAX_WIDTH:
+        height = round(img.size[1] * MAX_WIDTH / img.size[0])
+        img = img.resize((MAX_WIDTH, height), Image.LANCZOS)
+    pal = img.quantize(
+        colors=PALETTE_COLORS,
+        method=Image.Quantize.MEDIANCUT,
+        dither=Image.Dither.FLOYDSTEINBERG,
+    )
+    buf = io.BytesIO()
+    pal.save(buf, format="PNG", optimize=True)
+    out = buf.getvalue()
+    return out if len(out) < len(png) * 0.8 else png
 
 
 def render_png(prompt: str, model: str) -> bytes:
@@ -45,7 +70,7 @@ def generate_and_upload(
     for scene_id, spec in prompts.items():
         png = render_png(spec["prompt"], model)
         key = f"{folder}/{MEDIA_VERSION}/{spec['filename']}"
-        url = upload_media(png, key, "image/png")
+        url = upload_media(optimize_png(png), key, "image/png")
         scenario_json["scenes"][scene_id]["image"] = url
         uploaded[scene_id] = url
     return uploaded
