@@ -307,6 +307,15 @@ class Reflection(Base):
         nullable=True,
         comment="Model that produced the grade (audit)",
     )
+    review_dismissed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        comment=(
+            "When the teacher dismissed the needs-review flag; only covers "
+            "grades produced before this moment, so a re-grade that flags "
+            "again re-surfaces"
+        ),
+    )
 
     # Relationship
     play: Mapped[Play] = relationship("Play", back_populates="reflection")

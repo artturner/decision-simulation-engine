@@ -7,12 +7,15 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   assignScenario,
   createRoll,
+  deleteRoll,
+  dismissReviewFlag,
   downloadRollGradebookCsv,
   getMe,
   getRollGradebook,
   listPublishedScenarios,
   listRolls,
   listRollScenarios,
+  restoreReviewFlag,
   updateAssignment,
   updateRoll,
 } from "@/lib/api/teacher";
@@ -170,6 +173,18 @@ export default function TeacherDashboardPage() {
       setNotice("Class updated.");
       queryClient.invalidateQueries({ queryKey: ["teacher-rolls"] });
       queryClient.invalidateQueries({ queryKey: ["teacher-gradebook"] });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (roll: ClassRoll) => deleteRoll(token, roll.id),
+    onSuccess: (_data, roll) => {
+      setNotice(`Deleted ${roll.name}.`);
+      setSelectedRollId("");
+      setSelectedScenarioId("");
+      queryClient.invalidateQueries({ queryKey: ["teacher-rolls"] });
+      queryClient.invalidateQueries({ queryKey: ["teacher-gradebook"] });
+      queryClient.invalidateQueries({ queryKey: ["teacher-roll-scenarios"] });
     },
   });
 
@@ -383,14 +398,20 @@ export default function TeacherDashboardPage() {
               classNameValue={className}
               studentNames={studentNames}
               busy={createMutation.isPending || updateMutation.isPending}
+              deleting={deleteMutation.isPending}
               error={
                 (createMutation.error as Error | null)?.message ??
                 (updateMutation.error as Error | null)?.message ??
+                (deleteMutation.error as Error | null)?.message ??
                 null
               }
               onClassNameChange={setClassName}
               onStudentNamesChange={setStudentNames}
               onSubmit={submitClass}
+              onDelete={(roll) => {
+                setNotice(null);
+                deleteMutation.mutate(roll);
+              }}
             />
 
             {selectedRoll && (
@@ -429,6 +450,7 @@ export default function TeacherDashboardPage() {
                 />
 
                 <ResultsPanel
+                  token={token}
                   gradebook={gradebookQuery.data ?? null}
                   loading={gradebookQuery.isLoading}
                   error={
@@ -453,25 +475,49 @@ function ClassEditor({
   classNameValue,
   studentNames,
   busy,
+  deleting,
   error,
   onClassNameChange,
   onStudentNamesChange,
   onSubmit,
+  onDelete,
 }: {
   selectedRoll: ClassRoll | null;
   classNameValue: string;
   studentNames: string;
   busy: boolean;
+  deleting: boolean;
   error: string | null;
   onClassNameChange: (value: string) => void;
   onStudentNamesChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onDelete: (roll: ClassRoll) => void;
 }) {
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <h2 className="text-lg font-semibold">
-        {selectedRoll ? "Edit class" : "Create class"}
-      </h2>
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-lg font-semibold">
+          {selectedRoll ? "Edit class" : "Create class"}
+        </h2>
+        {selectedRoll && (
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                window.confirm(
+                  `Delete "${selectedRoll.name}"? Its class code will stop working, its scenario assignments will be removed, and student play records will be permanently detached from this class. This cannot be undone.`,
+                )
+              ) {
+                onDelete(selectedRoll);
+              }
+            }}
+            disabled={deleting}
+            className="rounded-md border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {deleting ? "Deleting" : "Delete class"}
+          </button>
+        )}
+      </div>
       <form onSubmit={onSubmit} className="mt-4 grid gap-4">
         <label className="block">
           <span className="text-sm font-semibold text-gray-700">Class name</span>
@@ -698,12 +744,14 @@ function reflectionQuestionLabel(key: string): string {
 }
 
 function ResultsPanel({
+  token,
   gradebook,
   loading,
   error,
   exporting,
   onExport,
 }: {
+  token: string;
   gradebook: RollGradebook | null;
   loading: boolean;
   error: string | null;
@@ -915,6 +963,7 @@ function ResultsPanel({
       {selectedStudent && (
         <StudentReflectionDetail
           student={selectedStudent}
+          token={token}
           onClose={() => setSelectedName(null)}
         />
       )}
@@ -924,13 +973,29 @@ function ResultsPanel({
 
 function StudentReflectionDetail({
   student,
+  token,
   onClose,
 }: {
   student: RollGradebookStudent;
+  token: string;
   onClose: () => void;
 }) {
+  const queryClient = useQueryClient();
   const attempt = student.best_attempt;
   const reflection = attempt?.reflection ?? null;
+
+  const invalidateGradebook = () =>
+    queryClient.invalidateQueries({ queryKey: ["teacher-gradebook"] });
+
+  const dismissFlagMutation = useMutation({
+    mutationFn: () => dismissReviewFlag(token, attempt!.play_id),
+    onSuccess: invalidateGradebook,
+  });
+
+  const restoreFlagMutation = useMutation({
+    mutationFn: () => restoreReviewFlag(token, attempt!.play_id),
+    onSuccess: invalidateGradebook,
+  });
 
   return (
     <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50/40 p-4">
@@ -966,6 +1031,57 @@ function StudentReflectionDetail({
           Close
         </button>
       </div>
+
+      {reflection &&
+        (reflection.needs_human_review ||
+          (reflection.review_dismissed_at && reflection.review_reason)) && (
+          <div className="mt-3 rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            <p>
+              ⚑ Flagged by the AI grader
+              {reflection.review_reason ? `: ${reflection.review_reason}` : ""}{" "}
+              — the flag routes this reflection to you; it never changed the
+              score.
+            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {reflection.needs_human_review ? (
+                <button
+                  type="button"
+                  onClick={() => dismissFlagMutation.mutate()}
+                  disabled={dismissFlagMutation.isPending}
+                  className="rounded-md border border-amber-300 px-3 py-1.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 disabled:opacity-50"
+                >
+                  {dismissFlagMutation.isPending
+                    ? "Dismissing…"
+                    : "Dismiss flag — I've reviewed this"}
+                </button>
+              ) : (
+                <p className="text-xs text-amber-700">
+                  Dismissed{" "}
+                  {new Date(
+                    reflection.review_dismissed_at as string,
+                  ).toLocaleString()}{" "}
+                  — no longer marked in your gradebook.{" "}
+                  <button
+                    type="button"
+                    onClick={() => restoreFlagMutation.mutate()}
+                    disabled={restoreFlagMutation.isPending}
+                    className="font-semibold underline hover:text-amber-900 disabled:opacity-50"
+                  >
+                    {restoreFlagMutation.isPending ? "Restoring…" : "Restore"}
+                  </button>
+                </p>
+              )}
+            </div>
+            {(dismissFlagMutation.error || restoreFlagMutation.error) && (
+              <p className="mt-2 rounded-md bg-red-50 px-3 py-2 text-xs text-red-700">
+                {(
+                  (dismissFlagMutation.error ??
+                    restoreFlagMutation.error) as Error
+                ).message}
+              </p>
+            )}
+          </div>
+        )}
 
       {reflection ? (
         <div className="mt-4 space-y-3">

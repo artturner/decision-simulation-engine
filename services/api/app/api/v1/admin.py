@@ -33,6 +33,7 @@ from __future__ import annotations
 import uuid
 from collections import defaultdict
 from csv import DictWriter
+from datetime import datetime, timezone
 from io import StringIO
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Response, UploadFile, status
@@ -748,7 +749,12 @@ def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
     reflection = None
     if typed.reflection is not None:
         r = typed.reflection
-        needs_review = bool((r.grade_breakdown or {}).get("needs_human_review", False))
+        raw_flag = bool((r.grade_breakdown or {}).get("needs_human_review", False))
+        # A dismissal only covers the grade that existed when the teacher
+        # dismissed; a re-grade that flags again re-surfaces.
+        dismissed = r.review_dismissed_at is not None and (
+            r.graded_at is None or r.graded_at <= r.review_dismissed_at
+        )
         reflection = RollGradebookReflection(
             student_name=r.student_name,
             submitted_at=r.submitted_at,
@@ -756,7 +762,9 @@ def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
             grade_total=r.grade_total,
             feedback=r.feedback,
             accepted=bool(r.accepted),
-            needs_human_review=needs_review,
+            needs_human_review=raw_flag and not dismissed,
+            review_reason=(r.grade_breakdown or {}).get("review_reason") or None,
+            review_dismissed_at=r.review_dismissed_at if dismissed else None,
             graded_at=r.graded_at,
             difficulty=(r.grade_breakdown or {}).get("difficulty"),
         )
@@ -940,6 +948,65 @@ def list_roll_scenarios(
         if row is not None:
             rows.append(row)
     return rows
+
+
+# ---------------------------------------------------------------------------
+# POST/DELETE /teacher/plays/{play_id}/dismiss-review  — review-flag dismissal
+# ---------------------------------------------------------------------------
+
+
+def _get_owned_play_with_reflection(
+    play_id: uuid.UUID, current_user: User, db: Session
+):
+    from app.models.play import Play
+    from app.models.user import ClassRoll
+
+    play = db.get(Play, play_id)
+    if play is None or play.class_roll_id is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Play not found.")
+    roll = db.get(ClassRoll, play.class_roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Play not found.")
+    if play.reflection is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="This play has no reflection.",
+        )
+    return play
+
+
+@teacher_router.post(
+    "/plays/{play_id}/dismiss-review",
+    response_model=RollGradebookAttempt,
+    summary="Dismiss the needs-review flag after looking at the reflection",
+)
+def dismiss_review_flag(
+    play_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> RollGradebookAttempt:
+    play = _get_owned_play_with_reflection(play_id, current_user, db)
+    play.reflection.review_dismissed_at = datetime.now(timezone.utc)
+    db.commit()
+    db.refresh(play)
+    return _roll_gradebook_attempt(play)
+
+
+@teacher_router.delete(
+    "/plays/{play_id}/dismiss-review",
+    response_model=RollGradebookAttempt,
+    summary="Undo a dismissal so the needs-review flag shows again",
+)
+def restore_review_flag(
+    play_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> RollGradebookAttempt:
+    play = _get_owned_play_with_reflection(play_id, current_user, db)
+    play.reflection.review_dismissed_at = None
+    db.commit()
+    db.refresh(play)
+    return _roll_gradebook_attempt(play)
 
 
 # ---------------------------------------------------------------------------

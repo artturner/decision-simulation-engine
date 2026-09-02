@@ -7,6 +7,7 @@ import type {
   ClassRollUpdate,
   PublishedScenario,
   RollGradebook,
+  RollGradebookAttempt,
   RollScenario,
   TeacherMe,
 } from "./teacherTypes";
@@ -133,6 +134,28 @@ export function getRollGradebook(
   return teacherFetch<RollGradebook>(
     token,
     `/rolls/${rollId}/scenarios/${scenarioId}/gradebook`,
+  );
+}
+
+export function dismissReviewFlag(
+  token: string,
+  playId: string,
+): Promise<RollGradebookAttempt> {
+  return teacherFetch<RollGradebookAttempt>(
+    token,
+    `/plays/${playId}/dismiss-review`,
+    { method: "POST" },
+  );
+}
+
+export function restoreReviewFlag(
+  token: string,
+  playId: string,
+): Promise<RollGradebookAttempt> {
+  return teacherFetch<RollGradebookAttempt>(
+    token,
+    `/plays/${playId}/dismiss-review`,
+    { method: "DELETE" },
   );
 }
 

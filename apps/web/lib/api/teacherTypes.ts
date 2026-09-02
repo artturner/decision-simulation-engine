@@ -68,6 +68,8 @@ export interface RollGradebookReflection {
   feedback: string | null;
   accepted: boolean;
   needs_human_review: boolean;
+  review_reason?: string | null;
+  review_dismissed_at?: string | null;
   graded_at: string | null;
   difficulty: GradingDifficulty | null;
 }

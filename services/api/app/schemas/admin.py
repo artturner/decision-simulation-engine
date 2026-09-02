@@ -240,6 +240,10 @@ class RollGradebookReflection(BaseModel):
     feedback: str | None = None
     accepted: bool = False
     needs_human_review: bool = False
+    # The AI judge's stated reason for the flag (it is always the judge that
+    # flags — students cannot; the reason says what tripped it).
+    review_reason: str | None = None
+    review_dismissed_at: datetime | None = None
     graded_at: datetime | None = None
     # Difficulty this attempt was actually graded under (from the stored
     # breakdown); may differ from the assignment's current setting if the
