@@ -30,6 +30,7 @@ GET    /scenarios/{scenario_id}/export.csv?version_number=
 
 from __future__ import annotations
 
+import re
 import uuid
 from collections import defaultdict
 from csv import DictWriter
@@ -728,14 +729,65 @@ def _roll_scenario_out(assignment: object, db: Session) -> RollScenarioOut | Non
     )
 
 
+def _best_reflection_attempt(reflection: object):
+    """Highest-scoring attempt in the history; ties broken by most recent.
+
+    Returns ``None`` for reflections graded before attempt history existed
+    (callers fall back to the reflection's own latest grade).
+    """
+    best = None
+    for a in getattr(reflection, "attempts", []):
+        if best is None or (a.grade_total, a.graded_at) > (
+            best.grade_total,
+            best.graded_at,
+        ):
+            best = a
+    return best
+
+
+def _reflection_flag_state(reflection: object) -> tuple[bool, str | None]:
+    """(flag_active, reason) across the attempt history, dismissal-aware.
+
+    A dismissal only covers attempts graded before it, so a re-grade that
+    flags again re-surfaces.  The reason reported is the most recently
+    flagged attempt's.  Falls back to the reflection's own latest grade for
+    pre-history rows.
+    """
+    dismissed_at = getattr(reflection, "review_dismissed_at", None)
+    sources = [
+        ((a.grade_breakdown or {}), a.graded_at)
+        for a in getattr(reflection, "attempts", [])
+    ]
+    if not sources:
+        sources = [
+            (
+                (getattr(reflection, "grade_breakdown", None) or {}),
+                getattr(reflection, "graded_at", None),
+            )
+        ]
+    active = False
+    reason: str | None = None
+    for breakdown, graded_at in sources:
+        if not breakdown.get("needs_human_review"):
+            continue
+        reason = breakdown.get("review_reason") or reason
+        if dismissed_at is None or (graded_at is not None and graded_at > dismissed_at):
+            active = True
+    return active, reason
+
+
 def _attempt_grade(play: object) -> int:
     """Return a play's graded score for best-attempt ranking.
 
     Ungraded completed plays sort below any graded attempt (-1).
     """
     reflection = getattr(play, "reflection", None)
-    if reflection is not None and reflection.grade_total is not None:
-        return reflection.grade_total
+    if reflection is not None:
+        best = _best_reflection_attempt(reflection)
+        if best is not None:
+            return best.grade_total
+        if reflection.grade_total is not None:
+            return reflection.grade_total
     return -1
 
 
@@ -749,24 +801,25 @@ def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
     reflection = None
     if typed.reflection is not None:
         r = typed.reflection
-        raw_flag = bool((r.grade_breakdown or {}).get("needs_human_review", False))
-        # A dismissal only covers the grade that existed when the teacher
-        # dismissed; a re-grade that flags again re-surfaces.
-        dismissed = r.review_dismissed_at is not None and (
-            r.graded_at is None or r.graded_at <= r.review_dismissed_at
-        )
+        # Reports show the best attempt, not the last — revising is never
+        # penalized.  The reflection row itself always holds the latest.
+        best = _best_reflection_attempt(r)
+        best_breakdown = (best.grade_breakdown if best else r.grade_breakdown) or {}
+        flag_active, flag_reason = _reflection_flag_state(r)
         reflection = RollGradebookReflection(
             student_name=r.student_name,
             submitted_at=r.submitted_at,
             responses=r.responses_json,
-            grade_total=r.grade_total,
-            feedback=r.feedback,
+            grade_total=best.grade_total if best else r.grade_total,
+            feedback=best.feedback if best else r.feedback,
             accepted=bool(r.accepted),
-            needs_human_review=raw_flag and not dismissed,
-            review_reason=(r.grade_breakdown or {}).get("review_reason") or None,
-            review_dismissed_at=r.review_dismissed_at if dismissed else None,
-            graded_at=r.graded_at,
-            difficulty=(r.grade_breakdown or {}).get("difficulty"),
+            needs_human_review=flag_active,
+            review_reason=flag_reason,
+            review_dismissed_at=r.review_dismissed_at,
+            graded_at=best.graded_at if best else r.graded_at,
+            difficulty=best_breakdown.get("difficulty"),
+            attempts_used=r.grade_attempts or 0,
+            latest_grade_total=r.grade_total,
         )
     return RollGradebookAttempt(
         play_id=typed.id,
@@ -808,7 +861,7 @@ def _build_roll_gradebook(
     current_user: User,
     db: Session,
 ) -> RollGradebookOut:
-    from app.models.play import Play
+    from app.models.play import Play, Reflection
 
     roll, assignment, scenario = _get_owned_roll_assignment(
         roll_id,
@@ -827,7 +880,7 @@ def _build_roll_gradebook(
             Play.class_roll_id == roll_id,
             Play.scenario_version.has(scenario_id=scenario_id),
         )
-        .options(selectinload(Play.reflection))
+        .options(selectinload(Play.reflection).selectinload(Reflection.attempts))
         .order_by(Play.learner_label, Play.started_at)
     )
     plays = list(db.scalars(stmt))
@@ -1151,6 +1204,16 @@ def roll_gradebook(
     return _build_roll_gradebook(roll_id, scenario_id, current_user, db)
 
 
+def _filename_safe(name: str) -> str:
+    """Reduce a display name to something safe in a download filename:
+    filesystem-reserved characters and non-latin-1 (HTTP header limit)
+    stripped, whitespace collapsed."""
+    cleaned = re.sub(r'[\\/:*?"<>|]', " ", name)
+    cleaned = " ".join(cleaned.split())
+    cleaned = cleaned.encode("latin-1", "ignore").decode("latin-1")
+    return cleaned or "untitled"
+
+
 @teacher_router.get(
     "/rolls/{roll_id}/scenarios/{scenario_id}/gradebook.csv",
     summary="Export roll-scoped best-attempt results as CSV",
@@ -1234,9 +1297,13 @@ def roll_gradebook_csv(
             row[key] = reflection.responses.get(key, "") if reflection else ""
         writer.writerow(row)
 
-    filename = f"roll-{roll_id}-scenario-{scenario_id}-gradebook.csv"
+    # Ownership was already verified inside _build_roll_gradebook.
+    roll = RollRepository(db).get(roll_id)
+    filename = (
+        f"{_filename_safe(gradebook.scenario_title)} - {_filename_safe(roll.name)}.csv"
+    )
     return Response(
         content=output.getvalue(),
         media_type="text/csv",
-        headers={"Content-Disposition": f"attachment; filename={filename}"},
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )

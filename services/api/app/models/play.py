@@ -317,11 +317,93 @@ class Reflection(Base):
         ),
     )
 
-    # Relationship
+    # Relationships
     play: Mapped[Play] = relationship("Play", back_populates="reflection")
+    attempts: Mapped[list["ReflectionAttempt"]] = relationship(
+        "ReflectionAttempt",
+        back_populates="reflection",
+        order_by="ReflectionAttempt.attempt_number",
+        cascade="all, delete-orphan",
+    )
 
     def __repr__(self) -> str:
         return f"<Reflection id={self.id} play={self.play_id}>"
+
+
+class ReflectionAttempt(Base):
+    """One graded revision in a reflection's history.
+
+    The reflection row always holds the *latest* grade (what the student
+    sees); attempt rows preserve every grade so reports can show the best
+    one — revising is never penalized.
+    """
+
+    __tablename__ = "reflection_attempts"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        PG_UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    reflection_id: Mapped[uuid.UUID] = mapped_column(
+        PG_UUID(as_uuid=True),
+        ForeignKey("reflections.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    attempt_number: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+    responses_json: Mapped[dict] = mapped_column(
+        JSONB,
+        nullable=False,
+        comment="The responses as they were when this attempt was graded",
+    )
+    grade_total: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+    grade_breakdown: Mapped[dict] = mapped_column(
+        JSONB,
+        nullable=False,
+    )
+    feedback: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+    grader_model: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+    graded_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+    # Relationship
+    reflection: Mapped[Reflection] = relationship(
+        "Reflection", back_populates="attempts"
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "reflection_id",
+            "attempt_number",
+            name="uq_reflection_attempts_reflection_attempt",
+        ),
+    )
+
+    def __repr__(self) -> str:
+        return (
+            f"<ReflectionAttempt reflection={self.reflection_id}"
+            f" n={self.attempt_number} total={self.grade_total}>"
+        )
 
 
 class GradingCall(Base):

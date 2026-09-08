@@ -72,6 +72,9 @@ export interface RollGradebookReflection {
   review_dismissed_at?: string | null;
   graded_at: string | null;
   difficulty: GradingDifficulty | null;
+  /** grade_total is the best attempt; these note when the latest differed. */
+  attempts_used?: number;
+  latest_grade_total?: number | null;
 }
 
 export interface RollGradebookAttempt {

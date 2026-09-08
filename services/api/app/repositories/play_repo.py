@@ -37,7 +37,7 @@ from datetime import datetime, timezone
 from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session, selectinload
 
-from app.models.play import Event, EventType, Play, Reflection
+from app.models.play import Event, EventType, Play, Reflection, ReflectionAttempt
 
 
 def _label_filter(learner_label: str | Sequence[str]):
@@ -343,13 +343,27 @@ class PlayRepository:
         grader_model: str,
         graded_at,
     ) -> Reflection:
-        """Persist grade fields and increment the attempt counter."""
+        """Persist grade fields, increment the attempt counter, and append
+        this grade to the attempt history (reports show the best attempt,
+        so revising is never penalized)."""
         reflection.grade_total = grade_total
         reflection.grade_breakdown = grade_breakdown
         reflection.feedback = feedback
         reflection.grader_model = grader_model
         reflection.graded_at = graded_at
         reflection.grade_attempts = (reflection.grade_attempts or 0) + 1
+        self.db.add(
+            ReflectionAttempt(
+                reflection_id=reflection.id,
+                attempt_number=reflection.grade_attempts,
+                responses_json=reflection.responses_json,
+                grade_total=grade_total,
+                grade_breakdown=grade_breakdown,
+                feedback=feedback,
+                grader_model=grader_model,
+                graded_at=graded_at,
+            )
+        )
         self.db.flush()
         return reflection
 

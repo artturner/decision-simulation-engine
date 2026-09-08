@@ -40,6 +40,14 @@ function rosterText(roll: ClassRoll | null): string {
   return roll ? roll.student_names.join("\n") : "";
 }
 
+function fileSafeName(raw: string): string {
+  const cleaned = raw
+    .replace(/[\\/:*?"<>|]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return cleaned || "untitled";
+}
+
 function statusLabel(status: string): string {
   if (status === "in_progress") return "In progress";
   if (status === "completed") return "Completed";
@@ -234,7 +242,13 @@ export default function TeacherDashboardPage() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `gradebook-${selectedRoll?.join_code ?? selectedRollId}-${selectedScenarioId}.csv`;
+      const scenarioTitle =
+        assignmentsQuery.data?.find(
+          (item) => item.scenario_id === selectedScenarioId,
+        )?.title ?? "gradebook";
+      link.download = `${fileSafeName(scenarioTitle)} - ${fileSafeName(
+        selectedRoll?.name ?? "class",
+      )}.csv`;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -1006,6 +1020,13 @@ function StudentReflectionDetail({
             {reflection?.grade_total != null && (
               <span className="font-semibold text-gray-800">
                 {reflection.grade_total}/100
+                {reflection.latest_grade_total != null &&
+                  reflection.latest_grade_total !== reflection.grade_total && (
+                    <span className="ml-1 font-normal text-gray-500">
+                      (best of {reflection.attempts_used ?? "several"} tries;
+                      latest scored {reflection.latest_grade_total})
+                    </span>
+                  )}
               </span>
             )}
             {reflection?.difficulty && (

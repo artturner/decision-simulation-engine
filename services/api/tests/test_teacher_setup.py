@@ -281,6 +281,62 @@ class TestRollGradebook:
             "reflection_1": "Latest answer."
         }
 
+    def test_regrade_reports_best_attempt_not_latest(self, client, db: Session, roll):
+        from datetime import datetime, timedelta, timezone
+
+        scenario, version = _scenario(db, "gradebook-regrade", VersionStatus.published)
+        RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
+        repo = PlayRepository(db)
+
+        play = repo.create_play(
+            version.id,
+            learner_label="Ben Brown",
+            class_roll_id=roll.id,
+        )
+        repo.complete_play(play.id, outcome="ok")
+        reflection = repo.add_reflection(
+            play.id,
+            responses_json={"reflection_1": "First answer."},
+            student_name="Ben Brown",
+        )
+        t0 = datetime(2026, 9, 1, 12, 0, tzinfo=timezone.utc)
+        repo.save_grade(
+            reflection,
+            grade_total=90,
+            grade_breakdown={"difficulty": "standard"},
+            feedback="Strong work.",
+            grader_model="test-model",
+            graded_at=t0,
+        )
+        repo.save_grade(
+            reflection,
+            grade_total=70,
+            grade_breakdown={"difficulty": "standard"},
+            feedback="Weaker revision.",
+            grader_model="test-model",
+            graded_at=t0 + timedelta(minutes=10),
+        )
+        db.flush()
+
+        resp = client.get(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}/gradebook"
+        )
+
+        assert resp.status_code == 200
+        students = {student["student_name"]: student for student in resp.json()["students"]}
+        graded = students["Ben Brown"]["best_attempt"]["reflection"]
+        assert graded["grade_total"] == 90
+        assert graded["feedback"] == "Strong work."
+        assert graded["attempts_used"] == 2
+        assert graded["latest_grade_total"] == 70
+
+        csv_resp = client.get(
+            f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}/gradebook.csv"
+        )
+        assert csv_resp.status_code == 200
+        assert "Ben Brown,completed,1" in csv_resp.text
+        assert ",90," in csv_resp.text
+
     def test_exports_roll_gradebook_csv(self, client, db: Session, roll):
         scenario, version = _scenario(db, "gradebook-export", VersionStatus.published)
         RollRepository(db).assign_scenario(scenario.id, roll.id, visible=True)
@@ -304,6 +360,10 @@ class TestRollGradebook:
 
         assert resp.status_code == 200
         assert resp.headers["content-type"].startswith("text/csv")
+        assert (
+            resp.headers["content-disposition"]
+            == 'attachment; filename="Gradebook-Export - Period 1.csv"'
+        )
         assert "student_name,status,submitted_count" in resp.text
         assert "Alice Adams,not_started,0" in resp.text
         assert "Ben Brown,completed,1" in resp.text

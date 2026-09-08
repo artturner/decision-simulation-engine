@@ -245,6 +245,10 @@ class RollGradebookReflection(BaseModel):
     review_reason: str | None = None
     review_dismissed_at: datetime | None = None
     graded_at: datetime | None = None
+    # grade_total above is the BEST attempt's score; these let the UI note
+    # when the latest attempt scored differently.
+    attempts_used: int = 0
+    latest_grade_total: int | None = None
     # Difficulty this attempt was actually graded under (from the stored
     # breakdown); may differ from the assignment's current setting if the
     # teacher changed it after grading. None for ungraded/legacy reflections.
