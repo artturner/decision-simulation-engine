@@ -40,10 +40,11 @@ FUZZY_CUTOFF = 0.8
 def video_grade(completed: str, first_try: int, total_questions: int) -> float | None:
     """75 base for completing, plus up to 25 for first-try accuracy.
 
-    Returns None (no grade) unless completed == "yes".
+    Returns None (no grade) unless the student completed the video
+    ("yes" in the pre-cutover export, "completed" post-cutover).
     A video with no questions grades as a flat 75 for completion.
     """
-    if completed.strip().lower() != "yes":
+    if completed.strip().lower() not in {"yes", "completed"}:
         return None
     if total_questions <= 0:
         return 75.0
@@ -145,13 +146,16 @@ def detect_kind(fieldnames: list[str]) -> str:
     have = set(fieldnames)
     if {"student", "completed", "first_try_correct"} <= have:
         return "video"
+    if {"student_name", "status", "first_try_correct"} <= have:
+        return "video"  # post-cutover export format
     if {"student_name", "grade_total"} <= have:
         return "scenario"
     if {"student_name", "effective_total"} <= have:
         return "essay"
     sys.exit(
         "Unrecognized export format. Expected one of:\n"
-        "  video    -> columns: student, completed, first_try_correct, ...\n"
+        "  video    -> columns: student+completed or student_name+status,"
+        " first_try_correct, ...\n"
         "  scenario -> columns: student_name, grade_total, ...  (teacher gradebook export)\n"
         "  essay    -> columns: student_name, effective_total, ...\n"
         f"Got columns: {', '.join(fieldnames)}"
@@ -160,20 +164,30 @@ def detect_kind(fieldnames: list[str]) -> str:
 
 def extract_grades(kind: str, rows: list[dict], args) -> list[tuple[str, object]]:
     if kind == "video":
-        total = args.total
-        if total is None:
-            derived = max((int(r.get("questions_answered") or 0) for r in rows),
-                          default=0)
-            if args.no_input:
-                total = derived
-                print(f"Total questions in video: {total} (derived)")
-            else:
-                ans = input(f"Total questions in this video [{derived}]: ").strip()
-                total = int(ans) if ans else derived
+        name_col = "student" if "student" in rows[0] else "student_name"
+        completed_col = "completed" if "completed" in rows[0] else "status"
+        if "total_questions" in rows[0]:
+            # Post-cutover export carries the question count per row.
+            def total_for(r: dict) -> int:
+                return args.total or int(r.get("total_questions") or 0)
+        else:
+            total = args.total
+            if total is None:
+                derived = max((int(r.get("questions_answered") or 0)
+                               for r in rows), default=0)
+                if args.no_input:
+                    total = derived
+                    print(f"Total questions in video: {total} (derived)")
+                else:
+                    ans = input(f"Total questions in this video [{derived}]: ").strip()
+                    total = int(ans) if ans else derived
+
+            def total_for(r: dict) -> int:
+                return total
         return [
-            (r["student"],
-             video_grade(r.get("completed") or "",
-                         int(r.get("first_try_correct") or 0), total))
+            (r[name_col],
+             video_grade(r.get(completed_col) or "",
+                         int(r.get("first_try_correct") or 0), total_for(r)))
             for r in rows
         ]
     grade_col = {"scenario": "grade_total", "essay": "effective_total"}[kind]

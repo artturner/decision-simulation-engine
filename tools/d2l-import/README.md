@@ -33,11 +33,13 @@ reported loudly and excluded — fix by adding an alias and re-running.
 
 ## Grades
 
-- **Video**: `75 + 25 * first_try_correct / total_questions` when
-  `completed == "yes"`, else no grade. Total questions is derived from the
-  export (max `questions_answered`) and confirmed at the prompt. The rule
-  lives in `video_grade()` at the top of the script — edit there when it
-  changes.
+- **Video**: `75 + 25 * first_try_correct / total_questions` for students
+  who completed the video, else no grade. Both export generations are
+  supported: the post-cutover format (`student_name`, `status`,
+  `total_questions`) reads the question count per row; the pre-cutover
+  format (`student`, `completed`) derives it (max `questions_answered`)
+  and confirms at the prompt. The rule lives in `video_grade()` at the
+  top of the script — edit there when it changes.
 - **Scenario** (`grade_total`) and **essay** (`effective_total`): pass
   through as exported.
 - Students without a grade are omitted (D2L leaves them unchanged).
