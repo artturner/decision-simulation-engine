@@ -61,6 +61,7 @@ from app.schemas.admin import (
     RollGradebookAttempt,
     RollGradebookOut,
     RollGradebookReflection,
+    RollGradebookReflectionAttempt,
     RollGradebookStudent,
     RollGradebookUnmatchedPlay,
     RollScenarioOut,
@@ -820,6 +821,17 @@ def _roll_gradebook_attempt(play: object) -> RollGradebookAttempt:
             difficulty=best_breakdown.get("difficulty"),
             attempts_used=r.grade_attempts or 0,
             latest_grade_total=r.grade_total,
+            attempt_history=[
+                RollGradebookReflectionAttempt(
+                    attempt_number=a.attempt_number,
+                    grade_total=a.grade_total,
+                    feedback=a.feedback,
+                    difficulty=(a.grade_breakdown or {}).get("difficulty"),
+                    graded_at=a.graded_at,
+                    responses=a.responses_json or {},
+                )
+                for a in r.attempts
+            ],
         )
     return RollGradebookAttempt(
         play_id=typed.id,

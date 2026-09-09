@@ -60,6 +60,15 @@ export interface AssignmentUpdate {
   grading_difficulty?: GradingDifficulty;
 }
 
+export interface RollGradebookReflectionAttempt {
+  attempt_number: number;
+  grade_total: number;
+  feedback: string | null;
+  difficulty: GradingDifficulty | null;
+  graded_at: string;
+  responses: Record<string, string>;
+}
+
 export interface RollGradebookReflection {
   student_name: string | null;
   submitted_at: string;
@@ -75,6 +84,8 @@ export interface RollGradebookReflection {
   /** grade_total is the best attempt; these note when the latest differed. */
   attempts_used?: number;
   latest_grade_total?: number | null;
+  /** Every graded revision, oldest first; empty for pre-history grades. */
+  attempt_history?: RollGradebookReflectionAttempt[];
 }
 
 export interface RollGradebookAttempt {

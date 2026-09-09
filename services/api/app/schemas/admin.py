@@ -232,6 +232,17 @@ class GradingUsageOut(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+class RollGradebookReflectionAttempt(BaseModel):
+    """One graded revision from the reflection's attempt history."""
+
+    attempt_number: int
+    grade_total: int
+    feedback: str | None = None
+    difficulty: str | None = None
+    graded_at: datetime
+    responses: dict
+
+
 class RollGradebookReflection(BaseModel):
     student_name: str | None
     submitted_at: datetime
@@ -253,6 +264,9 @@ class RollGradebookReflection(BaseModel):
     # breakdown); may differ from the assignment's current setting if the
     # teacher changed it after grading. None for ungraded/legacy reflections.
     difficulty: str | None = None
+    # Every graded revision, oldest first; empty for pre-history reflections
+    # (only their final grade survives) and for ungraded reflections.
+    attempt_history: list[RollGradebookReflectionAttempt] = []
 
 
 class RollGradebookAttempt(BaseModel):

@@ -28,6 +28,7 @@ import type {
   RollScenario,
 } from "@/lib/api/teacherTypes";
 import { getSupabaseClient } from "@/lib/auth/supabase";
+import { diffWords } from "@/lib/diff";
 
 function parseRoster(raw: string): string[] {
   return raw
@@ -976,6 +977,7 @@ function ResultsPanel({
 
       {selectedStudent && (
         <StudentReflectionDetail
+          key={selectedStudent.student_name}
           student={selectedStudent}
           token={token}
           onClose={() => setSelectedName(null)}
@@ -997,6 +999,18 @@ function StudentReflectionDetail({
   const queryClient = useQueryClient();
   const attempt = student.best_attempt;
   const reflection = attempt?.reflection ?? null;
+
+  const history = reflection?.attempt_history ?? [];
+  const [selectedAttemptNumber, setSelectedAttemptNumber] = useState<
+    number | null
+  >(null);
+  const [showDiff, setShowDiff] = useState(true);
+  const shownAttempt = history.length
+    ? (history.find((a) => a.attempt_number === selectedAttemptNumber) ??
+      history[history.length - 1])
+    : null;
+  const shownIndex = shownAttempt ? history.indexOf(shownAttempt) : -1;
+  const previousAttempt = shownIndex > 0 ? history[shownIndex - 1] : null;
 
   const invalidateGradebook = () =>
     queryClient.invalidateQueries({ queryKey: ["teacher-gradebook"] });
@@ -1106,21 +1120,65 @@ function StudentReflectionDetail({
 
       {reflection ? (
         <div className="mt-4 space-y-3">
-          {Object.entries(reflection.responses).map(([key, value]) => (
-            <div key={key}>
-              <p className="text-sm font-semibold text-gray-700">
-                {reflectionQuestionLabel(key)}
-              </p>
-              <p className="mt-0.5 whitespace-pre-wrap text-sm text-gray-800">
-                {value}
-              </p>
+          {history.length > 1 && (
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap gap-1.5">
+                {history.map((a) => (
+                  <button
+                    key={a.attempt_number}
+                    type="button"
+                    onClick={() => setSelectedAttemptNumber(a.attempt_number)}
+                    className={`rounded-md border px-3 py-1 text-sm font-semibold ${
+                      shownAttempt?.attempt_number === a.attempt_number
+                        ? "border-blue-600 bg-blue-600 text-white"
+                        : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    Attempt {a.attempt_number} · {a.grade_total}
+                  </button>
+                ))}
+              </div>
+              {previousAttempt && (
+                <label className="flex items-center gap-1.5 text-sm text-gray-600">
+                  <input
+                    type="checkbox"
+                    checked={showDiff}
+                    onChange={(event) => setShowDiff(event.target.checked)}
+                  />
+                  Show changes vs attempt {previousAttempt.attempt_number}
+                </label>
+              )}
             </div>
-          ))}
-          {reflection.feedback && (
+          )}
+          {Object.entries(shownAttempt?.responses ?? reflection.responses).map(
+            ([key, value]) => (
+              <div key={key}>
+                <p className="text-sm font-semibold text-gray-700">
+                  {reflectionQuestionLabel(key)}
+                </p>
+                {showDiff && previousAttempt ? (
+                  <DiffText
+                    oldText={previousAttempt.responses[key] ?? ""}
+                    newText={value}
+                  />
+                ) : (
+                  <p className="mt-0.5 whitespace-pre-wrap text-sm text-gray-800">
+                    {value}
+                  </p>
+                )}
+              </div>
+            ),
+          )}
+          {(shownAttempt?.feedback ?? reflection.feedback) && (
             <div className="rounded-md border border-gray-200 bg-white p-3">
-              <p className="text-sm font-semibold text-gray-700">Coaching</p>
+              <p className="text-sm font-semibold text-gray-700">
+                Coaching
+                {shownAttempt && history.length > 1
+                  ? ` — attempt ${shownAttempt.attempt_number}`
+                  : ""}
+              </p>
               <p className="mt-0.5 whitespace-pre-wrap text-sm italic text-gray-600">
-                {reflection.feedback}
+                {shownAttempt?.feedback ?? reflection.feedback}
               </p>
             </div>
           )}
@@ -1131,5 +1189,33 @@ function StudentReflectionDetail({
         </p>
       )}
     </div>
+  );
+}
+
+function DiffText({ oldText, newText }: { oldText: string; newText: string }) {
+  const parts = useMemo(() => diffWords(oldText, newText), [oldText, newText]);
+  return (
+    <p className="mt-0.5 whitespace-pre-wrap text-sm text-gray-800">
+      {parts.map((part, index) => {
+        if (part.type === "added") {
+          return (
+            <span key={index} className="rounded bg-green-100 text-green-900">
+              {part.text}
+            </span>
+          );
+        }
+        if (part.type === "removed") {
+          return (
+            <span
+              key={index}
+              className="rounded bg-red-100 text-red-800 line-through decoration-red-400"
+            >
+              {part.text}
+            </span>
+          );
+        }
+        return <span key={index}>{part.text}</span>;
+      })}
+    </p>
   );
 }

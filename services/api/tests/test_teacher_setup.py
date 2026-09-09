@@ -308,6 +308,7 @@ class TestRollGradebook:
             grader_model="test-model",
             graded_at=t0,
         )
+        reflection.responses_json = {"reflection_1": "Second answer."}
         repo.save_grade(
             reflection,
             grade_total=70,
@@ -329,6 +330,12 @@ class TestRollGradebook:
         assert graded["feedback"] == "Strong work."
         assert graded["attempts_used"] == 2
         assert graded["latest_grade_total"] == 70
+        history = graded["attempt_history"]
+        assert [a["attempt_number"] for a in history] == [1, 2]
+        assert [a["grade_total"] for a in history] == [90, 70]
+        assert history[0]["responses"] == {"reflection_1": "First answer."}
+        assert history[1]["responses"] == {"reflection_1": "Second answer."}
+        assert history[1]["feedback"] == "Weaker revision."
 
         csv_resp = client.get(
             f"/api/v1/teacher/rolls/{roll.id}/scenarios/{scenario.id}/gradebook.csv"
