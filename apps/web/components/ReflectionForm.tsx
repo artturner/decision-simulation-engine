@@ -47,6 +47,10 @@ export default function ReflectionForm({
   const [grade, setGrade] = useState<GradeResult | null>(null);
   // Set when grading is unavailable and we fell back to plain submission.
   const [plainSubmitted, setPlainSubmitted] = useState(false);
+  // Set when the fallback was caused by the teacher's monthly grading quota
+  // running out — the student should know feedback is temporarily off, not
+  // see a plain success indistinguishable from the graded path.
+  const [quotaExhausted, setQuotaExhausted] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
 
   // Plain (no-AI) submission fallback.
@@ -75,8 +79,13 @@ export default function ReflectionForm({
     },
     onError: (error) => {
       if (error instanceof ApiClientError) {
-        // 503: grading not configured — fall back to plain submission.
+        // 503: grading not configured or quota exhausted — fall back to
+        // plain submission either way, but remember the quota case so the
+        // student isn't shown a plain success.
         if (error.status === 503) {
+          if (error.code === "quota_exhausted") {
+            setQuotaExhausted(true);
+          }
           submitMutation.mutate();
           return;
         }
@@ -170,12 +179,16 @@ export default function ReflectionForm({
           className={`rounded-2xl px-6 py-5 text-sm font-medium shadow-sm ${
             isDuplicate
               ? "bg-yellow-50 text-yellow-800"
-              : "bg-green-50 text-green-800"
+              : quotaExhausted
+                ? "bg-blue-50 text-blue-800"
+                : "bg-green-50 text-green-800"
           }`}
         >
           {isDuplicate
             ? "Already submitted — your reflection has been recorded."
-            : "Reflection submitted successfully!"}
+            : quotaExhausted
+              ? "Submitted — AI feedback is temporarily unavailable, but your reflection has been recorded for your teacher."
+              : "Reflection submitted successfully!"}
         </div>
       )}
 

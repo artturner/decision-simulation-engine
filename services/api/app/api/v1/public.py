@@ -1021,7 +1021,9 @@ def grade_reflection_endpoint(
         ``HTTP 502`` if the grading API call fails.
         ``HTTP 503`` if AI grading is not configured, the play is not
         class-joined, or the teacher's monthly quota is exhausted (client
-        should fall back to plain submission).
+        should fall back to plain submission). The quota case carries a
+        structured detail with ``code: "quota_exhausted"`` so clients can
+        tell it apart from grading simply being unconfigured.
     """
     play_repo = PlayRepository(db)
 
@@ -1074,7 +1076,10 @@ def grade_reflection_endpoint(
         if (month_calls or 0) >= monthly_limit:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Monthly AI grading limit reached for this class.",
+                detail={
+                    "code": "quota_exhausted",
+                    "message": "Monthly AI grading limit reached for this teacher account.",
+                },
             )
 
     reflection = play_repo.upsert_reflection(

@@ -9,6 +9,7 @@ import type {
   RollGradebook,
   RollGradebookAttempt,
   RollScenario,
+  TeacherGradingUsage,
   TeacherMe,
 } from "./teacherTypes";
 
@@ -53,6 +54,10 @@ async function teacherFetch<T>(
 
 export function getMe(token: string): Promise<TeacherMe> {
   return teacherFetch<TeacherMe>(token, "/me");
+}
+
+export function getGradingUsage(token: string): Promise<TeacherGradingUsage> {
+  return teacherFetch<TeacherGradingUsage>(token, "/grading-usage");
 }
 
 export function listRolls(token: string): Promise<ClassRoll[]> {

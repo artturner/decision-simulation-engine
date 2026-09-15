@@ -32,6 +32,9 @@ export class ApiClientError extends Error {
   constructor(
     public readonly status: number,
     message: string,
+    /** Machine-readable error code from a structured `detail` (e.g.
+     *  "quota_exhausted" on the grading endpoint), null otherwise. */
+    public readonly code: string | null = null,
   ) {
     super(message);
     this.name = "ApiClientError";
@@ -54,17 +57,21 @@ async function apiFetch<T>(
 
   if (!res.ok) {
     let message = `HTTP ${res.status}`;
+    let code: string | null = null;
     try {
       const body = await res.json();
       if (typeof body.detail === "string") {
         message = body.detail;
       } else if (body.detail?.message) {
         message = body.detail.message;
+        if (typeof body.detail.code === "string") {
+          code = body.detail.code;
+        }
       }
     } catch {
       // response body was not JSON — keep the generic message
     }
-    throw new ApiClientError(res.status, message);
+    throw new ApiClientError(res.status, message, code);
   }
 
   // 204 No Content or similar — return undefined cast to T
@@ -214,8 +221,10 @@ export function submitReflection(
  *
  * Grade (or re-grade) a reflection and return the score plus coaching feedback.
  * Throws ApiClientError(503) if AI grading is not configured — callers should
- * fall back to submitReflection. Throws 409 if the reflection is already
- * accepted, 502 if the grading API fails.
+ * fall back to submitReflection. When the teacher's monthly grading quota is
+ * exhausted, the 503 carries code "quota_exhausted" so callers can tell the
+ * student AI feedback is temporarily unavailable. Throws 409 if the
+ * reflection is already accepted, 502 if the grading API fails.
  */
 export function gradeReflection(
   playId: string,

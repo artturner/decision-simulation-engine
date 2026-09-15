@@ -152,7 +152,11 @@ class TestGradeEndpoint:
 
     def test_503_when_grading_disabled(self, client, completed_play_id, monkeypatch):
         monkeypatch.setattr(settings, "ANTHROPIC_API_KEY", "", raising=False)
-        assert _grade(client, completed_play_id).status_code == 503
+        resp = _grade(client, completed_play_id)
+        assert resp.status_code == 503
+        # Plain-string detail: distinguishable from the structured
+        # quota-exhausted 503, which carries a machine-readable code.
+        assert isinstance(resp.json()["detail"], str)
 
     def test_happy_path_returns_grade(self, client, completed_play_id, grading_on):
         resp = _grade(client, completed_play_id)
@@ -220,7 +224,13 @@ class TestGradingCostControls:
         assert _grade(client, completed_play_id).status_code == 200
         resp = _grade(client, completed_play_id)
         assert resp.status_code == 503
-        assert "limit" in resp.json()["detail"].lower()
+        detail = resp.json()["detail"]
+        # Structured detail so the frontend can tell quota exhaustion apart
+        # from grading being unconfigured (both are 503).
+        assert detail["code"] == "quota_exhausted"
+        assert "limit" in detail["message"].lower()
+        # The quota is per teacher, not per class.
+        assert "class" not in detail["message"].lower()
         assert grading_on["n"] == 1
 
     def test_zero_limit_disables_quota(
@@ -230,3 +240,42 @@ class TestGradingCostControls:
         assert _grade(client, completed_play_id).status_code == 200
         assert _grade(client, completed_play_id).status_code == 200
         assert grading_on["n"] == 2
+
+
+class TestTeacherGradingUsage:
+    """GET /api/v1/teacher/grading-usage — the teacher-facing counterpart to
+    the admin usage report, powering the quota warning banner."""
+
+    def _usage(self, client, teacher: User):
+        from app.api.v1.admin import get_current_user
+
+        app.dependency_overrides[get_current_user] = lambda: teacher
+        return client.get("/api/v1/teacher/grading-usage")
+
+    def test_zero_usage(self, client, teacher, monkeypatch):
+        monkeypatch.setattr(settings, "AI_GRADER_MONTHLY_TEACHER_LIMIT", 300, raising=False)
+        resp = self._usage(client, teacher)
+        assert resp.status_code == 200
+        assert resp.json() == {"calls": 0, "monthly_limit": 300}
+
+    def test_counts_this_teachers_calls(
+        self, client, db: Session, teacher, completed_play_id, grading_on
+    ):
+        assert _grade(client, completed_play_id).status_code == 200
+        # Another teacher's call in the same month must not count.
+        other = User(
+            id=uuid.uuid4(),
+            email="other-grade-teacher@example.com",
+            role=UserRole.teacher,
+            is_approved=True,
+        )
+        db.add(other)
+        db.flush()
+        db.add(GradingCall(teacher_id=other.id))
+        db.flush()
+
+        resp = self._usage(client, teacher)
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["calls"] == 1
+        assert body["monthly_limit"] == settings.AI_GRADER_MONTHLY_TEACHER_LIMIT

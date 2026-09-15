@@ -227,6 +227,14 @@ class GradingUsageOut(BaseModel):
     monthly_limit: int
 
 
+class TeacherGradingUsageOut(BaseModel):
+    """The authenticated teacher's own current-month AI grading usage
+    (GET /teacher/grading-usage)."""
+
+    calls: int
+    monthly_limit: int
+
+
 # ---------------------------------------------------------------------------
 # Gradebook schemas
 # ---------------------------------------------------------------------------

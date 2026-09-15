@@ -5,6 +5,11 @@ export interface TeacherMe {
   is_approved: boolean;
 }
 
+export interface TeacherGradingUsage {
+  calls: number;
+  monthly_limit: number;
+}
+
 export interface ClassRoll {
   id: string;
   name: string;

@@ -10,6 +10,7 @@ import {
   deleteRoll,
   dismissReviewFlag,
   downloadRollGradebookCsv,
+  getGradingUsage,
   getMe,
   getRollGradebook,
   listPublishedScenarios,
@@ -26,6 +27,7 @@ import type {
   RollGradebook,
   RollGradebookStudent,
   RollScenario,
+  TeacherGradingUsage,
 } from "@/lib/api/teacherTypes";
 import { getSupabaseClient } from "@/lib/auth/supabase";
 import { diffWords } from "@/lib/diff";
@@ -109,6 +111,12 @@ export default function TeacherDashboardPage() {
   const rollsQuery = useQuery({
     queryKey: ["teacher-rolls"],
     queryFn: () => listRolls(token),
+    enabled: Boolean(token) && approved,
+  });
+
+  const usageQuery = useQuery({
+    queryKey: ["teacher-grading-usage"],
+    queryFn: () => getGradingUsage(token),
     enabled: Boolean(token) && approved,
   });
 
@@ -350,6 +358,8 @@ export default function TeacherDashboardPage() {
           </button>
         </header>
 
+        <GradingUsageBanner usage={usageQuery.data ?? null} />
+
         {notice && (
           <p className="rounded-lg bg-blue-50 px-4 py-3 text-sm text-blue-800">
             {notice}
@@ -482,6 +492,26 @@ export default function TeacherDashboardPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+function GradingUsageBanner({ usage }: { usage: TeacherGradingUsage | null }) {
+  // Warn from 80% of the monthly AI grading quota; a zero limit means the
+  // quota is disabled.
+  if (!usage || usage.monthly_limit <= 0) return null;
+  if (usage.calls < Math.ceil(usage.monthly_limit * 0.8)) return null;
+
+  const exhausted = usage.calls >= usage.monthly_limit;
+  return (
+    <p
+      className={`rounded-lg px-4 py-3 text-sm ${
+        exhausted ? "bg-red-50 text-red-800" : "bg-amber-50 text-amber-800"
+      }`}
+    >
+      {exhausted
+        ? `AI grading is paused: you have used all ${usage.monthly_limit} AI feedback calls for this month. Students can still submit reflections, but they will not receive AI feedback or scores until the quota resets next month.`
+        : `You have used ${usage.calls} of ${usage.monthly_limit} AI feedback calls for this month. When the quota runs out, students can still submit reflections but will not receive AI feedback until next month.`}
+    </p>
   );
 }
 

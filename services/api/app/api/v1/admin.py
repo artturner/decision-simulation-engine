@@ -68,6 +68,7 @@ from app.schemas.admin import (
     ScenarioImportRequest,
     ScenarioImportResponse,
     ScenarioOut,
+    TeacherGradingUsageOut,
     TeacherMeOut,
     VersionCreateRequest,
     VersionCreateResponse,
@@ -526,6 +527,38 @@ def grading_usage(db: Session = Depends(get_db)) -> list[GradingUsageOut]:
 # ===========================================================================
 # Teacher endpoints — JWT auth via get_current_user
 # ===========================================================================
+
+
+# ---------------------------------------------------------------------------
+# GET /teacher/grading-usage
+# ---------------------------------------------------------------------------
+
+
+@teacher_router.get(
+    "/grading-usage",
+    response_model=TeacherGradingUsageOut,
+    summary="The authenticated teacher's current-month AI grading usage",
+)
+def teacher_grading_usage(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> TeacherGradingUsageOut:
+    from sqlalchemy import func, select
+
+    from app.models.play import GradingCall
+
+    calls = db.scalar(
+        select(func.count())
+        .select_from(GradingCall)
+        .where(
+            GradingCall.teacher_id == current_user.id,
+            GradingCall.created_at >= func.date_trunc("month", func.now()),
+        )
+    )
+    return TeacherGradingUsageOut(
+        calls=calls or 0,
+        monthly_limit=settings.AI_GRADER_MONTHLY_TEACHER_LIMIT,
+    )
 
 
 # ---------------------------------------------------------------------------
