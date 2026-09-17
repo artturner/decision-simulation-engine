@@ -2,6 +2,7 @@ import { ApiClientError } from "./client";
 import type {
   AssignmentCreate,
   AssignmentUpdate,
+  ClaimCode,
   ClassRoll,
   ClassRollCreate,
   ClassRollUpdate,
@@ -54,6 +55,38 @@ async function teacherFetch<T>(
 
 export function getMe(token: string): Promise<TeacherMe> {
   return teacherFetch<TeacherMe>(token, "/me");
+}
+
+/**
+ * GET /teacher/rolls/{rollId}/claim-codes
+ * Lists per-student access codes in roster order, lazily creating any
+ * that don't exist yet.
+ */
+export function listClaimCodes(
+  token: string,
+  rollId: string,
+): Promise<ClaimCode[]> {
+  return teacherFetch<ClaimCode[]>(token, `/rolls/${rollId}/claim-codes`);
+}
+
+/**
+ * POST /teacher/rolls/{rollId}/claim-codes/regenerate
+ * Regenerates one student's code (or all with studentName omitted).
+ * Old codes stop working immediately.
+ */
+export function regenerateClaimCodes(
+  token: string,
+  rollId: string,
+  studentName?: string,
+): Promise<ClaimCode[]> {
+  return teacherFetch<ClaimCode[]>(
+    token,
+    `/rolls/${rollId}/claim-codes/regenerate`,
+    {
+      method: "POST",
+      body: JSON.stringify({ student_name: studentName ?? null }),
+    },
+  );
 }
 
 export function getGradingUsage(token: string): Promise<TeacherGradingUsage> {

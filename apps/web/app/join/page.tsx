@@ -1,23 +1,29 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
+import ClaimCodeForm from "@/components/ClaimCodeForm";
 import {
   ApiClientError,
   getClassPickerByCode,
   getStudentClassStatus,
+  isStudentMismatchError,
+  isStudentTokenError,
   startPlay,
 } from "@/lib/api/client";
 import type { StudentScenarioStatus } from "@/lib/api/types";
+import { useStudentAccess } from "@/lib/useStudentAccess";
 
 function JoinPageContent() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const codeFromUrl = (searchParams.get("code") ?? "").trim().toUpperCase();
   const [codeInput, setCodeInput] = useState(codeFromUrl);
   const [joinCode, setJoinCode] = useState(codeFromUrl);
   const [selectedName, setSelectedName] = useState("");
+  const { session, claim, signOut, sessionFor } = useStudentAccess();
 
   const classQuery = useQuery({
     queryKey: ["class-code", joinCode],
@@ -27,7 +33,8 @@ function JoinPageContent() {
   });
 
   const statusQuery = useQuery({
-    queryKey: ["student-class-status", joinCode, selectedName],
+    // Keyed on the session token too, so a successful claim refetches.
+    queryKey: ["student-class-status", joinCode, selectedName, session?.token ?? ""],
     queryFn: () => getStudentClassStatus(joinCode, selectedName),
     enabled: joinCode !== "" && selectedName !== "",
     retry: false,
@@ -62,6 +69,17 @@ function JoinPageContent() {
 
   const classNotFound =
     classQuery.error instanceof ApiClientError && classQuery.error.status === 404;
+
+  // Access-code state for the selected name. During the grace period the
+  // form is an optional invitation; after a student_token_* 401 it is the
+  // blocking gate.
+  const activeSession = selectedName ? sessionFor(selectedName) : null;
+  const statusBlocked =
+    isStudentTokenError(statusQuery.error) ||
+    isStudentMismatchError(statusQuery.error);
+  const showClaimForm = selectedName !== "" && !activeSession;
+  // A leftover session for someone else (shared lab computer).
+  const foreignSession = selectedName && session && !activeSession ? session : null;
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-8 text-gray-950 md:px-8">
@@ -142,11 +160,60 @@ function JoinPageContent() {
           </section>
         )}
 
+        {activeSession && (
+          <p className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-900">
+            <span>
+              Signed in as <b>{activeSession.student_name}</b>
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                signOut();
+                setSelectedName("");
+              }}
+              className="font-semibold text-green-800 underline hover:text-green-900"
+            >
+              Not you?
+            </button>
+          </p>
+        )}
+
+        {foreignSession && (
+          <p className="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm text-amber-900">
+            <span>
+              This device is signed in as <b>{foreignSession.student_name}</b>.
+            </span>
+            <button
+              type="button"
+              onClick={signOut}
+              className="font-semibold text-amber-800 underline hover:text-amber-900"
+            >
+              Sign them out
+            </button>
+          </p>
+        )}
+
+        {showClaimForm && (
+          <ClaimCodeForm
+            studentName={selectedName}
+            joinCode={joinCode}
+            required={statusBlocked}
+            onClaimed={(resp) => {
+              claim(resp, joinCode);
+              // The status query key includes the token, so it refetches;
+              // drop any stale blocked result immediately.
+              queryClient.invalidateQueries({
+                queryKey: ["student-class-status"],
+              });
+            }}
+          />
+        )}
+
         {statusQuery.isFetching && selectedName && (
           <p className="text-sm text-gray-500">Loading assignments...</p>
         )}
 
-        {statusQuery.error && (
+        {statusQuery.error && !statusBlocked && (
           <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
             {(statusQuery.error as Error).message}
           </p>

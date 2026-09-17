@@ -44,7 +44,8 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_approved_user, get_current_user, get_db, verify_admin_key
 from app.core.config import settings
 from app.models.scenario import VersionStatus
-from app.models.user import User
+from app.models.user import ClassRoll, User
+from app.repositories.claim_repo import ClaimRepository
 from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
 from app.schemas.admin import (
@@ -52,6 +53,8 @@ from app.schemas.admin import (
     AssignmentCreate,
     AssignmentOut,
     AssignmentUpdate,
+    ClaimCodeOut,
+    ClaimCodesRegenerateRequest,
     ClassRollCreate,
     ClassRollOut,
     ClassRollUpdate,
@@ -658,6 +661,10 @@ def update_roll(
     if roll is None or roll.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
     roll = repo.update(roll, name=body.name, student_names=body.student_names)
+    if body.student_names is not None:
+        # Keep claim codes aligned with the roster: respellings keep their
+        # code (students stay signed in), removed names lose theirs.
+        ClaimRepository(db).sync_with_roster(roll)
     db.commit()
     db.refresh(roll)
     return ClassRollOut.model_validate(roll)
@@ -685,6 +692,54 @@ def delete_roll(
     repo.delete(roll)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# ---------------------------------------------------------------------------
+# Student claim codes
+# ---------------------------------------------------------------------------
+
+
+def _get_owned_roll(roll_id: uuid.UUID, current_user: User, db: Session) -> ClassRoll:
+    roll = RollRepository(db).get(roll_id)
+    if roll is None or roll.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roll not found.")
+    return roll
+
+
+@teacher_router.get(
+    "/rolls/{roll_id}/claim-codes",
+    response_model=list[ClaimCodeOut],
+    summary="List student access codes for a roll (creating missing ones)",
+)
+def list_claim_codes(
+    roll_id: uuid.UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> list[ClaimCodeOut]:
+    """Codes are generated lazily on first view, in roster order."""
+    roll = _get_owned_roll(roll_id, current_user, db)
+    claims = ClaimRepository(db).ensure_for_roll(roll)
+    db.commit()
+    return [ClaimCodeOut.model_validate(c) for c in claims]
+
+
+@teacher_router.post(
+    "/rolls/{roll_id}/claim-codes/regenerate",
+    response_model=list[ClaimCodeOut],
+    summary="Regenerate one student's access code, or all of them",
+)
+def regenerate_claim_codes(
+    roll_id: uuid.UUID,
+    body: ClaimCodesRegenerateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> list[ClaimCodeOut]:
+    """Old codes stop working immediately (signed-in devices are signed
+    out of this app at once; essay access lapses at token expiry)."""
+    roll = _get_owned_roll(roll_id, current_user, db)
+    claims = ClaimRepository(db).regenerate(roll, body.student_name)
+    db.commit()
+    return [ClaimCodeOut.model_validate(c) for c in claims]
 
 
 # ---------------------------------------------------------------------------

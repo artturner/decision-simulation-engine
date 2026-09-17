@@ -205,3 +205,30 @@ export interface GradeResult {
 export interface ApiError {
   detail: string | { message: string; errors: string[] };
 }
+
+// ---------------------------------------------------------------------------
+// POST /public/claims/redeem  and  GET /public/student-session
+// ---------------------------------------------------------------------------
+
+export interface ClaimRedeemRequest {
+  claim_code: string;
+  student_name: string;
+  /** Optional extra check; essay-app callers omit it. */
+  join_code?: string;
+}
+
+export interface ClaimRedeemResponse {
+  token: string;
+  expires_at: string;
+  /** Canonical roster spelling — store this, not what the student typed. */
+  student_name: string;
+  roll_id: string;
+  roll_name: string;
+}
+
+export interface StudentSessionResponse {
+  valid: boolean;
+  reason: "missing" | "invalid" | "revoked" | null;
+  student_name: string | null;
+  roll_id: string | null;
+}

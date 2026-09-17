@@ -52,6 +52,8 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       AI_GRADER_MODEL: ${AI_GRADER_MODEL:-claude-sonnet-4-6}
       AI_GRADER_MAX_ATTEMPTS: ${AI_GRADER_MAX_ATTEMPTS:-3}
+      STUDENT_TOKEN_SECRET: ${STUDENT_TOKEN_SECRET:-}
+      STUDENT_TOKEN_ENFORCED: ${STUDENT_TOKEN_ENFORCED:-false}
     volumes:
       - ../services/api/media:/app/media
     depends_on:

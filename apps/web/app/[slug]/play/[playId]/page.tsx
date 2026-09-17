@@ -2,8 +2,17 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { backPlay, getPlay, restartPlay, stepPlay } from "@/lib/api/client";
+import {
+  backPlay,
+  getPlay,
+  isStudentMismatchError,
+  isStudentTokenError,
+  restartPlay,
+  retryUnlessAuth,
+  stepPlay,
+} from "@/lib/api/client";
 import type { PlayViewResponse } from "@/lib/api/types";
+import InlineReclaimPanel from "@/components/InlineReclaimPanel";
 import SceneRenderer from "@/components/SceneRenderer";
 
 export default function PlayPage() {
@@ -24,6 +33,7 @@ export default function PlayPage() {
     queryKey: ["play", playId],
     queryFn: () => getPlay(playId),
     enabled: Boolean(playId),
+    retry: retryUnlessAuth,
   });
 
   // ------------------------------------------------------------------
@@ -84,6 +94,20 @@ export default function PlayPage() {
   // Error
   // ------------------------------------------------------------------
   if (error || !play) {
+    if (isStudentTokenError(error) || isStudentMismatchError(error)) {
+      return (
+        <main className="flex min-h-screen items-center justify-center p-8">
+          <div className="w-full max-w-lg">
+            <InlineReclaimPanel
+              error={error}
+              onReclaimed={() =>
+                queryClient.invalidateQueries({ queryKey: ["play", playId] })
+              }
+            />
+          </div>
+        </main>
+      );
+    }
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
         <h1 className="text-2xl font-bold text-gray-800">Something went wrong</h1>
@@ -121,13 +145,32 @@ export default function PlayPage() {
       <div className="mx-auto max-w-2xl">
 
         {/* Mutation error banner */}
-        {(stepMutation.error || backMutation.error || restartMutation.error) && (
-          <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-            {((stepMutation.error ??
-              backMutation.error ??
-              restartMutation.error) as Error).message}
-          </div>
-        )}
+        {(() => {
+          const mutErr =
+            stepMutation.error ?? backMutation.error ?? restartMutation.error;
+          if (!mutErr) return null;
+          if (isStudentTokenError(mutErr) || isStudentMismatchError(mutErr)) {
+            return (
+              <div className="mb-4">
+                <InlineReclaimPanel
+                  error={mutErr}
+                  studentName={play.learner_label}
+                  onReclaimed={() => {
+                    stepMutation.reset();
+                    backMutation.reset();
+                    restartMutation.reset();
+                    queryClient.invalidateQueries({ queryKey: ["play", playId] });
+                  }}
+                />
+              </div>
+            );
+          }
+          return (
+            <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+              {(mutErr as Error).message}
+            </div>
+          );
+        })()}
 
         {/* Scene */}
         <SceneRenderer

@@ -1,8 +1,15 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { ApiClientError, getPlay } from "@/lib/api/client";
+import {
+  ApiClientError,
+  getPlay,
+  isStudentMismatchError,
+  isStudentTokenError,
+  retryUnlessAuth,
+} from "@/lib/api/client";
+import InlineReclaimPanel from "@/components/InlineReclaimPanel";
 import ReflectionForm from "@/components/ReflectionForm";
 
 export default function CompletePage() {
@@ -10,6 +17,7 @@ export default function CompletePage() {
   const slug = params.slug as string;
   const playId = params.playId as string;
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     data: play,
@@ -19,6 +27,7 @@ export default function CompletePage() {
     queryKey: ["play", playId],
     queryFn: () => getPlay(playId),
     enabled: Boolean(playId),
+    retry: retryUnlessAuth,
   });
 
   // ------------------------------------------------------------------
@@ -36,6 +45,20 @@ export default function CompletePage() {
   // Error
   // ------------------------------------------------------------------
   if (error || !play) {
+    if (isStudentTokenError(error) || isStudentMismatchError(error)) {
+      return (
+        <main className="flex min-h-screen items-center justify-center p-8">
+          <div className="w-full max-w-lg">
+            <InlineReclaimPanel
+              error={error}
+              onReclaimed={() =>
+                queryClient.invalidateQueries({ queryKey: ["play", playId] })
+              }
+            />
+          </div>
+        </main>
+      );
+    }
     const is404 = error instanceof ApiClientError && error.status === 404;
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">

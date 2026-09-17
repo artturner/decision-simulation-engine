@@ -75,6 +75,26 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
 
     # ------------------------------------------------------------------
+    # Student access tokens (claim codes)
+    # ------------------------------------------------------------------
+    # Shared HS256 secret for student tokens.  Must be identical across
+    # every app that verifies them (scenarios + essays Railway services).
+    # Empty disables claiming and token verification entirely.
+    STUDENT_TOKEN_SECRET: str = ""
+
+    # Phased enforcement: while False, grade-reading endpoints accept a
+    # valid matching token OR legacy name-entry access (grace period for
+    # distributing codes).  Flip to True once students have claimed.
+    STUDENT_TOKEN_ENFORCED: bool = False
+
+    # Token lifetime.  Roughly a semester plus slack; revocation happens
+    # via the claim-row check, not expiry.
+    STUDENT_TOKEN_TTL_DAYS: int = 200
+
+    # Issuer claim shared across apps.
+    STUDENT_TOKEN_ISSUER: str = "classroom-student-auth"
+
+    # ------------------------------------------------------------------
     # AI reflection grading (optional)
     # ------------------------------------------------------------------
     # Anthropic API key for the AI reflection grader.  Leave blank to

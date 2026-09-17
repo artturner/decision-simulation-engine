@@ -24,3 +24,27 @@ def normalize_student_name(value: str | None) -> str:
     if not value:
         return ""
     return " ".join(value.split())
+
+
+def student_name_key(value: str | None) -> str:
+    """Reduce a student name to a cross-app comparison key.
+
+    Casefolds, collapses whitespace, and folds ``"Last, First"`` to
+    ``"first last"`` so the same student matches across apps whose rosters
+    disagree only on name order or case.  Shared by copy with the
+    essay-grader repo — keep the two implementations identical.
+
+    Limitation: a comma-suffixed name ("Smith, Jr., John") folds wrong;
+    acceptable under the identical-roster-spellings convention.
+    """
+    s = normalize_student_name(value).casefold()
+    if "," in s:
+        last, _, first = s.partition(",")
+        s = f"{first.strip()} {last.strip()}"
+    return " ".join(s.split())
+
+
+def names_equivalent(a: str | None, b: str | None) -> bool:
+    """True when two spellings identify the same student (never for blanks)."""
+    ka, kb = student_name_key(a), student_name_key(b)
+    return bool(ka) and ka == kb

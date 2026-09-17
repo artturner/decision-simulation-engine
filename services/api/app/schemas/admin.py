@@ -141,6 +141,29 @@ class ClassRollOut(BaseModel):
     created_at: datetime
 
 
+class ClaimCodeOut(BaseModel):
+    """One student's access code on a roll (teacher-facing)."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    student_name: str
+    code: str
+    created_at: datetime
+    last_claimed_at: datetime | None
+    claim_count: int
+
+
+class ClaimCodesRegenerateRequest(BaseModel):
+    """Regenerate one student's code, or every code when name is omitted.
+
+    Old codes stop working immediately: devices signed in with them are
+    signed out of the scenarios app at once (essay access lapses at token
+    expiry, since that app verifies signatures only).
+    """
+
+    student_name: str | None = None
+
+
 # ---------------------------------------------------------------------------
 # Teacher scenario-roll assignment schemas
 # ---------------------------------------------------------------------------

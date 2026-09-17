@@ -6,9 +6,12 @@ import {
   ApiClientError,
   acceptReflection,
   gradeReflection,
+  isStudentMismatchError,
+  isStudentTokenError,
   submitReflection,
 } from "@/lib/api/client";
 import type { GradeResult } from "@/lib/api/types";
+import InlineReclaimPanel from "@/components/InlineReclaimPanel";
 
 interface ReflectionFormProps {
   playId: string;
@@ -134,8 +137,28 @@ export default function ReflectionForm({
     submitMutation.isPending ||
     acceptMutation.isPending;
 
+  // A student-token failure mid-reflection must be recoverable IN PLACE:
+  // the typed responses live in this component's state, so we re-claim
+  // inline and retry the exact mutation that failed.
+  const tokenError = [
+    [acceptMutation.error, () => acceptMutation.mutate()] as const,
+    [gradeMutation.error, () => gradeMutation.mutate()] as const,
+    [submitMutation.error, () => submitMutation.mutate()] as const,
+  ].find(
+    ([err]) => isStudentTokenError(err) || isStudentMismatchError(err),
+  );
+
   return (
     <div className="mx-auto w-full max-w-2xl">
+      {tokenError && (
+        <div className="mb-6">
+          <InlineReclaimPanel
+            error={tokenError[0]}
+            studentName={studentName}
+            onReclaimed={tokenError[1]}
+          />
+        </div>
+      )}
       {/* ------------------------------------------------------------------ */}
       {/* Journey summary                                                      */}
       {/* ------------------------------------------------------------------ */}
@@ -314,8 +337,10 @@ export default function ReflectionForm({
           {(() => {
             const err = gradeMutation.error ?? submitMutation.error;
             const isHandled =
-              err instanceof ApiClientError &&
-              (err.status === 409 || err.status === 503);
+              (err instanceof ApiClientError &&
+                (err.status === 409 || err.status === 503)) ||
+              isStudentTokenError(err) ||
+              isStudentMismatchError(err); // reclaim panel owns these
             return err && !isHandled ? (
               <p role="alert" className="mt-4 text-sm text-red-600">
                 {(err as Error).message}

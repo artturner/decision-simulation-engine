@@ -5,6 +5,7 @@ Pydantic request / response schemas for the public API.
 from __future__ import annotations
 
 import uuid
+from datetime import datetime
 
 from pydantic import BaseModel, Field
 
@@ -100,6 +101,40 @@ class StudentClassStatusResponse(BaseModel):
     join_code: str
     student_name: str
     scenarios: list[StudentScenarioStatus]
+
+
+# ---------------------------------------------------------------------------
+# Student claim codes / tokens
+# ---------------------------------------------------------------------------
+
+
+class ClaimRedeemRequest(BaseModel):
+    """Exchange a teacher-issued access code for a student token.
+
+    ``join_code`` is an optional extra check — the essay app's students
+    don't know the scenarios join code, so the code + name alone suffice.
+    """
+
+    claim_code: str
+    student_name: str
+    join_code: str | None = None
+
+
+class ClaimRedeemResponse(BaseModel):
+    token: str
+    expires_at: datetime
+    student_name: str
+    roll_id: uuid.UUID
+    roll_name: str
+
+
+class StudentSessionResponse(BaseModel):
+    """Validity report for a presented student token; never an error."""
+
+    valid: bool
+    reason: str | None = None  # "missing" | "invalid" | "revoked"
+    student_name: str | None = None
+    roll_id: uuid.UUID | None = None
 
 
 # ---------------------------------------------------------------------------

@@ -1,10 +1,25 @@
 """
 Public API router — prefix ``/public``, mounted under ``/api/v1``.
 
-No authentication required for these endpoints.
+Student-facing endpoints.  Two tiers of access:
+
+- Directory/anonymous tier (no credential): scenario metadata, class
+  pickers (name lists), anonymous plays started from a bare /slug link,
+  and claim-code redemption itself.
+- Student tier: any route that reads or writes a class-roll student's
+  record requires a student token (``X-Student-Token``) matching that
+  roll + name — see ``app.api.student_auth`` for the access ladder and
+  the ``STUDENT_TOKEN_ENFORCED`` grace-period flag.
 
 Endpoints
 ---------
+POST /claims/redeem
+    Exchange a teacher-issued per-student access code for a signed
+    student token (also honored by the essay-grader API).
+
+GET  /student-session
+    Report whether the presented student token is still valid.
+
 GET  /scenarios/{slug}
     Return metadata for the latest published version of *slug*.
 
@@ -33,19 +48,26 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+import hmac
+
 from app.api.deps import get_db
+from app.api.student_auth import StudentAuth, get_student_auth, require_play_access, require_roll_access
 from app.core.config import settings
 from app.core.ratelimit import limiter
 from app.models.play import Event, EventType, GradingCall
 from app.models.scenario import Scenario, ScenarioVersion, VersionStatus
+from app.repositories.claim_repo import ClaimRepository
 from app.repositories.play_repo import PlayRepository
 from app.repositories.roll_repo import RollRepository
 from app.repositories.scenario_repo import ScenarioRepository
 from app.services import ai_grader
-from app.services.names import normalize_student_name
+from app.services.names import names_equivalent, normalize_student_name
+from app.services.student_tokens import issue_student_token, student_tokens_configured
 from app.schemas.public import (
     BackResponse,
     ChoiceOut,
+    ClaimRedeemRequest,
+    ClaimRedeemResponse,
     ClassPickerResponse,
     ClassPickerScenarioOut,
     GradeDimensionOut,
@@ -61,6 +83,7 @@ from app.schemas.public import (
     ScenarioPublicResponse,
     StudentClassStatusResponse,
     StudentScenarioStatus,
+    StudentSessionResponse,
     StepRequest,
     StepResponse,
 )
@@ -386,6 +409,7 @@ def get_student_class_status(
     join_code: str,
     student_name: str,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> StudentClassStatusResponse:
     """Return assigned scenarios with resume information for one roster name."""
     roll_repo = RollRepository(db)
@@ -404,6 +428,8 @@ def get_student_class_status(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="student_name must match a name on the class roll.",
         )
+    # This response hands out the student's play ids — student-tier data.
+    require_roll_access(roll.id, student_name, auth)
     # New plays store the normalized label, but plays recorded before
     # normalization carry the raw roster spelling — look up both.
     candidate_labels = list(dict.fromkeys([student_name, *matching_roster_names]))
@@ -448,6 +474,100 @@ def get_student_class_status(
 
 
 # ---------------------------------------------------------------------------
+# POST /public/claims/redeem
+# ---------------------------------------------------------------------------
+
+
+@router.post(
+    "/claims/redeem",
+    response_model=ClaimRedeemResponse,
+    summary="Exchange a per-student access code for a student token",
+    # Generous per-IP window: a whole class claims from one school NAT IP
+    # during a single period; the ~40-bit code space, not the limiter, is
+    # what makes brute force irrelevant.
+    dependencies=[Depends(limiter.limit("claim", 60, 60))],
+)
+def redeem_claim(
+    body: ClaimRedeemRequest,
+    db: Session = Depends(get_db),
+) -> ClaimRedeemResponse:
+    """Redeem a teacher-issued access code for a signed student token.
+
+    Codes are multi-use (a student claims on their phone AND a school
+    device).  ``join_code`` is an optional extra check — essay-app
+    students don't know the scenarios join code, so code + name suffice.
+    A regenerated code answers exactly like one that never existed.
+    """
+    if not student_tokens_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Student access codes are not enabled.",
+        )
+    normalized_code = "".join(body.claim_code.split()).replace("-", "").upper()
+    claim = ClaimRepository(db).get_by_code(normalized_code)
+    if (
+        claim is None
+        or not hmac.compare_digest(claim.code, normalized_code)
+        # A join-code mismatch is deliberately indistinguishable from an
+        # unknown code — no oracle for pairing codes with classes.
+        or (
+            body.join_code
+            and claim.class_roll.join_code.strip().upper()
+            != body.join_code.strip().upper()
+        )
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "code": "claim_code_not_found",
+                "message": "That access code isn't valid. Check it, or ask your teacher for a new one.",
+            },
+        )
+    if not names_equivalent(body.student_name, claim.student_name):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "code": "claim_code_wrong_name",
+                "message": "This access code belongs to a different name on the roster.",
+            },
+        )
+    roll = claim.class_roll
+    token, expires_at = issue_student_token(claim, roll.owner_id)
+    ClaimRepository(db).record_claim(claim)
+    db.commit()
+    return ClaimRedeemResponse(
+        token=token,
+        expires_at=expires_at,
+        student_name=claim.student_name,
+        roll_id=roll.id,
+        roll_name=roll.name,
+    )
+
+
+# ---------------------------------------------------------------------------
+# GET /public/student-session
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/student-session",
+    response_model=StudentSessionResponse,
+    summary="Report whether the presented student token is still valid",
+    dependencies=[Depends(limiter.limit("class-code", 30, 60))],
+)
+def student_session(
+    auth: StudentAuth = Depends(get_student_auth),
+) -> StudentSessionResponse:
+    """Never errors: join pages use this to show 'Signed in as …' and to
+    detect stale tokens before enforcement makes them visible."""
+    if auth.status == "ok":
+        return StudentSessionResponse(
+            valid=True, student_name=auth.name, roll_id=auth.roll_id
+        )
+    return StudentSessionResponse(valid=False, reason=auth.status)
+
+
+# ---------------------------------------------------------------------------
 # POST /public/plays/start
 # ---------------------------------------------------------------------------
 
@@ -462,6 +582,7 @@ def get_student_class_status(
 def start_play(
     body: PlayStartRequest,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> PlayStartResponse:
     """Create a play session locked to *scenario_version_id*.
 
@@ -505,6 +626,9 @@ def start_play(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="learner_label must match a name on the class roll.",
             )
+        # Creating a record under a roster name is student-tier access;
+        # anonymous plays (no class_roll_id) skip this entirely.
+        require_roll_access(roll.id, learner_label, auth)
 
     # 2. Create play (start event at seq=0 is implicit)
     play_repo = PlayRepository(db)
@@ -554,6 +678,7 @@ def start_play(
 def restart_play(
     play_id: uuid.UUID,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> PlayViewResponse:
     """Create a new play of the same scenario version, carrying over the
     source play's ``learner_label`` and ``class_roll_id`` so class-roll
@@ -573,6 +698,7 @@ def restart_play(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Play not found.",
         )
+    require_play_access(source, auth)
 
     version: ScenarioVersion = db.get(ScenarioVersion, source.scenario_version_id)  # type: ignore[assignment]
 
@@ -609,6 +735,7 @@ def restart_play(
 def get_play(
     play_id: uuid.UUID,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> PlayViewResponse:
     """Return the full current state of *play_id* by replaying its event log.
 
@@ -620,6 +747,10 @@ def get_play(
         ``HTTP 404`` if *play_id* does not exist.
         ``HTTP 500`` if event replay fails (fail-closed).
     """
+    play = PlayRepository(db).get_play(play_id)
+    if play is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Play not found.")
+    require_play_access(play, auth)
     return compute_play_view(play_id, db)
 
 
@@ -637,6 +768,7 @@ def step_play(
     play_id: uuid.UUID,
     body: StepRequest,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> StepResponse:
     """Execute the current scene and advance the play state.
 
@@ -665,6 +797,7 @@ def step_play(
     if play is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Play not found.")
+    require_play_access(play, auth)
     if play.completed:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Play is already completed.")
@@ -771,6 +904,7 @@ def step_play(
 def back_play(
     play_id: uuid.UUID,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> BackResponse:
     """Remove the last step transition and return the previous scene.
 
@@ -797,6 +931,7 @@ def back_play(
     if play is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Play not found.")
+    require_play_access(play, auth)
 
     # 2. Find the last step event
     step_types = {EventType.choose, EventType.auto_advance, EventType.conditional_advance}
@@ -866,6 +1001,7 @@ def submit_reflection(
     play_id: uuid.UUID,
     body: ReflectionRequest,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> ReflectionResponse:
     """Record a learner's reflection responses after play completion.
 
@@ -891,6 +1027,7 @@ def submit_reflection(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Play not found.",
         )
+    require_play_access(play, auth)
 
     # 2. Play must be completed
     if not play.completed:
@@ -1003,6 +1140,7 @@ def grade_reflection_endpoint(
     play_id: uuid.UUID,
     body: ReflectionRequest,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> GradeResultOut:
     """Grade a reflection against the rubric and return score + coaching.
 
@@ -1030,6 +1168,7 @@ def grade_reflection_endpoint(
     play = play_repo.get_play(play_id)
     if play is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Play not found.")
+    require_play_access(play, auth)
     if not play.completed:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -1144,6 +1283,7 @@ def grade_reflection_endpoint(
 def accept_reflection_endpoint(
     play_id: uuid.UUID,
     db: Session = Depends(get_db),
+    auth: StudentAuth = Depends(get_student_auth),
 ) -> GradeResultOut:
     """Finalize the learner's grade. Idempotent once accepted.
 
@@ -1156,6 +1296,7 @@ def accept_reflection_endpoint(
     play = play_repo.get_play(play_id)
     if play is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Play not found.")
+    require_play_access(play, auth)
 
     reflection = play_repo.get_reflection(play_id)
     if reflection is None:

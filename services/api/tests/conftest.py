@@ -24,6 +24,18 @@ from app.core.config import settings
 limiter.enabled = False
 
 
+@pytest.fixture(autouse=True)
+def _student_token_secret(monkeypatch):
+    """Enable student-token issuing everywhere; enforcement stays off unless
+    a test opts in via the ``enforced`` fixture."""
+    monkeypatch.setattr(settings, "STUDENT_TOKEN_SECRET", "test-student-secret")
+
+
+@pytest.fixture()
+def enforced(monkeypatch):
+    monkeypatch.setattr(settings, "STUDENT_TOKEN_ENFORCED", True)
+
+
 @pytest.fixture(scope="session")
 def db_engine():
     engine = create_engine(settings.DATABASE_URL, pool_pre_ping=True)

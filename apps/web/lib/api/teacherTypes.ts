@@ -130,3 +130,15 @@ export interface RollGradebook {
   students: RollGradebookStudent[];
   unmatched: RollGradebookUnmatchedPlay[];
 }
+
+// ---------------------------------------------------------------------------
+// GET /teacher/rolls/{rollId}/claim-codes
+// ---------------------------------------------------------------------------
+
+export interface ClaimCode {
+  student_name: string;
+  code: string;
+  created_at: string;
+  last_claimed_at: string | null;
+  claim_count: number;
+}

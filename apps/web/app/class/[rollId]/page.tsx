@@ -1,22 +1,28 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import ClaimCodeForm from "@/components/ClaimCodeForm";
 import {
   ApiClientError,
   getClassPicker,
   getStudentClassStatus,
+  isStudentMismatchError,
+  isStudentTokenError,
   startPlay,
 } from "@/lib/api/client";
 import type { StudentScenarioStatus } from "@/lib/api/types";
+import { useStudentAccess } from "@/lib/useStudentAccess";
 
 export default function ClassPickerPage() {
   const params = useParams();
   const rollId = params.rollId as string;
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [selectedName, setSelectedName] = useState<string>("");
+  const { session, claim, signOut, sessionFor } = useStudentAccess();
 
   // ------------------------------------------------------------------
   // Fetch roll + visible scenarios
@@ -36,10 +42,23 @@ export default function ClassPickerPage() {
     isLoading: statusLoading,
     error: statusError,
   } = useQuery({
-    queryKey: ["student-class-status", roll?.join_code, selectedName],
+    // Keyed on the session token too, so a successful claim refetches.
+    queryKey: [
+      "student-class-status",
+      roll?.join_code,
+      selectedName,
+      session?.token ?? "",
+    ],
     queryFn: () => getStudentClassStatus(roll!.join_code, selectedName),
     enabled: Boolean(roll?.join_code && selectedName),
+    retry: false,
   });
+
+  const activeSession = selectedName ? sessionFor(selectedName) : null;
+  const statusBlocked =
+    isStudentTokenError(statusError) || isStudentMismatchError(statusError);
+  const foreignSession =
+    selectedName && session && !activeSession ? session : null;
 
   // ------------------------------------------------------------------
   // Start play mutation — passes name + roll context to the API
@@ -132,12 +151,58 @@ export default function ClassPickerPage() {
           </select>
         </section>
 
+        {/* Access-code state */}
+        {activeSession && (
+          <p className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-900">
+            <span>
+              Signed in as <b>{activeSession.student_name}</b>
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                signOut();
+                setSelectedName("");
+              }}
+              className="font-semibold text-green-800 underline hover:text-green-900"
+            >
+              Not you?
+            </button>
+          </p>
+        )}
+        {foreignSession && (
+          <p className="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm text-amber-900">
+            <span>
+              This device is signed in as <b>{foreignSession.student_name}</b>.
+            </span>
+            <button
+              type="button"
+              onClick={signOut}
+              className="font-semibold text-amber-800 underline hover:text-amber-900"
+            >
+              Sign them out
+            </button>
+          </p>
+        )}
+        {selectedName && !activeSession && roll && (
+          <ClaimCodeForm
+            studentName={selectedName}
+            joinCode={roll.join_code}
+            required={statusBlocked}
+            onClaimed={(resp) => {
+              claim(resp, roll.join_code);
+              queryClient.invalidateQueries({
+                queryKey: ["student-class-status"],
+              });
+            }}
+          />
+        )}
+
         {/* Scenario list */}
         {statusLoading && selectedName ? (
           <p className="text-center text-sm text-gray-400">
             Loading assignments...
           </p>
-        ) : statusError ? (
+        ) : statusError && !statusBlocked ? (
           <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
             {(statusError as Error).message}
           </p>

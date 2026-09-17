@@ -13,9 +13,11 @@ import {
   getGradingUsage,
   getMe,
   getRollGradebook,
+  listClaimCodes,
   listPublishedScenarios,
   listRolls,
   listRollScenarios,
+  regenerateClaimCodes,
   restoreReviewFlag,
   updateAssignment,
   updateRoll,
@@ -444,10 +446,12 @@ export default function TeacherDashboardPage() {
                 <SharePanel
                   roll={selectedRoll}
                   shareText={shareText}
+                  token={token}
                   onCopy={() => {
                     navigator.clipboard?.writeText(shareText);
                     setNotice("Student instructions copied.");
                   }}
+                  onNotice={setNotice}
                 />
 
                 <ScenarioAssignments
@@ -608,12 +612,88 @@ function ClassEditor({
 function SharePanel({
   roll,
   shareText,
+  token,
   onCopy,
+  onNotice,
 }: {
   roll: ClassRoll;
   shareText: string;
+  token: string;
   onCopy: () => void;
+  onNotice: (msg: string) => void;
 }) {
+  const queryClient = useQueryClient();
+  const [showCodes, setShowCodes] = useState(false);
+
+  const codesQuery = useQuery({
+    queryKey: ["claim-codes", roll.id],
+    queryFn: () => listClaimCodes(token, roll.id),
+    enabled: Boolean(token) && showCodes,
+  });
+
+  const regenerateMutation = useMutation({
+    mutationFn: (studentName?: string) =>
+      regenerateClaimCodes(token, roll.id, studentName),
+    onSuccess: (codes, studentName) => {
+      queryClient.setQueryData(["claim-codes", roll.id], codes);
+      onNotice(
+        studentName
+          ? `New code issued for ${studentName}.`
+          : "All access codes regenerated.",
+      );
+    },
+  });
+
+  function regenerate(studentName?: string) {
+    const target = studentName ?? "EVERY student in this class";
+    if (
+      window.confirm(
+        `Issue a new access code for ${target}? The old code stops working ` +
+          "immediately and any signed-in devices are signed out (essay-site " +
+          "access lasts until the old token expires).",
+      )
+    ) {
+      regenerateMutation.mutate(studentName);
+    }
+  }
+
+  function copyAllCodes() {
+    const codes = codesQuery.data ?? [];
+    navigator.clipboard?.writeText(
+      codes.map((c) => `${c.student_name}\t${c.code}`).join("\n"),
+    );
+    onNotice("Access codes copied (name and code per line).");
+  }
+
+  function printHandouts() {
+    const codes = codesQuery.data ?? [];
+    const origin = window.location.origin;
+    const esc = (s: string) =>
+      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const slips = codes
+      .map(
+        (c) => `<div class="slip">
+  <div class="cls">${esc(roll.name)} · class code <b>${esc(roll.join_code)}</b></div>
+  <div class="name">${esc(c.student_name)}</div>
+  <div class="code">${esc(c.code)}</div>
+  <div class="how">Go to ${esc(origin)}/join → pick your name → enter this access code.<br>
+  Keep this slip — the same code also unlocks the essays site.</div>
+</div>`,
+      )
+      .join("\n");
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(`<!doctype html><html><head><title>Access codes — ${esc(roll.name)}</title>
+<style>
+body{font:13px/1.4 'Segoe UI',Arial,sans-serif;margin:24px}
+.slip{border:1px dashed #999;border-radius:6px;padding:10px 14px;margin:0 0 10px;page-break-inside:avoid}
+.cls{color:#555;font-size:11px}.name{font-weight:700;font-size:15px;margin-top:2px}
+.code{font:700 20px/1.3 Consolas,monospace;letter-spacing:.15em;margin:4px 0}
+.how{color:#555;font-size:11px}
+</style></head><body>${slips}<script>window.print()</script></body></html>`);
+    w.document.close();
+  }
+
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -634,6 +714,105 @@ function SharePanel({
       <pre className="mt-4 whitespace-pre-wrap rounded-md bg-gray-50 p-3 text-sm text-gray-700">
         {shareText}
       </pre>
+
+      <div className="mt-4 border-t border-gray-100 pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-800">Access codes</h3>
+            <p className="mt-0.5 text-xs text-gray-500">
+              Per-student codes that unlock grades and feedback (here and on
+              the essays site). The Claimed column shows who has entered
+              theirs.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowCodes((v) => !v)}
+            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+          >
+            {showCodes ? "Hide codes" : "Show codes"}
+          </button>
+        </div>
+
+        {showCodes && (
+          <div className="mt-3">
+            {codesQuery.isLoading && (
+              <p className="text-sm text-gray-500">Loading codes…</p>
+            )}
+            {codesQuery.error && (
+              <p className="text-sm text-red-700">
+                {(codesQuery.error as Error).message}
+              </p>
+            )}
+            {codesQuery.data && (
+              <>
+                <div className="mb-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={copyAllCodes}
+                    className="rounded-md border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                  >
+                    Copy all
+                  </button>
+                  <button
+                    type="button"
+                    onClick={printHandouts}
+                    className="rounded-md border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                  >
+                    Print handouts
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => regenerate(undefined)}
+                    disabled={regenerateMutation.isPending}
+                    className="rounded-md border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50"
+                  >
+                    Regenerate all
+                  </button>
+                </div>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
+                      <th className="py-1.5 pr-2">Name</th>
+                      <th className="py-1.5 pr-2">Code</th>
+                      <th className="py-1.5 pr-2">Claimed</th>
+                      <th className="py-1.5" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {codesQuery.data.map((c) => (
+                      <tr key={c.student_name} className="border-t border-gray-100">
+                        <td className="py-1.5 pr-2">{c.student_name}</td>
+                        <td className="py-1.5 pr-2 font-mono font-semibold tracking-wider">
+                          {c.code}
+                        </td>
+                        <td className="py-1.5 pr-2 text-gray-600">
+                          {c.last_claimed_at
+                            ? new Date(c.last_claimed_at).toLocaleDateString(
+                                undefined,
+                                { month: "short", day: "numeric" },
+                              )
+                            : "—"}
+                        </td>
+                        <td className="py-1.5 text-right">
+                          <button
+                            type="button"
+                            onClick={() => regenerate(c.student_name)}
+                            disabled={regenerateMutation.isPending}
+                            className="text-xs font-semibold text-blue-700 hover:underline disabled:opacity-50"
+                          >
+                            New code
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

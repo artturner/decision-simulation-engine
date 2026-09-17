@@ -6,8 +6,11 @@
  * can display a meaningful error without inspecting raw Response objects.
  */
 
+import { loadSession } from "../studentSession";
 import type {
   BackResponse,
+  ClaimRedeemRequest,
+  ClaimRedeemResponse,
   ClassPickerResponse,
   GradeResult,
   PlayStartRequest,
@@ -17,6 +20,7 @@ import type {
   ReflectionResponse,
   ScenarioPublicResponse,
   StudentClassStatusResponse,
+  StudentSessionResponse,
   StepRequest,
   StepResponse,
 } from "./types";
@@ -47,10 +51,15 @@ async function apiFetch<T>(
 ): Promise<T> {
   const url = `${API_BASE}/api/v1/public${path}`;
 
+  // Ride the claimed student token on every request. The server decides
+  // what needs it; anonymous flows simply have no session.
+  const session = loadSession();
+
   const res = await fetch(url, {
     ...init,
     headers: {
       "Content-Type": "application/json",
+      ...(session ? { "X-Student-Token": session.token } : {}),
       ...init.headers,
     },
   });
@@ -246,4 +255,61 @@ export function acceptReflection(playId: string): Promise<GradeResult> {
     method: "POST",
     body: JSON.stringify({}),
   });
+}
+
+/**
+ * POST /public/claims/redeem
+ *
+ * Exchange a teacher-issued per-student access code for a student token.
+ * Throws 404 (code "claim_code_not_found") for an unknown or regenerated
+ * code, 403 (code "claim_code_wrong_name") when the code belongs to a
+ * different roster name.
+ */
+export function redeemClaim(
+  body: ClaimRedeemRequest,
+): Promise<ClaimRedeemResponse> {
+  return apiFetch<ClaimRedeemResponse>("/claims/redeem", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+/**
+ * GET /public/student-session
+ *
+ * Report whether the stored student token is still valid. Never throws
+ * for auth reasons — invalid/revoked tokens come back as { valid: false }.
+ */
+export function getStudentSession(): Promise<StudentSessionResponse> {
+  return apiFetch<StudentSessionResponse>("/student-session");
+}
+
+/** True when an ApiClientError means the student must (re-)enter a code. */
+export function isStudentTokenError(err: unknown): err is ApiClientError {
+  return (
+    err instanceof ApiClientError &&
+    err.status === 401 &&
+    typeof err.code === "string" &&
+    err.code.startsWith("student_token_")
+  );
+}
+
+/** True when a valid token belongs to a different student (switch flow). */
+export function isStudentMismatchError(err: unknown): err is ApiClientError {
+  return (
+    err instanceof ApiClientError &&
+    err.status === 403 &&
+    err.code === "student_token_mismatch"
+  );
+}
+
+/**
+ * Query retry policy: never retry auth failures (a 401/403 will not fix
+ * itself — the student must re-claim), one retry for everything else.
+ */
+export function retryUnlessAuth(failureCount: number, err: unknown): boolean {
+  if (err instanceof ApiClientError && (err.status === 401 || err.status === 403)) {
+    return false;
+  }
+  return failureCount < 1;
 }
