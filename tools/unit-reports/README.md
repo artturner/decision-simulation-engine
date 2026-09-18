@@ -8,7 +8,15 @@ master CSV. Built for Unit 1 (Ch 1–3); clone the two scripts and edit the
 ```
 python fetch_unit1.py      # raw gradebooks + video item stats -> unit1_raw/
 python analyze_unit1.py    # reports -> OneDrive "2026 Fall/unit1-reports/"
+
+python fetch_unit2.py      # Unit 2 status + claim-code pickup -> unit2_raw/
+python checklist_unit2.py  # per-student printable checklists (live progress
+                           #  pre-checked; unclaimed students see their access
+                           #  code) -> OneDrive "2026 Fall/unit2-checklists/"
 ```
+
+Re-run both unit-2 scripts right before printing so the pre-checked marks
+reflect current progress.
 
 Student summaries come out period-sorted (divider page per period) as HTML
 plus print-ready PDFs rendered with headless Edge — every student fits exactly
