@@ -111,12 +111,16 @@ class StudentClassStatusResponse(BaseModel):
 class ClaimRedeemRequest(BaseModel):
     """Exchange a teacher-issued access code for a student token.
 
-    ``join_code`` is an optional extra check — the essay app's students
-    don't know the scenarios join code, so the code + name alone suffice.
+    ``student_name`` is an optional typo/wrong-slip check — the code alone
+    is the credential (whoever holds a slip can read the name off it), so
+    a name-less redeem resolves the student from the code. This is what
+    lets the join pages recover when a student types their ACCESS code
+    into the CLASS-code box. ``join_code`` is a further optional check —
+    the essay app's students don't know the scenarios join code.
     """
 
     claim_code: str
-    student_name: str
+    student_name: str | None = None
     join_code: str | None = None
 
 
@@ -126,6 +130,9 @@ class ClaimRedeemResponse(BaseModel):
     student_name: str
     roll_id: uuid.UUID
     roll_name: str
+    # The class join code, so a claim-code-first entry can load the class
+    # picker without asking for it (directory info — the picker is public).
+    join_code: str
 
 
 class StudentSessionResponse(BaseModel):

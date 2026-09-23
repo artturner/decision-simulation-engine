@@ -74,6 +74,7 @@ class TestRedeem:
         body = resp.json()
         assert body["student_name"] == "Lee, Amy"
         assert body["roll_id"] == str(class_roll.id)
+        assert body["join_code"] == class_roll.join_code
         claims = jwt.decode(
             body["token"],
             settings.STUDENT_TOKEN_SECRET,
@@ -105,6 +106,18 @@ class TestRedeem:
         resp = redeem(client, claim.code, "Ng, Ben")
         assert resp.status_code == 403
         assert resp.json()["detail"]["code"] == "claim_code_wrong_name"
+
+    def test_nameless_redeem_resolves_student_from_code(
+        self, client, class_roll, claim
+    ):
+        """Access code typed into the class-code box: code alone suffices."""
+        resp = client.post(
+            "/api/v1/public/claims/redeem", json={"claim_code": claim.code}
+        )
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["student_name"] == "Lee, Amy"
+        assert body["join_code"] == class_roll.join_code
 
     def test_join_code_mismatch_is_indistinguishable_from_unknown(
         self, client, claim

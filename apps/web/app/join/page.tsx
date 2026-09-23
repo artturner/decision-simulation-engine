@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useState } from "react";
+import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
 import ClaimCodeForm from "@/components/ClaimCodeForm";
 import {
   ApiClientError,
@@ -10,6 +10,8 @@ import {
   getStudentClassStatus,
   isStudentMismatchError,
   isStudentTokenError,
+  looksLikeAccessCode,
+  redeemClaim,
   startPlay,
 } from "@/lib/api/client";
 import type { StudentScenarioStatus } from "@/lib/api/types";
@@ -58,6 +60,37 @@ function JoinPageContent() {
     setSelectedName("");
     setJoinCode(normalized);
   }
+
+  // Recovery: students often type their personal ACCESS code (8 chars,
+  // the big bold one on the handout) into this CLASS-code box. When the
+  // class lookup 404s on something access-code-shaped, try redeeming it
+  // directly — the server resolves the class AND the student from the
+  // code, and the page lands on "Signed in as X" with their assignments.
+  const directClaimMutation = useMutation({
+    mutationFn: (code: string) => redeemClaim({ claim_code: code }),
+    onSuccess: (resp) => {
+      claim(resp, resp.join_code);
+      setCodeInput(resp.join_code);
+      setJoinCode(resp.join_code);
+      setSelectedName(resp.student_name);
+      queryClient.invalidateQueries({ queryKey: ["student-class-status"] });
+    },
+  });
+  const triedDirectClaim = useRef<string>("");
+  const classLookup404 =
+    classQuery.error instanceof ApiClientError && classQuery.error.status === 404;
+  useEffect(() => {
+    if (
+      classLookup404 &&
+      looksLikeAccessCode(joinCode) &&
+      triedDirectClaim.current !== joinCode &&
+      !directClaimMutation.isPending
+    ) {
+      triedDirectClaim.current = joinCode;
+      directClaimMutation.mutate(joinCode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [classLookup404, joinCode]);
 
   function openScenario(scenario: StudentScenarioStatus) {
     if (scenario.in_progress_play_id) {
@@ -117,11 +150,26 @@ function JoinPageContent() {
               {classQuery.isFetching ? "Finding" : "Find"}
             </button>
           </div>
-          {classNotFound && (
-            <p className="mt-3 text-sm text-red-700">
-              Class not found. Check the code and try again.
+          {classNotFound && directClaimMutation.isPending && (
+            <p className="mt-3 text-sm text-gray-600">
+              Checking that code&hellip;
             </p>
           )}
+          {classNotFound &&
+            !directClaimMutation.isPending &&
+            (looksLikeAccessCode(joinCode) && directClaimMutation.isError ? (
+              <p className="mt-3 text-sm text-red-700">
+                That looks like a personal access code, but it didn&apos;t
+                match one. Double-check it, or enter your <b>class code</b>{" "}
+                (6 characters) from your teacher first.
+              </p>
+            ) : (
+              <p className="mt-3 text-sm text-red-700">
+                Class not found. Check the code and try again. (The class
+                code is 6 characters — your personal access code comes
+                after you pick your name.)
+              </p>
+            ))}
           {classQuery.error && !classNotFound && (
             <p className="mt-3 text-sm text-red-700">
               {(classQuery.error as Error).message}

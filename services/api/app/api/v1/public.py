@@ -523,7 +523,10 @@ def redeem_claim(
                 "message": "That access code isn't valid. Check it, or ask your teacher for a new one.",
             },
         )
-    if not names_equivalent(body.student_name, claim.student_name):
+    # Name is an optional wrong-slip check: when the caller knows who is
+    # claiming, catch mismatches; a name-less redeem (access code typed
+    # into the class-code box) resolves the student from the code.
+    if body.student_name and not names_equivalent(body.student_name, claim.student_name):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail={
@@ -541,6 +544,7 @@ def redeem_claim(
         student_name=claim.student_name,
         roll_id=roll.id,
         roll_name=roll.name,
+        join_code=roll.join_code,
     )
 
 

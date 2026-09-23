@@ -304,6 +304,17 @@ export function isStudentMismatchError(err: unknown): err is ApiClientError {
 }
 
 /**
+ * True when a string entered as a "class code" is probably a personal
+ * ACCESS code instead: class codes are exactly 6 characters, access codes
+ * are 8 from an unambiguous alphabet. Students regularly lead with the
+ * big bold code on their handout, so the join pages use this to recover.
+ */
+export function looksLikeAccessCode(value: string): boolean {
+  const s = value.replace(/[\s-]/g, "").toUpperCase();
+  return s.length >= 7 && s.length <= 10 && /^[A-Z0-9]+$/.test(s);
+}
+
+/**
  * Query retry policy: never retry auth failures (a 401/403 will not fix
  * itself — the student must re-claim), one retry for everything else.
  */

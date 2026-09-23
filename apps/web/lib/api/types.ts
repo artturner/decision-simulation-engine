@@ -212,7 +212,9 @@ export interface ApiError {
 
 export interface ClaimRedeemRequest {
   claim_code: string;
-  student_name: string;
+  /** Optional wrong-slip check — omit to resolve the student from the
+   *  code alone (the class-code-box recovery path). */
+  student_name?: string;
   /** Optional extra check; essay-app callers omit it. */
   join_code?: string;
 }
@@ -224,6 +226,8 @@ export interface ClaimRedeemResponse {
   student_name: string;
   roll_id: string;
   roll_name: string;
+  /** The class join code, so a claim-code-first entry can load the class. */
+  join_code: string;
 }
 
 export interface StudentSessionResponse {
