@@ -15,6 +15,21 @@ python checklist_unit2.py  # per-student printable checklists (live progress
                            #  code) -> OneDrive "2026 Fall/unit2-checklists/"
 ```
 
+```
+python student_report.py                  # pick a student -> one-page PDF
+python student_report.py --student garcia # start with a name filter
+python student_report.py --refresh        # pull live grades first
+```
+
+`student_report.py` builds a one-page, front-only progress report for one
+student (FERPA banner, current weighted grade, every assignment's grade,
+progress by type and overall on the 60 items, and ahead / on track /
+behind against the pacing-guide target dates) into OneDrive
+`2026 Fall/student-reports/<Last>_<First>_<date>.pdf`. Grades come from the
+newest `all_grades_import_*.csv` (`--refresh` runs `export_all_grades.py`
+first). Target dates and item types live in its `ITEMS` table; it refuses to
+run if that table drifts from the D2L template.
+
 Re-run both unit-2 scripts right before printing so the pre-checked marks
 reflect current progress.
 
