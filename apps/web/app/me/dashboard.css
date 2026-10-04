@@ -123,6 +123,21 @@ h1.dsh-hello { font-size: clamp(26px, 4vw, 38px); margin: 28px 0 4px; letter-spa
 .dsh-node .s { font-size: 11.5px; color: var(--muted); }
 
 /* checklist */
+.dsh-print { position: relative; display: flex; justify-content: flex-end; margin: -4px 0 10px; }
+.dsh-print button { appearance: none; background: transparent; color: var(--muted); border: 1px solid var(--line);
+  font-size: 12px; cursor: pointer; padding: 5px 10px; }
+.dsh-print button:hover { color: var(--text); border-color: var(--muted); }
+.dsh-print button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.dsh-print-main { border-radius: 999px 0 0 999px; }
+.dsh-print-caret { border-radius: 0 999px 999px 0; border-left: 0 !important; padding: 5px 9px !important; }
+.dsh-print-main .st-inline { color: inherit; }
+.dsh-print-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; min-width: 230px;
+  background: #0b201e; border: 1px solid var(--line); border-radius: 12px; padding: 6px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.45); }
+.dsh-print-menu button { display: flex; justify-content: space-between; gap: 12px; width: 100%; border: 0;
+  border-radius: 8px; padding: 8px 10px; color: var(--text); font-size: 13px; text-align: left; }
+.dsh-print-menu button:hover { background: rgba(255,255,255,.06); }
+.dsh-print-menu span { color: var(--faint); font-size: 12px; }
 .dsh-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .dsh-tab { appearance: none; border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px;
   padding: 6px 12px; font-size: 12.5px; cursor: pointer; }

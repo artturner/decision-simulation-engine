@@ -7,7 +7,7 @@
  */
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   DashBadge,
   DashChecklistRow,
@@ -384,6 +384,56 @@ function rowAction(r: DashChecklistRow): { text: string; href: string | null } {
   return { text: r.type === "video" ? "Watch" : r.type === "scenario" ? "Play" : "Write", href: r.link };
 }
 
+/** Split button: one click prints this unit; the caret offers the rest. */
+function PrintMenu({ d, current }: { d: StudentDashboard; current: number }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: Event) => {
+      if (e instanceof KeyboardEvent ? e.key === "Escape" : !ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", close);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", close);
+    };
+  }, [open]);
+  const remaining = d.units.filter((u) => u.done < u.total).length;
+  const go = (qs: string) => {
+    setOpen(false);
+    window.open(`/me/print?${qs}`, "_blank", "noopener");
+  };
+  return (
+    <div className="dsh-print" ref={ref}>
+      <button className="dsh-print-main" onClick={() => go(`scope=unit&unit=${current}`)}
+        title={`Print a personalized Unit ${current} checklist`}>
+        <Icon name="printer" className="st-inline" />Print Unit {current} checklist
+      </button>
+      <button className="dsh-print-caret" aria-label="More print options" aria-expanded={open}
+        aria-haspopup="menu" onClick={() => setOpen((v) => !v)}>
+        ▾
+      </button>
+      {open && (
+        <div className="dsh-print-menu" role="menu">
+          <button role="menuitem" onClick={() => go(`scope=unit&unit=${current}`)}>
+            This unit <span>Unit {current} · 1 page</span>
+          </button>
+          <button role="menuitem" onClick={() => go("scope=remaining")}>
+            All remaining units <span>{remaining} page{remaining === 1 ? "" : "s"}</span>
+          </button>
+          {d.summary.missing_count > 0 && (
+            <button role="menuitem" onClick={() => go("scope=missing")}>
+              Past-due only <span>{d.summary.missing_count} item{d.summary.missing_count === 1 ? "" : "s"}</span>
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Checklist({ d }: { d: StudentDashboard }) {
   const current = d.units.find((u) => u.state === "current")?.unit ?? d.units[0]?.unit ?? 1;
   const [unit, setUnit] = useState<number | "missing">(d.summary.missing_count > 0 ? "missing" : current);
@@ -392,6 +442,7 @@ function Checklist({ d }: { d: StudentDashboard }) {
     unit === "missing" ? d.checklist.filter((r) => r.status === "missing") : d.checklist.filter((r) => r.unit === unit);
   return (
     <div className="dsh-panel">
+      <PrintMenu d={d} current={current} />
       <div className="dsh-tabs" role="tablist" aria-label="Checklist filter">
         {d.summary.missing_count > 0 && (
           <button className="dsh-tab" role="tab" aria-selected={unit === "missing"} onClick={() => setUnit("missing")}>
