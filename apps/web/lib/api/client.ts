@@ -20,6 +20,7 @@ import type {
   ReflectionResponse,
   ScenarioPublicResponse,
   StudentClassStatusResponse,
+  StudentDashboardResponse,
   StudentSessionResponse,
   StepRequest,
   StepResponse,
@@ -48,8 +49,9 @@ export class ApiClientError extends Error {
 async function apiFetch<T>(
   path: string,
   init: RequestInit = {},
+  prefix = "/public",
 ): Promise<T> {
-  const url = `${API_BASE}/api/v1/public${path}`;
+  const url = `${API_BASE}/api/v1${prefix}${path}`;
 
   // Ride the claimed student token on every request. The server decides
   // what needs it; anonymous flows simply have no session.
@@ -282,6 +284,16 @@ export function redeemClaim(
  */
 export function getStudentSession(): Promise<StudentSessionResponse> {
   return apiFetch<StudentSessionResponse>("/student-session");
+}
+
+/**
+ * GET /student/dashboard
+ *
+ * The signed-in student's live dashboard. Always requires the claimed
+ * token (401 student_token_* otherwise), even during the grace period.
+ */
+export function getStudentDashboard(): Promise<StudentDashboardResponse> {
+  return apiFetch<StudentDashboardResponse>("/dashboard", {}, "/student");
 }
 
 /** True when an ApiClientError means the student must (re-)enter a code. */

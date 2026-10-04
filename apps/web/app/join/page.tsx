@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
 import ClaimCodeForm from "@/components/ClaimCodeForm";
@@ -213,6 +214,12 @@ function JoinPageContent() {
             <span>
               Signed in as <b>{activeSession.student_name}</b>
             </span>
+            <Link
+              href="/me"
+              className="rounded-md bg-green-700 px-3 py-1 font-semibold text-white hover:bg-green-800"
+            >
+              My dashboard →
+            </Link>
             <button
               type="button"
               onClick={() => {

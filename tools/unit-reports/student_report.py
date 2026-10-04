@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import csv
 import html
+import json
 import os
 import subprocess
 import sys
@@ -44,87 +45,27 @@ for _stream in (sys.stdout, sys.stderr):
 GRADES_DIR = Path(r"C:\Users\arttu\OneDrive - Grand Prairie ISD\2026 Fall\grade-imports")
 OUT_DIR = Path(r"C:\Users\arttu\OneDrive - Grand Prairie ISD\2026 Fall\student-reports")
 
-WEIGHTS = {"video": 0.20, "scenario": 0.35, "frq": 0.45}  # syllabus
-TYPE_LABEL = {"video": "Video quizzes", "scenario": "Decision scenarios",
-              "frq": "FRQ unit exams"}
+# The course plan (items, pacing-guide target dates, weights) is shared with
+# the live student dashboard in the scenarios API — edit it there, not here.
+PLAN_PATH = HERE.parent.parent / "services" / "api" / "app" / "data" / "course_plan_fall2026.json"
+PLAN = json.loads(PLAN_PATH.read_text(encoding="utf-8"))
+
+WEIGHTS = PLAN["weights"]  # syllabus
+TYPE_LABEL = PLAN["type_labels"]
 SECTION = {"SGPHS": "G4E · CRN 82811 · South Grand Prairie HS",
            "GPHS": "GGE · CRN 84049 · Grand Prairie HS"}
-AHEAD_MIN = 3        # items finished before their date to count as "ahead"
-SLIGHTLY_MAX = 3     # past-due missing items still "slightly behind"
+AHEAD_MIN = PLAN["pace"]["ahead_min_early"]      # items finished early to count as "ahead"
+SLIGHTLY_MAX = PLAN["pace"]["slightly_behind_max"]  # past-due missing items still "slightly behind"
 
 Y = 2026
 # (D2L grade item, display title, type, chapter, unit, (month, day) target)
-# Target dates are the Student Pacing Guide (Fall 2026) weekly targets.
 ITEMS = [
-    ("What is Government", "What Is Government?", "video", 1, 1, (8, 21)),
-    ("Who Governs? Three Theories of Power", "Who Governs? Three Theories of Power", "video", 1, 1, (8, 21)),
-    ("The Modern Citizen: Civic Engagement", "The Modern Citizen", "video", 1, 1, (8, 21)),
-    ("Liberty Park", "Liberty Park", "scenario", 1, 1, (8, 24)),
-    ("Why America Declared Independence", "Why America Declared Independence", "video", 2, 1, (8, 26)),
-    ("America's Rough Draft", "America's Rough Draft", "video", 2, 1, (8, 26)),
-    ("The Great Debate", "The Great Debate", "video", 2, 1, (8, 26)),
-    ("The Philadelphia Compromise", "The Philadelphia Compromise", "scenario", 2, 1, (8, 28)),
-    ("The American Tug-of-War", "The American Tug-of-War", "video", 3, 1, (9, 2)),
-    ("The Great Power Struggle", "The Great Power Struggle", "video", 3, 1, (9, 2)),
-    ("Federalism: A Tug of War", "Federalism: A Tug of War", "video", 3, 1, (9, 2)),
-    ("A Nation Divided: The Cherokee Choice", "The Cherokee Choice", "scenario", 3, 1, (9, 4)),
-    ("UNIT 1 FRQ Federalism Evolution", "FRQ 1 · Federalism Evolution", "frq", 0, 1, (9, 11)),
-
-    ("Civil Liberties", "Civil Liberties", "video", 4, 2, (9, 15)),
-    ("Applying Our Freedoms", "Applying Our Freedoms", "video", 4, 2, (9, 15)),
-    ("The Rights of Suspects", "The Rights of Suspects", "video", 4, 2, (9, 15)),
-    ("Unwritten Rights`", "Unwritten Rights", "video", 4, 2, (9, 15)),
-    ("Civil Rights; Rules of Equality", "Civil Rights: Rules of Equality", "video", 5, 2, (9, 17)),
-    ("The Struggle for Equality", "The Struggle for Equality", "video", 5, 2, (9, 17)),
-    ("Wider Struggle for Rights", "Wider Struggle for Rights", "video", 5, 2, (9, 17)),
-    ("Probable Cause: Traffic Stop Investigation", "Probable Cause", "scenario", 4, 2, (9, 18)),
-    ("The Polling Puzzle", "The Polling Puzzle", "video", 6, 2, (9, 24)),
-    ("Demystifying the Polls", "Demystifying the Polls", "video", 6, 2, (9, 24)),
-    ("What Is Public Opinion", "What Is Public Opinion?", "video", 6, 2, (9, 24)),
-    ("Effects of Public Opinion", "Effects of Public Opinion", "video", 6, 2, (9, 24)),
-    ("Voter Registration and Turnout", "Voter Registration and Turnout", "video", 7, 2, (9, 30)),
-    ("Elections Campaigns and Voting", "Elections, Campaigns and Voting", "video", 7, 2, (9, 30)),
-    ("Direct Democracy", "Direct Democracy", "video", 7, 2, (9, 30)),
-    ("The Motor Voter Decision", "The Motor Voter Decision", "scenario", 7, 2, (10, 2)),
-    ("UNIT 2 FRQ Equal Protection and Civil Rights", "FRQ 2 · Equal Protection", "frq", 0, 2, (10, 8)),
-
-    ("The Media Who Decides", "The Media: Who Decides?", "video", 8, 3, (10, 16)),
-    ("From Press to Post", "From Press to Post", "video", 8, 3, (10, 16)),
-    ("Press Freedom and Regulation", "Press Freedom and Regulation", "video", 8, 3, (10, 16)),
-    ("Media's Hidden Influence", "Media's Hidden Influence", "video", 8, 3, (10, 16)),
-    ("Why Parties", "Why Parties?", "video", 9, 3, (10, 22)),
-    ("The Two Party Puzzle", "The Two-Party Puzzle", "video", 9, 3, (10, 22)),
-    ("The Modern Political Party", "The Modern Political Party", "video", 9, 3, (10, 22)),
-    ("American Politics Great Divide", "American Politics' Great Divide", "video", 9, 3, (10, 22)),
-    ("Party Realignment: The Civil Rights Decision", "Party Realignment", "scenario", 9, 3, (10, 23)),
-    ("Interest Groups", "Interest Groups", "video", 10, 3, (10, 29)),
-    ("The Collective Action Problem", "The Collective Action Problem", "video", 10, 3, (10, 29)),
-    ("Interest Groups and Politics", "Interest Groups and Politics", "video", 10, 3, (10, 29)),
-    ("The Influence Playbook", "The Influence Playbook", "video", 10, 3, (10, 29)),
-    ("Shaping the ACA: A Lobbyist's Gambit", "Shaping the ACA", "scenario", 10, 3, (10, 30)),
-    ("UNIT 3 FRQ Interest group lobbying", "FRQ 3 · Interest Group Lobbying", "frq", 0, 3, (11, 6)),
-
-    ("The Great Compromise", "The Great Compromise", "video", 11, 4, (11, 9)),
-    ("Drawing the Lines", "Drawing the Lines", "scenario", 11, 4, (11, 13)),
-    ("Presidential Power Evolution", "Presidential Power Evolution", "video", 12, 4, (11, 16)),
-    ("Japanese Internment: Executive Order or Congressional Deal", "Japanese Internment", "scenario", 12, 4, (11, 18)),
-    ("UNIT 4 FRQ Bicameralism & policymaking", "FRQ 4 · Bicameralism", "frq", 0, 4, (11, 20)),
-
-    ("The Power of the Courts", "The Power of the Courts", "video", 13, 5, (11, 30)),
-    ("Invisible Rules of Local Power", "Invisible Rules of Local Power", "video", 14, 5, (11, 30)),
-    ("The Marshall Gambit", "The Marshall Gambit", "scenario", 13, 5, (12, 2)),
-    ("From Spoils to Merit", "From Spoils to Merit", "video", 15, 5, (12, 7)),
-    ("The Policy Blueprint", "The Policy Blueprint", "video", 16, 5, (12, 7)),
-    ("The Diplomat's Toolkit", "The Diplomat's Toolkit", "video", 17, 5, (12, 8)),
-    ("The Civil Service Whistleblower's Dilemma", "Civil Service Whistleblower", "scenario", 15, 5, (12, 10)),
-    ("The Hainan Island Incident", "The Hainan Island Incident", "scenario", 17, 5, (12, 10)),
-    ("The Rio Grande Dilemma", "The Rio Grande Dilemma", "scenario", 16, 5, (12, 11)),
-    ("UNIT 5 FRQ The Outputs of Government", "FRQ 5 · Outputs of Government", "frq", 0, 5, (12, 11)),
+    (i["d2l_item"], i["title"], i["type"], i["chapter"] or 0, i["unit"],
+     (int(i["target"][5:7]), int(i["target"][8:10])))
+    for i in PLAN["items"]
 ]
-FLEXIBLE = {"The Rio Grande Dilemma"}  # no set date; FRQ 5 checkpoint / term end
-UNIT_NAMES = {1: "Students and the System", 2: "Individual Agency and Action",
-              3: "Mediating Institutions", 4: "Formal Institutions",
-              5: "The Outputs of Government"}
+FLEXIBLE = {i["d2l_item"] for i in PLAN["items"] if i["flexible"]}  # no set date
+UNIT_NAMES = {int(k): v for k, v in PLAN["units"].items()}
 
 
 def esc(s) -> str:

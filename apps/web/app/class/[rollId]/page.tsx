@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -157,6 +158,12 @@ export default function ClassPickerPage() {
             <span>
               Signed in as <b>{activeSession.student_name}</b>
             </span>
+            <Link
+              href="/me"
+              className="rounded-md bg-green-700 px-3 py-1 font-semibold text-white hover:bg-green-800"
+            >
+              My dashboard →
+            </Link>
             <button
               type="button"
               onClick={() => {

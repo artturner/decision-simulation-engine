@@ -27,8 +27,10 @@ progress by type and overall on the 60 items, and ahead / on track /
 behind against the pacing-guide target dates) into OneDrive
 `2026 Fall/student-reports/<Last>_<First>_<date>.pdf`. Grades come from the
 newest `all_grades_import_*.csv` (`--refresh` runs `export_all_grades.py`
-first). Target dates and item types live in its `ITEMS` table; it refuses to
-run if that table drifts from the D2L template.
+first). Target dates, item types and weights live in the shared course plan
+`services/api/app/data/course_plan_fall2026.json` — the same file the live
+student dashboard (`/me`) uses, so the two always agree. The report refuses to
+run if the plan drifts from the D2L template.
 
 Re-run both unit-2 scripts right before printing so the pre-checked marks
 reflect current progress.

@@ -95,6 +95,28 @@ class Settings(BaseSettings):
     STUDENT_TOKEN_ISSUER: str = "classroom-student-auth"
 
     # ------------------------------------------------------------------
+    # Student dashboard (/student/dashboard) — cross-app sources
+    # ------------------------------------------------------------------
+    # The dashboard aggregates server-side so students' browsers never need
+    # to reach the essay or video hosts (some school networks block them).
+    # Blank base URLs skip that source; the dashboard still renders.
+    ESSAY_API_BASE: str = ""
+    # Student-facing essay site, plus an unblocked fallback domain.
+    ESSAY_WEB_BASE: str = "https://essays.cruxlabs.academy"
+    ESSAY_WEB_FALLBACK_BASE: str = "https://crux-essays.vercel.app"
+    # Video-quiz app: API base for server-to-server calls (use the Railway
+    # domain; the custom domain is TLS-intercepted on district guest wifi)
+    # and the shared key for its /api/internal routes.
+    VIDEO_API_BASE: str = ""
+    VIDEO_INTERNAL_KEY: str = ""
+    # Alternate student-facing video origin for guest-wifi students.
+    VIDEO_WEB_FALLBACK_BASE: str = "https://app-production-a23d.up.railway.app"
+    # Seconds per upstream call before that section shows as unavailable.
+    DASHBOARD_UPSTREAM_TIMEOUT: float = 8.0
+    # "Today" for pacing math.
+    DASHBOARD_TIMEZONE: str = "America/Chicago"
+
+    # ------------------------------------------------------------------
     # AI reflection grading (optional)
     # ------------------------------------------------------------------
     # Anthropic API key for the AI reflection grader.  Leave blank to

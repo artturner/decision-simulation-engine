@@ -75,8 +75,9 @@ export default function ClaimCodeForm({
       </label>
       {!required && (
         <p className="mt-1 text-xs text-gray-500">
-          Soon your access code will be needed to open your work. The same
-          code works on the essays site.
+          Your code unlocks your personal dashboard: every grade, what&apos;s
+          due, your best next move, XP and badges. Soon it will also be needed
+          to open your work. The same code works on the essays site.
         </p>
       )}
       <div className="mt-2 flex gap-2">

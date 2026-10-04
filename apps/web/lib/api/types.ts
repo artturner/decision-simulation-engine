@@ -236,3 +236,151 @@ export interface StudentSessionResponse {
   student_name: string | null;
   roll_id: string | null;
 }
+
+// ---------------------------------------------------------------------------
+// Student dashboard (GET /api/v1/student/dashboard)
+// ---------------------------------------------------------------------------
+
+export type DashItemType = "video" | "scenario" | "frq";
+export type DashStatus =
+  | "done_on_time"
+  | "done"
+  | "done_late"
+  | "pending_grade"
+  | "missing"
+  | "in_progress"
+  | "upcoming";
+
+export interface DashChecklistRow {
+  key: string;
+  title: string;
+  type: DashItemType;
+  unit: number;
+  chapter: number | null;
+  target: string;
+  flexible: boolean;
+  status: DashStatus;
+  state: string;
+  score: number | null;
+  completed_at: string | null;
+  link: string | null;
+  alt_link: string | null;
+  available: boolean;
+  almost_label: string | null;
+  can_revise: boolean;
+  revisions_left: number | null;
+  detail: Record<string, unknown>;
+}
+
+export interface DashMove {
+  key: string;
+  title: string;
+  type: DashItemType;
+  kind: "finish" | "resume" | "start" | "revise";
+  label: string | null;
+  target: string;
+  days_until_due: number;
+  past_due: boolean;
+  grade_delta: number;
+  effort_minutes: number;
+  link: string;
+  alt_link: string | null;
+}
+
+export interface DashTip {
+  kind: string;
+  title: string;
+  body: string;
+  quote?: string | null;
+  review?: { video: string; prompt: string }[];
+}
+
+export interface DashBadge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  earned: boolean;
+  progress: number | null;
+  goal: number | null;
+}
+
+export interface DashTypeStat {
+  type: DashItemType;
+  label: string;
+  weight: number;
+  total: number;
+  done: number;
+  due: number;
+  missing: number;
+  avg_submitted: number | null;
+  avg_counted: number | null;
+}
+
+export interface DashUnit {
+  unit: number;
+  name: string;
+  done: number;
+  total: number;
+  start: string;
+  end: string;
+  state: "cleared" | "current" | "future" | "open_past";
+  missing: number;
+}
+
+export interface StudentDashboard {
+  as_of: string;
+  course: string;
+  term: string;
+  late_policy: string;
+  summary: {
+    grade: number | null;
+    letter: string | null;
+    grade_submitted: number | null;
+    letter_submitted: string | null;
+    pace: "ahead" | "ok" | "slight" | "behind";
+    pace_label: string;
+    missing_count: number;
+    early_count: number;
+    done_count: number;
+    due_count: number;
+    total_count: number;
+    pending_count: number;
+    catch_up: { items: number; grade_after: number | null; letter_after: string | null } | null;
+  };
+  by_type: DashTypeStat[];
+  this_week: { start: string; end: string; keys: string[] };
+  next_moves: DashMove[];
+  units: DashUnit[];
+  checklist: DashChecklistRow[];
+  stats: {
+    video_first_try_pct: number | null;
+    video_questions: number;
+    videos_completed: number;
+    reflection_dimensions: { key: string; avg_rank: number; count: number; typical_level: string }[];
+    frq_dimensions: { key: string; title: string; pct: number | null }[];
+    scores_over_time: { key: string; type: DashItemType; title: string; date: string; score: number }[];
+  };
+  tips: DashTip[];
+  game: {
+    xp: number;
+    level: {
+      number: number;
+      name: string;
+      floor: number;
+      next_at: number | null;
+      next_name: string | null;
+      progress: number;
+    };
+    streak: { current_weeks: number; best_weeks: number; weeks_counted: number };
+    activity: { weeks: { start: string; completed: number }[]; last_7_days: number };
+    badges: DashBadge[];
+  };
+}
+
+export interface StudentDashboardResponse {
+  student: { name: string; roll_name: string; join_code: string };
+  plan_available: boolean;
+  sources: Record<string, "ok" | "unavailable" | "not_configured">;
+  dashboard: StudentDashboard | null;
+}
