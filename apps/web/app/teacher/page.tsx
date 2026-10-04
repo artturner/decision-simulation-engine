@@ -33,6 +33,7 @@ import type {
 } from "@/lib/api/teacherTypes";
 import { getSupabaseClient } from "@/lib/auth/supabase";
 import { diffWords } from "@/lib/diff";
+import { DASHBOARD_QR_SVG, DASHBOARD_URL_SHORT } from "@/lib/dashboardQr";
 
 function parseRoster(raw: string): string[] {
   return raw
@@ -672,13 +673,15 @@ function SharePanel({
       s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     const slips = codes
       .map(
-        (c) => `<div class="slip">
+        (c) => `<div class="slip"><div class="txt">
   <div class="cls">${esc(roll.name)} · class code <b>${esc(roll.join_code)}</b></div>
   <div class="name">${esc(c.student_name)}</div>
   <div class="code">${esc(c.code)}</div>
   <div class="how">Go to ${esc(origin)}/join → pick your name → enter this access code.<br>
   Keep this slip — the same code also unlocks the essays site.</div>
-</div>`,
+  <div class="dash"><b>Your live dashboard:</b> scan the code or go to <b>${DASHBOARD_URL_SHORT}</b>
+  and enter this access code — every grade, what&rsquo;s due, your best next move, XP &amp; badges.</div>
+</div><div class="qr">${DASHBOARD_QR_SVG}<span>My dashboard</span></div></div>`,
       )
       .join("\n");
     const w = window.open("", "_blank");
@@ -686,7 +689,9 @@ function SharePanel({
     w.document.write(`<!doctype html><html><head><title>Access codes — ${esc(roll.name)}</title>
 <style>
 body{font:13px/1.4 'Segoe UI',Arial,sans-serif;margin:24px}
-.slip{border:1px dashed #999;border-radius:6px;padding:10px 14px;margin:0 0 10px;page-break-inside:avoid}
+.slip{border:1px dashed #999;border-radius:6px;padding:10px 14px;margin:0 0 10px;page-break-inside:avoid;display:flex;gap:14px;align-items:center}
+.txt{flex:1}.qr{flex:none;width:84px;text-align:center;font-size:9px;color:#555}.qr svg{width:84px;height:84px;display:block}
+.dash{font-size:11px;margin-top:5px;padding-top:5px;border-top:1px solid #ddd}
 .cls{color:#555;font-size:11px}.name{font-weight:700;font-size:15px;margin-top:2px}
 .code{font:700 20px/1.3 Consolas,monospace;letter-spacing:.15em;margin:4px 0}
 .how{color:#555;font-size:11px}

@@ -12,6 +12,7 @@ Outputs (OneDrive 2026 Fall/unit2-checklists/):
 """
 import html
 import json
+import os
 import sys
 from collections import defaultdict
 from datetime import date
@@ -27,11 +28,17 @@ from export_all_grades import load_config  # noqa: E402
 from app.services.names import student_name_key  # noqa: E402
 
 RAW = HERE / "unit2_raw"
-OUT_DIR = Path(r"C:\Users\arttu\OneDrive - Grand Prairie ISD\2026 Fall\unit2-checklists")
+# UNIT2_OUT_DIR overrides the destination (e.g. a scratch folder for a test render).
+OUT_DIR = Path(os.environ.get("UNIT2_OUT_DIR")
+               or r"C:\Users\arttu\OneDrive - Grand Prairie ISD\2026 Fall\unit2-checklists")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 TODAY = date.today().isoformat()
 
 JOIN_URL = "scenarios.cruxlabs.academy/join"
+DASHBOARD_URL = "scenarios.cruxlabs.academy/me"
+# Same QR the teacher-dashboard slips use. Generated once: the URL is the
+# same for every student; their access code is what identifies them.
+DASHBOARD_QR_SVG = (HERE.parent.parent / "apps" / "web" / "public" / "qr-me.svg").read_text(encoding="utf-8")
 
 VIDEOS = {  # canonical title -> chapter (matches fetch_unit2 canon)
     "Civil Liberties": 4, "Applying Our Freedoms": 4,
@@ -174,6 +181,10 @@ h2 .when{float:right;color:#888;text-transform:none;letter-spacing:0;font-weight
 .code-callout{background:#fdf6ec;border:1.5px dashed #b3550e;border-radius:6px;padding:6px 12px;
  margin:2px 0 4px;font-size:11.5px}
 .code-callout b.code{font:700 15px/1.3 Consolas,monospace;letter-spacing:.14em}
+.dash-box{display:flex;gap:12px;align-items:center;border:1.5px solid #3c6291;border-radius:8px;
+ padding:6px 12px;margin:4px 0 2px;background:#f4f7fb;font-size:11.5px}
+.dash-box .qr{flex:none;width:80px;height:80px}.dash-box .qr svg{width:80px;height:80px;display:block}
+.dash-box b.big{font-size:13px;color:#3c6291}
 .footer{margin-top:8px;border-top:2px solid #ccc;padding-top:6px;display:flex;
  justify-content:space-between;align-items:center;font-size:11px}
 .bar{height:9px;background:#eceff3;border-radius:5px;overflow:hidden;flex:1;margin:0 12px}
@@ -219,6 +230,12 @@ def sheet(rec) -> str:
     if claim and not claimed:
         parts.append(f'<div class="code-callout">Your access code: '
                      f'<b class="code">{esc(claim["code"])}</b> — keep this sheet.</div>')
+    parts.append(
+        f'<div class="dash-box"><div><b class="big">Your live dashboard</b> — scan the code or go to '
+        f'<b>{DASHBOARD_URL}</b>{" and enter your access code" if not claimed else ""}. '
+        'See every grade, what&rsquo;s due, your best next move, and tips to raise your grade — '
+        'plus XP, streaks &amp; badges. Updates the moment you finish something.</div>'
+        f'<div class="qr">{DASHBOARD_QR_SVG}</div></div>')
 
     def section(title, when, entries):
         nonlocal done_count, total
