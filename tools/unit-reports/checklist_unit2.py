@@ -335,45 +335,52 @@ def pdf_page_count(path: Path) -> int:
     return max(counts) if counts else len(_re.findall(rb"/Type\s*/Page[^s]", data))
 
 
-BROWSER = find_browser()
-for campus, recs in sorted(by_campus.items()):
-    recs = sorted(recs, key=lambda r: (period_key(r), r["last"].lower(), r["first"].lower()))
-    parts, last_period = [], object()
-    for r in recs:
-        if r.get("period", "?") != last_period:
-            last_period = r.get("period", "?")
-            n = sum(1 for x in recs if x.get("period", "?") == last_period)
-            label = f"Period {last_period}" if last_period != "?" else "No period assigned"
-            parts.append(
-                f'<div class="sheet" style="display:flex;align-items:center;justify-content:center;'
-                f'min-height:220px"><div style="text-align:center"><h1 style="font-size:30px">'
-                f'{esc(campus)} — {label}</h1><div class="sub" style="font-size:14px">'
-                f'{n} Unit 2 checklists · {TODAY}</div></div></div>')
-        parts.append(sheet(r))
-    head_html = (f"<!doctype html><html><head><meta charset='utf-8'><title>Unit 2 checklists — "
-                 f"{campus}</title><style>{CSS}</style></head><body>")
-    path = OUT_DIR / f"unit2_checklists_{campus}_{TODAY}.html"
-    path.write_text(head_html + "".join(parts) + "</body></html>", encoding="utf-8")
-    n_pages = len(parts)
-    print(f"wrote {path.name} ({len(recs)} sheets)")
+def main() -> None:
+    """Render the sheets (importing this module only loads the data)."""
+    global _PROFILE_DIR
+    BROWSER = find_browser()
+    for campus, recs in sorted(by_campus.items()):
+        recs = sorted(recs, key=lambda r: (period_key(r), r["last"].lower(), r["first"].lower()))
+        parts, last_period = [], object()
+        for r in recs:
+            if r.get("period", "?") != last_period:
+                last_period = r.get("period", "?")
+                n = sum(1 for x in recs if x.get("period", "?") == last_period)
+                label = f"Period {last_period}" if last_period != "?" else "No period assigned"
+                parts.append(
+                    f'<div class="sheet" style="display:flex;align-items:center;justify-content:center;'
+                    f'min-height:220px"><div style="text-align:center"><h1 style="font-size:30px">'
+                    f'{esc(campus)} — {label}</h1><div class="sub" style="font-size:14px">'
+                    f'{n} Unit 2 checklists · {TODAY}</div></div></div>')
+            parts.append(sheet(r))
+        head_html = (f"<!doctype html><html><head><meta charset='utf-8'><title>Unit 2 checklists — "
+                     f"{campus}</title><style>{CSS}</style></head><body>")
+        path = OUT_DIR / f"unit2_checklists_{campus}_{TODAY}.html"
+        path.write_text(head_html + "".join(parts) + "</body></html>", encoding="utf-8")
+        n_pages = len(parts)
+        print(f"wrote {path.name} ({len(recs)} sheets)")
 
-    blank = '<div class="blankpage">&nbsp;</div>'
-    dup_html = OUT_DIR / f"_duplex_{campus}.html"
-    dup_html.write_text(head_html + blank.join(parts) + blank + "</body></html>",
-                        encoding="utf-8")
-    if BROWSER:
-        for src, suffix, expect in ((path, "", n_pages),
-                                    (dup_html, "_duplexsafe", n_pages * 2)):
-            pdf = OUT_DIR / f"unit2_checklists_{campus}_{TODAY}{suffix}.pdf"
-            html_to_pdf(BROWSER, src, pdf)
-            got = pdf_page_count(pdf)
-            status = "OK" if got == expect else f"MISMATCH (expected {expect})"
-            print(f"  {pdf.name}: {got} pages {status}")
-    dup_html.unlink(missing_ok=True)
+        blank = '<div class="blankpage">&nbsp;</div>'
+        dup_html = OUT_DIR / f"_duplex_{campus}.html"
+        dup_html.write_text(head_html + blank.join(parts) + blank + "</body></html>",
+                            encoding="utf-8")
+        if BROWSER:
+            for src, suffix, expect in ((path, "", n_pages),
+                                        (dup_html, "_duplexsafe", n_pages * 2)):
+                pdf = OUT_DIR / f"unit2_checklists_{campus}_{TODAY}{suffix}.pdf"
+                html_to_pdf(BROWSER, src, pdf)
+                got = pdf_page_count(pdf)
+                status = "OK" if got == expect else f"MISMATCH (expected {expect})"
+                print(f"  {pdf.name}: {got} pages {status}")
+        dup_html.unlink(missing_ok=True)
 
-if _PROFILE_DIR is not None:
-    import shutil
-    shutil.rmtree(_PROFILE_DIR, ignore_errors=True)
+    if _PROFILE_DIR is not None:
+        import shutil
+        shutil.rmtree(_PROFILE_DIR, ignore_errors=True)
 
-if unmatched:
-    print("UNMATCHED (not in rosetta):", sorted(unmatched))
+    if unmatched:
+        print("UNMATCHED (not in rosetta):", sorted(unmatched))
+
+
+if __name__ == "__main__":
+    main()

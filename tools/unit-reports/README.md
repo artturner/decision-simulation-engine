@@ -61,3 +61,33 @@ Network note: on the district network the Palo Alto firewall SSL-intercepts
 `videos.cruxlabs.academy`, which breaks Python cert verification. The fetch
 script therefore talks to the same service via its Railway domain
 `app-production-a23d.up.railway.app`, which is not intercepted.
+
+## Emailing students their progress + access code
+
+```
+python fetch_unit2.py                                   # refresh live data
+python email_merge_unit2.py --emails <D2L export with Email>.csv
+python email_merge_unit2.py --emails ... --test-to Arthur.Turner@etamu.edu   # 3-row test file
+```
+
+Writes a mail-merge file (one row per student: ETAMU email, access code,
+Unit 2 summary from the same rules as the checklists, and a ready
+`Subject` / `BodyHTML` / `BodyText`) to OneDrive `2026 Fall/email-merge/`.
+Nothing is sent by the script. Send from your own ETAMU mailbox so the mail
+comes from a trusted university sender:
+
+**Power Automate (browser only)** — copy the `.xlsx` into your **ETAMU**
+OneDrive, then at make.powerautomate.com (signed in with ETAMU) create an
+*Instant cloud flow*:
+1. *Excel Online (Business) → List rows present in a table* — your file,
+   table `Merge`.
+2. *Apply to each* over `value`; under its Settings set concurrency **off**.
+3. Inside it: *Office 365 Outlook → Send an email (V2)* — To = `Email`,
+   Subject = `Subject`, Body = `BodyHTML` (switch the body to code view `</>`
+   first so the HTML is used).
+4. *Delay* 2 seconds (keeps well under Exchange's 30 messages/minute).
+
+Run it on the `_TEST` file first and check the result in your inbox.
+**Word mail merge** needs desktop (classic) Outlook; use the `.csv`.
+
+The files contain access codes and grades — delete them after sending.
