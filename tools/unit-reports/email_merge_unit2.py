@@ -105,6 +105,31 @@ def body_html(first: str, code: str | None, claimed: bool, p: dict, today: date)
     return "\n".join(lines)
 
 
+CODE_ONLY_SUBJECT = "PSCI 2305: your personal access code"
+
+
+def code_only_html(first: str, code: str | None, claimed: bool) -> str:
+    """No grade information at all: just the code and where to use it."""
+    lines = [f"<p>Hi {esc(first)},</p>"]
+    if claimed:
+        lines.append("<p>You're already set up with your PSCI 2305 access code. Your live dashboard "
+                     "shows every grade, what's due, and your best next move: "
+                     f'<a href="{DASHBOARD}">{DASHBOARD_SHORT}</a></p>')
+    else:
+        lines.append("<p>As I mentioned in class, here is your personal access code for our course "
+                     "websites:</p>"
+                     f"<p><b style=\"font-family:Consolas,monospace;font-size:18px;letter-spacing:2px\">"
+                     f"{esc(code)}</b></p>"
+                     f"<p>Enter it at <a href=\"{DASHBOARD}\">{DASHBOARD_SHORT}</a> to unlock your live "
+                     "dashboard: every grade, what's due, and your best next move. Soon this code will "
+                     "also be required to open your scenario and essay work, so set it up now.</p>"
+                     "<p>Keep it private; it's tied to your grades. If you didn't expect this email, "
+                     "ask me in class before using the code.</p>")
+    lines.append("<p>Questions? Reply to this email or ask me in class.</p>")
+    lines.append(f"<p>{SIGNATURE}</p>")
+    return "\n".join(lines)
+
+
 def to_text(h: str) -> str:
     import re
     t = re.sub(r"<li>", "- ", h)
@@ -120,6 +145,8 @@ def main() -> None:
     ap.add_argument("--only-unclaimed", action="store_true", help="only students who haven't claimed a code")
     ap.add_argument("--test-to", help="write a 3-row TEST file with every Email replaced by this address")
     ap.add_argument("--as-of", type=date.fromisoformat, default=date.today())
+    ap.add_argument("--code-only", action="store_true",
+                    help="email only the access code + dashboard link, no grade information")
     args = ap.parse_args()
 
     with open(args.emails, encoding="utf-8-sig", newline="") as f:
@@ -140,17 +167,26 @@ def main() -> None:
         if args.only_unclaimed and claimed:
             continue
         p = progress(rec, args.as_of)
-        body = body_html(rec["first"], claim["code"] if claim else None, claimed, p, args.as_of)
+        if args.code_only:
+            if not claim:
+                continue
+            body = code_only_html(rec["first"], claim["code"], claimed)
+        else:
+            body = body_html(rec["first"], claim["code"] if claim else None, claimed, p, args.as_of)
         rows.append({
             "Email": email, "FirstName": rec["first"], "LastName": rec["last"],
             "Campus": rec["campus"], "Period": rec["period"],
             "Claimed": "Y" if claimed else "N", "AccessCode": claim["code"] if claim else "",
             "DoneCount": p["done"], "TotalCount": p["total"], "PastDueCount": len(p["past_due"]),
-            "FRQ2Status": p["frq_status"], "Subject": SUBJECT, "BodyHTML": body, "BodyText": to_text(body),
+            "FRQ2Status": p["frq_status"], "Subject": CODE_ONLY_SUBJECT if args.code_only else SUBJECT, "BodyHTML": body, "BodyText": to_text(body),
         })
+    if args.code_only:
+        for r in rows:
+            for k in ("DoneCount", "TotalCount", "PastDueCount", "FRQ2Status"):
+                r.pop(k)
     rows.sort(key=lambda r: (r["Campus"], ck.period_key({"period": r["Period"]}), r["LastName"], r["FirstName"]))
 
-    stamp = args.as_of.isoformat()
+    stamp = args.as_of.isoformat() + ("_codeonly" if args.code_only else "")
     if args.test_to:
         rows = [dict(r, Email=args.test_to) for r in rows[:3]]
         stamp += "_TEST"
