@@ -8,7 +8,7 @@ then:
     python fetch_unit2.py              # refresh codes (claims.json)
     python access_code_import.py       # -> OneDrive 2026 Fall/grade-imports/
 
-    python access_code_import.py --item "Dashboard Access Code" --suffix " Text Grade"
+    python access_code_import.py --item "Personal Access Code" --suffix " Text Grade"
 
 --item must match the D2L grade item name exactly; --suffix is the column
 suffix D2L uses for that item type (check a fresh grade export/template if
@@ -35,7 +35,7 @@ OUT_DIR = Path(os.environ.get("ACCESS_CODE_OUT_DIR")
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--item", default="Dashboard Access Code", help="D2L grade item name")
+    ap.add_argument("--item", default="Personal Access Code", help="D2L grade item name")
     ap.add_argument("--suffix", default=" Text Grade", help="D2L column suffix for the item type")
     args = ap.parse_args()
 
