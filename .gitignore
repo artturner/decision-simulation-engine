@@ -53,3 +53,5 @@ thru*.txt
 "thru *.txt"
 creating-github.txt
 DeSimGen.txt
+# Local only: chat transcripts / student data / textbook-derived content
+scenario-export.csv
