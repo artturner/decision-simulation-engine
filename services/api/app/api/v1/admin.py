@@ -58,6 +58,8 @@ from app.schemas.admin import (
     ClassRollCreate,
     ClassRollOut,
     ClassRollUpdate,
+    EssayLinkOut,
+    EssayLinkRequest,
     GradingUsageOut,
     PublishedScenarioOut,
     PublishResponse,
@@ -77,6 +79,7 @@ from app.schemas.admin import (
     VersionCreateResponse,
 )
 from app.services.analytics import get_analytics
+from app.services.essay_link import codes_for_essay_roster, link_essay_roll
 from app.services.export import export_csv
 from app.services.names import normalize_student_name
 from engine.validator import validate_scenario
@@ -740,6 +743,33 @@ def regenerate_claim_codes(
     claims = ClaimRepository(db).regenerate(roll, body.student_name)
     db.commit()
     return [ClaimCodeOut.model_validate(c) for c in claims]
+
+
+@teacher_router.post(
+    "/essay-links",
+    response_model=EssayLinkOut,
+    summary="Access codes for an essay-grader class (linking or mirroring a roll)",
+)
+def link_essay_class(
+    body: EssayLinkRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> EssayLinkOut:
+    """Called by the essays dashboard, which has no codes of its own.
+
+    Regenerating goes through the roll endpoints above with ``roll_id``.
+    """
+    roll = link_essay_roll(
+        db, current_user.id, body.essay_roll_id, body.name, body.student_names
+    )
+    codes = codes_for_essay_roster(db, roll, body.student_names)
+    db.commit()
+    return EssayLinkOut(
+        roll_id=roll.id,
+        roll_name=roll.name,
+        mirrors_essay_roll=roll.mirrors_essay_roll,
+        codes=[ClaimCodeOut.model_validate(c) for c in codes],
+    )
 
 
 # ---------------------------------------------------------------------------

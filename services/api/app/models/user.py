@@ -115,6 +115,18 @@ class ClassRoll(Base):
         default=list,
         comment='Ordered list of canonical student names, e.g. ["Last, First", ...]',
     )
+    essay_roll_id: Mapped[uuid.UUID | None] = mapped_column(
+        PG_UUID(as_uuid=True),
+        nullable=True,
+        unique=True,
+        comment="Essay-grader class this roll issues access codes for, if linked",
+    )
+    mirrors_essay_roll: Mapped[bool] = mapped_column(
+        nullable=False,
+        default=False,
+        server_default=sa_false(),
+        comment="Created by the essay link: its roster follows the essay class",
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,

@@ -153,6 +153,21 @@ class ClaimCodeOut(BaseModel):
     claim_count: int
 
 
+class EssayLinkRequest(BaseModel):
+    """An essay-grader class to issue access codes for (see services.essay_link)."""
+
+    essay_roll_id: uuid.UUID
+    name: str = Field(..., min_length=1, max_length=500)
+    student_names: list[str] = Field(default_factory=list)
+
+
+class EssayLinkOut(BaseModel):
+    roll_id: uuid.UUID
+    roll_name: str
+    mirrors_essay_roll: bool
+    codes: list[ClaimCodeOut]
+
+
 class ClaimCodesRegenerateRequest(BaseModel):
     """Regenerate one student's code, or every code when name is omitted.
 
